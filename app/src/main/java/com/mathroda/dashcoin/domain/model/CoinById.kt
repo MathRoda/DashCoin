@@ -1,6 +1,6 @@
 package com.mathroda.dashcoin.domain.model
 
-data class CoinDetail (
+data class CoinById (
     val availableSupply: Double,
     val icon: String,
     val id: String,
@@ -11,7 +11,6 @@ data class CoinDetail (
     val priceChange1h: Double,
     val priceChange1w: Double,
     val rank: Int,
-    val redditUrl: String,
     val symbol: String,
     val totalSupply: Double,
     val twitterUrl: String,

@@ -1,10 +1,7 @@
 package com.mathroda.dashcoin.data.repository
 
 import com.mathroda.dashcoin.data.remot.DashCoinApi
-import com.mathroda.dashcoin.data.remot.dto.ChartDto
-import com.mathroda.dashcoin.data.remot.dto.Coin
-import com.mathroda.dashcoin.data.remot.dto.CoinDto
-import com.mathroda.dashcoin.data.remot.dto.NewsDto
+import com.mathroda.dashcoin.data.remot.dto.*
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository
 import javax.inject.Inject
 
@@ -12,11 +9,11 @@ class DashCoinRepositoryImpl @Inject constructor(
     private val api: DashCoinApi
 ): DashCoinRepository {
 
-    override suspend fun getCoins(): CoinDto {
+    override suspend fun getCoins(): CoinsDto {
         return api.getCoins()
     }
 
-    override suspend fun getCoinById(coinId: String): Coin {
+    override suspend fun getCoinById(coinId: String): CoinDetailDto {
         return api.getCoinById(coinId)
     }
 

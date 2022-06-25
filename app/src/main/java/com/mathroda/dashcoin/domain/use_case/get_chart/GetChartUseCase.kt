@@ -17,13 +17,13 @@ class GetChartUseCase @Inject constructor(
     operator fun invoke(coinId: String): Flow<Resource<Charts>> = flow {
 
         try {
-            emit(Resource.Loading<Charts>())
+            emit(Resource.Loading())
             val coins = repository.getChartsData(coinId).toChart()
-            emit(Resource.Success<Charts>(coins) )
+            emit(Resource.Success(coins) )
         } catch (e: HttpException) {
-            emit(Resource.Error<Charts>(e.localizedMessage?: "Unexpected Error"))
+            emit(Resource.Error(e.localizedMessage?: "Unexpected Error"))
         } catch (e: IOException) {
-            emit(Resource.Error<Charts>("Couldn't reach server. Check your internet connection"))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 }
