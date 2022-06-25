@@ -36,10 +36,10 @@ class MainActivity : ComponentActivity() {
     fun TryGetCoins(
         viewModel: CoinViewModel = hiltViewModel()
     ) {
-      val state = viewModel.state.value
+      val state = viewModel.chartState.value
         Log.d("coins", "error " + state.error)
         Log.d("coins", "loading " + state.isLoading.toString())
-        Log.d("coins", state.coin.toString())
+        Log.d("coins", state.chart.toString())
 
     }
 }
