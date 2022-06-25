@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
+import com.mathroda.dashcoin.presentation.news_screen.viewmodel.NewsViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.DashCoinTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,12 +35,12 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun TryGetCoins(
-        viewModel: CoinViewModel = hiltViewModel()
+        viewModel: NewsViewModel = hiltViewModel()
     ) {
-      val state = viewModel.chartState.value
+      val state = viewModel.state.value
         Log.d("coins", "error " + state.error)
         Log.d("coins", "loading " + state.isLoading.toString())
-        Log.d("coins", state.chart.toString())
+        Log.d("coins", state.news.toString())
 
     }
 }

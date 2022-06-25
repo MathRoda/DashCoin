@@ -16,13 +16,13 @@ class GetNewsUseCase @Inject constructor(
 
     operator fun invoke(filter: String): Flow<Resource<List<NewsDetail>>> = flow {
         try {
-            emit(Resource.Loading<List<NewsDetail>>())
+            emit(Resource.Loading())
             val coin = repository.getNews(filter).news.map { it.toNewsDetail() }
-            emit(Resource.Success<List<NewsDetail>>(coin))
+            emit(Resource.Success(coin))
         }catch (e: HttpException) {
-            emit(Resource.Error<List<NewsDetail>>(e.localizedMessage?: "An unexpected error"))
+            emit(Resource.Error(e.localizedMessage?: "An unexpected error"))
         } catch (e: IOException) {
-            emit(Resource.Error<List<NewsDetail>>("Couldn't reach server. Check your internet connection"))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 }

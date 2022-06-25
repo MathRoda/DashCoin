@@ -9,10 +9,8 @@ import com.mathroda.dashcoin.common.Constants
 import com.mathroda.dashcoin.common.Resource
 import com.mathroda.dashcoin.domain.use_case.get_chart.GetChartUseCase
 import com.mathroda.dashcoin.domain.use_case.get_coin.GetCoinUseCase
-import com.mathroda.dashcoin.domain.use_case.get_coins.GetCoinsUseCase
 import com.mathroda.dashcoin.presentation.coin_detail.state.ChartState
 import com.mathroda.dashcoin.presentation.coin_detail.state.CoinState
-import com.mathroda.dashcoin.presentation.coins_screen.state.CoinsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
