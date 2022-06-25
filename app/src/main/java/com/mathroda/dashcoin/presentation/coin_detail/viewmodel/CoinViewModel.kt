@@ -2,8 +2,10 @@ package com.mathroda.dashcoin.presentation.coin_detail.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathroda.dashcoin.common.Constants
 import com.mathroda.dashcoin.common.Resource
 import com.mathroda.dashcoin.domain.use_case.get_coin.GetCoinUseCase
 import com.mathroda.dashcoin.domain.use_case.get_coins.GetCoinsUseCase
@@ -16,18 +18,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CoinViewModel @Inject constructor(
-    private val getCoinUseCase: GetCoinUseCase
+    private val getCoinUseCase: GetCoinUseCase,
+    savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     private val _state = mutableStateOf(CoinState())
     val state: State<CoinState> = _state
 
     init {
-        getCoin()
+        savedStateHandle.get<String>(Constants.PARAM_COIN_ID)?.let { coinId ->
+            getCoin(coinId)
+        }
     }
 
 
-   private fun getCoin(coinId: String = "bitcoin") {
+   private fun getCoin(coinId: String) {
         getCoinUseCase(coinId).onEach { result ->
             when(result) {
                 is Resource.Success ->{
