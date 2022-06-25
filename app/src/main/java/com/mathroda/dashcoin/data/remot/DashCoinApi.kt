@@ -1,9 +1,6 @@
 package com.mathroda.dashcoin.data.remot
 
-import com.mathroda.dashcoin.data.remot.dto.ChartDto
-import com.mathroda.dashcoin.data.remot.dto.Coin
-import com.mathroda.dashcoin.data.remot.dto.CoinDto
-import com.mathroda.dashcoin.data.remot.dto.NewsDto
+import com.mathroda.dashcoin.data.remot.dto.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -13,12 +10,12 @@ interface DashCoinApi {
     @GET("v1/coins")
     suspend fun getCoins(
         @Query("currency") currency: String = "USD"
-    ): CoinDto
+    ): CoinsDto
 
     @GET("v1/coins/{coinId}")
     suspend fun getCoinById(
         @Path("coinId") coinId: String
-    ): Coin
+    ): CoinDetailDto
 
     @GET("v1/charts")
     suspend fun getChartsData(

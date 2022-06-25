@@ -1,5 +1,5 @@
 package com.mathroda.dashcoin.data.remot.dto
 
-data class CoinDto(
+data class CoinsDto(
     val coins: List<Coin>
 )

@@ -1,6 +1,5 @@
 package com.mathroda.dashcoin.data.remot.dto
 
-import com.mathroda.dashcoin.domain.model.CoinDetail
 import com.mathroda.dashcoin.domain.model.Coins
 
 data class Coin(
@@ -39,25 +38,7 @@ fun Coin.toCoins(): Coins {
     )
 }
 
-fun Coin.toCoinDetail(): CoinDetail {
-    return CoinDetail(
-        availableSupply,
-        icon,
-        id,
-        marketCap,
-        name,
-        price,
-        priceChange1d,
-        priceChange1h,
-        priceChange1w,
-        rank,
-        redditUrl,
-        symbol,
-        totalSupply,
-        twitterUrl,
-        volume,
-        websiteUrl
-    )
-}
+
+
 
 
