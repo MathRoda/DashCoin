@@ -4,10 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.dashcoin.common.Resource
-import com.mathroda.dashcoin.domain.use_case.get_coins.GetCoinsUseCase
-import com.mathroda.dashcoin.domain.use_case.get_news.GetNewsUseCase
-import com.mathroda.dashcoin.presentation.coins_screen.state.CoinsState
+import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
+import com.mathroda.dashcoin.util.Resource
+import com.mathroda.dashcoin.domain.use_case.remote.get_news.GetNewsUseCase
 import com.mathroda.dashcoin.presentation.news_screen.state.NewsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -16,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    private val getNewsUseCase: GetNewsUseCase
+    private val dashCoinUseCases: DashCoinUseCases
 ): ViewModel() {
 
     private val _state = mutableStateOf(NewsState())
@@ -28,7 +27,7 @@ class NewsViewModel @Inject constructor(
 
 
    private fun getNews(filter: String = "handpicked") {
-        getNewsUseCase(filter).onEach { result ->
+        dashCoinUseCases.getNews(filter).onEach { result ->
             when(result) {
                 is Resource.Success ->{
                     _state.value = NewsState(news = result.data?: emptyList())

@@ -1,7 +1,7 @@
-package com.mathroda.dashcoin.domain.use_case.get_chart
+package com.mathroda.dashcoin.domain.use_case.remote.get_chart
 
-import com.mathroda.dashcoin.common.Resource
-import com.mathroda.dashcoin.data.remot.dto.toChart
+import com.mathroda.dashcoin.util.Resource
+import com.mathroda.dashcoin.data.remote.dto.toChart
 import com.mathroda.dashcoin.domain.model.Charts
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository
 import kotlinx.coroutines.flow.Flow
