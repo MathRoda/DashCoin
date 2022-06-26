@@ -1,5 +1,6 @@
 package com.mathroda.dashcoin.domain.model
 
+
 data class Coins(
     val id: String,
     val icon: String,

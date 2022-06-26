@@ -1,8 +1,8 @@
-package com.mathroda.dashcoin.domain.use_case.get_news
+package com.mathroda.dashcoin.domain.use_case.remote.get_coin
 
-import com.mathroda.dashcoin.common.Resource
-import com.mathroda.dashcoin.data.remot.dto.toNewsDetail
-import com.mathroda.dashcoin.domain.model.NewsDetail
+import com.mathroda.dashcoin.util.Resource
+import com.mathroda.dashcoin.data.remote.dto.toCoinDetail
+import com.mathroda.dashcoin.domain.model.CoinById
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -10,14 +10,14 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetNewsUseCase @Inject constructor(
+class GetCoinUseCase @Inject constructor(
     private val repository: DashCoinRepository
 ) {
 
-    operator fun invoke(filter: String): Flow<Resource<List<NewsDetail>>> = flow {
+    operator fun invoke(coinId: String): Flow<Resource<CoinById>> = flow {
         try {
             emit(Resource.Loading())
-            val coin = repository.getNews(filter).news.map { it.toNewsDetail() }
+            val coin = repository.getCoinById(coinId).coin.toCoinDetail()
             emit(Resource.Success(coin))
         }catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage?: "An unexpected error"))

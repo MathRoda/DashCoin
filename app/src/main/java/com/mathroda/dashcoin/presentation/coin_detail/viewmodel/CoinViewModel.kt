@@ -5,21 +5,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.dashcoin.common.Constants
-import com.mathroda.dashcoin.common.Resource
-import com.mathroda.dashcoin.domain.use_case.get_chart.GetChartUseCase
-import com.mathroda.dashcoin.domain.use_case.get_coin.GetCoinUseCase
+import com.mathroda.dashcoin.domain.model.CoinById
+import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
+import com.mathroda.dashcoin.util.Constants
+import com.mathroda.dashcoin.util.Resource
+import com.mathroda.dashcoin.domain.use_case.remote.get_chart.GetChartUseCase
+import com.mathroda.dashcoin.domain.use_case.remote.get_coin.GetCoinUseCase
 import com.mathroda.dashcoin.presentation.coin_detail.state.ChartState
 import com.mathroda.dashcoin.presentation.coin_detail.state.CoinState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CoinViewModel @Inject constructor(
-    private val getCoinUseCase: GetCoinUseCase,
-    private val getChartUseCase: GetChartUseCase,
+    private val dashCoinUseCases: DashCoinUseCases,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -31,14 +34,14 @@ class CoinViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<String>(Constants.PARAM_COIN_ID)?.let { coinId ->
-            getCoin(coinId)
             getChart(coinId)
         }
+        getCoin()
     }
 
 
-   private fun getCoin(coinId: String) {
-        getCoinUseCase(coinId).onEach { result ->
+   private fun getCoin(coinId: String = "ethereum") {
+        dashCoinUseCases.getCoin(coinId).onEach { result ->
             when(result) {
                 is Resource.Success ->{
                     _coinState.value = CoinState(coin = result.data)
@@ -55,7 +58,7 @@ class CoinViewModel @Inject constructor(
     }
 
     private fun getChart(coinId: String) {
-        getChartUseCase(coinId).onEach { result ->
+        dashCoinUseCases.getChart(coinId).onEach { result ->
             when(result) {
                 is Resource.Success ->{
                     _chartState.value = ChartState(chart = result.data)
@@ -70,4 +73,10 @@ class CoinViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    fun addCoin(coins: CoinById) =
+        viewModelScope.launch(Dispatchers.IO) {
+            dashCoinUseCases.addCoin(coins)
+        }
+
 }

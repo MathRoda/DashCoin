@@ -4,8 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.dashcoin.common.Resource
-import com.mathroda.dashcoin.domain.use_case.get_coins.GetCoinsUseCase
+import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
+import com.mathroda.dashcoin.util.Resource
+import com.mathroda.dashcoin.domain.use_case.remote.get_coins.GetCoinsUseCase
 import com.mathroda.dashcoin.presentation.coins_screen.state.CoinsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CoinsViewModel @Inject constructor(
-    private val getCoinsUseCase: GetCoinsUseCase
+    private val dashCoinUseCases: DashCoinUseCases
 ): ViewModel() {
 
     private val _state = mutableStateOf(CoinsState())
@@ -26,7 +27,7 @@ class CoinsViewModel @Inject constructor(
 
 
    private fun getCoins() {
-        getCoinsUseCase().onEach { result ->
+        dashCoinUseCases.getCoins().onEach { result ->
             when(result) {
                 is Resource.Success ->{
                     _state.value = CoinsState(coins = result.data?: emptyList())
