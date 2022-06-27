@@ -32,6 +32,11 @@ class CoinViewModel @Inject constructor(
     private val _chartState = mutableStateOf(ChartState())
     val chartState: State<ChartState> = _chartState
 
+    /**
+     * notes
+     * ive to put getCoin in saved instance init block after testing
+     * remove the initial value from coinId: String = "bitcoin"
+     */
     init {
         savedStateHandle.get<String>(Constants.PARAM_COIN_ID)?.let { coinId ->
             getChart(coinId)

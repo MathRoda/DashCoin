@@ -2,6 +2,7 @@ package com.mathroda.dashcoin.data.databaes
 
 import androidx.room.*
 import com.mathroda.dashcoin.domain.model.CoinById
+import com.mathroda.dashcoin.domain.model.Coins
 import kotlinx.coroutines.flow.Flow
 
 
