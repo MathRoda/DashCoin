@@ -14,6 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
+import com.mathroda.dashcoin.presentation.coins_screen.CoinScreen
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
 import com.mathroda.dashcoin.presentation.news_screen.viewmodel.NewsViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.DashCoinTheme
@@ -35,24 +36,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    TryGetCoins()
+                    CoinScreen()
                 }
             }
         }
     }
-
-    @Composable
-    fun TryGetCoins(
-        viewModel: CoinViewModel = hiltViewModel(),
-        watchListViewModel: WatchListViewModel = hiltViewModel()
-    ) {
-
-
-
-
-
-        Log.d("tag3", watchListViewModel.state.value.coin.toString())
-
-    }
-    }
+}
 

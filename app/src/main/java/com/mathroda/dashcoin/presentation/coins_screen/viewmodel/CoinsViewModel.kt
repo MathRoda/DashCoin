@@ -9,8 +9,13 @@ import com.mathroda.dashcoin.util.Resource
 import com.mathroda.dashcoin.domain.use_case.remote.get_coins.GetCoinsUseCase
 import com.mathroda.dashcoin.presentation.coins_screen.state.CoinsState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import java.util.Collections.emptyList
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +25,9 @@ class CoinsViewModel @Inject constructor(
 
     private val _state = mutableStateOf(CoinsState())
     val state: State<CoinsState> = _state
+
+    private val _isRefresh = MutableStateFlow(false)
+    val isRefresh: StateFlow<Boolean> = _isRefresh
 
     init {
         getCoins()
@@ -35,6 +43,7 @@ class CoinsViewModel @Inject constructor(
                 is Resource.Error ->{
                     _state.value = CoinsState(
                         error = result.message?: "Unexpected Error")
+
                 }
                 is Resource.Loading ->{
                     _state.value = CoinsState(isLoading = true)
@@ -42,4 +51,15 @@ class CoinsViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    fun refresh() {
+        viewModelScope.launch {
+            _isRefresh.emit(true)
+            delay(1500)
+            _isRefresh.emit(false)
+        }
+
+    }
+
+
 }
