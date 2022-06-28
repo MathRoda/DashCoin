@@ -13,6 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.mathroda.dashcoin.presentation.coin_detail.CoinDetailScreen
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
 import com.mathroda.dashcoin.presentation.coins_screen.CoinScreen
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
@@ -36,7 +40,23 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    CoinScreen()
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.CoinsScreen.route
+                    ) {
+                        composable(
+                            route = Screen.CoinsScreen.route
+                        ){
+                            CoinScreen(navController = navController)
+                        }
+
+                        composable(
+                            route = Screen.CoinDetailScreen.route + "/{coinId}"
+                        ){
+                            CoinDetailScreen()
+                        }
+                    }
                 }
             }
         }

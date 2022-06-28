@@ -1,6 +1,7 @@
 package com.mathroda.dashcoin.presentation.coins_screen.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,13 +26,15 @@ import com.mathroda.dashcoin.presentation.ui.theme.*
 
 @Composable
 fun CoinsItem(
-    coins: Coins
+    coins: Coins,
+    onItemClick: (Coins) -> Unit
 ) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp),
+            .padding(20.dp)
+            .clickable { onItemClick(coins) },
         verticalAlignment = Alignment.CenterVertically,
     ) {
 

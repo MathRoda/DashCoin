@@ -14,17 +14,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mathroda.dashcoin.presentation.coins_screen.util.BottomMenuContent
-import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
-import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
-import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
-import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
+import com.mathroda.dashcoin.presentation.ui.theme.*
 
 @Composable
 fun BottomMenu(
     items: List<BottomMenuContent>,
     modifier: Modifier = Modifier,
     activeHighlightColor: Color = LighterGray,
-    activeTextColor: Color = TextWhite,
+    activeTextColor: Color = TextWhite ,
     inactiveTextColor: Color = Color.Gray,
     initialSelectedItemIndex: Int = 0
 ) {
@@ -57,8 +54,8 @@ fun BottomMenu(
 fun BottomMenuItem(
     item: BottomMenuContent,
     isSelected: Boolean = false,
-    activeHighlightColor: Color = TextWhite,
-    activeTextColor: Color = CustomGreen,
+    activeHighlightColor: Color = LighterGray,
+    activeTextColor: Color = TextWhite,
     inactiveTextColor: Color = LighterGray,
     onItemClick: () -> Unit
 ) {
@@ -79,7 +76,7 @@ fun BottomMenuItem(
             Icon(
                 painter = painterResource(id = item.iconId),
                 contentDescription = item.title,
-                tint = if (isSelected) activeTextColor else inactiveTextColor,
+                tint = if (isSelected) Gold else inactiveTextColor,
                 modifier = Modifier.size(16.dp)
             )
         }

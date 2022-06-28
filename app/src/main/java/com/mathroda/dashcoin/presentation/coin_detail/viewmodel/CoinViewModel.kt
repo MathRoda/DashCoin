@@ -40,12 +40,13 @@ class CoinViewModel @Inject constructor(
     init {
         savedStateHandle.get<String>(Constants.PARAM_COIN_ID)?.let { coinId ->
             getChart(coinId)
+            getCoin(coinId)
         }
-        getCoin()
+
     }
 
 
-   private fun getCoin(coinId: String = "ethereum") {
+   private fun getCoin(coinId: String) {
         dashCoinUseCases.getCoin(coinId).onEach { result ->
             when(result) {
                 is Resource.Success ->{

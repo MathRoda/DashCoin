@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.dashcoin.R
+import com.mathroda.dashcoin.presentation.Screen
 import com.mathroda.dashcoin.presentation.coins_screen.components.*
 import com.mathroda.dashcoin.presentation.coins_screen.util.BottomMenuContent
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
@@ -26,7 +28,8 @@ import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 
 @Composable
 fun CoinScreen(
-    viewModel: CoinsViewModel = hiltViewModel()
+    viewModel: CoinsViewModel = hiltViewModel(),
+    navController: NavController
 ) {
 
     val state = viewModel.state.value
@@ -50,7 +53,12 @@ fun CoinScreen(
                 onRefresh = { viewModel.refresh() }) {
                 LazyColumn {
                     items(state.coins) { coins ->
-                        CoinsItem(coins = coins)
+                        CoinsItem(
+                            coins = coins,
+                            onItemClick = {
+                                navController.navigate(Screen.CoinDetailScreen.route + "/${coins.id}")
+                            }
+                        )
                     }
                 }
             }
