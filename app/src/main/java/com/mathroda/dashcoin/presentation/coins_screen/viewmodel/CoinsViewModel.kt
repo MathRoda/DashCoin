@@ -23,8 +23,8 @@ class CoinsViewModel @Inject constructor(
     private val dashCoinUseCases: DashCoinUseCases
 ): ViewModel() {
 
-    private val _state = mutableStateOf(CoinsState())
-    val state: State<CoinsState> = _state
+    private val _state = MutableStateFlow(CoinsState())
+    val state: StateFlow<CoinsState> = _state
 
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
@@ -38,15 +38,19 @@ class CoinsViewModel @Inject constructor(
         dashCoinUseCases.getCoins().onEach { result ->
             when(result) {
                 is Resource.Success ->{
-                    _state.value = CoinsState(coins = result.data?: emptyList())
+                    _state.emit(CoinsState(coins = result.data?: emptyList()))
                 }
                 is Resource.Error ->{
-                    _state.value = CoinsState(
-                        error = result.message?: "Unexpected Error")
+                    _state.emit(
+                        CoinsState(
+                            error = result.message?: "Unexpected Error")
+                    )
 
                 }
                 is Resource.Loading ->{
-                    _state.value = CoinsState(isLoading = true)
+                    _state.emit(
+                        CoinsState(isLoading = true)
+                    )
                 }
             }
         }.launchIn(viewModelScope)

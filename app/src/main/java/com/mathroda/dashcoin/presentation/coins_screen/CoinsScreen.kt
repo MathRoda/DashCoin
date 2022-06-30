@@ -25,6 +25,7 @@ import com.mathroda.dashcoin.presentation.coins_screen.util.BottomMenuContent
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
+import okhttp3.internal.notify
 
 @Composable
 fun CoinScreen(
@@ -32,7 +33,7 @@ fun CoinScreen(
     navController: NavController
 ) {
 
-    val state = viewModel.state.value
+    val state = viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefresh.collectAsState()
 
     Box(
@@ -52,7 +53,7 @@ fun CoinScreen(
                 state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
                 onRefresh = { viewModel.refresh() }) {
                 LazyColumn {
-                    items(state.coins) { coins ->
+                    items(state.value.coins) { coins ->
                         CoinsItem(
                             coins = coins,
                             onItemClick = {
@@ -71,16 +72,16 @@ fun CoinScreen(
             BottomMenuContent("News", R.drawable.ic_home)
         ), modifier = Modifier.align(Alignment.BottomCenter))
 
-        if (state.isLoading) {
+        if (state.value.isLoading) {
             CircularProgressIndicator(modifier = Modifier
                 .align(Alignment.Center),
                 color = CustomGreen
             )
         }
 
-        if(state.error.isNotBlank()) {
+        if(state.value.error.isNotEmpty()) {
             Text(
-                text = state.error,
+                text = state.value.error,
                 color = MaterialTheme.colors.error,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
