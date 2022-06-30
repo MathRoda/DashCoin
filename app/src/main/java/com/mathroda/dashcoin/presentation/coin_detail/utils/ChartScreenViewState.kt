@@ -5,7 +5,6 @@ import androidx.compose.ui.graphics.toArgb
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.mathroda.dashcoin.R
-import com.mathroda.dashcoin.domain.model.Charts
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.CustomRed
 

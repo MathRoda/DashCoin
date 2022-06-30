@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,17 +17,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mathroda.dashcoin.presentation.coin_detail.components.Chart
-import com.mathroda.dashcoin.presentation.coin_detail.components.CoinDetailSection
-import com.mathroda.dashcoin.presentation.coin_detail.components.TimeSpanPicker
-import com.mathroda.dashcoin.presentation.coin_detail.components.TopBarCoinDetail
+import androidx.navigation.NavController
+import com.mathroda.dashcoin.presentation.coin_detail.components.*
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
+import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 
 @Composable
 fun CoinDetailScreen(
-    viewModel: CoinViewModel = hiltViewModel()
+    viewModel: CoinViewModel = hiltViewModel(),
+    navController: NavController
 ) {
 
     val coinState = viewModel.coinState.value
@@ -34,6 +35,7 @@ fun CoinDetailScreen(
         modifier = Modifier
             .background(DarkGray)
             .fillMaxSize()
+            .padding(12.dp)
     ) {
        coinState.coin?.let { coin ->
            LazyColumn(
@@ -43,7 +45,9 @@ fun CoinDetailScreen(
                item { 
                    TopBarCoinDetail(
                        coinSymbol = coin.symbol,
-                       icon = coin.icon
+                       icon = coin.icon,
+                       onBackStackClicked = {navController.popBackStack()}
+
                    )
                    CoinDetailSection(
                        price = coin.price,
@@ -56,6 +60,23 @@ fun CoinDetailScreen(
                        oneDayChange = coin.priceChange1d,
                        context = LocalContext.current
                    )
+
+                   CoinInformation(
+                       modifier = Modifier
+                           .fillMaxWidth()
+                           .background(
+                               color = LighterGray,
+                               shape = RoundedCornerShape(25.dp)
+                           )
+                           .padding(start = 16.dp, top = 16.dp, end = 16.dp),
+                       rank = "${coin.rank}",
+                       volume = "$"+"${coin.volume.toInt()}",
+                       marketCap = "$"+"${coin.marketCap.toInt()}",
+                       availableSupply = "${coin.availableSupply.toInt()} ${coin.symbol}" ,
+                       totalSupply = "${coin.totalSupply.toInt()} ${coin.symbol}"
+                   )
+
+                   LinksSection()
                }
            }
        }

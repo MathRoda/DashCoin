@@ -1,9 +1,9 @@
 package com.mathroda.dashcoin.domain.use_case.remote.get_news
 
-import com.mathroda.dashcoin.util.Resource
 import com.mathroda.dashcoin.data.remote.dto.toNewsDetail
 import com.mathroda.dashcoin.domain.model.NewsDetail
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository
+import com.mathroda.dashcoin.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

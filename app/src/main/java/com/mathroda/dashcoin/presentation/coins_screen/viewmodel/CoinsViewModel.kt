@@ -1,15 +1,11 @@
 package com.mathroda.dashcoin.presentation.coins_screen.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
-import com.mathroda.dashcoin.util.Resource
-import com.mathroda.dashcoin.domain.use_case.remote.get_coins.GetCoinsUseCase
 import com.mathroda.dashcoin.presentation.coins_screen.state.CoinsState
+import com.mathroda.dashcoin.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -59,7 +55,7 @@ class CoinsViewModel @Inject constructor(
     fun refresh() {
         viewModelScope.launch {
             _isRefresh.emit(true)
-            delay(1500)
+            getCoins()
             _isRefresh.emit(false)
         }
 

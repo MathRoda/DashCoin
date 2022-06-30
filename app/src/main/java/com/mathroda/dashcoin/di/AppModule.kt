@@ -3,7 +3,6 @@ package com.mathroda.dashcoin.di
 import android.app.Application
 import androidx.room.Room
 import com.mathroda.dashcoin.data.databaes.DashCoinDatabase
-import com.mathroda.dashcoin.util.Constants
 import com.mathroda.dashcoin.data.remote.DashCoinApi
 import com.mathroda.dashcoin.data.repository.DashCoinRepositoryImpl
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository
@@ -15,6 +14,7 @@ import com.mathroda.dashcoin.domain.use_case.remote.get_chart.GetChartUseCase
 import com.mathroda.dashcoin.domain.use_case.remote.get_coin.GetCoinUseCase
 import com.mathroda.dashcoin.domain.use_case.remote.get_coins.GetCoinsUseCase
 import com.mathroda.dashcoin.domain.use_case.remote.get_news.GetNewsUseCase
+import com.mathroda.dashcoin.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

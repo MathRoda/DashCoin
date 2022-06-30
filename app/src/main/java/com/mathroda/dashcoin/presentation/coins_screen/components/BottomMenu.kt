@@ -14,7 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mathroda.dashcoin.presentation.coins_screen.util.BottomMenuContent
-import com.mathroda.dashcoin.presentation.ui.theme.*
+import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
+import com.mathroda.dashcoin.presentation.ui.theme.Gold
+import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
+import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 
 @Composable
 fun BottomMenu(

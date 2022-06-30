@@ -20,12 +20,14 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.presentation.Screen
-import com.mathroda.dashcoin.presentation.coins_screen.components.*
+import com.mathroda.dashcoin.presentation.coins_screen.components.BottomMenu
+import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsItem
+import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
+import com.mathroda.dashcoin.presentation.coins_screen.components.TopBar
 import com.mathroda.dashcoin.presentation.coins_screen.util.BottomMenuContent
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
-import okhttp3.internal.notify
 
 @Composable
 fun CoinScreen(

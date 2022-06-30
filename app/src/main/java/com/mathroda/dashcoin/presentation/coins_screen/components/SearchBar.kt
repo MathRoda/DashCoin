@@ -17,7 +17,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.mathroda.dashcoin.R
-import com.mathroda.dashcoin.presentation.ui.theme.LightGray
 import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 
