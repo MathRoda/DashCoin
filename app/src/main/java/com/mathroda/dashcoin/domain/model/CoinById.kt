@@ -18,7 +18,7 @@ data class CoinById (
     val rank: Int,
     val symbol: String,
     val totalSupply: Double,
-    val twitterUrl: String,
+    val twitterUrl: String? = null,
     val volume: Double,
     val websiteUrl: String,
     val priceBtc: Double,

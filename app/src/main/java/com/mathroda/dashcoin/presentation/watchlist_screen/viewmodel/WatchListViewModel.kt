@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.dashcoin.domain.model.CoinById
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
-import com.mathroda.dashcoin.presentation.watchlist_screen.WatchListEvents
+import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -32,6 +32,13 @@ class WatchListViewModel @Inject constructor(
 
     fun onEvent(events: WatchListEvents) {
         when(events) {
+
+            is WatchListEvents.AddCoin -> {
+                viewModelScope.launch {
+                    dashCoinUseCases.addCoin(events.coin)
+                }
+            }
+
             is WatchListEvents.DeleteCoin -> {
                 viewModelScope.launch {
                     dashCoinUseCases.deleteCoin(events.coin)

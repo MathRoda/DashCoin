@@ -15,6 +15,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
@@ -23,11 +24,10 @@ import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 @Composable
 fun SearchBar(
     hint: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    state: MutableState<TextFieldValue>
 
 ) {
-
-    var text by rememberSaveable { mutableStateOf("") }
 
     var isHintDisplayed by remember {
         mutableStateOf(hint != "")
@@ -36,7 +36,7 @@ fun SearchBar(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
+        modifier = modifier
             .padding(16.dp)
             .clip(RoundedCornerShape(35.dp))
             .background(LighterGray)
@@ -59,9 +59,9 @@ fun SearchBar(
 
 
             BasicTextField(
-                value = text,
+                value = state.value,
                 onValueChange = {
-                    text = it
+                    state.value = it
                 },
                 maxLines = 1,
                 singleLine = true,

@@ -10,6 +10,7 @@ import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
 import com.mathroda.dashcoin.presentation.coin_detail.state.ChartState
 import com.mathroda.dashcoin.presentation.coin_detail.state.CoinState
+import com.mathroda.dashcoin.presentation.watchlist_screen.state.MarketState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -27,6 +28,9 @@ class CoinViewModel @Inject constructor(
     private val _chartState = mutableStateOf(ChartState())
     val chartState: State<ChartState> = _chartState
 
+    private val _marketStatus = mutableStateOf(MarketState())
+    val marketStatus: State<MarketState> = _marketStatus
+
 
 
 
@@ -40,11 +44,12 @@ class CoinViewModel @Inject constructor(
             getChart(coinId)
             getCoin(coinId)
         }
+        getMarketStatus()
 
     }
 
 
-     fun getCoin(coinId: String) {
+     private fun getCoin(coinId: String) {
         dashCoinUseCases.getCoin(coinId).onEach { result ->
             when(result) {
                 is Resource.Success ->{
@@ -78,4 +83,20 @@ class CoinViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun getMarketStatus() {
+        dashCoinUseCases.getCoin("bitcoin").onEach { result ->
+            when(result) {
+                is Resource.Success ->{
+                    _marketStatus.value = MarketState(coin = result.data)
+                }
+                is Resource.Error ->{
+                    _marketStatus.value = MarketState(
+                        error = result.message?: "Unexpected Error")
+                }
+                is Resource.Loading ->{
+                    _marketStatus.value = MarketState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 }

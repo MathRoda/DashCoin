@@ -7,11 +7,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,6 +33,7 @@ fun CoinScreen(
 
     val state = viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefresh.collectAsState()
+    val searchCoin = remember { mutableStateOf(TextFieldValue(""))}
 
     Box(
         modifier = Modifier
@@ -45,14 +45,20 @@ fun CoinScreen(
             SearchBar(
                 hint = "Search...",
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                state = searchCoin
             )
-            
+            val isBeingSearched = searchCoin.value.text
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
                 onRefresh = { viewModel.refresh() }) {
+
                 LazyColumn {
-                    items(state.value.coins) { coins ->
+                    items(items = state.value.coins.filter {
+                        it.name.contains(isBeingSearched, ignoreCase = true) ||
+                        it.id.contains(isBeingSearched, ignoreCase = true) ||
+                        it.symbol.contains(isBeingSearched, ignoreCase = true)
+                    }, key = {it.id}) { coins ->
                         CoinsItem(
                             coins = coins,
                             onItemClick = {

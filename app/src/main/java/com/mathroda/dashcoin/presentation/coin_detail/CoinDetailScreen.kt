@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.mathroda.dashcoin.domain.datastore.StoreSavedCoinState
 import com.mathroda.dashcoin.presentation.coin_detail.components.*
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
 import com.mathroda.dashcoin.presentation.dialog_screen.CustomDialog
@@ -29,6 +30,8 @@ import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.Twitter
 import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 @Composable
 fun CoinDetailScreen(
@@ -38,6 +41,9 @@ fun CoinDetailScreen(
 ) {
 
     val coinState = coinViewModel.coinState.value
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val coinSavedState = StoreSavedCoinState(context)
     Box(
         modifier = Modifier
             .background(DarkGray)
@@ -45,23 +51,31 @@ fun CoinDetailScreen(
             .padding(12.dp)
     ) {
        coinState.coin?.let { coin ->
+           val savedState = coinSavedState.getSavedCoinState.collectAsState(initial = false).value
            LazyColumn(
                modifier = Modifier
                    .fillMaxSize()
            ) {
                item {
-                   var isFavorite by rememberSaveable { mutableStateOf(false) }
                    val openDialogCustom = remember{ mutableStateOf(false) }
                    TopBarCoinDetail(
                        coinSymbol = coin.symbol,
                        icon = coin.icon,
                        navController = navController,
-                       isFavorite = isFavorite,
+                       isFavorite = savedState,
                        onCLick = {
-                           isFavorite = !isFavorite
-                           if (isFavorite){
+                           scope.launch {
+                               coinSavedState.savedCoinState(false)
+                           }
+                           if (!savedState){
+                               scope.launch {
+                                   coinSavedState.savedCoinState(true)
+                               }
                                watchListViewModel.onEvent(WatchListEvents.AddCoin(coin))
                            } else {
+                               scope.launch {
+                                   coinSavedState.savedCoinState(false)
+                               }
                                openDialogCustom.value = true
                            }
                        }
@@ -112,7 +126,7 @@ fun CoinDetailScreen(
                                .background(Twitter)
                                .weight(1f)
                                .clickable {
-                                   uriHandler.openUri(coin.twitterUrl)
+                                   uriHandler.openUri(coin.twitterUrl!!)
                                }
                        )
 
