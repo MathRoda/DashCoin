@@ -2,9 +2,9 @@ package com.mathroda.dashcoin.presentation.coins_screen.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
 import com.mathroda.dashcoin.presentation.coins_screen.state.CoinsState
-import com.mathroda.dashcoin.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

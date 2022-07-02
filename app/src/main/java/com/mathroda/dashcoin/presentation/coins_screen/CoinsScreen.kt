@@ -18,13 +18,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.mathroda.dashcoin.R
-import com.mathroda.dashcoin.presentation.Screen
-import com.mathroda.dashcoin.presentation.coins_screen.components.BottomMenu
+import com.mathroda.dashcoin.navigation.Screens
 import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsItem
 import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
 import com.mathroda.dashcoin.presentation.coins_screen.components.TopBar
-import com.mathroda.dashcoin.presentation.coins_screen.util.BottomMenuContent
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
@@ -59,7 +56,7 @@ fun CoinScreen(
                         CoinsItem(
                             coins = coins,
                             onItemClick = {
-                                navController.navigate(Screen.CoinDetailScreen.route + "/${coins.id}")
+                                navController.navigate(Screens.CoinDetailScreen.route + "/${coins.id}")
                             }
                         )
                     }
@@ -68,11 +65,6 @@ fun CoinScreen(
 
         }
 
-        BottomMenu(items = listOf(
-            BottomMenuContent("Home", R.drawable.ic_home),
-            BottomMenuContent("WatchList", R.drawable.ic_home),
-            BottomMenuContent("News", R.drawable.ic_home)
-        ), modifier = Modifier.align(Alignment.BottomCenter))
 
         if (state.value.isLoading) {
             CircularProgressIndicator(modifier = Modifier

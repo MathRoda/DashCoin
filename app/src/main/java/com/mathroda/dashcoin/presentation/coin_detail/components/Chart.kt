@@ -1,7 +1,6 @@
 package com.mathroda.dashcoin.presentation.coin_detail.components
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.runtime.Composable
@@ -20,7 +19,6 @@ import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 @Composable
 fun Chart(
     viewModel: CoinViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier,
     oneDayChange: Double,
     context: Context
 ) {
@@ -35,7 +33,6 @@ fun Chart(
             }
         }
     }
-    Log.d("entry", dataSet.toString())
 
     AndroidView(
         factory = { contextFactory ->
@@ -68,7 +65,7 @@ fun Chart(
                 invalidate()
             }
         },
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .requiredHeight(300.dp)
     )

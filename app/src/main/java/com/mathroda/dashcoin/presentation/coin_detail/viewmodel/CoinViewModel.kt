@@ -5,17 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.dashcoin.domain.model.CoinById
+import com.mathroda.dashcoin.core.util.Constants
+import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
 import com.mathroda.dashcoin.presentation.coin_detail.state.ChartState
 import com.mathroda.dashcoin.presentation.coin_detail.state.CoinState
-import com.mathroda.dashcoin.util.Constants
-import com.mathroda.dashcoin.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,7 +44,7 @@ class CoinViewModel @Inject constructor(
     }
 
 
-   private fun getCoin(coinId: String) {
+     fun getCoin(coinId: String) {
         dashCoinUseCases.getCoin(coinId).onEach { result ->
             when(result) {
                 is Resource.Success ->{
@@ -80,10 +77,5 @@ class CoinViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
-    fun addCoin(coins: CoinById) =
-        viewModelScope.launch(Dispatchers.IO) {
-            dashCoinUseCases.addCoin(coins)
-        }
 
 }

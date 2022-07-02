@@ -1,36 +1,43 @@
 package com.mathroda.dashcoin.presentation.coin_detail
 
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mathroda.dashcoin.presentation.coin_detail.components.*
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
+import com.mathroda.dashcoin.presentation.dialog_screen.CustomDialog
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
+import com.mathroda.dashcoin.presentation.ui.theme.Twitter
+import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
+import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
 
 @Composable
 fun CoinDetailScreen(
-    viewModel: CoinViewModel = hiltViewModel(),
+    coinViewModel: CoinViewModel = hiltViewModel(),
+    watchListViewModel: WatchListViewModel = hiltViewModel(),
     navController: NavController
 ) {
 
-    val coinState = viewModel.coinState.value
+    val coinState = coinViewModel.coinState.value
     Box(
         modifier = Modifier
             .background(DarkGray)
@@ -42,21 +49,37 @@ fun CoinDetailScreen(
                modifier = Modifier
                    .fillMaxSize()
            ) {
-               item { 
+               item {
+                   var isFavorite by rememberSaveable { mutableStateOf(false) }
+                   val openDialogCustom = remember{ mutableStateOf(false) }
                    TopBarCoinDetail(
                        coinSymbol = coin.symbol,
                        icon = coin.icon,
-                       onBackStackClicked = {navController.popBackStack()}
-
+                       navController = navController,
+                       isFavorite = isFavorite,
+                       onCLick = {
+                           isFavorite = !isFavorite
+                           if (isFavorite){
+                               watchListViewModel.onEvent(WatchListEvents.AddCoin(coin))
+                           } else {
+                               openDialogCustom.value = true
+                           }
+                       }
                    )
+                   if (openDialogCustom.value){
+                       CustomDialog(
+                           openDialogCustom = openDialogCustom,
+                           coinName = coin.name,
+                           coin = coin,
+                           navController = navController
+                       )
+                   }
                    CoinDetailSection(
                        price = coin.price,
                        priceChange = coin.priceChange1d
                    )
 
                    Chart(
-                       modifier = Modifier
-                           .fillMaxWidth(),
                        oneDayChange = coin.priceChange1d,
                        context = LocalContext.current
                    )
@@ -76,7 +99,36 @@ fun CoinDetailScreen(
                        totalSupply = "${coin.totalSupply.toInt()} ${coin.symbol}"
                    )
 
-                   LinksSection()
+                   val uriHandler = LocalUriHandler.current
+                   Row (
+                       horizontalArrangement = Arrangement.Center
+                           ){
+                       LinkButton(
+                           title = "Twitter",
+                           modifier = Modifier
+                               .padding(start = 20.dp, bottom = 20.dp, top = 20.dp)
+                               .clip(RoundedCornerShape(35.dp))
+                               .height(45.dp)
+                               .background(Twitter)
+                               .weight(1f)
+                               .clickable {
+                                   uriHandler.openUri(coin.twitterUrl)
+                               }
+                       )
+
+                       LinkButton(
+                           title = "Website",
+                           modifier = Modifier
+                               .padding(start = 20.dp, bottom = 20.dp, top = 20.dp)
+                               .clip(RoundedCornerShape(35.dp))
+                               .height(45.dp)
+                               .background(LighterGray)
+                               .weight(1f)
+                               .clickable {
+                                   uriHandler.openUri(coin.websiteUrl)
+                               }
+                       )
+                   }
                }
            }
        }

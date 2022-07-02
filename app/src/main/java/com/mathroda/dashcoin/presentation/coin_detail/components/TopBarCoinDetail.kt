@@ -10,13 +10,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 
@@ -24,7 +25,10 @@ import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 fun TopBarCoinDetail(
     coinSymbol: String,
     icon: String,
-    onBackStackClicked: () -> Unit
+    navController: NavController,
+    isFavorite: Boolean,
+    onCLick: (Boolean) -> Unit
+
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -43,7 +47,7 @@ fun TopBarCoinDetail(
                 modifier = Modifier
                     .padding(8.dp)
                     .clickable {
-                        onBackStackClicked
+                        navController.popBackStack()
                     }
             )
         }
@@ -73,7 +77,11 @@ fun TopBarCoinDetail(
                 .weight(2f),
             contentAlignment = Alignment.CenterEnd){
 
-                FavoriteButton(modifier = Modifier.padding(8.dp))
+                FavoriteButton(
+                    modifier = Modifier.padding(8.dp),
+                    isFavorite = isFavorite,
+                    onCLick = onCLick
+                )
         }
 
         }
@@ -82,16 +90,15 @@ fun TopBarCoinDetail(
 @Composable
 fun FavoriteButton(
     modifier: Modifier = Modifier,
-    color: Color = TextWhite
+    color: Color = TextWhite,
+    isFavorite: Boolean,
+    onCLick: (Boolean) -> Unit
+
+
 ) {
-
-    var isFavorite by remember { mutableStateOf(false) }
-
     IconToggleButton(
         checked = isFavorite ,
-        onCheckedChange = {
-            isFavorite = !isFavorite
-        }
+        onCheckedChange = onCLick
     ) {
         Icon(
             tint = color,
