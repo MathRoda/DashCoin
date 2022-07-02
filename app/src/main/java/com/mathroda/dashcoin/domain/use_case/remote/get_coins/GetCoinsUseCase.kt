@@ -1,6 +1,6 @@
 package com.mathroda.dashcoin.domain.use_case.remote.get_coins
 
-import com.mathroda.dashcoin.util.Resource
+import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.data.remote.dto.toCoins
 import com.mathroda.dashcoin.domain.model.Coins
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository

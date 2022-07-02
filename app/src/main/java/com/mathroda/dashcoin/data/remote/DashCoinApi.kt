@@ -1,6 +1,9 @@
 package com.mathroda.dashcoin.data.remote
 
-import com.mathroda.dashcoin.data.remote.dto.*
+import com.mathroda.dashcoin.data.remote.dto.ChartDto
+import com.mathroda.dashcoin.data.remote.dto.CoinDetailDto
+import com.mathroda.dashcoin.data.remote.dto.CoinsDto
+import com.mathroda.dashcoin.data.remote.dto.NewsDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

@@ -4,9 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
-import com.mathroda.dashcoin.util.Resource
-import com.mathroda.dashcoin.domain.use_case.remote.get_news.GetNewsUseCase
 import com.mathroda.dashcoin.presentation.news_screen.state.NewsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn

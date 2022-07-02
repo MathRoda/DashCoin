@@ -1,9 +1,9 @@
-package com.mathroda.dashcoin.di
+package com.mathroda.dashcoin.core.di
 
 import android.app.Application
 import androidx.room.Room
+import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.data.databaes.DashCoinDatabase
-import com.mathroda.dashcoin.util.Constants
 import com.mathroda.dashcoin.data.remote.DashCoinApi
 import com.mathroda.dashcoin.data.repository.DashCoinRepositoryImpl
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository

@@ -1,4 +1,4 @@
-package com.mathroda.dashcoin.util
+package com.mathroda.dashcoin.core.util
 
 object Constants {
     const val BASE_URL = "https://api.coinstats.app/public/"

@@ -1,7 +1,6 @@
 package com.mathroda.dashcoin.domain.use_case.database.delete_coin
 
 import com.mathroda.dashcoin.domain.model.CoinById
-import com.mathroda.dashcoin.domain.model.Coins
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository
 import javax.inject.Inject
 

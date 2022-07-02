@@ -1,16 +1,17 @@
 package com.mathroda.dashcoin.presentation.coins_screen.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
-import com.mathroda.dashcoin.util.Resource
-import com.mathroda.dashcoin.domain.use_case.remote.get_coins.GetCoinsUseCase
 import com.mathroda.dashcoin.presentation.coins_screen.state.CoinsState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import java.util.Collections.emptyList
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,8 +19,11 @@ class CoinsViewModel @Inject constructor(
     private val dashCoinUseCases: DashCoinUseCases
 ): ViewModel() {
 
-    private val _state = mutableStateOf(CoinsState())
-    val state: State<CoinsState> = _state
+    private val _state = MutableStateFlow(CoinsState())
+    val state: StateFlow<CoinsState> = _state
+
+    private val _isRefresh = MutableStateFlow(false)
+    val isRefresh: StateFlow<Boolean> = _isRefresh
 
     init {
         getCoins()
@@ -30,16 +34,32 @@ class CoinsViewModel @Inject constructor(
         dashCoinUseCases.getCoins().onEach { result ->
             when(result) {
                 is Resource.Success ->{
-                    _state.value = CoinsState(coins = result.data?: emptyList())
+                    _state.emit(CoinsState(coins = result.data?: emptyList()))
                 }
                 is Resource.Error ->{
-                    _state.value = CoinsState(
-                        error = result.message?: "Unexpected Error")
+                    _state.emit(
+                        CoinsState(
+                            error = result.message?: "Unexpected Error")
+                    )
+
                 }
                 is Resource.Loading ->{
-                    _state.value = CoinsState(isLoading = true)
+                    _state.emit(
+                        CoinsState(isLoading = true)
+                    )
                 }
             }
         }.launchIn(viewModelScope)
     }
+
+    fun refresh() {
+        viewModelScope.launch {
+            _isRefresh.emit(true)
+            getCoins()
+            _isRefresh.emit(false)
+        }
+
+    }
+
+
 }

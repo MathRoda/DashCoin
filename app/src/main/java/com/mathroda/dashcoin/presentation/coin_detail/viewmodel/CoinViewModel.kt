@@ -5,19 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.dashcoin.domain.model.CoinById
+import com.mathroda.dashcoin.core.util.Constants
+import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
-import com.mathroda.dashcoin.util.Constants
-import com.mathroda.dashcoin.util.Resource
-import com.mathroda.dashcoin.domain.use_case.remote.get_chart.GetChartUseCase
-import com.mathroda.dashcoin.domain.use_case.remote.get_coin.GetCoinUseCase
 import com.mathroda.dashcoin.presentation.coin_detail.state.ChartState
 import com.mathroda.dashcoin.presentation.coin_detail.state.CoinState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,6 +27,9 @@ class CoinViewModel @Inject constructor(
     private val _chartState = mutableStateOf(ChartState())
     val chartState: State<ChartState> = _chartState
 
+
+
+
     /**
      * notes
      * ive to put getCoin in saved instance init block after testing
@@ -40,12 +38,13 @@ class CoinViewModel @Inject constructor(
     init {
         savedStateHandle.get<String>(Constants.PARAM_COIN_ID)?.let { coinId ->
             getChart(coinId)
+            getCoin(coinId)
         }
-        getCoin()
+
     }
 
 
-   private fun getCoin(coinId: String = "ethereum") {
+     fun getCoin(coinId: String) {
         dashCoinUseCases.getCoin(coinId).onEach { result ->
             when(result) {
                 is Resource.Success ->{
@@ -78,10 +77,5 @@ class CoinViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
-    fun addCoin(coins: CoinById) =
-        viewModelScope.launch(Dispatchers.IO) {
-            dashCoinUseCases.addCoin(coins)
-        }
 
 }

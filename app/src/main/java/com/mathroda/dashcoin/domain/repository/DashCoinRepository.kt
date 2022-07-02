@@ -1,8 +1,10 @@
 package com.mathroda.dashcoin.domain.repository
 
-import com.mathroda.dashcoin.data.remote.dto.*
+import com.mathroda.dashcoin.data.remote.dto.ChartDto
+import com.mathroda.dashcoin.data.remote.dto.CoinDetailDto
+import com.mathroda.dashcoin.data.remote.dto.CoinsDto
+import com.mathroda.dashcoin.data.remote.dto.NewsDto
 import com.mathroda.dashcoin.domain.model.CoinById
-import com.mathroda.dashcoin.domain.model.Coins
 import kotlinx.coroutines.flow.Flow
 
 interface DashCoinRepository {

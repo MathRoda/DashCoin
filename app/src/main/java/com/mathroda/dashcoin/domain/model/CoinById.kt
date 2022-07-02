@@ -20,5 +20,6 @@ data class CoinById (
     val totalSupply: Double,
     val twitterUrl: String,
     val volume: Double,
-    val websiteUrl: String
+    val websiteUrl: String,
+    val priceBtc: Double,
     )

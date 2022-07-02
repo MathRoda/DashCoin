@@ -38,6 +38,7 @@ fun CoinDetail.toCoinDetail(): CoinById {
         totalSupply = totalSupply,
         twitterUrl = twitterUrl,
         volume = volume,
-        websiteUrl = websiteUrl
+        websiteUrl = websiteUrl,
+        priceBtc = priceBtc
     )
 }
