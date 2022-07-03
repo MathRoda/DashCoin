@@ -12,9 +12,9 @@ i documented my journey and thoughts for the development process , read my artic
 
 ## Application Install
 
-***You can Install and test latest DocuBox app from below 👇***
+***You can Install and test latest DashCoin app from below 👇***
 
-[![DashCoin](https://img.shields.io/badge/DocuBox✅-APK-red.svg?style=for-the-badge&logo=android)]()
+[[DashCoin](https://img.shields.io/badge/DashCoin✅-APK-red.svg?style=for-the-badge&logo=android)]()
 
 ### Showcase Video
 watch video here [DashCoin Showcase]()
