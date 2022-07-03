@@ -30,7 +30,8 @@ fun TopBar(
             text = title,
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.h2,
-            color = TextWhite
+            color = TextWhite ,
+            modifier = modifier
         )
     }
     

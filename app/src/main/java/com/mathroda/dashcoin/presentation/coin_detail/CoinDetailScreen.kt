@@ -1,6 +1,5 @@
 package com.mathroda.dashcoin.presentation.coin_detail
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -112,7 +111,7 @@ fun CoinDetailScreen(
                                .background(Twitter)
                                .weight(1f)
                                .clickable {
-                                   uriHandler.openUri(coin.twitterUrl)
+                                   uriHandler.openUri(coin.twitterUrl!!)
                                }
                        )
 
