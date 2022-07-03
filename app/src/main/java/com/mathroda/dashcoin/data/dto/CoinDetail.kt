@@ -1,4 +1,4 @@
-package com.mathroda.dashcoin.data.remote.dto
+package com.mathroda.dashcoin.data.dto
 
 import com.mathroda.dashcoin.domain.model.CoinById
 

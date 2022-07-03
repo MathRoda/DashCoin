@@ -1,4 +1,4 @@
-package com.mathroda.dashcoin.data.remote.dto
+package com.mathroda.dashcoin.data.dto
 
 data class NewsDto(
     val news: List<News>
