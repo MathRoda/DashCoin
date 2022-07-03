@@ -3,12 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1155" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/background_negative_chart.xml" value="0.1" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/background_negative_rate.xml" value="0.1" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/background_positive_chart.xml" value="0.1" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/ic_arrow_negative.xml" value="0.1" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/ic_arrow_positive.xml" value="0.1" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/ic_home.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1155" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/ic_search.xml" value="0.1" />
       </map>
     </option>

@@ -1,19 +1,14 @@
 package com.mathroda.dashcoin.presentation.watchlist_screen.components
 
-import android.graphics.drawable.Icon
-import android.icu.text.CaseMap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen

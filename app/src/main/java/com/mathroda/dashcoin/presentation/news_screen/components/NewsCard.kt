@@ -49,7 +49,7 @@ fun NewsCard(
                             Color.Transparent,
                             Color.Black
                         ),
-                        startY = 300f
+                        startY = 150f
                     )
                 )
             )

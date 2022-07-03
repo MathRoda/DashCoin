@@ -6,9 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -16,14 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mathroda.dashcoin.domain.datastore.StoreSavedCoinState
 import com.mathroda.dashcoin.domain.model.CoinById
 import com.mathroda.dashcoin.presentation.ui.theme.LightGray
 import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun CustomDialog(
