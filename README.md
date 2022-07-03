@@ -70,48 +70,23 @@ watch video here [DashCoin Showcase]()
 
 ## Package Structure
 
-![](media/package%20structure.png)
+![](DashCoin/structure.jpg)
     
-    com.docubox             # Root Package
-    .
-    ├── data                # For data handling.
-    |   ├── local           # Local Datasource and classes
-    |   ├── remote          # Remote datasources and API Service
-    │   ├── model           # Model data classes and mapper classes, both remote and local entities
-    │   └── repo            # Single source of data.
-    |
-    ├── service             # Foreground Service to upload File to server
-    |
-    ├── di                  # Dependency Injection             
-    │   └── module          # DI Modules
-    |
-    ├── ui                  # UI/View layer
-    |   ├── adapters        # Adapter, ViewHolder and DiffUtil
-    |   └── screens         # All App Screens 
-    |
-    └── utils               # Utility Classes / Kotlin extensions
-
 
 ## Architecture
-This app uses [***MVVM (Model View View-Model)***](https://developer.android.com/jetpack/docs/guide#recommended-app-arch) architecture.
+This app uses [***Clean Architecture***](https://medium.com/android-dev-hacks/detailed-guide-on-android-clean-architecture-9eab262a9011) .
 
-![](media/architecture.png)
+![](DashCoin/clean-arch.jpeg)
   
 
 
 ---
 
-## If you like my projects and want to support me to build more cool open source projects
+## If you like my projects you can buy me a cup of coffee
   
-<a href="https://www.buymeacoffee.com/VaibhavJaiswal"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=VaibhavJaiswal&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"></a>
+<a href="https://www.buymeacoffee.com/mathroda"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=VaibhavJaiswal&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"></a>
 
-## Attribution
-The project uses [backend](https://github.com/ishantchauhan710/DocuBox) which is deployed on [Linode](https://www.linode.com) for the [Hashnode X Linode Hackathon](https://townhall.hashnode.com/build-with-linode-hackathon-june-2022).
-
-
----
 
  ## Contact
-If you need any help, you can connect with me.
+you can connect with me here [Linked In](https://www.linkedin.com/in/mathroda/) .
 
-Visit:- [Vaibhav Jaiswal](https://vaibhavjaiswal.vercel.app/#/)
