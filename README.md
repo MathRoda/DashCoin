@@ -42,7 +42,7 @@ watch video here [DashCoin Showcase]()
 - DashCoin uses an open opi from [Coin Stats](https://coinstats.app)
 - DashCoin uses Retrofit to make api requests to coinstats.
 - DashCoin is made using Kotlin & Jetpack Compose and following Modern Android Development practices.
-- DashCoin uses Room to store users faviorte coins for watchlist feature
+- DashCoin uses Room to store users favorite coins for watchlist feature
 - DashCoin uses chart visuals library to view market changes by [MPAndroidCharts](https://github.com/PhilJay/MPAndroidChart)
 - DashCoin uses Kotlin Coroutines and Flow to handle all asynchronous tasks.
 - DashCoin uses all Jetpack libraries and follows clean architecture. It also has a G.O.A.T rating in Android's  M.A.D scorecard.
