@@ -8,16 +8,16 @@ This project is developed by **MathRoda** for more projects [GitHub](https://git
 
 # Blog ✍
 
-i documented my journey and thoughts for the development process , read my article on 
+i documented my journey and thoughts for the development process , read my article on https://medium.com/@mathroda/crypto-currency-tracker-with-jetpack-compose-clean-architecture-e93a4330a76d
 
 ## Application Install
 
 ***You can Install and test latest DashCoin app from below 👇***
 
-[![DashCoin](https://img.shields.io/badge/DashCoin✅-APK-red.svg?style=for-the-badge&logo=android)]()
+[![DashCoin](https://img.shields.io/badge/DashCoin✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/MathRoda/Dash-Coin-App/releases/download/v1.0.0/Dash.Coin.apk)
 
-### Showcase Video
-watch video here [DashCoin Showcase]()
+# Showcase Video
+watch video here [DashCoin Showcase](https://youtu.be/Y8FlGuVJOg8)
 
 ## About
  
