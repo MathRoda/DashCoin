@@ -88,5 +88,5 @@ This app uses [***Clean Architecture***](https://medium.com/android-dev-hacks/de
 
 
  ## Contact
-you can connect with me here [Linked In](https://www.linkedin.com/in/mathroda/) .
+you can connect with me here [LinkedIn](https://www.linkedin.com/in/mathroda/) .
 
