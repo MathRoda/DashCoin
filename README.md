@@ -8,16 +8,16 @@ This project is developed by **MathRoda** for more projects [GitHub](https://git
 
 # Blog ✍
 
-i documented my journey and thoughts for the development process , read my article on 
+i documented my journey and thoughts for the development process , read my article on https://medium.com/@mathroda/crypto-currency-tracker-with-jetpack-compose-clean-architecture-e93a4330a76d
 
 ## Application Install
 
-***You can Install and test latest DocuBox app from below 👇***
+***You can Install and test latest DashCoin app from below 👇***
 
-[![DashCoin](https://img.shields.io/badge/DocuBox✅-APK-red.svg?style=for-the-badge&logo=android)]()
+[![DashCoin](https://img.shields.io/badge/DashCoin✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/MathRoda/Dash-Coin-App/releases/download/v1.0.0/Dash.Coin.apk)
 
-### Showcase Video
-watch video here [DashCoin Showcase]()
+# Showcase Video
+watch video here [DashCoin Showcase](https://youtu.be/Y8FlGuVJOg8)
 
 ## About
  
@@ -42,7 +42,7 @@ watch video here [DashCoin Showcase]()
 - DashCoin uses an open opi from [Coin Stats](https://coinstats.app)
 - DashCoin uses Retrofit to make api requests to coinstats.
 - DashCoin is made using Kotlin & Jetpack Compose and following Modern Android Development practices.
-- DashCoin uses Room to store users faviorte coins for watchlist feature
+- DashCoin uses Room to store users favorite coins for watchlist feature
 - DashCoin uses chart visuals library to view market changes by [MPAndroidCharts](https://github.com/PhilJay/MPAndroidChart)
 - DashCoin uses Kotlin Coroutines and Flow to handle all asynchronous tasks.
 - DashCoin uses all Jetpack libraries and follows clean architecture. It also has a G.O.A.T rating in Android's  M.A.D scorecard.
@@ -88,5 +88,5 @@ This app uses [***Clean Architecture***](https://medium.com/android-dev-hacks/de
 
 
  ## Contact
-you can connect with me here [Linked In](https://www.linkedin.com/in/mathroda/) .
+you can connect with me here [LinkedIn](https://www.linkedin.com/in/mathroda/) .
 
