@@ -28,6 +28,8 @@ import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.Twitter
 import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
+import java.text.NumberFormat
+import java.util.*
 
 @Composable
 fun CoinDetailScreen(
@@ -92,10 +94,10 @@ fun CoinDetailScreen(
                            )
                            .padding(start = 16.dp, top = 16.dp, end = 16.dp),
                        rank = "${coin.rank}",
-                       volume = "$"+"${coin.volume.toInt()}",
-                       marketCap = "$"+"${coin.marketCap.toInt()}",
-                       availableSupply = "${coin.availableSupply.toInt()} ${coin.symbol}" ,
-                       totalSupply = "${coin.totalSupply.toInt()} ${coin.symbol}"
+                       volume = numbersToCurrency(coin.volume.toInt())!!,
+                       marketCap = numbersToCurrency(coin.marketCap.toInt())!!,
+                       availableSupply = "${numbersToFormat(coin.availableSupply.toInt())} ${coin.symbol}" ,
+                       totalSupply = "${numbersToFormat(coin.totalSupply.toInt())} ${coin.symbol}"
                    )
 
                    val uriHandler = LocalUriHandler.current
@@ -151,6 +153,17 @@ fun CoinDetailScreen(
             )
         }
     }
+}
+
+fun numbersToCurrency(number: Int): String? {
+    val numberFormat = NumberFormat.getCurrencyInstance()
+    numberFormat.currency = Currency.getInstance("USD")
+    return numberFormat.format(number)
+}
+
+fun numbersToFormat(number: Int): String? {
+    val numberFormat = NumberFormat.getNumberInstance()
+    return numberFormat.format(number)
 }
 
 
