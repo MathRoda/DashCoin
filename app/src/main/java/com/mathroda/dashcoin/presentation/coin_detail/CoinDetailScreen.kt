@@ -9,7 +9,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +38,7 @@ fun CoinDetailScreen(
 ) {
 
     val coinState = coinViewModel.coinState.value
+    val watchListState = watchListViewModel.state.value
     Box(
         modifier = Modifier
             .background(DarkGray)
@@ -51,7 +51,7 @@ fun CoinDetailScreen(
                    .fillMaxSize()
            ) {
                item {
-                   var isFavorite by rememberSaveable { mutableStateOf(false) }
+                   var isFavorite by remember { mutableStateOf(watchListState.coin.contains(coin)) }
                    val openDialogCustom = remember{ mutableStateOf(false) }
                    TopBarCoinDetail(
                        coinSymbol = coin.symbol,
