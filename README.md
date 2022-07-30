@@ -14,7 +14,7 @@ i documented my journey and thoughts for the development process , read my artic
 
 ***You can Install and test latest DashCoin app from below 👇***
 
-[![DashCoin](https://img.shields.io/badge/DashCoin✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/MathRoda/Dash-Coin-App/releases/download/v1.0.0/Dash.Coin.apk)
+[![DashCoin](https://img.shields.io/badge/DashCoin✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/MathRoda/Dash-Coin-App/releases/latest)
 
 or from the IzzyOnDroid F-Droid compatible repo
 
