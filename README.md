@@ -16,6 +16,12 @@ i documented my journey and thoughts for the development process , read my artic
 
 [![DashCoin](https://img.shields.io/badge/DashCoin✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/MathRoda/Dash-Coin-App/releases/download/v1.0.0/Dash.Coin.apk)
 
+or from the IzzyOnDroid F-Droid compatible repo
+
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+     alt="Get it on IzzyOnDroid"
+     height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.mathroda.dashcoin)
+
 # Showcase Video
 watch video here [DashCoin Showcase](https://youtu.be/Y8FlGuVJOg8)
 
