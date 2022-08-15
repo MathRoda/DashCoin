@@ -1,5 +1,9 @@
 package com.mathroda.dashcoin.domain.use_case
 
+import com.mathroda.dashcoin.domain.use_case.auth.signin.SignInUseCase
+import com.mathroda.dashcoin.domain.use_case.auth.signout.SignOutUseCase
+import com.mathroda.dashcoin.domain.use_case.auth.signup.IsCurrentUserUseCase
+import com.mathroda.dashcoin.domain.use_case.auth.signup.SignUpUseCase
 import com.mathroda.dashcoin.domain.use_case.database.add_coin.AddCoinUseCase
 import com.mathroda.dashcoin.domain.use_case.database.delete_coin.DeleteCoinUseCase
 import com.mathroda.dashcoin.domain.use_case.database.get_all.GetAllCoinsUseCase
@@ -19,5 +23,5 @@ data class DashCoinUseCases (
     // domain/ use_case/ database
     val addCoin: AddCoinUseCase,
     val deleteCoin: DeleteCoinUseCase,
-    val getAllCoins: GetAllCoinsUseCase
+    val getAllCoins: GetAllCoinsUseCase,
         )
