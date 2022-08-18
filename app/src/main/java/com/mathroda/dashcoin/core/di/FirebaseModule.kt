@@ -6,6 +6,7 @@ import com.google.firebase.ktx.Firebase
 import com.mathroda.dashcoin.data.repository.FirebaseRepositoryImpl
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import com.mathroda.dashcoin.domain.use_case.FirebaseUseCases
+import com.mathroda.dashcoin.domain.use_case.auth.get_user.GetUserUseCase
 import com.mathroda.dashcoin.domain.use_case.auth.signin.SignInUseCase
 import com.mathroda.dashcoin.domain.use_case.auth.signout.SignOutUseCase
 import com.mathroda.dashcoin.domain.use_case.auth.signup.IsCurrentUserUseCase
@@ -39,7 +40,8 @@ object FirebaseModule {
             signUp = SignUpUseCase(firebaseRepository),
             signOut = SignOutUseCase(firebaseRepository),
             signIn = SignInUseCase(firebaseRepository),
-            isCurrentUserExist = IsCurrentUserUseCase(firebaseRepository)
+            isCurrentUserExist = IsCurrentUserUseCase(firebaseRepository),
+            getCurrentUer = GetUserUseCase(firebaseRepository)
         )
     }
 }

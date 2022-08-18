@@ -2,8 +2,10 @@ package com.mathroda.dashcoin.presentation.coins_screen.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.mikephil.charting.utils.Utils.init
 import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
+import com.mathroda.dashcoin.domain.use_case.FirebaseUseCases
 import com.mathroda.dashcoin.presentation.coins_screen.state.CoinsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CoinsViewModel @Inject constructor(
-    private val dashCoinUseCases: DashCoinUseCases
+    private val dashCoinUseCases: DashCoinUseCases,
+    firebaseUseCases: FirebaseUseCases
 ): ViewModel() {
 
     private val _state = MutableStateFlow(CoinsState())
@@ -24,6 +27,8 @@ class CoinsViewModel @Inject constructor(
 
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
+
+    val getCurrentUser = firebaseUseCases.getCurrentUer
 
     init {
         getCoins()

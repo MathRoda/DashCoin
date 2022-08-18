@@ -1,5 +1,6 @@
 package com.mathroda.dashcoin.presentation.coins_screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,13 +18,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.mathroda.dashcoin.navigation.Screens
+import com.mathroda.dashcoin.core.util.Resource
+import com.mathroda.dashcoin.navigation.main.Screens
 import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsItem
 import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
 import com.mathroda.dashcoin.presentation.coins_screen.components.TopBar
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
+import kotlinx.coroutines.launch
 
 @Composable
 fun CoinScreen(
@@ -34,6 +37,8 @@ fun CoinScreen(
     val state = viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefresh.collectAsState()
     val searchCoin = remember { mutableStateOf(TextFieldValue(""))}
+
+    Log.e("Coins", "Loop", )
 
     Box(
         modifier = Modifier
@@ -70,7 +75,6 @@ fun CoinScreen(
             }
 
         }
-
 
         if (state.value.isLoading) {
             CircularProgressIndicator(modifier = Modifier

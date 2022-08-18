@@ -94,7 +94,7 @@ dependencies {
 
 
     //Room
-    def room_version = "2.4.2"
+    def room_version = "2.4.3"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -137,4 +137,10 @@ dependencies {
     androidTestImplementation 'androidx.test:core-ktx:1.4.0'
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.9.1"
     androidTestImplementation 'androidx.test:runner:1.4.0'
+
+    dependencies {
+        // debugImplementation because LeakCanary should only run in debug builds.
+        debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+    }
+
 }

@@ -8,7 +8,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import com.mathroda.dashcoin.navigation.MainScreen
+import androidx.navigation.compose.rememberNavController
+import com.mathroda.dashcoin.navigation.graphs.RootNavigationGraph
+import com.mathroda.dashcoin.navigation.main.MainScreen
 import com.mathroda.dashcoin.presentation.ui.theme.DashCoinTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                   MainScreen()
+                   RootNavigationGraph(navHostController = rememberNavController())
                 }
             }
         }

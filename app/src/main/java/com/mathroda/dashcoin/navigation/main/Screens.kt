@@ -1,4 +1,4 @@
-package com.mathroda.dashcoin.navigation
+package com.mathroda.dashcoin.navigation.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -29,4 +29,5 @@ sealed class Screens(
         icon = Icons.Default.List
     )
     object CoinDetailScreen: Screens("coin_detail_screen")
+
 }
