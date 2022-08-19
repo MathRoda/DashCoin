@@ -153,7 +153,7 @@ fun SignInScreen(
 
 
             if (sigInState.value.signIn != null) {
-                SweetToastUtil.SweetSuccess(
+               SweetToastUtil.SweetSuccess(
                     message = "Welcome Back ${sigInState.value.signIn?.user?.email}",
                     duration = Toast.LENGTH_LONG
                     )
