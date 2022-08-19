@@ -17,6 +17,7 @@ class SignInViewModel @Inject constructor(
     private val _signIn = MutableStateFlow(SignInState())
     val signIn: StateFlow<SignInState> = _signIn
 
+    val isCurrentUserExist = firebaseUseCases.isCurrentUserExist.invoke()
 
     fun signIn(email: String, password: String) =
             firebaseUseCases.signIn(email, password).onEach { result ->
@@ -24,13 +25,11 @@ class SignInViewModel @Inject constructor(
                     is Resource.Loading -> {
                         _signIn.emit(SignInState(isLoading = true))
                     }
-
                     is Resource.Success -> {
                         _signIn.emit(SignInState(signIn = result.data))
                     }
-
                     is Resource.Error -> {
-                        _signIn.emit(SignInState(error = result.message))
+                        _signIn.emit(SignInState(error = result.message?: "Unexpected error"))
                     }
                 }
             }.launchIn(viewModelScope)

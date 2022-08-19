@@ -92,6 +92,9 @@ dependencies {
     //MPAndroidCharts
     implementation 'com.github.PhilJay:MPAndroidChart:3.1.0'
 
+    //SweetToast
+    implementation 'com.github.tfaki:ComposableSweetToast:1.0.1'
+
 
     //Room
     def room_version = "2.4.3"
@@ -138,9 +141,5 @@ dependencies {
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.9.1"
     androidTestImplementation 'androidx.test:runner:1.4.0'
 
-    dependencies {
-        // debugImplementation because LeakCanary should only run in debug builds.
-        debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
-    }
 
 }

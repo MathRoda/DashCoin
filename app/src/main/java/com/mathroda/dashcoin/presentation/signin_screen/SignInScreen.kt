@@ -1,9 +1,12 @@
 package com.mathroda.dashcoin.presentation.signin_screen
 
 import android.util.Log
+import android.util.Patterns
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,28 +19,30 @@ import com.mathroda.dashcoin.presentation.signin_screen.viewmodel.SignInViewMode
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomClickableText
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomTextField
-import com.mathroda.dashcoin.presentation.signup_screen.viewmodel.SignUpViewModel
+import com.mathroda.dashcoin.presentation.signin_screen.components.CustomTextFieldWithError
 import com.mathroda.dashcoin.presentation.ui.theme.Gold
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SignUpScreen(
-    navigate: () ->  Unit,
-    viewModel: SignUpViewModel = hiltViewModel(),
-    viewModelTest: SignInViewModel = hiltViewModel()
+fun SignInScreen(
+    navigateToCoinsScreen: () ->  Unit,
+    navigateToSignUpScreen: () -> Unit,
+    popBackStack: () -> Unit,
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
+    var isError by remember { mutableStateOf(false) }
     val isUserExist = viewModel.isCurrentUserExist.collectAsState(initial = true)
-    val sigInState = viewModelTest.signIn.collectAsState()
+    val sigInState = viewModel.signIn.collectAsState()
 
     LaunchedEffect(Unit) {
         if (isUserExist.value) {
-            navigate()
-
+            navigateToCoinsScreen()
         }
     }
 
@@ -81,8 +86,10 @@ fun SignUpScreen(
                 CustomTextField(
                     text = email,
                     placeholder = "Email",
-                    isPasswordTextField = false,
-                    onValueChange = { email = it.trim() }
+                    onValueChange = { email = it.trim() },
+                    isError = isError,
+                    errorMsg = "*Enter valid email address",
+                    isPasswordTextField = false
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -91,7 +98,10 @@ fun SignUpScreen(
                     text = password,
                     placeholder = "Password",
                     isPasswordTextField = true,
-                    onValueChange = { password = it }
+                    onValueChange = { password = it },
+                    isError = isError,
+                    errorMsg = "*Enter valid password",
+
                 )
 
                 Spacer(modifier = Modifier.weight(0.2f))
@@ -100,7 +110,8 @@ fun SignUpScreen(
                     text = "LOGIN",
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    viewModelTest.signIn(email, password)
+                    isError = email.isEmpty()
+                    viewModel.signIn(email, password)
                     isLoading = !isLoading
                 }
 
@@ -121,7 +132,7 @@ fun SignUpScreen(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.W500
                     ) {
-
+                         navigateToSignUpScreen()
                     }
                 }
             }
@@ -139,12 +150,24 @@ fun SignUpScreen(
                 }
             }
         }
-        rememberCoroutineScope().launch {
+
+
             if (sigInState.value.signIn != null) {
-                delay(700)
-                navigate()
-                Log.e("signUp", "Loop")
+                SweetToastUtil.SweetSuccess(
+                    message = "Welcome Back ${sigInState.value.signIn?.user?.email}",
+                    duration = Toast.LENGTH_LONG
+                    )
+                rememberCoroutineScope().launch {
+                    delay(700)
+                    navigateToCoinsScreen()
+                }
             }
+
+
+        if(sigInState.value.error.isNotBlank()) {
+            popBackStack()
+            val errorMsg = sigInState.value.error
+            SweetToastUtil.SweetError(message = errorMsg)
         }
     }
 }
