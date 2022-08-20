@@ -4,26 +4,32 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.model.CoinById
+import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
 import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WatchListViewModel @Inject constructor(
-    private val dashCoinUseCases: DashCoinUseCases
+    private val dashCoinUseCases: DashCoinUseCases,
+    private val firebaseRepository: FirebaseRepository
 ): ViewModel() {
 
-    private val _state = mutableStateOf(WatchListState())
-    val state: State<WatchListState> = _state
+    private val _state = MutableStateFlow(WatchListState())
+    val state: StateFlow<WatchListState> = _state
 
-    private var recentlyDeletedCoin: CoinById? = null
+    private val _isRefresh = MutableStateFlow(false)
+    val isRefresh: StateFlow<Boolean> = _isRefresh
+
+    private val _addToFavorite = mutableStateOf("")
+    val addToFavorite: State<String> = _addToFavorite
     private var getCoinJob: Job? = null
 
     init {
@@ -34,32 +40,51 @@ class WatchListViewModel @Inject constructor(
         when(events) {
 
             is WatchListEvents.AddCoin -> {
-                viewModelScope.launch {
-                    dashCoinUseCases.addCoin(events.coin)
+                viewModelScope.launch { //dashCoinUseCases.addCoin(events.coin)
+                    firebaseRepository.addCoinFavorite(events.coin).collect { result ->
+                        when(result) {
+                            is Resource.Loading -> {}
+                            is Resource.Success -> {
+                                _addToFavorite.value = "Coin successfully added to favorite! " }
+                            is Resource.Error -> {
+                                _addToFavorite.value = result.message.toString()
+                            }
+                        }
+                    }
                 }
             }
 
             is WatchListEvents.DeleteCoin -> {
                 viewModelScope.launch {
-                    dashCoinUseCases.deleteCoin(events.coin)
-                    recentlyDeletedCoin = events.coin
+                    firebaseRepository.deleteCoinFavorite(events.coin).collect()
                 }
             }
 
-            is WatchListEvents.RestoreDeletedCoin -> {
-                viewModelScope.launch {
-                    dashCoinUseCases.addCoin(recentlyDeletedCoin ?: return@launch)
-                    recentlyDeletedCoin = null
-                }
-            }
         }
     }
 
     private fun getAllCoins() {
         getCoinJob?.cancel()
-        getCoinJob = dashCoinUseCases.getAllCoins().onEach {
-            _state.value = WatchListState(it)
-        }.launchIn(viewModelScope)
+        getCoinJob = firebaseRepository.getCoinFavorite().onEach { result ->
+                when(result) {
+                    is Resource.Loading -> {}
+                    is Resource.Success -> {
+                        _state.emit(WatchListState(coin = result.data?: emptyList()))
+                    }
+                    is Resource.Error -> {
+                        _state.emit(WatchListState(error = result.message))
+                    }
+                }
+            }.launchIn(viewModelScope)
+    }
+
+    fun refresh() {
+        viewModelScope.launch {
+            _isRefresh.emit(true)
+            getAllCoins()
+            _isRefresh.emit(false)
+        }
+
     }
 
 }

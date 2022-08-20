@@ -32,8 +32,12 @@ class FirebaseRepositoryImpl constructor(
         password: String
     ): Flow<Resource<AuthResult>> {
         return flow {
-          emit(Resource.Loading())
-          emit(Resource.Success(firebaseAuth.createUserWithEmailAndPassword(email, password).await()))
+            emit(Resource.Loading())
+            emit(
+                Resource.Success(
+                    firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+                )
+            )
         }.catch {
             emit(Resource.Error(it.toString()))
         }
@@ -76,7 +80,7 @@ class FirebaseRepositoryImpl constructor(
             getUserId().collect {
                 val favoriteRef = fireStore.collection(Constants.FAVOURITES_COLLECTION)
                     .document(it)
-                    .collection("coins").document(coinById.name)
+                    .collection("coins").document(coinById.name.orEmpty())
                     .set(coinById)
 
                 favoriteRef.await()
@@ -89,10 +93,33 @@ class FirebaseRepositoryImpl constructor(
     }
 
     override fun deleteCoinFavorite(coinById: CoinById): Flow<Resource<Task<Void>>> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(Resource.Loading())
+            getUserId().collect {
+                val favoriteRef = fireStore.collection(Constants.FAVOURITES_COLLECTION)
+                    .document(it)
+                    .collection("coins").document(coinById.name.orEmpty())
+                    .delete()
+
+                favoriteRef.await()
+                emit(Resource.Success(favoriteRef))
+            }
+        }.catch {
+            emit(Resource.Error(it.toString()))
+        }
     }
 
     override fun getCoinFavorite(): Flow<Resource<List<CoinById>>> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(Resource.Loading())
+            getUserId().collect {
+                val snapshot = fireStore.collection(Constants.FAVOURITES_COLLECTION)
+                    .document(it)
+                    .collection("coins").get().await()
+
+                val data = snapshot.toObjects(CoinById::class.java)
+                emit(Resource.Success(data))
+            }
+        }
     }
 }

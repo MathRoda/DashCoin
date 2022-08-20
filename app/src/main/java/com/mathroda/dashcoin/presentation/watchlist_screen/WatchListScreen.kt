@@ -1,17 +1,23 @@
 package com.mathroda.dashcoin.presentation.watchlist_screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.dashcoin.navigation.main.Screens
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
 import com.mathroda.dashcoin.presentation.coins_screen.components.TopBar
@@ -29,7 +35,8 @@ fun WatchListScreen(
     coinViewModel: CoinViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val watchListState = watchListViewModel.state.value
+    val watchListState = watchListViewModel.state.collectAsState()
+    val isRefresh by watchListViewModel.isRefresh.collectAsState()
     val marketState = coinViewModel.marketStatus.value
 
     Box(
@@ -42,35 +49,38 @@ fun WatchListScreen(
 
         Column {
             TopBar(title = "Watch List")
-
-            marketState.coin?.let { status ->
-                LazyColumn(modifier = Modifier.fillMaxWidth()){
-                    item {
-                        MarketStatusBar(
-                            marketStatus1h = status.priceChange1h,
-                            marketStatus1d = status.priceChange1d,
-                            marketStatus1w = status.priceChange1w,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 18.dp, bottom = 12.dp)
-                        )
+                marketState.coin?.let { status ->
+                    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                        item {
+                            MarketStatusBar(
+                                marketStatus1h = status.priceChange1h!!,
+                                marketStatus1d = status.priceChange1d!!,
+                                marketStatus1w = status.priceChange1w!!,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 18.dp, bottom = 12.dp)
+                            )
+                        }
                     }
                 }
-            }
 
 
-            Divider(color = LighterGray, modifier = Modifier.padding(bottom = 10.dp))
-            LazyColumn {
-                items(watchListState.coin) { coin ->
-                    WatchlistItem(
-                        icon = coin.icon,
-                        coinName = coin.name,
-                        symbol = coin.symbol,
-                        rank = coin.rank.toString(),
-                        onClick = {
-                            navController.navigate(Screens.CoinDetailScreen.route + "/${coin.id}")
-                        }
-                    )
+                Divider(color = LighterGray, modifier = Modifier.padding(bottom = 10.dp))
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing = isRefresh),
+                onRefresh = { watchListViewModel.refresh() }) {
+                LazyColumn {
+                    items(watchListState.value.coin) { coin ->
+                        WatchlistItem(
+                            icon = coin.icon!!,
+                            coinName = coin.name!!,
+                            symbol = coin.symbol!!,
+                            rank = coin.rank.toString(),
+                            onClick = {
+                                navController.navigate(Screens.CoinDetailScreen.route + "/${coin.id}")
+                            }
+                        )
+                    }
                 }
             }
 

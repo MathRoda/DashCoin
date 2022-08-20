@@ -54,8 +54,8 @@ fun CoinDetailScreen(
                    var isFavorite by remember { mutableStateOf(watchListState.coin.contains(coin)) }
                    val openDialogCustom = remember{ mutableStateOf(false) }
                    TopBarCoinDetail(
-                       coinSymbol = coin.symbol,
-                       icon = coin.icon,
+                       coinSymbol = coin.symbol!!,
+                       icon = coin.icon!!,
                        navController = navController,
                        isFavorite = isFavorite,
                        onCLick = {
@@ -70,14 +70,14 @@ fun CoinDetailScreen(
                    if (openDialogCustom.value){
                        CustomDialog(
                            openDialogCustom = openDialogCustom,
-                           coinName = coin.name,
+                           coinName = coin.name!!,
                            coin = coin,
                            navController = navController
                        )
                    }
                    CoinDetailSection(
-                       price = coin.price,
-                       priceChange = coin.priceChange1d
+                       price = coin.price!!,
+                       priceChange = coin.priceChange1d!!
                    )
 
                    Chart(
@@ -94,10 +94,10 @@ fun CoinDetailScreen(
                            )
                            .padding(start = 16.dp, top = 16.dp, end = 16.dp),
                        rank = "${coin.rank}",
-                       volume = numbersToCurrency(coin.volume.toInt())!!,
-                       marketCap = numbersToCurrency(coin.marketCap.toInt())!!,
-                       availableSupply = "${numbersToFormat(coin.availableSupply.toInt())} ${coin.symbol}" ,
-                       totalSupply = "${numbersToFormat(coin.totalSupply.toInt())} ${coin.symbol}"
+                       volume = numbersToCurrency(coin.volume!!.toInt())!!,
+                       marketCap = numbersToCurrency(coin.marketCap!!.toInt())!!,
+                       availableSupply = "${numbersToFormat(coin.availableSupply!!.toInt())} ${coin.symbol}" ,
+                       totalSupply = "${numbersToFormat(coin.totalSupply!!.toInt())} ${coin.symbol}"
                    )
 
                    val uriHandler = LocalUriHandler.current
@@ -126,7 +126,7 @@ fun CoinDetailScreen(
                                .background(LighterGray)
                                .weight(1f)
                                .clickable {
-                                   uriHandler.openUri(coin.websiteUrl)
+                                   uriHandler.openUri(coin.websiteUrl!!)
                                }
                        )
                    }
