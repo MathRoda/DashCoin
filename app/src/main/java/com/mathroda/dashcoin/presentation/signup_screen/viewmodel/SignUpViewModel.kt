@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
-import com.mathroda.dashcoin.domain.use_case.FirebaseUseCases
 import com.mathroda.dashcoin.presentation.signup_screen.state.SignUpState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
