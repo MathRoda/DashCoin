@@ -8,6 +8,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,7 +29,9 @@ fun CustomTextField(
     isPasswordTextField: Boolean,
     isError: Boolean = false,
     onValueChange: (String) -> Unit,
-    errorMsg: String = ""
+    errorMsg: String = "",
+    trailingIcon:  @Composable (() -> Unit)? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     CustomTextFieldWithError(
         value = text,
@@ -44,7 +48,9 @@ fun CustomTextField(
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier.fillMaxWidth(),
         visualTransformation = if (isPasswordTextField) PasswordVisualTransformation()
-    else VisualTransformation.None
+    else VisualTransformation.None,
+        trailingIcon = trailingIcon,
+        keyboardOptions = keyboardOptions,
     )
 }
 

@@ -10,7 +10,6 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.mathroda.dashcoin.navigation.graphs.RootNavigationGraph
-import com.mathroda.dashcoin.navigation.main.MainScreen
 import com.mathroda.dashcoin.presentation.ui.theme.DashCoinTheme
 import dagger.hilt.android.AndroidEntryPoint
 

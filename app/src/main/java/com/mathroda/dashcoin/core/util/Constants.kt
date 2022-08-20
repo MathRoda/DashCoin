@@ -8,4 +8,5 @@ object Constants {
     const val WELCOME_DASH_COIN = "Welcome to /DashCoin"
     const val SIGN_IN_TO_ACCESS = "Login to track your crypto assets."
     const val SIGN_UP_TO_GET_STARTED = "Register to get access to /Dash Coin."
+    const val FAVOURITES_COLLECTION = "favorites"
 }

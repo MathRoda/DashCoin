@@ -9,6 +9,7 @@ import com.mathroda.dashcoin.navigation.main.Screens
 import com.mathroda.dashcoin.presentation.coin_detail.CoinDetailScreen
 import com.mathroda.dashcoin.presentation.coins_screen.CoinScreen
 import com.mathroda.dashcoin.presentation.news_screen.NewsScreen
+import com.mathroda.dashcoin.presentation.profile_screen.ProfileScreen
 import com.mathroda.dashcoin.presentation.watchlist_screen.WatchListScreen
 
 @ExperimentalMaterialApi
@@ -39,9 +40,15 @@ fun MainGraph(navController: NavHostController) {
         }
 
         composable(
+            route = Screens.Profile.route
+        ){
+            ProfileScreen(navHostController = navController)
+        }
+        composable(
             route = Screens.CoinDetailScreen.route + "/{coinId}"
         ){
             CoinDetailScreen(navController = navController)
         }
+
     }
 }

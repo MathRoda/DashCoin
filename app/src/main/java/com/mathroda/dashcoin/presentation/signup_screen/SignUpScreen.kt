@@ -2,12 +2,22 @@ package com.mathroda.dashcoin.presentation.signup_screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,13 +36,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignUpScreen(
     navigateToSignInScreen: () -> Unit,
-    popBackStack: () -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
+    var isPasswordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
+    var isEnabled by remember { mutableStateOf(true) }
     val signUpState = viewModel.signUp.collectAsState()
 
     Scaffold(
@@ -94,6 +105,13 @@ fun SignUpScreen(
                 onValueChange = { email = it.trim() },
                 isError = isError,
                 errorMsg = "*Enter valid email address",
+                trailingIcon = {
+                    if (email.isNotBlank()) {
+                        IconButton(onClick = { email = "" }) {
+                            Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+                        }
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -101,10 +119,20 @@ fun SignUpScreen(
             CustomTextField(
                 text = password,
                 placeholder = "Password",
-                isPasswordTextField = true,
+                isPasswordTextField = !isPasswordVisible,
                 onValueChange = { password = it },
                 isError = isError,
                 errorMsg = "*Enter valid password",
+                trailingIcon = {
+                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                        Icon(
+                            imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            tint = Color.Gray,
+                            contentDescription = "Password Toggle")
+                    }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done)
+
             )
 
 
@@ -112,8 +140,10 @@ fun SignUpScreen(
 
             CustomLoginButton(
                 text = "REGISTER",
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                enabled = isEnabled,
             ) {
+                isEnabled = false
                 isError = email.isEmpty() || password.isEmpty()
                 viewModel.signUp(email, password)
                 isLoading = !isLoading
@@ -156,7 +186,10 @@ fun SignUpScreen(
 
 
         if (signUpState.value.signUp != null) {
-            SweetToastUtil.SweetSuccess(message = "Account created successfully")
+            SweetToastUtil.SweetSuccess(
+                message = "Account created successfully",
+                padding = PaddingValues(bottom = 24.dp)
+            )
             rememberCoroutineScope().launch {
                 delay(700)
                 navigateToSignInScreen()
@@ -164,7 +197,11 @@ fun SignUpScreen(
         }
 
     if(signUpState.value.error.isNotBlank()) {
+        isEnabled = true
         val errorMsg = signUpState.value.error
-        SweetToastUtil.SweetError(message = errorMsg)
+        SweetToastUtil.SweetError(
+            message = errorMsg,
+            padding = PaddingValues(bottom = 24.dp)
+        )
     }
 }

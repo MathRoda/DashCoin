@@ -24,7 +24,7 @@ class WatchListViewModel @Inject constructor(
     val state: State<WatchListState> = _state
 
     private var recentlyDeletedCoin: CoinById? = null
-    private var getNotesJob: Job? = null
+    private var getCoinJob: Job? = null
 
     init {
         getAllCoins()
@@ -56,8 +56,8 @@ class WatchListViewModel @Inject constructor(
     }
 
     private fun getAllCoins() {
-        getNotesJob?.cancel()
-        getNotesJob = dashCoinUseCases.getAllCoins().onEach {
+        getCoinJob?.cancel()
+        getCoinJob = dashCoinUseCases.getAllCoins().onEach {
             _state.value = WatchListState(it)
         }.launchIn(viewModelScope)
     }

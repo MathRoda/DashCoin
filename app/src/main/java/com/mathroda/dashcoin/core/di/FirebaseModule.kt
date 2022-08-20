@@ -2,6 +2,8 @@ package com.mathroda.dashcoin.core.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mathroda.dashcoin.data.repository.FirebaseRepositoryImpl
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
@@ -27,8 +29,15 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun providesFirebaseRepository(firebaseAuth: FirebaseAuth): FirebaseRepository {
-        return FirebaseRepositoryImpl(firebaseAuth)
+    fun providesFireStore() = Firebase.firestore
+
+    @Provides
+    @Singleton
+    fun providesFirebaseRepository(
+        firebaseAuth: FirebaseAuth,
+        fireStore: FirebaseFirestore
+        ): FirebaseRepository {
+        return FirebaseRepositoryImpl(firebaseAuth, fireStore)
     }
 
     @Provides

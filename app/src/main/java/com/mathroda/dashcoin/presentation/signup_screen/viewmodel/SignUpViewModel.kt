@@ -1,11 +1,9 @@
 package com.mathroda.dashcoin.presentation.signup_screen.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.AuthResult
 import com.mathroda.dashcoin.core.util.Resource
+import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import com.mathroda.dashcoin.domain.use_case.FirebaseUseCases
 import com.mathroda.dashcoin.presentation.signup_screen.state.SignUpState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val firebaseUseCases: FirebaseUseCases
+    private val firebaseRepository: FirebaseRepository
 ): ViewModel() {
 
     private val _signUp = MutableStateFlow(SignUpState())
@@ -27,7 +25,7 @@ class SignUpViewModel @Inject constructor(
 
    fun signUp(email: String, password: String) =
         viewModelScope.launch {
-            firebaseUseCases.signUp(email, password).onEach { result ->
+            firebaseRepository.signUpWithEmailAndPassword(email, password).onEach { result ->
                 when(result) {
                     is Resource.Success -> {
                        _signUp.emit(SignUpState(signUp = result.data))

@@ -23,7 +23,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                     navController.navigate(AuthScreen.SignUp.route)
                 },
                 popBackStack = {
-                    navController.popBackStack()
+                    navController.popBackStack(AuthScreen.SignUp.route, false)
                 }
             )
         }
@@ -33,9 +33,6 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                 navigateToSignInScreen =  {
                     navController.popBackStack()
                     navController.navigate(AuthScreen.SignIn.route)
-                },
-                popBackStack = {
-                    navController.popBackStack()
                 }
             )
         }

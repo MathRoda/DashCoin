@@ -1,17 +1,23 @@
 package com.mathroda.dashcoin.data.repository
 
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.core.util.Resource
+import com.mathroda.dashcoin.domain.model.CoinById
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 class FirebaseRepositoryImpl constructor(
     private val firebaseAuth: FirebaseAuth,
+    private val fireStore: FirebaseFirestore
 ): FirebaseRepository {
     override fun getUserId(): Flow<String> {
         return flow {
@@ -62,5 +68,31 @@ class FirebaseRepositoryImpl constructor(
 
     override fun signOut() {
         return firebaseAuth.signOut()
+    }
+
+    override fun addCoinFavorite(coinById: CoinById): Flow<Resource<Task<Void>>> {
+        return flow {
+            emit(Resource.Loading())
+            getUserId().collect {
+                val favoriteRef = fireStore.collection(Constants.FAVOURITES_COLLECTION)
+                    .document(it)
+                    .collection("coins").document(coinById.name)
+                    .set(coinById)
+
+                favoriteRef.await()
+
+                emit(Resource.Success(favoriteRef))
+            }
+        }.catch {
+            emit(Resource.Error(it.toString()))
+        }
+    }
+
+    override fun deleteCoinFavorite(coinById: CoinById): Flow<Resource<Task<Void>>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCoinFavorite(): Flow<Resource<List<CoinById>>> {
+        TODO("Not yet implemented")
     }
 }

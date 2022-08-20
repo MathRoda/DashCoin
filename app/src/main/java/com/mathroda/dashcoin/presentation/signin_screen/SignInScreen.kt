@@ -1,25 +1,31 @@
 package com.mathroda.dashcoin.presentation.signin_screen
 
-import android.util.Log
-import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mathroda.dashcoin.core.util.Constants
-import com.mathroda.dashcoin.presentation.signin_screen.viewmodel.SignInViewModel
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomClickableText
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomTextField
-import com.mathroda.dashcoin.presentation.signin_screen.components.CustomTextFieldWithError
+import com.mathroda.dashcoin.presentation.signin_screen.viewmodel.SignInViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.Gold
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -36,7 +42,9 @@ fun SignInScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
+    var isPasswordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
+    var isEnabled by remember { mutableStateOf(true) }
     val isUserExist = viewModel.isCurrentUserExist.collectAsState(initial = true)
     val sigInState = viewModel.signIn.collectAsState()
 
@@ -89,7 +97,14 @@ fun SignInScreen(
                     onValueChange = { email = it.trim() },
                     isError = isError,
                     errorMsg = "*Enter valid email address",
-                    isPasswordTextField = false
+                    isPasswordTextField = false,
+                    trailingIcon = {
+                        if (email.isNotBlank()) {
+                            IconButton(onClick = { email = "" }) {
+                                Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+                            }
+                        }
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -97,10 +112,19 @@ fun SignInScreen(
                 CustomTextField(
                     text = password,
                     placeholder = "Password",
-                    isPasswordTextField = true,
+                    isPasswordTextField = !isPasswordVisible,
                     onValueChange = { password = it },
                     isError = isError,
                     errorMsg = "*Enter valid password",
+                    trailingIcon = {
+                        IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                            Icon(
+                                imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                tint = Color.Gray,
+                                contentDescription = "Password Toggle")
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done)
 
                 )
 
@@ -108,9 +132,11 @@ fun SignInScreen(
 
                 CustomLoginButton(
                     text = "LOGIN",
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = isEnabled
                 ) {
-                    isError = email.isEmpty()
+                    isEnabled = false
+                    isError = email.isEmpty() || password.isEmpty()
                     viewModel.signIn(email, password)
                     isLoading = !isLoading
                 }
@@ -138,36 +164,44 @@ fun SignInScreen(
             }
 
         }
+    }
 
-        if (sigInState.value.isLoading) {
-            if (isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+    if (sigInState.value.isLoading) {
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    Modifier
+                        .padding(top = 50.dp)
+                )
             }
         }
+    }
 
 
-            if (sigInState.value.signIn != null) {
-               SweetToastUtil.SweetSuccess(
-                    message = "Welcome Back ${sigInState.value.signIn?.user?.email}",
-                    duration = Toast.LENGTH_LONG
-                    )
-                rememberCoroutineScope().launch {
-                    delay(700)
-                    navigateToCoinsScreen()
-                }
-            }
-
-
-        if(sigInState.value.error.isNotBlank()) {
-            popBackStack()
-            val errorMsg = sigInState.value.error
-            SweetToastUtil.SweetError(message = errorMsg)
+    if (sigInState.value.signIn != null) {
+        SweetToastUtil.SweetSuccess(
+            message = "Welcome ${sigInState.value.signIn?.user?.email}",
+            duration = Toast.LENGTH_LONG,
+            padding = PaddingValues(bottom = 24.dp)
+        )
+        rememberCoroutineScope().launch {
+            delay(700)
+            navigateToCoinsScreen()
         }
+    }
+
+
+    if(sigInState.value.error.isNotBlank()) {
+        isEnabled = true
+        val errorMsg = sigInState.value.error
+        SweetToastUtil.SweetError(
+            message = errorMsg,
+            padding = PaddingValues(bottom = 24.dp)
+        )
+        popBackStack()
     }
 }

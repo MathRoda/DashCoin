@@ -22,31 +22,28 @@ import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvent
 import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
 
 @Composable
-fun CustomDialog(
+fun CustomDialogSignOut(
+    modifier: Modifier = Modifier,
     openDialogCustom: MutableState<Boolean>,
-    coinName: String,
-    coin: CoinById,
-    navController: NavController
-    ) {
-    Dialog(onDismissRequest = { openDialogCustom.value = false}) {
-        CustomDialogUI(
+    onClick: () -> Unit
+
+) {
+    Dialog(onDismissRequest = { openDialogCustom.value = false }) {
+        CustomDialogUiSignOut(
             openDialogCustom = openDialogCustom,
-            coinName = coinName,
-            coin = coin,
-            navController = navController
-        )
+            modifier = modifier,
+        ) {
+            onClick()
+        }
     }
 }
 
 
 @Composable
-fun CustomDialogUI(
+fun CustomDialogUiSignOut(
     modifier: Modifier = Modifier,
     openDialogCustom: MutableState<Boolean>,
-    coinName: String,
-    viewModel: WatchListViewModel = hiltViewModel(),
-    coin: CoinById,
-    navController: NavController
+    onClick: () -> Unit
 ) {
     Card(
         //shape = MaterialTheme.shapes.medium,
@@ -75,7 +72,7 @@ fun CustomDialogUI(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "You want to Unwatch $coinName ?",
+                    text = "You want to logout ?",
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 10.dp, start = 25.dp, end = 25.dp)
@@ -93,11 +90,11 @@ fun CustomDialogUI(
                     .background(LighterGray),
                 horizontalArrangement = Arrangement.SpaceAround) {
 
-               TextButton(onClick = {
+                TextButton(onClick = {
                     openDialogCustom.value = false
                 }) {
 
-                   Text(
+                    Text(
                         "Dismiss",
                         fontWeight = FontWeight.Bold,
                         color = TextWhite.copy(ContentAlpha.disabled),
@@ -105,10 +102,7 @@ fun CustomDialogUI(
                     )
                 }
                 TextButton(onClick = {
-                    openDialogCustom.value = false
-                    viewModel.onEvent(WatchListEvents.DeleteCoin(coin))
-                    navController.popBackStack()
-
+                    onClick()
                 }) {
                     Text(
                         "Yes",

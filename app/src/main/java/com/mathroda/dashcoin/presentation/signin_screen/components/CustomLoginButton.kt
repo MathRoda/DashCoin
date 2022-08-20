@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,16 +20,17 @@ import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 fun CustomLoginButton(
     text: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    color: List<Color> = listOf(CustomGreen, CustomBrightGreen),
+    enabled: Boolean = true,
+    onClick: () -> Unit,
 ) {
     Button(
         onClick = { onClick() },
+        enabled = enabled ,
         modifier = modifier
             .background(
                 Brush.horizontalGradient(
-                    colors = listOf(
-                        CustomGreen, CustomBrightGreen
-                    )
+                    colors = color
                 ),
                 shape = RoundedCornerShape(20.dp)
             )
