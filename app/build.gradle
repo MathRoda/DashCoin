@@ -131,6 +131,9 @@ dependencies {
     // Swipe to refresh
     implementation "com.google.accompanist:accompanist-swiperefresh:0.23.1"
 
+    //lottie
+    implementation ("com.airbnb.android:lottie-compose:5.2.0")
+
     //data store
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 

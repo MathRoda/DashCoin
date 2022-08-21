@@ -24,7 +24,7 @@ class DashCoinWorker @AssistedInject constructor(
 
         return try {
 
-            var state = true
+            var state = false
 
             val coins = dashCoinRepository.getAllCoins()
 
@@ -34,7 +34,7 @@ class DashCoinWorker @AssistedInject constructor(
                         result.data?.forEach { favorite ->
                             coins.collect {
                                 it.forEach { coin ->
-                                    if (favorite.name == coin.name && favorite.price != coin.price) {
+                                    if (favorite.name == coin.name && coin.price != 20000.0) {
                                         state = !state
                                     }
                                 }

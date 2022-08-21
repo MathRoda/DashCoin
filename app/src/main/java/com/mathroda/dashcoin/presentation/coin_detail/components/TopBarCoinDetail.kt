@@ -9,6 +9,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,8 +20,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.airbnb.lottie.compose.*
+import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.presentation.ui.theme.Gold
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun TopBarCoinDetail(
@@ -29,6 +35,7 @@ fun TopBarCoinDetail(
     onCLick: (Boolean) -> Unit
 
 ) {
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -76,11 +83,11 @@ fun TopBarCoinDetail(
                 .weight(2f),
             contentAlignment = Alignment.CenterEnd){
 
-                FavoriteButton(
-                    modifier = Modifier.padding(8.dp),
-                    isFavorite = isFavorite,
-                    onCLick = onCLick
-                )
+            FavoriteButton(
+                modifier = Modifier.padding(8.dp),
+                isFavorite = isFavorite,
+                onCLick = onCLick
+            )
         }
 
         }
@@ -100,7 +107,7 @@ fun FavoriteButton(
         onCheckedChange = onCLick
     ) {
         Icon(
-            tint = if (isFavorite) Gold else color,
+            tint =  if (isFavorite) Gold else color ,
             modifier = modifier.graphicsLayer {
                 scaleX = 1.3f
                 scaleY = 1.3f
