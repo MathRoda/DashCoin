@@ -28,6 +28,7 @@ import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.Twitter
 import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import kotlinx.coroutines.flow.collect
 import java.text.NumberFormat
 import java.util.*
@@ -48,6 +49,10 @@ fun CoinDetailScreen(
             .padding(12.dp)
     ) {
        coinState.coin?.let { coin ->
+           /**
+            * first thing when the coin detail screen renders it checks
+            * if the coin exist in Firestore and collect the flow as State
+            */
            watchListViewModel.isFavoriteState(coin)
            val isFav = watchListViewModel.isFavoriteState.collectAsState()
            LazyColumn(
@@ -55,6 +60,11 @@ fun CoinDetailScreen(
                    .fillMaxSize()
            ) {
                item {
+                   /**
+                    * here it checks if the rank of current coin is not equal to 0
+                    * that means it does exist in Firestore and should assign it value
+                    * to true
+                    */
                    isFavorite = isFav.value.rank != 0
                    val openDialogCustom = remember{ mutableStateOf(false) }
                    TopBarCoinDetail(
@@ -63,12 +73,12 @@ fun CoinDetailScreen(
                        navController = navController,
                        isFavorite = isFavorite,
                        onCLick = {
+
                            isFavorite = !isFavorite
+
                            if (isFavorite){
                                watchListViewModel.onEvent(WatchListEvents.AddCoin(coin))
-                           } else {
-                               openDialogCustom.value = true
-                           }
+                           } else openDialogCustom.value = true
                        }
                    )
                    if (openDialogCustom.value){

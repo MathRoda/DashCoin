@@ -1,10 +1,7 @@
 package com.mathroda.dashcoin.navigation.main
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Screens(
@@ -21,7 +18,7 @@ sealed class Screens(
     object CoinsWatchList: Screens(
         route = "coins_watch_list",
         title = "WatchList",
-        icon = Icons.Default.Favorite
+        icon = Icons.Default.Star
     )
 
     object CoinsNews: Screens(

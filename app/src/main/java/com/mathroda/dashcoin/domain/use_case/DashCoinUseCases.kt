@@ -7,6 +7,7 @@ import com.mathroda.dashcoin.domain.use_case.remote.get_chart.GetChartUseCase
 import com.mathroda.dashcoin.domain.use_case.remote.get_coin.GetCoinUseCase
 import com.mathroda.dashcoin.domain.use_case.remote.get_coins.GetCoinsUseCase
 import com.mathroda.dashcoin.domain.use_case.remote.get_news.GetNewsUseCase
+import com.mathroda.dashcoin.domain.use_case.worker.CreateWorkUseCase
 
 data class DashCoinUseCases (
 

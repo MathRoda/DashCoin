@@ -69,7 +69,7 @@ object AppModule {
 
             addCoin = AddCoinUseCase(repository),
             deleteCoin = DeleteCoinUseCase(repository),
-            getAllCoins = GetAllCoinsUseCase(repository)
+            getAllCoins = GetAllCoinsUseCase(repository),
         )
     }
 }
