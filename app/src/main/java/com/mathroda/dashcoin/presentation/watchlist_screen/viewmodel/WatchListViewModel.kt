@@ -28,6 +28,9 @@ class WatchListViewModel @Inject constructor(
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
 
+    private val _isFavoriteState = MutableStateFlow(CoinById())
+    val isFavoriteState: StateFlow<CoinById> = _isFavoriteState
+
     private val _addToFavorite = mutableStateOf("")
     val addToFavorite: State<String> = _addToFavorite
     private var getCoinJob: Job? = null
@@ -76,6 +79,14 @@ class WatchListViewModel @Inject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
+    }
+
+     fun isFavoriteState(coinById: CoinById) {
+        viewModelScope.launch {
+            firebaseRepository.isFavoriteState(coinById).collect {
+                _isFavoriteState.emit(it?: CoinById())
+            }
+        }
     }
 
     fun refresh() {

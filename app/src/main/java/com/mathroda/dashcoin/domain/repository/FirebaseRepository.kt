@@ -25,5 +25,7 @@ interface FirebaseRepository {
 
     fun deleteCoinFavorite(coinById: CoinById): Flow<Resource<Task<Void>>>
 
+    fun isFavoriteState(coinById: CoinById): Flow<CoinById?>
+
     fun getCoinFavorite(): Flow<Resource<List<CoinById>>>
 }

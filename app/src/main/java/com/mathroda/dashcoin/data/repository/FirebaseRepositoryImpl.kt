@@ -9,9 +9,11 @@ import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.model.CoinById
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
@@ -109,17 +111,45 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
-    override fun getCoinFavorite(): Flow<Resource<List<CoinById>>> {
-        return flow {
-            emit(Resource.Loading())
-            getUserId().collect {
-                val snapshot = fireStore.collection(Constants.FAVOURITES_COLLECTION)
-                    .document(it)
-                    .collection("coins").get().await()
-
-                val data = snapshot.toObjects(CoinById::class.java)
-                emit(Resource.Success(data))
+    override fun isFavoriteState(coinById: CoinById): Flow<CoinById?> {
+        return callbackFlow {
+            getUserId().collect { userId ->
+                fireStore.collection(Constants.FAVOURITES_COLLECTION)
+                    .document(userId)
+                    .collection("coins").document(coinById.name.orEmpty())
+                    .addSnapshotListener { value, error ->
+                        error?.let {
+                            this.close(it)
+                        }
+                        value?.let {
+                            val data = it.toObject(CoinById::class.java)
+                            this.trySend(data)
+                        }
+                    }
             }
+            awaitClose { this.cancel() }
+        }
+    }
+
+    override fun getCoinFavorite(): Flow<Resource<List<CoinById>>> {
+        return callbackFlow {
+           this.trySend(Resource.Loading())
+            getUserId().collect { userId ->
+                val snapshot = fireStore.collection(Constants.FAVOURITES_COLLECTION)
+                    .document(userId)
+                    .collection("coins")
+                snapshot.addSnapshotListener { value, error ->
+                    error?.let {
+                        this.close(it)
+                    }
+
+                    value?.let {
+                        val data = value.toObjects(CoinById::class.java)
+                        this.trySend(Resource.Success(data))
+                    }
+                }
+            }
+            awaitClose { this.cancel() }
         }
     }
 }

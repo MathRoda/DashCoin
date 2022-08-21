@@ -1,5 +1,6 @@
 package com.mathroda.dashcoin.presentation.coin_detail
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,6 +28,7 @@ import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.Twitter
 import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
+import kotlinx.coroutines.flow.collect
 import java.text.NumberFormat
 import java.util.*
 
@@ -38,7 +40,7 @@ fun CoinDetailScreen(
 ) {
 
     val coinState = coinViewModel.coinState.value
-    val watchListState = watchListViewModel.state.value
+    var isFavorite by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .background(DarkGray)
@@ -46,12 +48,14 @@ fun CoinDetailScreen(
             .padding(12.dp)
     ) {
        coinState.coin?.let { coin ->
+           watchListViewModel.isFavoriteState(coin)
+           val isFav = watchListViewModel.isFavoriteState.collectAsState()
            LazyColumn(
                modifier = Modifier
                    .fillMaxSize()
            ) {
                item {
-                   var isFavorite by remember { mutableStateOf(watchListState.coin.contains(coin)) }
+                   isFavorite = isFav.value.rank != 0
                    val openDialogCustom = remember{ mutableStateOf(false) }
                    TopBarCoinDetail(
                        coinSymbol = coin.symbol!!,
