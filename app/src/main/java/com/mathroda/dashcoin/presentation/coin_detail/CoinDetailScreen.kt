@@ -19,6 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.*
+import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.presentation.coin_detail.components.*
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
 import com.mathroda.dashcoin.presentation.dialog_screen.CustomDialog
@@ -42,6 +44,14 @@ fun CoinDetailScreen(
 
     val coinState = coinViewModel.coinState.value
     var isFavorite by remember { mutableStateOf(false) }
+    val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))
+    val lottieProgress by animateLottieCompositionAsState(
+        composition = lottieComp,
+        iterations = LottieConstants.IterateForever,
+    )
+
+
+
     Box(
         modifier = Modifier
             .background(DarkGray)
@@ -149,10 +159,16 @@ fun CoinDetailScreen(
        }
 
         if (coinState.isLoading) {
-            CircularProgressIndicator(modifier = Modifier
-                .align(Alignment.Center),
-                color = CustomGreen
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                LottieAnimation(
+                    composition = lottieComp,
+                    progress = { lottieProgress },
+                )
+            }
         }
 
         if(coinState.error.isNotBlank()) {
