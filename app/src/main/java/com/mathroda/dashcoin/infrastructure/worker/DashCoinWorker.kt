@@ -23,33 +23,18 @@ class DashCoinWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
 
         return try {
+            NotificationUtils.showNotification(
+                context = applicationContext,
+                title = Constants.TITLE,
+                description = Constants.DESCRIPTION
+            )
+            /*dashCoinRepository.getAllCoins().collect { coins ->
+                coins.map { coin ->
+                    if (coin.id == "bitcoin" && coin.priceChange1d!! < 0) {
 
-            var state = false
-
-            val coins = dashCoinRepository.getAllCoins()
-
-            firebaseRepository.getCoinFavorite().collect { result ->
-                when(result) {
-                    is Resource.Success -> {
-                        result.data?.forEach { favorite ->
-                            coins.collect {
-                                it.forEach { coin ->
-                                    if (favorite.name == coin.name && coin.price != 20000.0) {
-                                        state = !state
-                                    }
-                                }
-                            }
-
-                            if (state) NotificationUtils.showNotification(
-                                context = applicationContext,
-                                title = Constants.TITLE,
-                                description = Constants.DESCRIPTION
-                            )
-                        }
                     }
-                    else -> {}
                 }
-            }
+            }*/
             Result.success()
         }catch (exception: Exception) {
             Result.failure()

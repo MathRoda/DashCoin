@@ -12,15 +12,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.work.WorkInfo
 import com.airbnb.lottie.compose.*
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.dashcoin.R
+import com.mathroda.dashcoin.core.util.Constants
+import com.mathroda.dashcoin.infrastructure.notification.NotificationUtils
 import com.mathroda.dashcoin.navigation.main.Screens
 import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsItem
 import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
@@ -35,6 +40,7 @@ fun CoinScreen(
     navController: NavController
 ) {
 
+    val lifeCycleOwner = LocalLifecycleOwner.current
     val state = viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefresh.collectAsState()
     val searchCoin = remember { mutableStateOf(TextFieldValue("")) }
@@ -75,10 +81,13 @@ fun CoinScreen(
                             }
                         )
                     }
+
                 }
             }
 
         }
+
+
 
         if (state.value.isLoading) {
             Column(
