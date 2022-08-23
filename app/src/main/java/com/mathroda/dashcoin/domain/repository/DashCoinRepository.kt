@@ -4,8 +4,6 @@ import com.mathroda.dashcoin.data.dto.ChartDto
 import com.mathroda.dashcoin.data.dto.CoinDetailDto
 import com.mathroda.dashcoin.data.dto.CoinsDto
 import com.mathroda.dashcoin.data.dto.NewsDto
-import com.mathroda.dashcoin.domain.model.CoinById
-import kotlinx.coroutines.flow.Flow
 
 interface DashCoinRepository {
 
