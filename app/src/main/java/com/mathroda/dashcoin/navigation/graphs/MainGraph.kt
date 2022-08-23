@@ -36,7 +36,7 @@ fun MainGraph(navController: NavHostController) {
         composable(
             route = Screens.CoinsNews.route
         ){
-            NewsScreen(navController = navController)
+            NewsScreen()
         }
 
         composable(

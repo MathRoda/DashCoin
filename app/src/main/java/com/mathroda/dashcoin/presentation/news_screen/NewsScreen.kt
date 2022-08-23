@@ -16,7 +16,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
@@ -29,8 +28,7 @@ import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 @ExperimentalMaterialApi
 @Composable
 fun NewsScreen(
-    newsViewModel: NewsViewModel = hiltViewModel(),
-    navController: NavController
+    newsViewModel: NewsViewModel = hiltViewModel()
 ) {
     val searchNews = remember { mutableStateOf(TextFieldValue("")) }
     val state = newsViewModel.newsState.value
