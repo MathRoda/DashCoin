@@ -19,5 +19,5 @@ data class DashCoinUseCases (
     // domain/ use_case/ database
     val addCoin: AddCoinUseCase,
     val deleteCoin: DeleteCoinUseCase,
-    val getAllCoins: GetAllCoinsUseCase
+    val getAllCoins: GetAllCoinsUseCase,
         )

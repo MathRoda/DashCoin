@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -18,10 +17,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.*
+import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.presentation.coin_detail.components.*
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
 import com.mathroda.dashcoin.presentation.dialog_screen.CustomDialog
-import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.Twitter
@@ -38,7 +38,15 @@ fun CoinDetailScreen(
 ) {
 
     val coinState = coinViewModel.coinState.value
-    val watchListState = watchListViewModel.state.value
+    var isFavorite by remember { mutableStateOf(false) }
+    val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))
+    val lottieProgress by animateLottieCompositionAsState(
+        composition = lottieComp,
+        iterations = LottieConstants.IterateForever,
+    )
+
+
+
     Box(
         modifier = Modifier
             .background(DarkGray)
@@ -46,38 +54,49 @@ fun CoinDetailScreen(
             .padding(12.dp)
     ) {
        coinState.coin?.let { coin ->
+           /**
+            * first thing when the coin detail screen renders it checks
+            * if the coin exist in Firestore and collect the flow as State
+            */
+           watchListViewModel.isFavoriteState(coin)
+           val isFav = watchListViewModel.isFavoriteState.collectAsState()
            LazyColumn(
                modifier = Modifier
                    .fillMaxSize()
            ) {
                item {
-                   var isFavorite by remember { mutableStateOf(watchListState.coin.contains(coin)) }
+                   /**
+                    * here it checks if the rank of current coin is not equal to 0
+                    * that means it does exist in Firestore and should assign it value
+                    * to true
+                    */
+                   isFavorite = isFav.value.rank != 0
                    val openDialogCustom = remember{ mutableStateOf(false) }
                    TopBarCoinDetail(
-                       coinSymbol = coin.symbol,
-                       icon = coin.icon,
+                       coinSymbol = coin.symbol!!,
+                       icon = coin.icon!!,
                        navController = navController,
                        isFavorite = isFavorite,
                        onCLick = {
+
                            isFavorite = !isFavorite
+
                            if (isFavorite){
                                watchListViewModel.onEvent(WatchListEvents.AddCoin(coin))
-                           } else {
-                               openDialogCustom.value = true
-                           }
+                           } else openDialogCustom.value = true
                        }
                    )
                    if (openDialogCustom.value){
                        CustomDialog(
                            openDialogCustom = openDialogCustom,
-                           coinName = coin.name,
+                           coinName = coin.name!!,
                            coin = coin,
                            navController = navController
                        )
                    }
                    CoinDetailSection(
-                       price = coin.price,
-                       priceChange = coin.priceChange1d
+                       price = coin.price!!,
+                       priceChange = coin.priceChange1d!!
                    )
 
                    Chart(
@@ -94,10 +113,10 @@ fun CoinDetailScreen(
                            )
                            .padding(start = 16.dp, top = 16.dp, end = 16.dp),
                        rank = "${coin.rank}",
-                       volume = numbersToCurrency(coin.volume.toInt())!!,
-                       marketCap = numbersToCurrency(coin.marketCap.toInt())!!,
-                       availableSupply = "${numbersToFormat(coin.availableSupply.toInt())} ${coin.symbol}" ,
-                       totalSupply = "${numbersToFormat(coin.totalSupply.toInt())} ${coin.symbol}"
+                       volume = numbersToCurrency(coin.volume!!.toInt())!!,
+                       marketCap = numbersToCurrency(coin.marketCap!!.toInt())!!,
+                       availableSupply = "${numbersToFormat(coin.availableSupply!!.toInt())} ${coin.symbol}" ,
+                       totalSupply = "${numbersToFormat(coin.totalSupply!!.toInt())} ${coin.symbol}"
                    )
 
                    val uriHandler = LocalUriHandler.current
@@ -126,7 +145,7 @@ fun CoinDetailScreen(
                                .background(LighterGray)
                                .weight(1f)
                                .clickable {
-                                   uriHandler.openUri(coin.websiteUrl)
+                                   uriHandler.openUri(coin.websiteUrl!!)
                                }
                        )
                    }
@@ -135,10 +154,16 @@ fun CoinDetailScreen(
        }
 
         if (coinState.isLoading) {
-            CircularProgressIndicator(modifier = Modifier
-                .align(Alignment.Center),
-                color = CustomGreen
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                LottieAnimation(
+                    composition = lottieComp,
+                    progress = { lottieProgress },
+                )
+            }
         }
 
         if(coinState.error.isNotBlank()) {

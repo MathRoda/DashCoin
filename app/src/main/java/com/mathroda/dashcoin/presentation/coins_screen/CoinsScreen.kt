@@ -4,10 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
@@ -15,14 +15,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.work.WorkInfo
+import com.airbnb.lottie.compose.*
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.mathroda.dashcoin.navigation.Screens
+import com.mathroda.dashcoin.R
+import com.mathroda.dashcoin.core.util.Constants
+import com.mathroda.dashcoin.navigation.main.Screens
 import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsItem
 import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
 import com.mathroda.dashcoin.presentation.coins_screen.components.TopBar
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
-import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 
 @Composable
@@ -30,10 +33,15 @@ fun CoinScreen(
     viewModel: CoinsViewModel = hiltViewModel(),
     navController: NavController
 ) {
-
     val state = viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefresh.collectAsState()
-    val searchCoin = remember { mutableStateOf(TextFieldValue(""))}
+    val searchCoin = remember { mutableStateOf(TextFieldValue("")) }
+    val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))
+    val lottieProgress by animateLottieCompositionAsState(
+        composition = lottieComp,
+        iterations = LottieConstants.IterateForever,
+        )
+    val onWorkerSuccess = viewModel.onSuccessWorker.observeAsState().value
 
     Box(
         modifier = Modifier
@@ -56,9 +64,9 @@ fun CoinScreen(
                 LazyColumn {
                     items(items = state.value.coins.filter {
                         it.name.contains(isBeingSearched, ignoreCase = true) ||
-                        it.id.contains(isBeingSearched, ignoreCase = true) ||
-                        it.symbol.contains(isBeingSearched, ignoreCase = true)
-                    }, key = {it.id}) { coins ->
+                                it.id.contains(isBeingSearched, ignoreCase = true) ||
+                                it.symbol.contains(isBeingSearched, ignoreCase = true)
+                    }, key = { it.id }) { coins ->
                         CoinsItem(
                             coins = coins,
                             onItemClick = {
@@ -66,20 +74,39 @@ fun CoinScreen(
                             }
                         )
                     }
+
                 }
             }
 
         }
 
+        onWorkerSuccess?.let { listOfWorkInfo ->
 
-        if (state.value.isLoading) {
-            CircularProgressIndicator(modifier = Modifier
-                .align(Alignment.Center),
-                color = CustomGreen
-            )
+            if (listOfWorkInfo.isEmpty()) {
+                return
+            }
+            val workInfo: WorkInfo = listOfWorkInfo[0]
+
+            if (workInfo.state == WorkInfo.State.ENQUEUED) {
+                viewModel.marketStates(Constants.BITCOIN_ID)
+            }
         }
 
-        if(state.value.error.isNotEmpty()) {
+        if (state.value.isLoading) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                LottieAnimation(
+                    composition = lottieComp,
+                    progress = { lottieProgress },
+                )
+            }
+        }
+
+        if (state.value.error.isNotEmpty()) {
             Text(
                 text = state.value.error,
                 color = MaterialTheme.colors.error,
@@ -91,5 +118,5 @@ fun CoinScreen(
             )
         }
     }
-
 }
+
