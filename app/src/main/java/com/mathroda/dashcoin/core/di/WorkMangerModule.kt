@@ -24,5 +24,4 @@ object WorkMangerModule {
     fun providesWorkerProviderRepository(workManager: WorkManager): WorkerProviderRepository {
         return WorkerProviderRepositoryImpl(workManager)
     }
-
 }

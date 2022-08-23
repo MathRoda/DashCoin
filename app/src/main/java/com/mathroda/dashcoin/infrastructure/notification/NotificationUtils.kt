@@ -3,6 +3,7 @@ package com.mathroda.dashcoin.infrastructure.notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.mathroda.dashcoin.R
@@ -13,7 +14,7 @@ object NotificationUtils {
 
     fun showNotification(context: Context, title: String, description: String) {
         val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         createNotificationChannel(notificationManager)
 
@@ -41,7 +42,7 @@ object NotificationUtils {
         return NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(description)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.mipmap.ic_dashcoin)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
     }
 }

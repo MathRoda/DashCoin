@@ -12,14 +12,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.mathroda.dashcoin.domain.model.CoinById
 import com.mathroda.dashcoin.presentation.ui.theme.LightGray
 import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
-import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
-import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
 
 @Composable
 fun CustomDialogSignOut(
