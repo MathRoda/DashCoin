@@ -1,12 +1,10 @@
 package com.mathroda.dashcoin.presentation.coin_detail
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -24,14 +22,11 @@ import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.presentation.coin_detail.components.*
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
 import com.mathroda.dashcoin.presentation.dialog_screen.CustomDialog
-import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.Twitter
 import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
-import com.talhafaki.composablesweettoast.util.SweetToastUtil
-import kotlinx.coroutines.flow.collect
 import java.text.NumberFormat
 import java.util.*
 

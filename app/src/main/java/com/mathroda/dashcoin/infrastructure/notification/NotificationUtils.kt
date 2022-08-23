@@ -42,7 +42,7 @@ object NotificationUtils {
         return NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(description)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.mipmap.ic_dashcoin)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
     }
 }

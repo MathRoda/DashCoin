@@ -2,7 +2,6 @@ package com.mathroda.dashcoin.presentation.coins_screen.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.mikephil.charting.utils.Utils.init
 import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
 import com.mathroda.dashcoin.domain.use_case.worker.WorkerOnSuccessUseCase
@@ -36,7 +35,11 @@ class CoinsViewModel @Inject constructor(
     }
 
 
-    fun getCoins() {
+   fun marketStates(coinId: String) {
+       dashCoinUseCases.getCoin.invoke(coinId)
+   }
+
+   private fun getCoins() {
         dashCoinUseCases.getCoins().onEach { result ->
             when(result) {
                 is Resource.Success ->{

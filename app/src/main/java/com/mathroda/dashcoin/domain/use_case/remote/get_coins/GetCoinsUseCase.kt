@@ -4,12 +4,10 @@ import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.data.dto.toCoins
 import com.mathroda.dashcoin.domain.model.Coins
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject

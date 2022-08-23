@@ -189,7 +189,7 @@ fun SignInScreen(
             padding = PaddingValues(bottom = 24.dp)
         )
         rememberCoroutineScope().launch {
-            delay(700)
+            delay(600L)
             navigateToCoinsScreen()
         }
     }

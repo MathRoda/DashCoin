@@ -11,8 +11,10 @@ object Constants {
     const val FAVOURITES_COLLECTION = "favorites"
     const val CHANNEL_ID = "MyTask"
     const val CHANNEL_NAME = "MyTaskChannel"
-    const val TITLE = "DashCoin"
-    const val DESCRIPTION = "There are changes in the current prices of your favorite coins"
+    const val TITLE = "Market Status"
+    const val DESCRIPTION_POSITIVE = "looking positive today \uD83D\uDE0D "
+    const val DESCRIPTION_NEGATIVE = "on the negative side today \uD83D\uDE21"
     const val SYNC_DATA = "syncData"
     const val SYNC_DATA_WORK_NAME = "syncDataWorkName"
+    const val BITCOIN_ID = "bitcoin"
 }
