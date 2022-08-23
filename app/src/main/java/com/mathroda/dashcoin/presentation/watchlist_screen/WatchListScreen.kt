@@ -42,7 +42,6 @@ fun WatchListScreen(
             .background(DarkGray)
             .fillMaxSize()
             .padding(12.dp)
-            .padding(bottom = 45.dp)
     ) {
 
         Column {
@@ -63,7 +62,7 @@ fun WatchListScreen(
                 }
 
 
-                Divider(color = LighterGray, modifier = Modifier.padding(bottom = 10.dp))
+                Divider(color = LighterGray, modifier = Modifier.padding(horizontal = 10.dp))
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing = isRefresh),
                 onRefresh = { watchListViewModel.refresh() }) {
