@@ -19,7 +19,7 @@ class WorkerProviderRepositoryImpl @Inject constructor(
         val workRequest = PeriodicWorkRequestBuilder<DashCoinWorker>(
             4, TimeUnit.HOURS,
             4, TimeUnit.HOURS
-        ).setConstraints(workConstraints).setInitialDelay(15, TimeUnit.SECONDS)
+        ).setConstraints(workConstraints).setInitialDelay(15, TimeUnit.MINUTES)
             .addTag(Constants.SYNC_DATA).build()
 
         workManager.enqueueUniquePeriodicWork(
