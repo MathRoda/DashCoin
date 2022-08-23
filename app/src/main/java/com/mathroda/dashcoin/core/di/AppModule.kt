@@ -1,16 +1,10 @@
 package com.mathroda.dashcoin.core.di
 
-import android.app.Application
-import androidx.room.Room
 import com.mathroda.dashcoin.core.util.Constants
-import com.mathroda.dashcoin.data.databaes.DashCoinDatabase
 import com.mathroda.dashcoin.data.remote.DashCoinApi
 import com.mathroda.dashcoin.data.repository.DashCoinRepositoryImpl
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
-import com.mathroda.dashcoin.domain.use_case.database.add_coin.AddCoinUseCase
-import com.mathroda.dashcoin.domain.use_case.database.delete_coin.DeleteCoinUseCase
-import com.mathroda.dashcoin.domain.use_case.database.get_all.GetAllCoinsUseCase
 import com.mathroda.dashcoin.domain.use_case.remote.get_chart.GetChartUseCase
 import com.mathroda.dashcoin.domain.use_case.remote.get_coin.GetCoinUseCase
 import com.mathroda.dashcoin.domain.use_case.remote.get_coins.GetCoinsUseCase
@@ -39,21 +33,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesDashCoinDatabase(app: Application): DashCoinDatabase {
-        return Room.databaseBuilder(
-            app,
-            DashCoinDatabase::class.java,
-            DashCoinDatabase.DATABASE_NAME
-        ).build()
-    }
-
-    @Provides
-    @Singleton
     fun providesDashCoinRepository(
-        api: DashCoinApi,
-        db: DashCoinDatabase
+        api: DashCoinApi
         ): DashCoinRepository{
-        return DashCoinRepositoryImpl(api, db.dashCoinDao)
+        return DashCoinRepositoryImpl(api)
     }
 
     @Provides
@@ -66,10 +49,6 @@ object AppModule {
             getCoin = GetCoinUseCase(repository),
             getChart = GetChartUseCase(repository),
             getNews = GetNewsUseCase(repository),
-
-            addCoin = AddCoinUseCase(repository),
-            deleteCoin = DeleteCoinUseCase(repository),
-            getAllCoins = GetAllCoinsUseCase(repository),
         )
     }
 }

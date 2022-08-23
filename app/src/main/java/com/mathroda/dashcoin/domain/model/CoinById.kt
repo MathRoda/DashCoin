@@ -1,9 +1,5 @@
 package com.mathroda.dashcoin.domain.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity
 data class CoinById (
     val availableSupply: Double? = 0.0,
     val icon: String? = "",
@@ -14,7 +10,6 @@ data class CoinById (
     val priceChange1d: Double? = 0.0,
     val priceChange1h: Double? = 0.0,
     val priceChange1w: Double? = 0.0,
-    @PrimaryKey
     val rank: Int? = 0,
     val symbol: String? = "",
     val totalSupply: Double? = 0.0,

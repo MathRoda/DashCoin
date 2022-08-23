@@ -18,11 +18,5 @@ interface DashCoinRepository {
 
     suspend fun getNews(filter: String): NewsDto
 
-    // database functions
-    suspend fun insertCoin(coins: CoinById)
-
-    suspend fun deleteCoin(coins: CoinById)
-
-    fun getAllCoins(): Flow<List<CoinById>>
 
 }
