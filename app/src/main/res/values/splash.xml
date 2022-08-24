@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#00B4FF</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_trans_dashcoin</item>
+        <item name="postSplashScreenTheme">@style/Theme.DashCoin</item>
+    </style>
+</resources>
