@@ -4,10 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,9 +16,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
-import com.mathroda.dashcoin.presentation.coins_screen.components.TopBar
+import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsScreenTopBar
 import com.mathroda.dashcoin.presentation.news_screen.components.NewsCard
 import com.mathroda.dashcoin.presentation.news_screen.viewmodel.NewsViewModel
+import com.mathroda.dashcoin.presentation.ui.common.CommonTopBar
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 
@@ -43,7 +41,7 @@ fun NewsScreen(
             .padding(12.dp)
     ) {
         Column {
-            TopBar(title = "Trending News")
+            CommonTopBar(title = "Trending News")
             SearchBar(
                 hint = "Search...",
                 state = searchNews,

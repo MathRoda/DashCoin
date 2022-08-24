@@ -29,12 +29,6 @@ sealed class Screens(
         title = "News",
         icon = Icons.Default.List
     )
-
-    object Profile: Screens(
-        route = "profile_screen",
-        title = "Profile",
-        icon = Icons.Default.Person
-    )
     object CoinDetailScreen: Screens("coin_detail_screen")
 
 }

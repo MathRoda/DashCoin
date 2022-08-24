@@ -2,15 +2,14 @@ package com.mathroda.dashcoin.presentation.coins_screen.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseUser
 import com.mathroda.dashcoin.core.util.Resource
+import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
 import com.mathroda.dashcoin.domain.use_case.worker.WorkerOnSuccessUseCase
 import com.mathroda.dashcoin.presentation.coins_screen.state.CoinsState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.Collections.emptyList
 import javax.inject.Inject
@@ -18,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CoinsViewModel @Inject constructor(
     private val dashCoinUseCases: DashCoinUseCases,
+    private val firebaseRepository: FirebaseRepository,
     workerOnSuccessUseCase: WorkerOnSuccessUseCase
 ): ViewModel() {
 
@@ -27,11 +27,15 @@ class CoinsViewModel @Inject constructor(
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
 
+    private val _userEmail = MutableStateFlow("")
+    val userEmail: StateFlow<String> = _userEmail
+
     val onSuccessWorker = workerOnSuccessUseCase.invoke()
 
 
     init {
         getCoins()
+        getCurrentUSer()
     }
 
 
@@ -69,6 +73,22 @@ class CoinsViewModel @Inject constructor(
         }
 
     }
+
+    private fun getCurrentUSer(): Flow<Resource<FirebaseUser>> {
+        return flow {
+            firebaseRepository.getCurrentUser().onEach {  result ->
+                when(result) {
+                    is Resource.Success -> {
+                        result.data?.email?.let {
+                            _userEmail.emit(it)
+                        }
+                    }
+                    else -> {}
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
 
 
 }
