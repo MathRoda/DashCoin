@@ -1,5 +1,4 @@
-package com.mathroda.dashcoin.presentation.coins_screen.components
-
+package com.mathroda.dashcoin.presentation.ui.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,15 +14,15 @@ import androidx.compose.ui.unit.dp
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 
 @Composable
-fun TopBar(
-    title: String,
-    modifier: Modifier = Modifier
+fun CommonTopBar(
+    modifier: Modifier = Modifier,
+    title: String
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
         modifier = modifier
-        .fillMaxWidth()
+            .fillMaxWidth()
             .padding(top = 24.dp)
     ) {
         Text(
@@ -34,5 +33,4 @@ fun TopBar(
             modifier = modifier
         )
     }
-    
 }

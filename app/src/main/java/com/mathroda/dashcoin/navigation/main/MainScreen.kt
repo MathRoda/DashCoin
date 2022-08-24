@@ -84,8 +84,7 @@ fun BottomBar(
     val screens = listOf(
         Screens.CoinsScreen,
         Screens.CoinsWatchList,
-        Screens.CoinsNews,
-        Screens.Profile
+        Screens.CoinsNews
     )
 
     AnimatedVisibility(
