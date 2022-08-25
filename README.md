@@ -14,7 +14,7 @@ i documented my journey and thoughts for the development process , read my artic
 
 ***You can Install and test latest DashCoin app from below 👇***
 
-[![DashCoin](https://img.shields.io/badge/DashCoin✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/MathRoda/Dash-Coin-App/releases/latest)
+[![DashCoin](https://img.shields.io/badge/DashCoin✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/MathRoda/Dash-Coin-App/releases/download/v1.1.0/DashCoin.apk)
 
 or from the IzzyOnDroid F-Droid compatible repo
 
@@ -40,8 +40,11 @@ watch video here [DashCoin Showcase](https://youtu.be/Y8FlGuVJOg8)
 
 |   |   |   |
 |---|---|---|
+|![](DashCoin/Screenshot_splashscreen.png)| ![](DashCoin/Screenshot_signin.png) | ![](DashCoin/Screenshot_register.png) 
 |![](DashCoin/home.png)| ![](DashCoin/search.png) | ![](DashCoin/positive-chart.png)
 |![](DashCoin/nigative-chart.png) | ![](DashCoin/watchlist.png) |![](DashCoin/news.png) 
+|![](DashCoin/Screenshot_profile.png) | ![](DashCoin/Screenshot_notification.png) |
+
 
 ### Technical details 
 
@@ -70,6 +73,11 @@ watch video here [DashCoin Showcase](https://youtu.be/Y8FlGuVJOg8)
 - [GSON](https://github.com/google/gson) - A modern JSON library for Kotlin and Java.
 - [Retrofit](https://square.github.io/retrofit/) - A type-safe HTTP client for Android and Java.
 - [Room](https://developer.android.com/jetpack/androidx/releases/room) - an abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
+- [Firebase Authentication](https://firebase.google.com/docs/auth) - Firebase Authentication provides backend services, easy-to-use SDKs.
+- [Firebase FireStore]https://firebase.google.com/docs/firestore) - Cloud Firestore is a flexible, scalable database for mobile, web, and server development from Firebase and Google Cloud.
+- [Lottie](https://lottiefiles.com) A Lottie is a JSON-based animation file format that enables designers to ship animations on any platform as easily as shipping static assets.
+- [Work Manger](https://developer.android.com/topic/libraries/architecture/workmanager) - WorkManager is the recommended solution for persistent work.
+- [Splash Screen API](https://developer.android.com/develop/ui/views/launch/splash-screen) - When a user launches an app while the app's process is not running (a cold start) or the Activity has not been created (a warm start), the following events occur.
 - [GSON Converter](https://github.com/square/retrofit/tree/master/retrofit-converters/gson) - A Converter which uses Moshi for serialization to and from JSON.
 - [Coil](https://github.com/coil-kt/coil) - An image loading library for Android backed by Kotlin Coroutines.
 - [Material Components for Android](https://github.com/material-components/material-components-android) - Modular and customizable Material Design UI components for Android.
