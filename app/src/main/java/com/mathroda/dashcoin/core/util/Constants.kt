@@ -17,4 +17,8 @@ object Constants {
     const val SYNC_DATA = "syncData"
     const val SYNC_DATA_WORK_NAME = "syncDataWorkName"
     const val BITCOIN_ID = "bitcoin"
+    const val LINKEDIN = "https://www.linkedin.com/in/mathroda/"
+    const val GITHUB = "https://github.com/MathRoda"
+    const val TWITTER = "https://twitter.com/mathroda_codes"
+    const val DASHCOIN_REPOSITORY = "https://github.com/MathRoda/Dash-Coin-App"
 }

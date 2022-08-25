@@ -2,6 +2,7 @@ package com.mathroda.dashcoin.presentation.coins_screen.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.mikephil.charting.utils.Utils.init
 import com.google.firebase.auth.FirebaseUser
 import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
@@ -32,10 +33,11 @@ class CoinsViewModel @Inject constructor(
 
     val onSuccessWorker = workerOnSuccessUseCase.invoke()
 
+    val getCurrentUserEmail = firebaseRepository.getCurrentUserEmail()
+
 
     init {
         getCoins()
-        getCurrentUSer()
     }
 
 
@@ -73,22 +75,5 @@ class CoinsViewModel @Inject constructor(
         }
 
     }
-
-    private fun getCurrentUSer(): Flow<Resource<FirebaseUser>> {
-        return flow {
-            firebaseRepository.getCurrentUser().onEach {  result ->
-                when(result) {
-                    is Resource.Success -> {
-                        result.data?.email?.let {
-                            _userEmail.emit(it)
-                        }
-                    }
-                    else -> {}
-                }
-            }.launchIn(viewModelScope)
-        }
-    }
-
-
 
 }

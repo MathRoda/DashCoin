@@ -3,25 +3,34 @@ package com.mathroda.dashcoin.presentation.profile_screen
 import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,33 +46,48 @@ import com.mathroda.dashcoin.presentation.profile_screen.viewmodel.ProfileViewMo
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.ui.theme.CustomBrightRed
 import com.mathroda.dashcoin.presentation.ui.theme.CustomRed
+import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
+import com.mathroda.dashcoin.presentation.ui.theme.Gold
 
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigation(
     welcomeUser: String
 ) {
-    DrawerHeader(welcomeUser =welcomeUser)
+    val uriHandler  = LocalUriHandler.current
+
+    DrawerHeader(welcomeUser = welcomeUser)
 
     DrawerBody(
         item = listOf(
             MenuItems(
-                id = "home",
-                title = "HOME",
+                id = "settings",
+                title = "Settings",
                 contentDescription = "Toggle Home",
-                icon = Icons.Default.Home
+                icon = Icons.Default.Settings
             ),
             MenuItems(
-                id = "about",
-                title = "ABOUT",
+                id = "help",
+                title = "Help Center",
                 contentDescription = "Toggle About",
                 icon = Icons.Default.Help
             ),
+            MenuItems(
+                id = "about",
+                title = "About DashCoin",
+                contentDescription = "Toggle About",
+                icon = Icons.Default.Favorite
+            )
         ) ,
-        onItemClick = {}
+        onItemClick = {
+            when(it.id) {
+                "about" -> {uriHandler.openUri(Constants.DASHCOIN_REPOSITORY)}
+            }
+        }
     )
 
     LogOut()
+    DrawerFooter()
 
 }
 
@@ -71,15 +95,24 @@ fun DrawerNavigation(
 fun DrawerHeader(
     welcomeUser: String
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 64.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-         //Text(text = "Welcome", fontSize = 28.sp)
-         Text(text = welcomeUser, fontSize = 26.sp)
-    }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+                .padding(bottom = 16.dp)
+        ) {
+            Card(
+                shape = CircleShape,
+                modifier = Modifier.graphicsLayer(scaleY = 0.5f, scaleX = 0.5f)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_profile_placeholder),
+                    contentDescription = "Profile Placeholder"
+                )
+            }
+            Text(text = welcomeUser, fontSize = 22.sp)
+        }
+
 }
 
 @Composable
@@ -122,18 +155,21 @@ fun LogOut(
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val activity = (LocalContext.current as? Activity)
-    var openDialogCustom = remember{ mutableStateOf(false) }
+    val openDialogCustom = remember{ mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
 
-            //TopAppBar(title = { Text(text = "Profile") })
+            TopAppBar(title = { Text(text = "Profile") })
             Spacer(modifier = Modifier.size(32.dp))
             CustomLoginButton(
                 text = "LOGOUT",
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(DarkGray)
+                    .padding(top = 24.dp),
                 color = listOf(CustomRed, CustomBrightRed)
             ) {
                 openDialogCustom.value = true
@@ -147,4 +183,55 @@ fun LogOut(
             activity?.startActivity(Intent(activity, MainActivity::class.java))
         }
     }
+}
+
+@Composable
+fun DrawerFooter() {
+    val uriHandler = LocalUriHandler.current
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Text(
+            text = "Contact Creator",
+            fontStyle = FontStyle.Italic,
+            fontWeight = FontWeight.SemiBold,
+            color = Gold
+        )
+
+        LazyRow {
+            item {
+                IconButton(onClick = { uriHandler.openUri(Constants.LINKEDIN) }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_linkedin),
+                        modifier = Modifier.size(18.dp),
+                        contentDescription = "Linkedin"
+                    )
+                }
+                Spacer(modifier = Modifier.size(12.dp))
+
+                IconButton(onClick = { uriHandler.openUri(Constants.GITHUB) }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_github),
+                        modifier = Modifier.size(18.dp),
+                        contentDescription = "Github"
+                    )
+                }
+
+                    Spacer(modifier = Modifier.size(12.dp))
+
+                    IconButton(onClick = { uriHandler.openUri(Constants.TWITTER) }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_twitter),
+                            modifier = Modifier.size(18.dp),
+                            contentDescription = "Twitter"
+                        )
+                    }
+            }
+        }
+    }
+
 }

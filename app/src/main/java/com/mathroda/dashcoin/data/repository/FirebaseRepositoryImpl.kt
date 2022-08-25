@@ -3,7 +3,6 @@ package com.mathroda.dashcoin.data.repository
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.core.util.Resource
@@ -63,11 +62,10 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
-    override fun getCurrentUser(): Flow<Resource<FirebaseUser>> {
+    override fun getCurrentUserEmail(): Flow<String> {
         return flow {
-            emit(Resource.Loading())
-            firebaseAuth.currentUser?.let {
-                emit(Resource.Success(it))
+            firebaseAuth.currentUser?.email?.let {
+                emit(it)
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.mathroda.dashcoin.presentation.coins_screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -49,7 +50,7 @@ fun CoinScreen(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    val userEmail = viewModel.userEmail.collectAsState()
+    val userEmail = viewModel.getCurrentUserEmail.collectAsState(initial = "")
 
     Scaffold(
         scaffoldState = scaffoldState,
