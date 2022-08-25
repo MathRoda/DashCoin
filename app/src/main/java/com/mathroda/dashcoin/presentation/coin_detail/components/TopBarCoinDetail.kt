@@ -8,8 +8,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.mathroda.dashcoin.presentation.ui.theme.Gold
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 
 @Composable
@@ -30,6 +31,7 @@ fun TopBarCoinDetail(
     onCLick: (Boolean) -> Unit
 
 ) {
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -77,11 +79,11 @@ fun TopBarCoinDetail(
                 .weight(2f),
             contentAlignment = Alignment.CenterEnd){
 
-                FavoriteButton(
-                    modifier = Modifier.padding(8.dp),
-                    isFavorite = isFavorite,
-                    onCLick = onCLick
-                )
+            FavoriteButton(
+                modifier = Modifier.padding(8.dp),
+                isFavorite = isFavorite,
+                onCLick = onCLick
+            )
         }
 
         }
@@ -101,16 +103,12 @@ fun FavoriteButton(
         onCheckedChange = onCLick
     ) {
         Icon(
-            tint = color,
+            tint =  if (isFavorite) Gold else color ,
             modifier = modifier.graphicsLayer {
                 scaleX = 1.3f
                 scaleY = 1.3f
             },
-            imageVector = if (isFavorite) {
-                Icons.Filled.Favorite
-            } else {
-                Icons.Default.FavoriteBorder
-            },
+            imageVector = if (isFavorite) Icons.Filled.Star else Icons.Default.StarBorder,
             contentDescription = null
         )
     }

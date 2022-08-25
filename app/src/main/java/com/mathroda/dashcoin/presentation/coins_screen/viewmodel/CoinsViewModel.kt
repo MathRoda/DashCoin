@@ -2,21 +2,24 @@ package com.mathroda.dashcoin.presentation.coins_screen.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.mikephil.charting.utils.Utils.init
+import com.google.firebase.auth.FirebaseUser
 import com.mathroda.dashcoin.core.util.Resource
+import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
+import com.mathroda.dashcoin.domain.use_case.worker.WorkerOnSuccessUseCase
 import com.mathroda.dashcoin.presentation.coins_screen.state.CoinsState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.Collections.emptyList
 import javax.inject.Inject
 
 @HiltViewModel
 class CoinsViewModel @Inject constructor(
-    private val dashCoinUseCases: DashCoinUseCases
+    private val dashCoinUseCases: DashCoinUseCases,
+    private val firebaseRepository: FirebaseRepository,
+    workerOnSuccessUseCase: WorkerOnSuccessUseCase
 ): ViewModel() {
 
     private val _state = MutableStateFlow(CoinsState())
@@ -25,10 +28,22 @@ class CoinsViewModel @Inject constructor(
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
 
+    private val _userEmail = MutableStateFlow("")
+    val userEmail: StateFlow<String> = _userEmail
+
+    val onSuccessWorker = workerOnSuccessUseCase.invoke()
+
+    val getCurrentUserEmail = firebaseRepository.getCurrentUserEmail()
+
+
     init {
         getCoins()
     }
 
+
+   fun marketStates(coinId: String) {
+       dashCoinUseCases.getCoin.invoke(coinId)
+   }
 
    private fun getCoins() {
         dashCoinUseCases.getCoins().onEach { result ->
@@ -60,6 +75,5 @@ class CoinsViewModel @Inject constructor(
         }
 
     }
-
 
 }
