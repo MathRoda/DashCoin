@@ -18,7 +18,6 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.dashcoin.navigation.main.Screens
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
-import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsScreenTopBar
 import com.mathroda.dashcoin.presentation.ui.common.CommonTopBar
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray

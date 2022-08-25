@@ -1,6 +1,5 @@
 package com.mathroda.dashcoin.presentation.coins_screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,13 +22,12 @@ import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.navigation.main.Screens
 import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsItem
-import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
 import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsScreenTopBar
+import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
 import com.mathroda.dashcoin.presentation.profile_screen.DrawerNavigation
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 import com.mathroda.dashcoin.presentation.ui.theme.LightGray
-import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
