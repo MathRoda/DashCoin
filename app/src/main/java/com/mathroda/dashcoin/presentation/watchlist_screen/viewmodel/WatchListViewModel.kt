@@ -1,5 +1,6 @@
 package com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel
 
+import android.os.Bundle
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -97,5 +98,7 @@ class WatchListViewModel @Inject constructor(
         }
 
     }
+
+
 
 }

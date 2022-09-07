@@ -11,7 +11,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
-import com.mathroda.dashcoin.navigation.graphs.RootNavigationGraph
+import com.mathroda.dashcoin.navigation.root.RootNavigationGraph
 import com.mathroda.dashcoin.presentation.splash.SplashViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.DashCoinTheme
 import dagger.hilt.android.AndroidEntryPoint

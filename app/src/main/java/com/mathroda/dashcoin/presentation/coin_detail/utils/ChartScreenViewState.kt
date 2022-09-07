@@ -18,8 +18,8 @@ class ChartScreenViewState {
     ) =
         LineDataSet(lineData, label).apply {
             mode = LineDataSet.Mode.CUBIC_BEZIER
-             color = getColorStatus(oneDayChange)
-             highLightColor = getColorStatus(oneDayChange)
+            color = getColorStatus(oneDayChange)
+            highLightColor = getColorStatus(oneDayChange)
             fillDrawable = getBackground(oneDayChange,context)
             lineWidth = 2f
             setDrawFilled(true)

@@ -8,4 +8,5 @@ interface WorkerProviderRepository {
     fun createWork()
 
     fun onWorkerSuccess(): LiveData<List<WorkInfo>>
+
 }

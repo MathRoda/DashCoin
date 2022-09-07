@@ -33,12 +33,6 @@ class CoinViewModel @Inject constructor(
 
 
 
-
-    /**
-     * notes
-     * ive to put getCoin in saved instance init block after testing
-     * remove the initial value from coinId: String = "bitcoin"
-     */
     init {
         savedStateHandle.get<String>(Constants.PARAM_COIN_ID)?.let { coinId ->
             getChart(coinId)

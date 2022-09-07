@@ -1,4 +1,4 @@
-package com.mathroda.dashcoin.navigation.graphs
+package com.mathroda.dashcoin.navigation.root
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable

@@ -29,8 +29,6 @@ class CoinsViewModel @Inject constructor(
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
 
-    private val _userEmail = MutableStateFlow("")
-    val userEmail: StateFlow<String> = _userEmail
 
     val onSuccessWorker = workerOnSuccessUseCase.invoke()
 

@@ -188,8 +188,8 @@ fun SignInScreen(
             duration = Toast.LENGTH_LONG,
             padding = PaddingValues(bottom = 24.dp)
         )
-        rememberCoroutineScope().launch {
-            delay(600L)
+
+        LaunchedEffect(Unit) {
             navigateToCoinsScreen()
         }
     }

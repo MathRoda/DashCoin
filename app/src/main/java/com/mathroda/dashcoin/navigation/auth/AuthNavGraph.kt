@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.mathroda.dashcoin.navigation.graphs.Graph
+import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.dashcoin.presentation.signin_screen.SignInScreen
 import com.mathroda.dashcoin.presentation.signup_screen.SignUpScreen
 

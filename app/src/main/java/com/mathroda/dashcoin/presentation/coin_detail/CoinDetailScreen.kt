@@ -78,7 +78,6 @@ fun CoinDetailScreen(
                        navController = navController,
                        isFavorite = isFavorite,
                        onCLick = {
-
                            isFavorite = !isFavorite
 
                            if (isFavorite){

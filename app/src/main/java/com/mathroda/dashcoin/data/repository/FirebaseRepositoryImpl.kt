@@ -20,6 +20,7 @@ class FirebaseRepositoryImpl constructor(
     private val firebaseAuth: FirebaseAuth,
     private val fireStore: FirebaseFirestore
 ): FirebaseRepository {
+
     override fun getUserId(): Flow<String> {
         return flow {
             firebaseAuth.currentUser?.uid?.let {
@@ -150,4 +151,5 @@ class FirebaseRepositoryImpl constructor(
             awaitClose { this.cancel() }
         }
     }
+
 }
