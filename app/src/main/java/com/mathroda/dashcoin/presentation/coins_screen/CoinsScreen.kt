@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -21,9 +22,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.navigation.main.Screens
-import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsItem
-import com.mathroda.dashcoin.presentation.coins_screen.components.CoinsScreenTopBar
-import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
+import com.mathroda.dashcoin.presentation.coins_screen.components.*
 import com.mathroda.dashcoin.presentation.coins_screen.viewmodel.CoinsViewModel
 import com.mathroda.dashcoin.presentation.profile_screen.DrawerNavigation
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
@@ -49,6 +48,8 @@ fun CoinScreen(
     val scope = rememberCoroutineScope()
 
     val userEmail = viewModel.getCurrentUserEmail.collectAsState(initial = "")
+
+    val lazyListState = rememberLazyListState()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -86,7 +87,9 @@ fun CoinScreen(
                     state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
                     onRefresh = { viewModel.refresh() }) {
 
-                    LazyColumn {
+                    LazyColumn(
+                       state = lazyListState
+                    ) {
                         items(items = state.value.coins.filter {
                             it.name.contains(isBeingSearched, ignoreCase = true) ||
                                     it.id.contains(isBeingSearched, ignoreCase = true) ||
@@ -99,7 +102,6 @@ fun CoinScreen(
                                 }
                             )
                         }
-
                     }
                 }
 
@@ -141,6 +143,35 @@ fun CoinScreen(
                         .padding(horizontal = 20.dp)
                         .align(Alignment.Center)
                 )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+
+        ) {
+            val firstVisibleItem = lazyListState.firstVisibleItemIndex
+            val isScrollingUp = lazyListState.isScrollingUp()
+
+            Column (
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Bottom
+                    ){
+                FloatingScrollButton(
+                    modifier = Modifier
+                        .padding(bottom = 64.dp, end = 16.dp),
+                    visibility = if(firstVisibleItem <= 4) false else isScrollingUp
+                ) {
+                    scope.launch {
+                        /**
+                         * Scroll to first item in the list
+                         */
+                        lazyListState.scrollToItem(0)
+                    }
+                }
+
             }
         }
     }
