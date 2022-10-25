@@ -1,4 +1,4 @@
-package com.mathroda.dashcoin.domain.datastore
+package com.mathroda.dashcoin.data.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

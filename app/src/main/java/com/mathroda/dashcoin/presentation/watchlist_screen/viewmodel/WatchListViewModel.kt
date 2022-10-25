@@ -82,7 +82,7 @@ class WatchListViewModel @Inject constructor(
             }.launchIn(viewModelScope)
     }
 
-     fun isFavoriteState(coinById: CoinById) {
+    fun isFavoriteState(coinById: CoinById) {
         viewModelScope.launch {
             firebaseRepository.isFavoriteState(coinById).collect {
                 _isFavoriteState.emit(it?: CoinById())
