@@ -10,6 +10,8 @@ interface FirebaseRepository {
 
     fun getUserId(): Flow<String>
 
+    fun signInAnonymously(): Flow<Resource<AuthResult>>
+
     fun signUpWithEmailAndPassword(email: String, password: String): Flow<Resource<AuthResult>>
 
     fun signInWithEmailAndPassword(email: String, password: String): Flow<Resource<AuthResult>>

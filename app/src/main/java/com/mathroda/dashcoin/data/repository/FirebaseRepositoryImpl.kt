@@ -29,6 +29,19 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
+    override fun signInAnonymously(): Flow<Resource<AuthResult>> {
+        return  flow {
+            emit(Resource.Loading())
+            emit(
+                Resource.Success(
+                    firebaseAuth.signInAnonymously().await()
+                )
+            )
+        }.catch {
+            emit(Resource.Error(it.toString()))
+        }
+    }
+
     override fun signUpWithEmailAndPassword(
         email: String,
         password: String

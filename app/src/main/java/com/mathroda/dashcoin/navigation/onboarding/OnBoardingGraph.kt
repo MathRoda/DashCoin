@@ -13,7 +13,17 @@ fun NavGraphBuilder.onBoardingNavGraph(navController: NavController) {
         startDestination = OnBoardingScreen.Welcome.route
     ) {
         composable(route = OnBoardingScreen.Welcome.route) {
-            OnBoardingScreen()
+            OnBoardingScreen(
+                popBackStack = {
+                    navController.popBackStack()
+                },
+                toAuthScreen = {
+                    navController.navigate(Graph.AUTH)
+                },
+                toMainScreen = {
+                    navController.navigate(Graph.MAIN)
+                }
+            )
         }
     }
 }

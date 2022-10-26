@@ -168,10 +168,10 @@ fun SignInScreen(
 
     if (sigInState.value.isLoading) {
         if (isLoading) {
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize(),
-                contentAlignment = Alignment.Center
+                 verticalArrangement = Arrangement.Center
             ) {
                 CircularProgressIndicator(
                     Modifier

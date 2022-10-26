@@ -2,6 +2,7 @@ package com.mathroda.dashcoin.navigation.root
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,11 +12,14 @@ import com.mathroda.dashcoin.navigation.onboarding.onBoardingNavGraph
 
 @ExperimentalMaterialApi
 @Composable
-fun RootNavigationGraph(navHostController: NavHostController) {
+fun RootNavigationGraph(
+    navHostController: NavHostController,
+    startDestination: String
+) {
     NavHost(
         navController = navHostController,
         route = Graph.ROOT,
-        startDestination = Graph.ON_BOARDING
+        startDestination = startDestination
     ) {
         onBoardingNavGraph(navHostController)
         authNavGraph(navHostController)

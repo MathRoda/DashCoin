@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
+import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.dashcoin.navigation.root.RootNavigationGraph
 import com.mathroda.dashcoin.presentation.splash.SplashViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.DashCoinTheme
@@ -35,7 +37,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                   RootNavigationGraph(navHostController = rememberNavController())
+                       RootNavigationGraph(
+                           navHostController = rememberNavController(),
+                           startDestination = Graph.ON_BOARDING
+                           )
                 }
             }
         }
