@@ -16,11 +16,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.mathroda.dashcoin.presentation.onboarding.utils.OnBoardingPage
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PagerScreen(
-    onBoardingPage: OnBoardingPage,
-    pagerState: PagerState
+    onBoardingPage: OnBoardingPage
     ) {
     Column(
         modifier = Modifier
@@ -31,7 +29,7 @@ fun PagerScreen(
         Image(
             modifier = Modifier
                 .fillMaxWidth(0.5f)
-                .fillMaxHeight(if (pagerState.currentPage == 2) 0.7f else 0.8f),
+                .fillMaxHeight(0.7f),
             painter = painterResource(id = onBoardingPage.image ),
             contentDescription = "Pager Image"
         )

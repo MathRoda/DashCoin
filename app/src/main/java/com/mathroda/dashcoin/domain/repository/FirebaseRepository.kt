@@ -2,6 +2,7 @@ package com.mathroda.dashcoin.domain.repository
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseUser
 import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.model.CoinById
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +11,7 @@ interface FirebaseRepository {
 
     fun getUserId(): Flow<String>
 
-    fun signInAnonymously(): Flow<Resource<AuthResult>>
+    fun signInAnonymously(): Flow<Resource<FirebaseUser?>>
 
     fun signUpWithEmailAndPassword(email: String, password: String): Flow<Resource<AuthResult>>
 

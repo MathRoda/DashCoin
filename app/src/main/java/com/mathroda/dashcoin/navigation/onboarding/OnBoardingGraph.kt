@@ -17,12 +17,6 @@ fun NavGraphBuilder.onBoardingNavGraph(navController: NavController) {
                 popBackStack = {
                     navController.popBackStack()
                 },
-                toAuthScreen = {
-                    navController.navigate(Graph.AUTH)
-                },
-                toMainScreen = {
-                    navController.navigate(Graph.MAIN)
-                }
             )
         }
     }

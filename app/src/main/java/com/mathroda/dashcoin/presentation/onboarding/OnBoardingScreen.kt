@@ -1,13 +1,14 @@
 package com.mathroda.dashcoin.presentation.onboarding
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Bottom
+import androidx.compose.ui.Alignment.Companion.BottomCenter
+import androidx.compose.ui.Alignment.Companion.BottomEnd
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -15,53 +16,42 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-import com.mathroda.dashcoin.presentation.onboarding.components.CustomOnBoardingButton
-import com.mathroda.dashcoin.presentation.onboarding.components.PagerScreen
+import com.mathroda.dashcoin.presentation.onboarding.components.*
 import com.mathroda.dashcoin.presentation.onboarding.utils.OnBoardingPage
 import com.mathroda.dashcoin.presentation.onboarding.viewmodel.OnBoardingViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnBoardingScreen(
     viewModel: OnBoardingViewModel = hiltViewModel(),
     popBackStack: () -> Unit,
-    toAuthScreen: () -> Unit,
-    toMainScreen: () -> Unit
 ) {
-    val isOnBoardingCompleted = viewModel.isOnBoardingCompleted.collectAsState()
-    val signAnonymouslyState = viewModel.signAnonymously.collectAsState()
-    val isAnonymous = signAnonymouslyState.value.success != null
-
+    val signAnonymouslyState = viewModel.signAnonymously.collectAsState().value
     val pager = viewModel.pager
     val state = rememberPagerState()
+    val scope = rememberCoroutineScope()
 
-    /*if (isOnBoardingCompleted.value) {
-        LaunchedEffect(Unit) {
-            if (isAnonymous) {
-                toMainScreen()
-            } else {
-                toAuthScreen()
-            }
-        }
-    }*/
-
-    if (isAnonymous) {
-        LaunchedEffect(Unit) {
-            toMainScreen
-        }
-    }
-
-    if (!isOnBoardingCompleted.value) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 32.dp)
+                .padding(bottom = 24.dp)
         ) {
-            HorizontalPagerIndicator(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .weight(1f),
-                pagerState = state
+
+            OnBoardingTopSection(
+                modifier = Modifier.weight(1f),
+                size = pager.size,
+                index = state.currentPage,
+                onBackClick = {
+                    if (state.currentPage + 1 > 1) scope.launch {
+                        state.scrollToPage(state.currentPage - 1)
+                    }
+                },
+                onSkipClick = {
+                    if (state.currentPage + 1 < pager.size) scope.launch {
+                        state.scrollToPage(pager.size - 1)
+                    }
+                }
             )
 
             HorizontalPager(
@@ -70,19 +60,35 @@ fun OnBoardingScreen(
                 state = state,
                 verticalAlignment = Alignment.Top
             ) { position ->
-                PagerScreen(onBoardingPage = pager[position], pagerState = state)
+                PagerScreen(onBoardingPage = pager[position])
             }
 
-            CustomOnBoardingButton(
-                modifier = Modifier.weight(1f),
-                pagerState = state
-            ) {
-                viewModel.saveOnBoardingState(completed = true)
-                popBackStack()
-                viewModel.signAnonymously()
+
+                AnimatedVisibility(
+                    visible = state.currentPage != 2
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Bottom,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        CustomBottomSection() {
+                            if (state.currentPage + 1 < pager.size) scope.launch {
+                                state.scrollToPage(state.currentPage + 1)
+                            }
+                        }
+                   }
+               }
+
+            Box {
+                CustomOnBoardingButton(
+                    pagerState = state
+                ) {
+                    viewModel.saveOnBoardingState(completed = true)
+                    popBackStack()
+                }
             }
         }
-    }
 
 
 }

@@ -24,11 +24,9 @@ class OnBoardingViewModel @Inject constructor(
 ) :ViewModel() {
 
 
-    private val _isOnBoardingCompleted = MutableStateFlow(true)
-    val isOnBoardingCompleted = _isOnBoardingCompleted.asStateFlow()
-
     private val _signAnonymously = MutableStateFlow(SignAnonymouslyState())
     val signAnonymously = _signAnonymously.asStateFlow()
+
 
     val pager = listOf(
         OnBoardingPage.FirstScreen,
@@ -36,9 +34,6 @@ class OnBoardingViewModel @Inject constructor(
         OnBoardingPage.ThirdScreen,
     )
 
-    init {
-        getOnBoardingState()
-    }
 
     fun saveOnBoardingState(completed:Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -46,19 +41,8 @@ class OnBoardingViewModel @Inject constructor(
         }
     }
 
-    private fun getOnBoardingState() {
-        viewModelScope.launch {
-            dataStoreRepository.readOnBoardingState.collect() { completed ->
-                if (completed) {
-                    _isOnBoardingCompleted.emit(true)
-                } else {
-                    _isOnBoardingCompleted.emit(false)
-                }
-            }
-        }
-    }
 
-    fun signAnonymously() {
+     /* fun signAnonymously() {
         firebaseRepository.signInAnonymously().onEach { result ->
             when(result) {
                 is Resource.Loading -> {
@@ -75,5 +59,5 @@ class OnBoardingViewModel @Inject constructor(
             }
 
         }.launchIn(viewModelScope)
-    }
+    } */
 }
