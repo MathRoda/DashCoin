@@ -1,8 +1,10 @@
 package com.mathroda.dashcoin.data.repository
 
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.core.util.Resource
@@ -21,11 +23,35 @@ class FirebaseRepositoryImpl constructor(
     private val fireStore: FirebaseFirestore
 ): FirebaseRepository {
 
+    companion object {
+        const val TAG = "auth"
+    }
+
     override fun getUserId(): Flow<String> {
         return flow {
             firebaseAuth.currentUser?.uid?.let {
                 emit(it)
             }
+        }
+    }
+
+    override fun signInAnonymously(): Flow<Resource<FirebaseUser?>> {
+        return callbackFlow {
+            this.trySend(Resource.Loading())
+            firebaseAuth.signInAnonymously()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "signInAnonymously:success")
+                        firebaseAuth.currentUser?.let {
+                            this.trySend(Resource.Success(it))
+                        }
+                    } else {
+                        Log.w(TAG, "signInAnonymously:failure", task.exception)
+                        this.trySend(Resource.Error(task.exception?.message.toString()))
+                    }
+                }
+
+            awaitClose { this.cancel() }
         }
     }
 

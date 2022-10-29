@@ -1,6 +1,7 @@
 package com.mathroda.dashcoin.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -8,13 +9,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.dashcoin.navigation.root.RootNavigationGraph
 import com.mathroda.dashcoin.presentation.splash.SplashViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.DashCoinTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @AndroidEntryPoint
@@ -35,7 +42,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                   RootNavigationGraph(navHostController = rememberNavController())
+                    val startDestination by viewModel.startDestination
+                    Log.d("mainActivity", startDestination)
+                       RootNavigationGraph(
+                           navHostController = rememberNavController(),
+                           startDestination = startDestination
+                           )
                 }
             }
         }

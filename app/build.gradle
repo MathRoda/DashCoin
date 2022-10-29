@@ -111,6 +111,10 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version" */
 
+    //Pager
+    implementation "com.google.accompanist:accompanist-pager:0.24.0-alpha"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.24.0-alpha"
+
     // Dagger hilt
     implementation "com.google.dagger:hilt-android:2.43.2"
     kapt ("com.google.dagger:hilt-compiler:2.43.2")
