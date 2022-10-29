@@ -10,6 +10,8 @@ class ProfileViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ): ViewModel(){
 
+    val isCurrentUserExist = firebaseRepository.isCurrentUserExist()
+
     fun signOut() = firebaseRepository.signOut()
 
 }

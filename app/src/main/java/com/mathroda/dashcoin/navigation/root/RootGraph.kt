@@ -22,7 +22,6 @@ fun RootNavigationGraph(
         startDestination = startDestination
     ) {
         onBoardingNavGraph(navHostController)
-        authNavGraph(navHostController)
         composable(route = Graph.MAIN) {
             MainScreen()
         }
@@ -31,7 +30,6 @@ fun RootNavigationGraph(
 
 object Graph {
     const val ROOT = "root_graph"
-    const val AUTH = "auth_graph"
     const val MAIN = "main_graph"
     const val ON_BOARDING = "on_boarding"
 }

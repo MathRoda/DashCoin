@@ -9,6 +9,8 @@ import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.dashcoin.presentation.coin_detail.CoinDetailScreen
 import com.mathroda.dashcoin.presentation.coins_screen.CoinScreen
 import com.mathroda.dashcoin.presentation.news_screen.NewsScreen
+import com.mathroda.dashcoin.presentation.signin_screen.SignInScreen
+import com.mathroda.dashcoin.presentation.signup_screen.SignUpScreen
 import com.mathroda.dashcoin.presentation.watchlist_screen.WatchListScreen
 
 @ExperimentalMaterialApi
@@ -43,6 +45,29 @@ fun MainGraph(navController: NavHostController) {
         ){
             CoinDetailScreen(navController = navController)
         }
+        composable(route = Screens.SignIn.route) {
+            SignInScreen(
+                navigateToCoinsScreen =  {
+                    navController.popBackStack()
+                    navController.navigate(Screens.CoinsScreen.route)
+                },
+                navigateToSignUpScreen = {
+                    navController.navigate(Screens.SignUp.route)
+                },
+                popBackStack = {
+                    navController.popBackStack(Screens.SignUp.route, false)
+                }
+            )
+        }
 
+        composable(route = Screens.SignUp.route) {
+            SignUpScreen(
+                navigateToSignInScreen =  {
+                    navController.popBackStack()
+                    navController.navigate(Screens.SignIn.route)
+                }
+            )
+        }
     }
+
 }

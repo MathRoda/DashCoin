@@ -32,6 +32,8 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     when (navBackStackEntry?.destination?.route) {
         Screens.CoinDetailScreen.route + "/{coinId}" -> bottomBarState.value = false
+        Screens.SignIn.route -> bottomBarState.value = false
+        Screens.SignUp.route -> bottomBarState.value = false
         else -> bottomBarState.value = true
     }
     /**

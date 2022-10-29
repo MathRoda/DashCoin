@@ -48,13 +48,13 @@ fun SignInScreen(
     val isUserExist = viewModel.isCurrentUserExist.collectAsState(initial = true)
     val sigInState = viewModel.signIn.collectAsState()
 
-    LaunchedEffect(Unit) {
+   /* LaunchedEffect(Unit) {
         if (isUserExist.value) {
             navigateToCoinsScreen()
         }
-    }
+    } */
 
-    if (!isUserExist.value) {
+   /* if (!isUserExist.value) { */
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
@@ -163,7 +163,6 @@ fun SignInScreen(
                 }
             }
 
-        }
     }
 
     if (sigInState.value.isLoading) {

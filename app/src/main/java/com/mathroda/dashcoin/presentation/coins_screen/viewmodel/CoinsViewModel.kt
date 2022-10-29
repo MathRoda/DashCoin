@@ -33,6 +33,7 @@ class CoinsViewModel @Inject constructor(
     val onSuccessWorker = workerOnSuccessUseCase.invoke()
 
     val getCurrentUserEmail = firebaseRepository.getCurrentUserEmail()
+    val isCurrentUserExist = firebaseRepository.isCurrentUserExist()
 
 
     init {
