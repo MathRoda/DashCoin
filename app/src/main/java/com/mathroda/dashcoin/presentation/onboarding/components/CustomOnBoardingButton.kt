@@ -24,7 +24,7 @@ import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun CustomOnBoardingButton(
-    text: String = "Continue Now",
+    text: String = "Discover DashCoin",
     modifier: Modifier = Modifier,
     color: Color = CustomGreen,
     fontWeight: FontWeight = FontWeight.SemiBold,

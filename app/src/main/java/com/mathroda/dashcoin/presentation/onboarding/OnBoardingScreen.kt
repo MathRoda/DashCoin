@@ -27,7 +27,6 @@ fun OnBoardingScreen(
     viewModel: OnBoardingViewModel = hiltViewModel(),
     popBackStack: () -> Unit,
 ) {
-    val signAnonymouslyState = viewModel.signAnonymously.collectAsState().value
     val pager = viewModel.pager
     val state = rememberPagerState()
     val scope = rememberCoroutineScope()
@@ -35,7 +34,7 @@ fun OnBoardingScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 24.dp)
+                .padding(bottom = 32.dp)
         ) {
 
             OnBoardingTopSection(
