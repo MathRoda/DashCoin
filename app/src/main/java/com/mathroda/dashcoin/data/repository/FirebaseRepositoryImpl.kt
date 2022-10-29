@@ -1,10 +1,8 @@
 package com.mathroda.dashcoin.data.repository
 
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.core.util.Resource
@@ -35,25 +33,6 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
-    override fun signInAnonymously(): Flow<Resource<FirebaseUser?>> {
-        return callbackFlow {
-            this.trySend(Resource.Loading())
-            firebaseAuth.signInAnonymously()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "signInAnonymously:success")
-                        firebaseAuth.currentUser?.let {
-                            this.trySend(Resource.Success(it))
-                        }
-                    } else {
-                        Log.w(TAG, "signInAnonymously:failure", task.exception)
-                        this.trySend(Resource.Error(task.exception?.message.toString()))
-                    }
-                }
-
-            awaitClose { this.cancel() }
-        }
-    }
 
     override fun signUpWithEmailAndPassword(
         email: String,
@@ -78,6 +57,15 @@ class FirebaseRepositoryImpl constructor(
         return flow {
             emit(Resource.Loading())
             emit(Resource.Success(firebaseAuth.signInWithEmailAndPassword(email, password).await()))
+        }.catch {
+            emit(Resource.Error(it.toString()))
+        }
+    }
+
+    override fun resetPasswordWithEmail(email: String): Flow<Resource<Void>> {
+        return flow {
+            emit(Resource.Loading())
+            emit(Resource.Success(firebaseAuth.sendPasswordResetEmail(email).await()))
         }.catch {
             emit(Resource.Error(it.toString()))
         }

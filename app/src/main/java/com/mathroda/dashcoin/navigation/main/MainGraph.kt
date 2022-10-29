@@ -63,8 +63,10 @@ fun MainGraph(navController: NavHostController) {
         composable(route = Screens.SignUp.route) {
             SignUpScreen(
                 navigateToSignInScreen =  {
-                    navController.popBackStack()
                     navController.navigate(Screens.SignIn.route)
+                },
+                popBackStack = {
+                    navController.popBackStack(Screens.SignIn.route, false)
                 }
             )
         }

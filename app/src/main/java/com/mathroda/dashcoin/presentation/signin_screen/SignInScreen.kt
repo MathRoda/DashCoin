@@ -1,12 +1,10 @@
 package com.mathroda.dashcoin.presentation.signin_screen
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContentScope.SlideDirection.Companion.Start
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Visibility
@@ -25,6 +23,7 @@ import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomClickableText
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomTextField
+import com.mathroda.dashcoin.presentation.signin_screen.components.SheetScreen
 import com.mathroda.dashcoin.presentation.signin_screen.viewmodel.SignInViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.Gold
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
@@ -32,6 +31,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @Composable
 fun SignInScreen(
     navigateToCoinsScreen: () ->  Unit,
@@ -45,20 +45,23 @@ fun SignInScreen(
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
-    val isUserExist = viewModel.isCurrentUserExist.collectAsState(initial = true)
     val sigInState = viewModel.signIn.collectAsState()
+    val scope = rememberCoroutineScope()
 
-   /* LaunchedEffect(Unit) {
-        if (isUserExist.value) {
-            navigateToCoinsScreen()
-        }
-    } */
+    val sheetState = rememberBottomSheetState(
+        initialValue = BottomSheetValue.Collapsed
+    )
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = sheetState
+    )
 
-   /* if (!isUserExist.value) { */
-        Scaffold(
+        BottomSheetScaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp, vertical = 32.dp),
+            scaffoldState = scaffoldState,
+            sheetPeekHeight = 0.dp,
+            sheetContent = { SheetScreen() }
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -127,6 +130,23 @@ fun SignInScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done)
 
                 )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 8.dp, top = 4.dp),
+                    horizontalArrangement = Arrangement.End
+                    )
+                {
+                    CustomClickableText(
+                        text = "Forgot Password?",
+                        color = Gold,
+                        fontSize = 14.sp,
+                    ) {
+                        scope.launch {
+                            if (sheetState.isCollapsed) sheetState.expand() else sheetState.collapse()
+                        }
+                    }
+                }
 
                 Spacer(modifier = Modifier.weight(0.2f))
 

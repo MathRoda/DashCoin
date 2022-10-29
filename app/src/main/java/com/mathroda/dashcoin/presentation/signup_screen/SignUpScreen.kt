@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignUpScreen(
     navigateToSignInScreen: () -> Unit,
+    popBackStack: () -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     var email by remember { mutableStateOf("") }
@@ -166,6 +167,7 @@ fun SignUpScreen(
                     fontSize = 17.sp,
                     fontWeight = FontWeight.W500
                 ) {
+                    popBackStack()
                     navigateToSignInScreen()
                 }
             }
@@ -190,8 +192,7 @@ fun SignUpScreen(
                 message = "Account created successfully",
                 padding = PaddingValues(bottom = 24.dp)
             )
-            rememberCoroutineScope().launch {
-                delay(700)
+            LaunchedEffect(Unit ) {
                 navigateToSignInScreen()
             }
         }
@@ -203,5 +204,6 @@ fun SignUpScreen(
             message = errorMsg,
             padding = PaddingValues(bottom = 24.dp)
         )
+        popBackStack()
     }
 }

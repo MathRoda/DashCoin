@@ -2,11 +2,9 @@ package com.mathroda.dashcoin.navigation.root
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mathroda.dashcoin.navigation.auth.authNavGraph
 import com.mathroda.dashcoin.navigation.main.MainScreen
 import com.mathroda.dashcoin.navigation.onboarding.onBoardingNavGraph
 

@@ -11,11 +11,11 @@ interface FirebaseRepository {
 
     fun getUserId(): Flow<String>
 
-    fun signInAnonymously(): Flow<Resource<FirebaseUser?>>
-
     fun signUpWithEmailAndPassword(email: String, password: String): Flow<Resource<AuthResult>>
 
     fun signInWithEmailAndPassword(email: String, password: String): Flow<Resource<AuthResult>>
+
+    fun resetPasswordWithEmail(email: String): Flow<Resource<Void>>
 
     fun isCurrentUserExist(): Flow<Boolean>
 
