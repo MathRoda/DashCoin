@@ -1,18 +1,19 @@
 package com.mathroda.dashcoin.presentation.signin_screen
 
 import android.widget.Toast
-import androidx.compose.animation.AnimatedContentScope.SlideDirection.Companion.Start
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -23,19 +24,17 @@ import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomClickableText
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomTextField
-import com.mathroda.dashcoin.presentation.signin_screen.components.SheetScreen
 import com.mathroda.dashcoin.presentation.signin_screen.viewmodel.SignInViewModel
 import com.mathroda.dashcoin.presentation.ui.theme.Gold
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
 fun SignInScreen(
     navigateToCoinsScreen: () ->  Unit,
     navigateToSignUpScreen: () -> Unit,
+    navigateToForgotPassword: () -> Unit,
     popBackStack: () -> Unit,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
@@ -46,28 +45,37 @@ fun SignInScreen(
     var isError by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
     val sigInState = viewModel.signIn.collectAsState()
-    val scope = rememberCoroutineScope()
 
-    val sheetState = rememberBottomSheetState(
-        initialValue = BottomSheetValue.Collapsed
-    )
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = sheetState
-    )
+        Scaffold {
 
-        BottomSheetScaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 32.dp),
-            scaffoldState = scaffoldState,
-            sheetPeekHeight = 0.dp,
-            sheetContent = { SheetScreen() }
-        ) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp, vertical = 32.dp)
             ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    IconButton(onClick = {
+                        popBackStack()
+                        navigateToCoinsScreen()
+                    }) {
+                        Icon(
+                            tint = Color.White,
+                            modifier = Modifier.graphicsLayer {
+                                scaleX = 1f
+                                scaleY = 1f
+                            },
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = null
+                        )
+                    }
+                }
                 Row(
                     horizontalArrangement = Arrangement.Start,
                     modifier = Modifier.fillMaxWidth()
@@ -142,9 +150,7 @@ fun SignInScreen(
                         color = Gold,
                         fontSize = 14.sp,
                     ) {
-                        scope.launch {
-                            if (sheetState.isCollapsed) sheetState.expand() else sheetState.collapse()
-                        }
+                        navigateToForgotPassword()
                     }
                 }
 
@@ -187,10 +193,10 @@ fun SignInScreen(
 
     if (sigInState.value.isLoading) {
         if (isLoading) {
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize(),
-                 verticalArrangement = Arrangement.Center
+                contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(
                     Modifier

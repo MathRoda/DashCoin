@@ -29,7 +29,8 @@ sealed class Screens(
         icon = Icons.Default.List
     )
     object CoinDetailScreen: Screens("coin_detail_screen")
-    object SignUp: Screens(route = "SIGN_UP")
-    object SignIn: Screens(route = "SIGN_IN")
+    object SignUp: Screens(route = "sign_up")
+    object SignIn: Screens(route = "sign_in")
+    object ForgotPassword: Screens(route = "forgot_password")
 
 }

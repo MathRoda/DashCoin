@@ -94,7 +94,7 @@ fun DrawerNavigation(
 
 @Composable
 fun DrawerHeader(
-    welcomeUser: String
+    welcomeUser: String?
 ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -108,11 +108,11 @@ fun DrawerHeader(
                 modifier = Modifier.graphicsLayer(scaleY = 0.5f, scaleX = 0.5f)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_profile_placeholder),
+                    painter = painterResource(id = R.drawable.profile_placeholder),
                     contentDescription = "Profile Placeholder"
                 )
             }
-            Text(text = welcomeUser, fontSize = 22.sp)
+            Text(text = welcomeUser ?: "Hi! Dashcoiner", fontSize = 22.sp)
         }
 
 }
