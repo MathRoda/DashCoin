@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mathroda.dashcoin.core.util.Constants
+import com.mathroda.dashcoin.domain.model.User
 import com.mathroda.dashcoin.presentation.coin_detail.components.BackStackButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomClickableText
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
@@ -39,6 +40,7 @@ fun SignUpScreen(
     popBackStack: () -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
+    var userName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
@@ -46,6 +48,7 @@ fun SignUpScreen(
     var isError by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
     val signUpState = viewModel.signUp.collectAsState()
+
 
     Scaffold(
         modifier = Modifier
@@ -66,12 +69,9 @@ fun SignUpScreen(
                     .padding(bottom = 16.dp)
                     .requiredHeight(40.dp)
             ) {
-                BackStackButton(
-                    modifier = Modifier
-                        .clickable {
-                            navigateToSignInScreen()
-                        }
-                )
+                BackStackButton {
+                    navigateToSignInScreen()
+                }
             }
             Row(
                 horizontalArrangement = Arrangement.Start,
@@ -98,6 +98,24 @@ fun SignUpScreen(
 
 
             Spacer(modifier = Modifier.height(60.dp))
+
+            CustomTextField(
+                text = userName,
+                placeholder = "Username",
+                isPasswordTextField = false,
+                onValueChange = { userName = it.trim() },
+                isError = isError,
+                errorMsg = "*Enter valid username",
+                trailingIcon = {
+                    if (email.isNotBlank()) {
+                        IconButton(onClick = { email = "" }) {
+                            Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+                        }
+                    }
+                }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             CustomTextField(
                 text = email,
@@ -145,8 +163,13 @@ fun SignUpScreen(
                 enabled = isEnabled,
             ) {
                 isEnabled = false
-                isError = email.isEmpty() || password.isEmpty()
-                viewModel.signUp(email, password)
+                isError = email.isEmpty() || password.isEmpty() || userName.isEmpty()
+                val user = User(
+                    userName = userName,
+                    email = email
+                )
+                viewModel.signUp(user, password)
+                viewModel.addUserCredential(user)
                 isLoading = !isLoading
             }
 
@@ -204,6 +227,5 @@ fun SignUpScreen(
             message = errorMsg,
             padding = PaddingValues(bottom = 24.dp)
         )
-        popBackStack()
     }
 }
