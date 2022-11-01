@@ -13,6 +13,7 @@ import com.mathroda.dashcoin.presentation.news_screen.NewsScreen
 import com.mathroda.dashcoin.presentation.signin_screen.SignInScreen
 import com.mathroda.dashcoin.presentation.signup_screen.SignUpScreen
 import com.mathroda.dashcoin.presentation.watchlist_screen.WatchListScreen
+import com.mathroda.dashcoin.presentation.watchlist_screen.authed_users.WatchListAuthedUsers
 
 @ExperimentalMaterialApi
 @Composable
