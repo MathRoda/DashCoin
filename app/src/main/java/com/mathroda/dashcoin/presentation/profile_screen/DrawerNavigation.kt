@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,26 +31,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.core.util.Constants
+import com.mathroda.dashcoin.navigation.main.Screens
 import com.mathroda.dashcoin.presentation.MainActivity
 import com.mathroda.dashcoin.presentation.dialog_screen.CustomDialogSignOut
 import com.mathroda.dashcoin.presentation.profile_screen.menuitem.MenuItems
 import com.mathroda.dashcoin.presentation.profile_screen.viewmodel.ProfileViewModel
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
-import com.mathroda.dashcoin.presentation.ui.theme.CustomBrightRed
-import com.mathroda.dashcoin.presentation.ui.theme.CustomRed
-import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
-import com.mathroda.dashcoin.presentation.ui.theme.Gold
+import com.mathroda.dashcoin.presentation.ui.theme.*
 
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigation(
-    welcomeUser: String
+    welcomeUser: String,
+    isUserExists: Boolean,
+    navController: NavController,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val uriHandler  = LocalUriHandler.current
+    val userCredential = viewModel.userCredential.collectAsState()
 
-    DrawerHeader(welcomeUser = welcomeUser)
+    DrawerHeader(welcomeUser = userCredential.value.userName ?: "test")
 
     DrawerBody(
         item = listOf(
@@ -79,19 +83,25 @@ fun DrawerNavigation(
         }
     )
 
-    LogOut()
+    /**
+     * Logic for Login / Signout Buttons
+     **/
+
+    if (isUserExists) LogOut() else Login(navController)
+
     DrawerFooter()
 
 }
 
 @Composable
 fun DrawerHeader(
-    welcomeUser: String
+    welcomeUser: String?
 ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 16.dp)
         ) {
             Card(
@@ -99,11 +109,11 @@ fun DrawerHeader(
                 modifier = Modifier.graphicsLayer(scaleY = 0.5f, scaleX = 0.5f)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_profile_placeholder),
+                    painter = painterResource(id = R.drawable.profile_placeholder),
                     contentDescription = "Profile Placeholder"
                 )
             }
-            Text(text = welcomeUser, fontSize = 22.sp)
+            Text(text = welcomeUser ?: "Hi! Dashcoiner", fontSize = 22.sp)
         }
 
 }
@@ -140,6 +150,29 @@ fun DrawerBody(
        }
     }
 
+}
+
+@Composable
+fun Login(navController: NavController) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+
+        TopAppBar(title = { Text(text = "Profile") })
+        Spacer(modifier = Modifier.size(32.dp))
+        CustomLoginButton(
+            text = "LOGIN",
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(DarkGray)
+                .padding(top = 24.dp),
+            color = listOf(CustomGreen, CustomBrightGreen)
+        ) {
+            navController.navigate(Screens.SignIn.route)
+        }
+    }
 }
 
 @ExperimentalMaterialApi

@@ -46,7 +46,7 @@ fun CoinScreen(
     val onWorkerSuccess = viewModel.onSuccessWorker.observeAsState().value
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-
+    val isUserExists = viewModel.isCurrentUserExist.collectAsState(initial = false).value
     val userEmail = viewModel.getCurrentUserEmail.collectAsState(initial = "")
 
     val lazyListState = rememberLazyListState()
@@ -63,7 +63,11 @@ fun CoinScreen(
             }
         ) },
         drawerContent = {
-            DrawerNavigation(welcomeUser = userEmail.value)
+            DrawerNavigation(
+                welcomeUser = userEmail.value,
+                isUserExists = isUserExists,
+                navController = navController
+                )
         },
         drawerBackgroundColor = DarkGray,
         drawerGesturesEnabled = scaffoldState.drawerState.isOpen,

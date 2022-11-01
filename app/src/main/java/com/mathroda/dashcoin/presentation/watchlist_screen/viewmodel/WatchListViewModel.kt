@@ -1,6 +1,5 @@
 package com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel
 
-import android.os.Bundle
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.model.CoinById
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
-import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
 import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WatchListViewModel @Inject constructor(
-    private val dashCoinUseCases: DashCoinUseCases,
     private val firebaseRepository: FirebaseRepository
 ): ViewModel() {
 

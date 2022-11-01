@@ -1,20 +1,18 @@
 package com.mathroda.dashcoin.presentation.signin_screen
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,42 +27,53 @@ import com.mathroda.dashcoin.presentation.signin_screen.viewmodel.SignInViewMode
 import com.mathroda.dashcoin.presentation.ui.theme.Gold
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @Composable
 fun SignInScreen(
     navigateToCoinsScreen: () ->  Unit,
     navigateToSignUpScreen: () -> Unit,
+    navigateToForgotPassword: () -> Unit,
     popBackStack: () -> Unit,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
-    val isUserExist = viewModel.isCurrentUserExist.collectAsState(initial = true)
     val sigInState = viewModel.signIn.collectAsState()
 
-    LaunchedEffect(Unit) {
-        if (isUserExist.value) {
-            navigateToCoinsScreen()
-        }
-    }
+        Scaffold {
 
-    if (!isUserExist.value) {
-        Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 32.dp),
-        ) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp, vertical = 32.dp)
             ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    IconButton(onClick = {
+                        popBackStack()
+                        navigateToCoinsScreen()
+                    }) {
+                        Icon(
+                            tint = Color.White,
+                            modifier = Modifier.graphicsLayer {
+                                scaleX = 1f
+                                scaleY = 1f
+                            },
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = null
+                        )
+                    }
+                }
                 Row(
                     horizontalArrangement = Arrangement.Start,
                     modifier = Modifier.fillMaxWidth()
@@ -127,6 +136,21 @@ fun SignInScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done)
 
                 )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 8.dp, top = 4.dp),
+                    horizontalArrangement = Arrangement.End
+                    )
+                {
+                    CustomClickableText(
+                        text = "Forgot Password?",
+                        color = Gold,
+                        fontSize = 14.sp,
+                    ) {
+                        navigateToForgotPassword()
+                    }
+                }
 
                 Spacer(modifier = Modifier.weight(0.2f))
 
@@ -138,7 +162,6 @@ fun SignInScreen(
                     isEnabled = false
                     isError = email.isEmpty() || password.isEmpty()
                     viewModel.signIn(email, password)
-                    isLoading = !isLoading
                 }
 
                 Spacer(modifier = Modifier.weight(0.4f))
@@ -163,32 +186,23 @@ fun SignInScreen(
                 }
             }
 
-        }
     }
 
     if (sigInState.value.isLoading) {
-        if (isLoading) {
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize(),
-                 verticalArrangement = Arrangement.Center
+                contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(
                     Modifier
                         .padding(top = 50.dp)
                 )
             }
-        }
     }
 
 
     if (sigInState.value.signIn != null) {
-        SweetToastUtil.SweetSuccess(
-            message = "Welcome ${sigInState.value.signIn?.user?.email}",
-            duration = Toast.LENGTH_LONG,
-            padding = PaddingValues(bottom = 24.dp)
-        )
-
         LaunchedEffect(Unit) {
             navigateToCoinsScreen()
         }

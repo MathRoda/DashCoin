@@ -1,6 +1,5 @@
 package com.mathroda.dashcoin.presentation.signup_screen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mathroda.dashcoin.core.util.Constants
+import com.mathroda.dashcoin.domain.model.User
 import com.mathroda.dashcoin.presentation.coin_detail.components.BackStackButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomClickableText
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
@@ -30,21 +30,21 @@ import com.mathroda.dashcoin.presentation.signup_screen.viewmodel.SignUpViewMode
 import com.mathroda.dashcoin.presentation.ui.theme.Gold
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpScreen(
     navigateToSignInScreen: () -> Unit,
+    popBackStack: () -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
+    var userName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
     val signUpState = viewModel.signUp.collectAsState()
+
 
     Scaffold(
         modifier = Modifier
@@ -65,12 +65,9 @@ fun SignUpScreen(
                     .padding(bottom = 16.dp)
                     .requiredHeight(40.dp)
             ) {
-                BackStackButton(
-                    modifier = Modifier
-                        .clickable {
-                            navigateToSignInScreen()
-                        }
-                )
+                BackStackButton {
+                    navigateToSignInScreen()
+                }
             }
             Row(
                 horizontalArrangement = Arrangement.Start,
@@ -97,6 +94,24 @@ fun SignUpScreen(
 
 
             Spacer(modifier = Modifier.height(60.dp))
+
+            CustomTextField(
+                text = userName,
+                placeholder = "Username",
+                isPasswordTextField = false,
+                onValueChange = { userName = it.trim() },
+                isError = isError,
+                errorMsg = "*Enter valid username",
+                trailingIcon = {
+                    if (email.isNotBlank()) {
+                        IconButton(onClick = { email = "" }) {
+                            Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+                        }
+                    }
+                }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             CustomTextField(
                 text = email,
@@ -144,9 +159,12 @@ fun SignUpScreen(
                 enabled = isEnabled,
             ) {
                 isEnabled = false
-                isError = email.isEmpty() || password.isEmpty()
-                viewModel.signUp(email, password)
-                isLoading = !isLoading
+                isError = email.isEmpty() || password.isEmpty() || userName.isEmpty()
+                val user = User(
+                    userName = userName,
+                    email = email
+                )
+                viewModel.signUp(user, password)
             }
 
             Spacer(modifier = Modifier.weight(0.4f))
@@ -166,6 +184,7 @@ fun SignUpScreen(
                     fontSize = 17.sp,
                     fontWeight = FontWeight.W500
                 ) {
+                    popBackStack()
                     navigateToSignInScreen()
                 }
             }
@@ -173,7 +192,6 @@ fun SignUpScreen(
     }
 
     if (signUpState.value.isLoading) {
-        if (isLoading) {
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -181,7 +199,6 @@ fun SignUpScreen(
             ) {
                 CircularProgressIndicator()
             }
-        }
     }
 
 
@@ -190,8 +207,9 @@ fun SignUpScreen(
                 message = "Account created successfully",
                 padding = PaddingValues(bottom = 24.dp)
             )
-            rememberCoroutineScope().launch {
-                delay(700)
+            LaunchedEffect(Unit ) {
+                val user = User(userName, email)
+                viewModel.addUserCredential(user)
                 navigateToSignInScreen()
             }
         }

@@ -1,14 +1,13 @@
 package com.mathroda.dashcoin.data.repository
 
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.model.CoinById
+import com.mathroda.dashcoin.domain.model.User
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -35,25 +34,6 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
-    override fun signInAnonymously(): Flow<Resource<FirebaseUser?>> {
-        return callbackFlow {
-            this.trySend(Resource.Loading())
-            firebaseAuth.signInAnonymously()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "signInAnonymously:success")
-                        firebaseAuth.currentUser?.let {
-                            this.trySend(Resource.Success(it))
-                        }
-                    } else {
-                        Log.w(TAG, "signInAnonymously:failure", task.exception)
-                        this.trySend(Resource.Error(task.exception?.message.toString()))
-                    }
-                }
-
-            awaitClose { this.cancel() }
-        }
-    }
 
     override fun signUpWithEmailAndPassword(
         email: String,
@@ -79,7 +59,25 @@ class FirebaseRepositoryImpl constructor(
             emit(Resource.Loading())
             emit(Resource.Success(firebaseAuth.signInWithEmailAndPassword(email, password).await()))
         }.catch {
-            emit(Resource.Error(it.toString()))
+            emit(Resource.Error(it.message ?: "Unexpected Message"))
+        }
+    }
+
+    override fun resetPasswordWithEmail(email: String): Flow<Resource<Boolean>> {
+        return callbackFlow {
+            this.trySend(Resource.Loading())
+            firebaseAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    when {
+                        task.isSuccessful -> {this.trySend(Resource.Success(true))}
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    exception.message?.let {
+                        trySend(Resource.Error(it))
+                    }
+                }
+            awaitClose { this.cancel() }
         }
     }
 
@@ -104,9 +102,9 @@ class FirebaseRepositoryImpl constructor(
     override fun addCoinFavorite(coinById: CoinById): Flow<Resource<Task<Void>>> {
         return flow {
             emit(Resource.Loading())
-            getUserId().collect {
+            getUserId().collect { userUid ->
                 val favoriteRef = fireStore.collection(Constants.FAVOURITES_COLLECTION)
-                    .document(it)
+                    .document(userUid)
                     .collection("coins").document(coinById.name.orEmpty())
                     .set(coinById)
 
@@ -115,7 +113,23 @@ class FirebaseRepositoryImpl constructor(
                 emit(Resource.Success(favoriteRef))
             }
         }.catch {
-            emit(Resource.Error(it.toString()))
+            emit(Resource.Error(it.message ?: "Unexpected Message"))
+        }
+    }
+
+    override fun addUserCredential(user: User): Flow<Resource<Task<Void>>> {
+        return flow {
+            emit(Resource.Loading())
+            getUserId().collect { userUid ->
+                val userRef = fireStore.collection(Constants.USER_COLLECTION)
+                    .document(userUid)
+                    .set(user)
+
+                userRef.await()
+                emit(Resource.Success(userRef))
+            }
+        }.catch {
+            emit(Resource.Error(it.message ?: "Unexpected Message"))
         }
     }
 
@@ -171,6 +185,28 @@ class FirebaseRepositoryImpl constructor(
                     value?.let {
                         val data = value.toObjects(CoinById::class.java)
                         this.trySend(Resource.Success(data))
+                    }
+                }
+            }
+            awaitClose { this.cancel() }
+        }
+    }
+
+    override fun getUserCredentials(): Flow<Resource<User>> {
+        return callbackFlow {
+            this.trySend(Resource.Loading())
+            getUserId().collect { userId ->
+                val snapShot = fireStore.collection(Constants.USER_COLLECTION)
+                    .document(userId)
+                snapShot.addSnapshotListener { value, error ->
+                    error?.let {
+                        this.trySend(Resource.Error(it.message.toString()))
+                        this.close(it)
+                    }
+
+                    value?.let {
+                        val data = value.toObject(User::class.java)
+                        this.trySend(Resource.Success(data!!))
                     }
                 }
             }

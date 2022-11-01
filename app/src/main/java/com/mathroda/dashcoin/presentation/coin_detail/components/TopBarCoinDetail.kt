@@ -2,14 +2,13 @@ package com.mathroda.dashcoin.presentation.coin_detail.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,10 +47,9 @@ fun TopBarCoinDetail(
             BackStackButton(
                 modifier = Modifier
                     .padding(8.dp)
-                    .clickable {
-                        navController.popBackStack()
-                    }
-            )
+            ) {
+                navController.popBackStack()
+            }
         }
         Box(
             modifier = Modifier
@@ -118,15 +116,20 @@ fun FavoriteButton(
 @Composable
 fun BackStackButton(
     modifier: Modifier = Modifier,
-    color: Color = TextWhite
+    color: Color = TextWhite,
+    onCLick: () -> Unit
 ) {
-    Icon(
-        tint = color,
-        modifier = modifier.graphicsLayer {
-            scaleX = 1.3f
-            scaleY = 1.3f
-        },
-        imageVector = Icons.Filled.ArrowBack,
-        contentDescription = null
+    IconButton(onClick = { onCLick() }) {
+        Icon(
+            tint = color,
+            modifier = modifier.graphicsLayer {
+                scaleX = 1.3f
+                scaleY = 1.3f
+            },
+            imageVector = Icons.Outlined.KeyboardArrowLeft,
+            contentDescription = null
         )
+    }
+
+
 }
