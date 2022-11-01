@@ -11,15 +11,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.navigation.main.Screens
 import com.mathroda.dashcoin.presentation.coin_detail.components.BackStackButton
 import com.mathroda.dashcoin.presentation.forgot_password.viewmodel.ResetPasswordViewModel
+import com.mathroda.dashcoin.presentation.signin_screen.components.CustomClickableText
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomTextField
+import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @Composable
@@ -32,13 +38,12 @@ fun ForgotPasswordScreen(
         var email by remember { mutableStateOf("") }
         var isError by remember { mutableStateOf(false) }
         var isEnabled by remember { mutableStateOf(true) }
-        var isLoading by remember { mutableStateOf(false) }
         val state = viewModel.resetPassword.collectAsState().value
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 32.dp)
+                .padding(horizontal = 16.dp, vertical = 32.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.Top,
@@ -53,9 +58,34 @@ fun ForgotPasswordScreen(
                 }
             }
 
+                CustomClickableText(
+                    text = Constants.FORGOT_PASSWORD,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold
+                ) {}
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+            ) {
+                CustomClickableText(
+                    text = Constants.FORGOT_PASSWORD_DESCRIPTION,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextWhite
+                ) {}
+            }
+
+            Spacer(modifier = Modifier.height(60.dp))
+
+
             CustomTextField(
                 text = email,
-                placeholder = "Email",
+                placeholder = "Email ID",
                 onValueChange = { email = it.trim() },
                 isError = isError,
                 errorMsg = "*Enter valid email address",
@@ -69,36 +99,34 @@ fun ForgotPasswordScreen(
                 }
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             CustomLoginButton(
-                text = "Send Email",
+                text = "SUBMIT",
                 modifier = Modifier.fillMaxWidth(),
                 enabled = isEnabled
             ) {
-                isEnabled = false
+                isEnabled = !isEnabled
                 isError = email.isEmpty()
                 viewModel.resetPasswordWithEmail(email)
-                isLoading = !isLoading
             }
         }
 
         when {
             state.isLoading -> {
-                if (isLoading) {
-                    Column(
+                    Box(
                         modifier = Modifier
                             .fillMaxSize(),
-                        verticalArrangement = Arrangement.Center
+                        contentAlignment = Center
                     ) {
-                        CircularProgressIndicator(
-                            Modifier
-                                .padding(top = 50.dp)
-                        )
+                            CircularProgressIndicator(
+                                Modifier
+                                    .padding(top = 50.dp)
+                            )
                     }
-                }
             }
 
             state.Successful -> {
-
                 Log.d("void", state.Successful.toString())
                 SweetToastUtil.SweetSuccess(
                     message = "Email Sent Successfully",

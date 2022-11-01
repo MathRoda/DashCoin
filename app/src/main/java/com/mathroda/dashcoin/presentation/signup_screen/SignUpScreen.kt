@@ -1,6 +1,5 @@
 package com.mathroda.dashcoin.presentation.signup_screen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
@@ -31,8 +30,6 @@ import com.mathroda.dashcoin.presentation.signup_screen.viewmodel.SignUpViewMode
 import com.mathroda.dashcoin.presentation.ui.theme.Gold
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpScreen(
@@ -43,7 +40,6 @@ fun SignUpScreen(
     var userName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
@@ -169,8 +165,6 @@ fun SignUpScreen(
                     email = email
                 )
                 viewModel.signUp(user, password)
-                viewModel.addUserCredential(user)
-                isLoading = !isLoading
             }
 
             Spacer(modifier = Modifier.weight(0.4f))
@@ -198,7 +192,6 @@ fun SignUpScreen(
     }
 
     if (signUpState.value.isLoading) {
-        if (isLoading) {
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -206,7 +199,6 @@ fun SignUpScreen(
             ) {
                 CircularProgressIndicator()
             }
-        }
     }
 
 
@@ -216,6 +208,8 @@ fun SignUpScreen(
                 padding = PaddingValues(bottom = 24.dp)
             )
             LaunchedEffect(Unit ) {
+                val user = User(userName, email)
+                viewModel.addUserCredential(user)
                 navigateToSignInScreen()
             }
         }

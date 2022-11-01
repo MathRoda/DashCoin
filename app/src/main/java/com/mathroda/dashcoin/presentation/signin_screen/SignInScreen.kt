@@ -1,6 +1,5 @@
 package com.mathroda.dashcoin.presentation.signin_screen
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -40,7 +39,6 @@ fun SignInScreen(
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
@@ -164,7 +162,6 @@ fun SignInScreen(
                     isEnabled = false
                     isError = email.isEmpty() || password.isEmpty()
                     viewModel.signIn(email, password)
-                    isLoading = !isLoading
                 }
 
                 Spacer(modifier = Modifier.weight(0.4f))
@@ -192,7 +189,6 @@ fun SignInScreen(
     }
 
     if (sigInState.value.isLoading) {
-        if (isLoading) {
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -203,17 +199,10 @@ fun SignInScreen(
                         .padding(top = 50.dp)
                 )
             }
-        }
     }
 
 
     if (sigInState.value.signIn != null) {
-        SweetToastUtil.SweetSuccess(
-            message = "Welcome ${sigInState.value.signIn?.user?.email}",
-            duration = Toast.LENGTH_LONG,
-            padding = PaddingValues(bottom = 24.dp)
-        )
-
         LaunchedEffect(Unit) {
             navigateToCoinsScreen()
         }

@@ -11,7 +11,10 @@ import com.mathroda.dashcoin.domain.model.User
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 class FirebaseRepositoryImpl constructor(
@@ -182,6 +185,28 @@ class FirebaseRepositoryImpl constructor(
                     value?.let {
                         val data = value.toObjects(CoinById::class.java)
                         this.trySend(Resource.Success(data))
+                    }
+                }
+            }
+            awaitClose { this.cancel() }
+        }
+    }
+
+    override fun getUserCredentials(): Flow<Resource<User>> {
+        return callbackFlow {
+            this.trySend(Resource.Loading())
+            getUserId().collect { userId ->
+                val snapShot = fireStore.collection(Constants.USER_COLLECTION)
+                    .document(userId)
+                snapShot.addSnapshotListener { value, error ->
+                    error?.let {
+                        this.trySend(Resource.Error(it.message.toString()))
+                        this.close(it)
+                    }
+
+                    value?.let {
+                        val data = value.toObject(User::class.java)
+                        this.trySend(Resource.Success(data!!))
                     }
                 }
             }

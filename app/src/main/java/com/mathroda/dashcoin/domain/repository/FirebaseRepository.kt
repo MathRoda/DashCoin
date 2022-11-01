@@ -2,7 +2,6 @@ package com.mathroda.dashcoin.domain.repository
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseUser
 import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.domain.model.CoinById
 import com.mathroda.dashcoin.domain.model.User
@@ -33,4 +32,6 @@ interface FirebaseRepository {
     fun isFavoriteState(coinById: CoinById): Flow<CoinById?>
 
     fun getCoinFavorite(): Flow<Resource<List<CoinById>>>
+
+    fun getUserCredentials(): Flow<Resource<User>>
 }

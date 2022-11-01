@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,25 +35,25 @@ import androidx.navigation.NavController
 import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.navigation.main.Screens
-import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.dashcoin.presentation.MainActivity
 import com.mathroda.dashcoin.presentation.dialog_screen.CustomDialogSignOut
 import com.mathroda.dashcoin.presentation.profile_screen.menuitem.MenuItems
 import com.mathroda.dashcoin.presentation.profile_screen.viewmodel.ProfileViewModel
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.ui.theme.*
-import javax.security.auth.login.LoginException
 
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigation(
     welcomeUser: String,
     isUserExists: Boolean,
-    navController: NavController
+    navController: NavController,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val uriHandler  = LocalUriHandler.current
+    val userCredential = viewModel.userCredential.collectAsState()
 
-    DrawerHeader(welcomeUser = welcomeUser)
+    DrawerHeader(welcomeUser = userCredential.value.userName ?: "test")
 
     DrawerBody(
         item = listOf(
