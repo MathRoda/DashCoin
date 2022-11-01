@@ -31,6 +31,9 @@ class WatchListViewModel @Inject constructor(
 
     private val _addToFavorite = mutableStateOf("")
     val addToFavorite: State<String> = _addToFavorite
+
+    val isCurrentUserExists = firebaseRepository.isCurrentUserExist()
+
     private var getCoinJob: Job? = null
 
     init {
