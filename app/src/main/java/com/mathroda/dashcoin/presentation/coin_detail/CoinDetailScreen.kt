@@ -27,6 +27,7 @@ import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.Twitter
 import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import java.text.NumberFormat
 import java.util.*
 
@@ -39,11 +40,14 @@ fun CoinDetailScreen(
 
     val coinState = coinViewModel.coinState.value
     var isFavorite by remember { mutableStateOf(false) }
+    var sideEffect by remember { mutableStateOf(false) }
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))
     val lottieProgress by animateLottieCompositionAsState(
         composition = lottieComp,
         iterations = LottieConstants.IterateForever,
     )
+    val isUserExist = watchListViewModel.isCurrentUserExists.collectAsState(initial = false)
+
 
 
 
@@ -81,7 +85,12 @@ fun CoinDetailScreen(
                            isFavorite = !isFavorite
 
                            if (isFavorite){
-                               watchListViewModel.onEvent(WatchListEvents.AddCoin(coin))
+                               if (isUserExist.value) {
+                                   watchListViewModel.onEvent(WatchListEvents.AddCoin(coin))
+                               } else {
+                                   sideEffect = !isUserExist.value
+                               }
+
                            } else openDialogCustom.value = true
                        }
                    )
@@ -151,6 +160,14 @@ fun CoinDetailScreen(
                }
            }
        }
+
+        if (sideEffect) {
+            SweetToastUtil.SweetWarning(
+                padding = PaddingValues(24.dp),
+                message = "Please Login First"
+            )
+            sideEffect = !sideEffect
+        }
 
         if (coinState.isLoading) {
             Column(

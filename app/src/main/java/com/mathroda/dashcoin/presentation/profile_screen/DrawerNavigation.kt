@@ -45,7 +45,6 @@ import com.mathroda.dashcoin.presentation.ui.theme.*
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigation(
-    welcomeUser: String,
     isUserExists: Boolean,
     navController: NavController,
     viewModel: ProfileViewModel = hiltViewModel()

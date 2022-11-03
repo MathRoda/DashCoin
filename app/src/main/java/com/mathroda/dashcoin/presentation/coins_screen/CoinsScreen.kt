@@ -64,7 +64,6 @@ fun CoinScreen(
         ) },
         drawerContent = {
             DrawerNavigation(
-                welcomeUser = userEmail.value,
                 isUserExists = isUserExists,
                 navController = navController
                 )
