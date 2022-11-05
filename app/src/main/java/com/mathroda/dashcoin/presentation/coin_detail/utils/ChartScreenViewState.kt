@@ -1,12 +1,10 @@
 package com.mathroda.dashcoin.presentation.coin_detail.utils
 
 import android.content.Context
-import androidx.compose.ui.graphics.toArgb
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
-import com.mathroda.dashcoin.R
-import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
-import com.mathroda.dashcoin.presentation.ui.theme.CustomRed
+import com.mathroda.dashcoin.core.util.getBackgroundColor
+import com.mathroda.dashcoin.core.util.getColorStatusToArgb
 
 class ChartScreenViewState {
 
@@ -17,26 +15,14 @@ class ChartScreenViewState {
         context: Context
     ) =
         LineDataSet(lineData, label).apply {
-            mode = LineDataSet.Mode.CUBIC_BEZIER
-            color = getColorStatus(oneDayChange)
-            highLightColor = getColorStatus(oneDayChange)
-            fillDrawable = getBackground(oneDayChange,context)
+            mode = LineDataSet.Mode.STEPPED
+            color = oneDayChange.getColorStatusToArgb()
+            highLightColor = oneDayChange.getColorStatusToArgb()
+            fillDrawable = oneDayChange.getBackgroundColor(context)
             lineWidth = 2f
             setDrawFilled(true)
             setDrawCircles(false)
         }
-
-    private fun getColorStatus(oneDayChange: Double) =
-       if (oneDayChange < 0) CustomRed.toArgb() else CustomGreen.toArgb()
-
-
-    private fun getBackground(
-        oneDayChange: Double,
-        context: Context
-    ) =
-        if (oneDayChange < 0)  {
-            context.getCompatDrawable(R.drawable.background_negative_chart)
-        } else  context.getCompatDrawable(R.drawable.background_positive_chart)
 
 
 }

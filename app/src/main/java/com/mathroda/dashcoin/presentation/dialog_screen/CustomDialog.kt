@@ -24,14 +24,12 @@ import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListVi
 @Composable
 fun CustomDialog(
     openDialogCustom: MutableState<Boolean>,
-    coinName: String,
-    coin: CoinById,
+    coin: CoinById?,
     navController: NavController
     ) {
     Dialog(onDismissRequest = { openDialogCustom.value = false}) {
         CustomDialogUI(
             openDialogCustom = openDialogCustom,
-            coinName = coinName,
             coin = coin,
             navController = navController
         )
@@ -43,9 +41,8 @@ fun CustomDialog(
 fun CustomDialogUI(
     modifier: Modifier = Modifier,
     openDialogCustom: MutableState<Boolean>,
-    coinName: String,
     viewModel: WatchListViewModel = hiltViewModel(),
-    coin: CoinById,
+    coin: CoinById?,
     navController: NavController
 ) {
     Card(
@@ -75,7 +72,7 @@ fun CustomDialogUI(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "You want to Unwatch $coinName ?",
+                    text = "You want to Unwatch ${coin?.id} ?",
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 10.dp, start = 25.dp, end = 25.dp)
@@ -106,7 +103,7 @@ fun CustomDialogUI(
                 }
                 TextButton(onClick = {
                     openDialogCustom.value = false
-                    viewModel.onEvent(WatchListEvents.DeleteCoin(coin))
+                    viewModel.onEvent(WatchListEvents.DeleteCoin(coin!!))
                     navController.popBackStack()
 
                 }) {
