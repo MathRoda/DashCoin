@@ -39,6 +39,7 @@ fun CoinDetailScreen(
 ) {
 
     val coinState = coinViewModel.coinState.value
+    val chartsState = coinViewModel.chartState.value
     var isFavorite by remember { mutableStateOf(false) }
     var sideEffect by remember { mutableStateOf(false) }
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))
@@ -97,7 +98,6 @@ fun CoinDetailScreen(
                    if (openDialogCustom.value){
                        CustomDialog(
                            openDialogCustom = openDialogCustom,
-                           coinName = coin.name!!,
                            coin = coin,
                            navController = navController
                        )
@@ -109,7 +109,8 @@ fun CoinDetailScreen(
 
                    Chart(
                        oneDayChange = coin.priceChange1d,
-                       context = LocalContext.current
+                       context = LocalContext.current,
+                       charts = chartsState.chart
                    )
 
                    CoinInformation(

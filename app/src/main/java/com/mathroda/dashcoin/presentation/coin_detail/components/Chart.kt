@@ -11,6 +11,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
+import com.mathroda.dashcoin.domain.model.Charts
 import com.mathroda.dashcoin.presentation.coin_detail.utils.ChartScreenViewState
 import com.mathroda.dashcoin.presentation.coin_detail.utils.setLineDataSet
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
@@ -18,15 +19,13 @@ import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 
 @Composable
 fun Chart(
-    viewModel: CoinViewModel = hiltViewModel(),
     oneDayChange: Double,
-    context: Context
+    context: Context,
+    charts: Charts?
 ) {
-    val chartState = viewModel.chartState.value
-
 
     val dataSet = mutableListOf<Entry>()
-    chartState.chart?.let { chartsValue ->
+    charts?.let { chartsValue ->
         chartsValue.chart?.map { value ->
             for (i in value){
                dataSet.add(addEntry(value[0], value[1]))

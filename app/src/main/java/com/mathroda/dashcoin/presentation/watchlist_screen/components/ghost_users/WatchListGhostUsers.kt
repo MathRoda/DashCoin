@@ -1,17 +1,13 @@
-package com.mathroda.dashcoin.presentation.watchlist_screen.ghost_users
+package com.mathroda.dashcoin.presentation.watchlist_screen.components.ghost_users
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.*
@@ -52,7 +48,7 @@ fun WatchListGhostUsers(navController: NavController) {
             Text(
                 modifier = Modifier
                     .align(CenterHorizontally),
-                text = "Feature limited for registered users :(",
+                text = "Feature limited for registered users",
                 style = Typography.body1,
                 color = TextWhite.copy(alpha = 0.6f)
             )

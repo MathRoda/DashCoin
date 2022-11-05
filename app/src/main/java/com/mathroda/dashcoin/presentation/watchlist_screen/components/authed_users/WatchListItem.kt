@@ -1,42 +1,62 @@
-package com.mathroda.dashcoin.presentation.watchlist_screen.components
+package com.mathroda.dashcoin.presentation.watchlist_screen.components.authed_users
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mathroda.dashcoin.core.util.getColorStatus
+import com.mathroda.dashcoin.core.util.getColorStatusToArgb
 import com.mathroda.dashcoin.presentation.ui.theme.Gold
 import com.mathroda.dashcoin.presentation.ui.theme.LightGray
 import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 fun WatchlistItem(
+    modifier: Modifier = Modifier,
     icon: String,
     coinName: String,
     symbol: String,
     rank: String,
-    onClick: () -> Unit
+    marketStatus: Double = 0.0
 ) {
+
     Card(
         shape = RoundedCornerShape(10.dp),
-        modifier = Modifier
+        modifier = modifier
             .padding(10.dp, 5.dp, 10.dp, 10.dp),
-        elevation = 8.dp,
-        backgroundColor = LighterGray,
-        onClick = onClick
+        elevation = 12.dp,
+        backgroundColor = LighterGray
+
     ) {
-        Column {
+        Column(
+            Modifier
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color.Transparent, marketStatus.getColorStatus()),
+
+                    ),
+                    shape = RoundedCornerShape(10.dp)
+            )
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -125,9 +145,8 @@ fun WatchlistItem(
                             Text(
                                 text = rank,
                                 style = MaterialTheme.typography.body2,
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.SemiBold,
                                 color = Gold,
-                                modifier = Modifier
                             )
                         }
                         Text(

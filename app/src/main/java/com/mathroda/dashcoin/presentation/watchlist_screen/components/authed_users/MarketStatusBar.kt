@@ -1,4 +1,4 @@
-package com.mathroda.dashcoin.presentation.watchlist_screen.components
+package com.mathroda.dashcoin.presentation.watchlist_screen.components.authed_users
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

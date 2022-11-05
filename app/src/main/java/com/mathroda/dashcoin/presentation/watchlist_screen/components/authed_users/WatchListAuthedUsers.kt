@@ -1,15 +1,18 @@
-package com.mathroda.dashcoin.presentation.watchlist_screen.authed_users
+package com.mathroda.dashcoin.presentation.watchlist_screen.components.authed_users
 
+import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,15 +20,17 @@ import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.dashcoin.navigation.main.Screens
+import com.mathroda.dashcoin.presentation.coin_detail.components.Chart
 import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
 import com.mathroda.dashcoin.presentation.ui.common.CommonTopBar
 import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
 import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
-import com.mathroda.dashcoin.presentation.watchlist_screen.components.MarketStatusBar
-import com.mathroda.dashcoin.presentation.watchlist_screen.components.WatchlistItem
 import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 fun WatchListAuthedUsers(
@@ -69,13 +74,17 @@ fun WatchListAuthedUsers(
                 LazyColumn {
                     items(watchListState.value.coin) { coin ->
                         WatchlistItem(
+                            modifier = Modifier
+                                .combinedClickable(
+                                    onClick = {
+                                        navController.navigate(Screens.CoinDetailScreen.route + "/${coin.id}")
+                                    },
+                                ),
                             icon = coin.icon!!,
                             coinName = coin.name!!,
                             symbol = coin.symbol!!,
                             rank = coin.rank.toString(),
-                            onClick = {
-                                navController.navigate(Screens.CoinDetailScreen.route + "/${coin.id}")
-                            }
+                            marketStatus = coin.priceChange1h ?: 0.0
                         )
                     }
                 }
