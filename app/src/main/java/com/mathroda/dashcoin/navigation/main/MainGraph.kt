@@ -1,5 +1,6 @@
 package com.mathroda.dashcoin.navigation.main
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -13,8 +14,8 @@ import com.mathroda.dashcoin.presentation.news_screen.NewsScreen
 import com.mathroda.dashcoin.presentation.signin_screen.SignInScreen
 import com.mathroda.dashcoin.presentation.signup_screen.SignUpScreen
 import com.mathroda.dashcoin.presentation.watchlist_screen.WatchListScreen
-import com.mathroda.dashcoin.presentation.watchlist_screen.authed_users.WatchListAuthedUsers
 
+@OptIn(ExperimentalFoundationApi::class)
 @ExperimentalMaterialApi
 @Composable
 fun MainGraph(navController: NavHostController) {

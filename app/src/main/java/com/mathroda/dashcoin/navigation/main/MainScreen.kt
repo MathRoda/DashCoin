@@ -14,6 +14,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -67,7 +68,7 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
                  state = bottomBarState,
                  modifier = Modifier
                      .height(bottomBarHeight)
-                     .offset { IntOffset(x = 0, y= -bottomBarOffsetHeightPx.value.roundToInt()) }
+                     .offset { IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt()) }
              )
 
         }
@@ -108,7 +109,7 @@ fun BottomBar(
                         Text(text = screen.title!!)
                     },
                     icon = {
-                        Icon(imageVector = screen.icon!! , contentDescription = null)
+                        Icon(painter = painterResource(id = screen.icon!!) , contentDescription = null)
                     },
 
                     selected = currentRoute == screen.route,
