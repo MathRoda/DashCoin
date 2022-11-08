@@ -70,12 +70,8 @@ fun CoinDetailScreen(
                    .fillMaxSize()
            ) {
                item {
-                   /**
-                    * here it checks if the rank of current coin is not equal to 0
-                    * that means it does exist in Firestore and should assign it value
-                    * to true
-                    */
-                   isFavorite = isFav.value.rank != 0
+
+                   isFavorite = isFav.value.id == coin.id
                    val openDialogCustom = remember{ mutableStateOf(false) }
                    TopBarCoinDetail(
                        coinSymbol = coin.symbol!!,

@@ -33,5 +33,7 @@ interface FirebaseRepository {
 
     fun getCoinFavorite(): Flow<Resource<List<CoinById>>>
 
+    fun updateFavoriteMarketState(coinById: CoinById): Flow<Resource<Task<Void>>>
+
     fun getUserCredentials(): Flow<Resource<User>>
 }

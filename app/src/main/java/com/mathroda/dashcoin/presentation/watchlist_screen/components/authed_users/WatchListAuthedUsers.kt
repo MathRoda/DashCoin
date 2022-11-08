@@ -84,7 +84,7 @@ fun WatchListAuthedUsers(
                             coinName = coin.name!!,
                             symbol = coin.symbol!!,
                             rank = coin.rank.toString(),
-                            marketStatus = coin.priceChange1h ?: 0.0
+                            marketStatus = coin.priceChange1d ?: 0.0
                         )
                     }
                 }

@@ -11,10 +11,7 @@ import com.mathroda.dashcoin.domain.model.User
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.tasks.await
 
 class FirebaseRepositoryImpl constructor(
@@ -192,6 +189,28 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
+    override fun updateFavoriteMarketState(coinById: CoinById): Flow<Resource<Task<Void>>> {
+        return flow {
+            isCurrentUserExist().collect { exist ->
+                if (exist) {
+                    emit(Resource.Loading())
+                    getUserId().collect {
+                        val favoriteRef = fireStore.collection(Constants.FAVOURITES_COLLECTION)
+                            .document(it)
+                            .collection("coins").document(coinById.name.orEmpty())
+                            .update("priceChange1d", coinById.priceChange1d)
+
+                        favoriteRef.await()
+                        emit(Resource.Success(favoriteRef))
+                    }
+                }
+
+            }
+        }.catch {
+            emit(Resource.Error(it.toString()))
+        }
+    }
+    
     override fun getUserCredentials(): Flow<Resource<User>> {
         return callbackFlow {
             this.trySend(Resource.Loading())

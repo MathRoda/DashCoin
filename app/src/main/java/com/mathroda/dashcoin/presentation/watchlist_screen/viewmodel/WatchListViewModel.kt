@@ -1,23 +1,28 @@
 package com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.dashcoin.core.util.Resource
+import com.mathroda.dashcoin.data.dto.toCoinDetail
 import com.mathroda.dashcoin.domain.model.CoinById
+import com.mathroda.dashcoin.domain.repository.DashCoinRepository
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WatchListViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: FirebaseRepository,
+    private val dashCoinRepository: DashCoinRepository
 ): ViewModel() {
 
     private val _state = MutableStateFlow(WatchListState())
@@ -73,7 +78,9 @@ class WatchListViewModel @Inject constructor(
                 when(result) {
                     is Resource.Loading -> {}
                     is Resource.Success -> {
-                        _state.emit(WatchListState(coin = result.data?: emptyList()))
+                        result.data?.let {
+                            _state.emit(WatchListState(coin = result.data))
+                        }
                     }
                     is Resource.Error -> {
                         _state.emit(WatchListState(error = result.message))
@@ -81,6 +88,8 @@ class WatchListViewModel @Inject constructor(
                 }
             }.launchIn(viewModelScope)
     }
+
+
 
     fun isFavoriteState(coinById: CoinById) {
         viewModelScope.launch {
