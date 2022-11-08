@@ -1,7 +1,10 @@
 package com.mathroda.dashcoin.presentation.coins_screen
 
+import android.view.MotionEvent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,7 +13,11 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,6 +37,7 @@ import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 import com.mathroda.dashcoin.presentation.ui.theme.LightGray
 import kotlinx.coroutines.launch
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
@@ -48,7 +56,7 @@ fun CoinScreen(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val isUserExists = viewModel.isCurrentUserExist.collectAsState(initial = false).value
-
+    val focusManger = LocalFocusManager.current
     val lazyListState = rememberLazyListState()
 
     Scaffold(
@@ -91,6 +99,18 @@ fun CoinScreen(
                     onRefresh = { viewModel.refresh() }) {
 
                     LazyColumn(
+                        modifier = Modifier
+                            .pointerInteropFilter{
+                               when(it.action) {
+                                   MotionEvent.ACTION_DOWN -> {
+                                       focusManger.clearFocus()
+                                   }
+                                   MotionEvent.ACTION_UP -> {
+                                       focusManger.clearFocus()
+                                   }
+                               }
+                                false
+                            },
                        state = lazyListState
                     ) {
                         items(items = state.value.coins.filter {
@@ -160,7 +180,7 @@ fun CoinScreen(
                         /**
                          * Scroll to first item in the list
                          */
-                        lazyListState.scrollToItem(0)
+                        lazyListState.animateScrollToItem(0)
                     }
                 }
 
