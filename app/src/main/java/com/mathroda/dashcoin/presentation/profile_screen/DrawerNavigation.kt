@@ -2,6 +2,7 @@ package com.mathroda.dashcoin.presentation.profile_screen
 
 import android.app.Activity
 import android.content.Intent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,6 +43,7 @@ import com.mathroda.dashcoin.presentation.profile_screen.viewmodel.ProfileViewMo
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.ui.theme.*
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigation(
@@ -174,6 +176,7 @@ fun Login(navController: NavController) {
     }
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun LogOut(

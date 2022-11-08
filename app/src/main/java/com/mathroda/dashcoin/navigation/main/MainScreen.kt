@@ -1,6 +1,7 @@
 package com.mathroda.dashcoin.navigation.main
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.height
@@ -21,13 +22,15 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 import kotlin.math.roundToInt
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen(navController: NavHostController = rememberNavController()) {
+fun MainScreen(navController: NavHostController = rememberAnimatedNavController()) {
 
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()

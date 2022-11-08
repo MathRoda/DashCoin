@@ -1,11 +1,17 @@
 package com.mathroda.dashcoin.navigation.main
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.mathroda.dashcoin.core.util.enterTransition
+import com.mathroda.dashcoin.core.util.exitTransition
+import com.mathroda.dashcoin.core.util.popEnterTransition
+import com.mathroda.dashcoin.core.util.popExitTransition
 import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.dashcoin.presentation.coin_detail.CoinDetailScreen
 import com.mathroda.dashcoin.presentation.coins_screen.CoinScreen
@@ -15,24 +21,66 @@ import com.mathroda.dashcoin.presentation.signin_screen.SignInScreen
 import com.mathroda.dashcoin.presentation.signup_screen.SignUpScreen
 import com.mathroda.dashcoin.presentation.watchlist_screen.WatchListScreen
 
+@ExperimentalAnimationApi
 @OptIn(ExperimentalFoundationApi::class)
 @ExperimentalMaterialApi
 @Composable
+
 fun MainGraph(navController: NavHostController) {
     
-    NavHost(
+    AnimatedNavHost(
         navController = navController,
         route = Graph.MAIN,
-        startDestination = Screens.CoinsScreen.route
+        startDestination = Screens.CoinsScreen.route,
     ) {
         composable(
-            route = Screens.CoinsScreen.route
+            route = Screens.CoinsScreen.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    Screens.CoinDetailScreen.route + "/{coinId}" -> { enterTransition }
+                    Screens.SignIn.route -> { enterTransition }
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    Screens.CoinDetailScreen.route + "/{coinId}" -> { exitTransition }
+                    Screens.SignIn.route -> { exitTransition }
+                    else -> null
+                }
+            },
+            popEnterTransition = {
+                when (initialState.destination.route) {
+                    Screens.CoinDetailScreen.route + "/{coinId}" -> { popEnterTransition }
+                    Screens.SignIn.route -> { popEnterTransition }
+                    else -> null
+                }
+            }
+
         ){
             CoinScreen(navController = navController)
         }
 
         composable(
-            route = Screens.CoinsWatchList.route
+            route = Screens.CoinsWatchList.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    Screens.CoinDetailScreen.route + "/{coinId}" -> { enterTransition }
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    Screens.CoinDetailScreen.route + "/{coinId}" -> { exitTransition }
+                    else -> null
+                }
+            },
+            popEnterTransition = {
+                when (initialState.destination.route) {
+                    Screens.CoinDetailScreen.route + "/{coinId}" -> { popEnterTransition }
+                    else -> null
+                }
+            }
         ){
             WatchListScreen(navController = navController)
         }
@@ -44,7 +92,25 @@ fun MainGraph(navController: NavHostController) {
         }
 
         composable(
-            route = Screens.CoinDetailScreen.route + "/{coinId}"
+            route = Screens.CoinDetailScreen.route + "/{coinId}",
+            enterTransition = {
+                when (initialState.destination.route) {
+                    Screens.CoinsScreen.route -> { enterTransition }
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    Screens.CoinsScreen.route -> { exitTransition }
+                    else -> null
+                }
+            },
+            popExitTransition = {
+                when (targetState.destination.route) {
+                    Screens.CoinsScreen.route -> { popExitTransition }
+                    else -> null
+                }
+            }
         ){
             CoinDetailScreen(navController = navController)
         }

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -23,6 +24,7 @@ import kotlinx.coroutines.Delay
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

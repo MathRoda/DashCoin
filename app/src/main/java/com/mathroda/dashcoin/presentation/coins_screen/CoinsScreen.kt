@@ -1,5 +1,6 @@
 package com.mathroda.dashcoin.presentation.coins_screen
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,6 +30,7 @@ import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
 import com.mathroda.dashcoin.presentation.ui.theme.LightGray
 import kotlinx.coroutines.launch
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun CoinScreen(

@@ -15,7 +15,7 @@ class ChartScreenViewState {
         context: Context
     ) =
         LineDataSet(lineData, label).apply {
-            mode = LineDataSet.Mode.STEPPED
+            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
             color = oneDayChange.getColorStatusToArgb()
             highLightColor = oneDayChange.getColorStatusToArgb()
             fillDrawable = oneDayChange.getBackgroundColor(context)
