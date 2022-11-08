@@ -12,6 +12,7 @@ import com.mathroda.dashcoin.presentation.coin_detail.state.ChartState
 import com.mathroda.dashcoin.presentation.coin_detail.state.CoinState
 import com.mathroda.dashcoin.presentation.watchlist_screen.state.MarketState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -55,6 +56,7 @@ class CoinViewModel @Inject constructor(
                 }
                 is Resource.Loading ->{
                     _coinState.value = CoinState(isLoading = true)
+                    delay(300)
                 }
             }
         }.launchIn(viewModelScope)

@@ -114,7 +114,33 @@ fun MainGraph(navController: NavHostController) {
         ){
             CoinDetailScreen(navController = navController)
         }
-        composable(route = Screens.SignIn.route) {
+        composable(
+            route = Screens.SignIn.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    Screens.CoinsScreen.route -> { enterTransition }
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    Screens.CoinsScreen.route -> { exitTransition }
+                    else -> null
+                }
+            },
+            popExitTransition = {
+                when (initialState.destination.route) {
+                    Screens.CoinsScreen.route -> { popExitTransition }
+                    else -> null
+                }
+            },
+            popEnterTransition = {
+                when (initialState.destination.route) {
+                    Screens.SignUp.route -> { popEnterTransition }
+                    else -> null
+                }
+            }
+        ) {
             SignInScreen(
                 navigateToCoinsScreen =  {
                     navController.popBackStack()
@@ -132,7 +158,27 @@ fun MainGraph(navController: NavHostController) {
             )
         }
 
-        composable(route = Screens.SignUp.route) {
+        composable(
+            route = Screens.SignUp.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    Screens.SignIn.route -> { enterTransition }
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    Screens.SignIn.route -> { exitTransition }
+                    else -> null
+                }
+            },
+            popExitTransition = {
+                when (initialState.destination.route) {
+                    Screens.SignIn.route -> { popExitTransition }
+                    else -> null
+                }
+            },
+        ) {
             SignUpScreen(
                 navigateToSignInScreen =  {
                     navController.navigate(Screens.SignIn.route)
