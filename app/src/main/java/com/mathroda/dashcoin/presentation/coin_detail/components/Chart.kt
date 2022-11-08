@@ -26,16 +26,14 @@ fun Chart(
 
     val dataSet = mutableListOf<Entry>()
     charts?.let { chartsValue ->
-        chartsValue.chart?.map { value ->
-            for (i in value){
-               dataSet.add(addEntry(value[0], value[1]))
-            }
+        chartsValue.chart?.onEach { value ->
+            dataSet.add(addEntry(value[0], value[1]))
         }
     }
 
     AndroidView(
-        factory = { contextFactory ->
-            LineChart(contextFactory)
+        factory = {
+            LineChart(context)
         },
         update = { lineChart ->
 
