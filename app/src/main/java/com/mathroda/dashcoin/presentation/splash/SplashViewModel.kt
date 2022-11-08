@@ -5,11 +5,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
+import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.core.util.Resource
 import com.mathroda.dashcoin.data.datastore.DataStoreRepository
 import com.mathroda.dashcoin.data.dto.toCoinDetail
 import com.mathroda.dashcoin.domain.repository.DashCoinRepository
 import com.mathroda.dashcoin.domain.repository.FirebaseRepository
+import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
+import com.mathroda.dashcoin.domain.use_case.worker.WorkerOnSuccessUseCase
 import com.mathroda.dashcoin.navigation.root.Graph
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -24,7 +28,9 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
     private val dataStoreRepository: DataStoreRepository,
-    private val dashCoinRepository: DashCoinRepository
+    private val dashCoinRepository: DashCoinRepository,
+    private val dashCoinUseCases: DashCoinUseCases,
+    workerOnSuccessUseCase: WorkerOnSuccessUseCase
 ): ViewModel() {
 
     private val _isLoading = MutableStateFlow(true)
@@ -35,11 +41,15 @@ class SplashViewModel @Inject constructor(
 
     private val isUserExist = firebaseRepository.isCurrentUserExist()
 
+    private val onSuccessWorker = workerOnSuccessUseCase.invoke().value
+
 
 
     init {
         updateFavoriteCoinsStatus()
         getOnBoardingState()
+        notificationWorker()
+
     }
 
     private fun getOnBoardingState() {
@@ -77,6 +87,20 @@ class SplashViewModel @Inject constructor(
                 else -> {}
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun notificationWorker() {
+        onSuccessWorker?.let { listOfWorkInfo ->
+
+            if (listOfWorkInfo.isEmpty()) {
+                return@let
+            }
+            val workInfo: WorkInfo = listOfWorkInfo[0]
+
+            if (workInfo.state == WorkInfo.State.ENQUEUED) {
+                dashCoinUseCases.getCoin(Constants.BITCOIN_ID)
+            }
+        }
     }
 
 }

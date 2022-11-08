@@ -15,7 +15,7 @@ sealed class Screens(
     object CoinsScreen: Screens(
         route = "coins_screen",
         title = "Home",
-        icon = R.drawable.ic_coin
+        icon = R.drawable.ic_crypto
     )
 
     object CoinsWatchList: Screens(

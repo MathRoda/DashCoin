@@ -20,7 +20,6 @@ import javax.inject.Inject
 class CoinsViewModel @Inject constructor(
     private val dashCoinUseCases: DashCoinUseCases,
     private val firebaseRepository: FirebaseRepository,
-    workerOnSuccessUseCase: WorkerOnSuccessUseCase
 ): ViewModel() {
 
     private val _state = MutableStateFlow(CoinsState())
@@ -29,10 +28,6 @@ class CoinsViewModel @Inject constructor(
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
 
-
-    val onSuccessWorker = workerOnSuccessUseCase.invoke()
-
-    val getCurrentUserEmail = firebaseRepository.getCurrentUserEmail()
     val isCurrentUserExist = firebaseRepository.isCurrentUserExist()
 
 
@@ -40,10 +35,6 @@ class CoinsViewModel @Inject constructor(
         getCoins()
     }
 
-
-   fun marketStates(coinId: String) {
-       dashCoinUseCases.getCoin.invoke(coinId)
-   }
 
    private fun getCoins() {
         dashCoinUseCases.getCoins().onEach { result ->

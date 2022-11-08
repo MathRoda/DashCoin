@@ -54,7 +54,8 @@ fun WatchlistItem(
                         colors = listOf(Color.Transparent, marketStatus.getColorStatus()),
 
                     ),
-                    shape = RoundedCornerShape(10.dp)
+                    shape = RoundedCornerShape(10.dp),
+                    alpha = 0.4f
             )
         ) {
             Row(

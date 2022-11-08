@@ -29,10 +29,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.mathroda.dashcoin.R
 import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.navigation.main.Screens
@@ -54,7 +56,10 @@ fun DrawerNavigation(
     val uriHandler  = LocalUriHandler.current
     val userCredential = viewModel.userCredential.collectAsState()
 
-    DrawerHeader(welcomeUser = userCredential.value.userName ?: "test")
+    DrawerHeader(
+        welcomeUser = userCredential.value.userName ?: "Hi DashCoiner",
+        userEmail = userCredential.value.email
+    )
 
     DrawerBody(
         item = listOf(
@@ -96,25 +101,27 @@ fun DrawerNavigation(
 
 @Composable
 fun DrawerHeader(
-    welcomeUser: String?
+    welcomeUser: String?,
+    userEmail: String?
 ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxWidth()
+                .fillMaxHeight(0.4f)
                 .padding(bottom = 16.dp)
+                .background(BackgroundBlue)
         ) {
-            Card(
-                shape = CircleShape,
-                modifier = Modifier.graphicsLayer(scaleY = 0.5f, scaleX = 0.5f)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.profile_placeholder),
-                    contentDescription = "Profile Placeholder"
-                )
-            }
-            Text(text = welcomeUser ?: "Hi! Dashcoiner", fontSize = 22.sp)
+
+            Image(
+                modifier = Modifier
+                    .graphicsLayer(scaleY = 0.7f, scaleX = 0.7f),
+                painter = painterResource(id = R.drawable.profile_placeholder),
+                contentDescription = "Profile Placeholder"
+            )
+
+            Text(text = "Hi! $welcomeUser" , fontSize = 19.sp)
+            Text(text = userEmail ?: "" , fontSize = 17.sp)
         }
 
 }

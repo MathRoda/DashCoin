@@ -45,11 +45,9 @@ fun CoinScreen(
         composition = lottieComp,
         iterations = LottieConstants.IterateForever,
         )
-    val onWorkerSuccess = viewModel.onSuccessWorker.observeAsState().value
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val isUserExists = viewModel.isCurrentUserExist.collectAsState(initial = false).value
-    val userEmail = viewModel.getCurrentUserEmail.collectAsState(initial = "")
 
     val lazyListState = rememberLazyListState()
 
@@ -112,17 +110,6 @@ fun CoinScreen(
 
             }
 
-            onWorkerSuccess?.let { listOfWorkInfo ->
-
-                if (listOfWorkInfo.isEmpty()) {
-                    return@let
-                }
-                val workInfo: WorkInfo = listOfWorkInfo[0]
-
-                if (workInfo.state == WorkInfo.State.ENQUEUED) {
-                    viewModel.marketStates(Constants.BITCOIN_ID)
-                }
-            }
 
             if (state.value.isLoading) {
 

@@ -17,8 +17,8 @@ class WorkerProviderRepositoryImpl @Inject constructor(
 
     override fun createWork() {
         val workRequest = PeriodicWorkRequestBuilder<DashCoinWorker>(
-            4, TimeUnit.HOURS,
-            4, TimeUnit.HOURS
+            1, TimeUnit.DAYS,
+            1, TimeUnit.DAYS
         ).setConstraints(workConstraints).setInitialDelay(15, TimeUnit.MINUTES)
             .addTag(Constants.SYNC_DATA).build()
 
