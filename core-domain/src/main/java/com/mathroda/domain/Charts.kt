@@ -1,5 +1,5 @@
 package com.mathroda.domain
 
 data class Charts(
-    val chart: List<List<Float>>?= emptyList()
+    val chart: List<List<Float>>? = emptyList()
 )

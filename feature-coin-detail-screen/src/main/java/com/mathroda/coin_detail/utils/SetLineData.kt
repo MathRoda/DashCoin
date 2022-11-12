@@ -11,7 +11,7 @@ fun LineChart.setLineDataSet(
     lineDataSet: LineDataSet? = null,
     animateXDuration: Int = 0
 ) {
-    if (lineDataSet !=null) {
+    if (lineDataSet != null) {
         clear()
         data = LineData(lineDataSet).apply {
             setDrawValues(false)

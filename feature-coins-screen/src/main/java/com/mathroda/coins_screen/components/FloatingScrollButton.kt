@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.mathroda.common.theme.LighterGray
 
 @Composable
 fun FloatingScrollButton(
@@ -24,7 +23,7 @@ fun FloatingScrollButton(
         visible = visibility,
         enter = EnterTransition.None,
         exit = ExitTransition.None
-        ) {
+    ) {
 
         FloatingActionButton(
             onClick = { onClick() },

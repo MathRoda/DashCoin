@@ -18,16 +18,16 @@ import javax.inject.Inject
 
 class DashCoinRepositoryImpl @Inject constructor(
     private val api: DashCoinApi
-): DashCoinRepository {
+) : DashCoinRepository {
 
     //api requests functions implementation
     override fun getCoins(): Flow<Resource<List<com.mathroda.domain.Coins>>> = callbackFlow {
         try {
             this.trySend(Resource.Loading())
             val coins = api.getCoins().coins.map { it.toCoins() }
-            this.trySend(Resource.Success(coins) )
+            this.trySend(Resource.Success(coins))
         } catch (e: HttpException) {
-            this.trySend(Resource.Error(e.localizedMessage?: "Unexpected Error"))
+            this.trySend(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
         } catch (e: IOException) {
             this.trySend(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
@@ -39,8 +39,8 @@ class DashCoinRepositoryImpl @Inject constructor(
             emit(Resource.Loading())
             val coin = api.getCoinById(coinId).coin.toCoinDetail()
             emit(Resource.Success(coin))
-        }catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage?: "An unexpected error"))
+        } catch (e: HttpException) {
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
         } catch (e: IOException) {
             emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
@@ -51,23 +51,24 @@ class DashCoinRepositoryImpl @Inject constructor(
         try {
             emit(Resource.Loading())
             val coins = api.getChartsData(coinId).toChart()
-            emit(Resource.Success(coins) )
+            emit(Resource.Success(coins))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage?: "Unexpected Error"))
+            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
         } catch (e: IOException) {
             emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 
-    override fun getNews(filter: String): Flow<Resource<List<com.mathroda.domain.NewsDetail>>> = flow {
-        try {
-            emit(Resource.Loading())
-            val coin = api.getNews(filter).news.map { it.toNewsDetail() }
-            emit(Resource.Success(coin))
-        }catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage?: "An unexpected error"))
-        } catch (e: IOException) {
-            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
+    override fun getNews(filter: String): Flow<Resource<List<com.mathroda.domain.NewsDetail>>> =
+        flow {
+            try {
+                emit(Resource.Loading())
+                val coin = api.getNews(filter).news.map { it.toNewsDetail() }
+                emit(Resource.Success(coin))
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
+            } catch (e: IOException) {
+                emit(Resource.Error("Couldn't reach server. Check your internet connection"))
+            }
         }
-    }
 }

@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class WorkerProviderRepositoryImpl @Inject constructor(
     private val workManager: WorkManager
-): WorkerProviderRepository {
+) : WorkerProviderRepository {
 
     private val workConstraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -28,5 +28,6 @@ class WorkerProviderRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun onWorkerSuccess() = workManager.getWorkInfosByTagLiveData(com.mathroda.core.util.Constants.SYNC_DATA)
+    override fun onWorkerSuccess() =
+        workManager.getWorkInfosByTagLiveData(com.mathroda.core.util.Constants.SYNC_DATA)
 }

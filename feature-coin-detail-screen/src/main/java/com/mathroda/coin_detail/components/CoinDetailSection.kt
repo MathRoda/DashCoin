@@ -29,7 +29,7 @@ fun CoinDetailSection(
             .fillMaxWidth()
             .padding(top = 40.dp),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceAround,
@@ -41,13 +41,14 @@ fun CoinDetailSection(
                 color = TextWhite
             )
 
-            Row (
+            Row(
                 Modifier.padding(horizontal = 5.dp)
-                    ) {
-                Box(modifier = Modifier
-                    .clip(RoundedCornerShape(3.dp))
-                    .background(LighterGray)
-                    .size(21.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(LighterGray)
+                        .size(21.dp)
                 ) {
                     Text(
                         text = "24h",
@@ -66,7 +67,7 @@ fun CoinDetailSection(
 
                 Image(
                     painter = if (priceChange < 0) painterResource(id = com.mathroda.common.R.drawable.ic_arrow_negative)
-                    else painterResource(id = com.mathroda.common.R.drawable.ic_arrow_positive) ,
+                    else painterResource(id = com.mathroda.common.R.drawable.ic_arrow_positive),
                     contentDescription = "arrow",
                     modifier = Modifier
                         .padding(4.dp)

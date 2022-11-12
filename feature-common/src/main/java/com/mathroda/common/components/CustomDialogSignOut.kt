@@ -41,12 +41,13 @@ fun CustomDialogUiSignOut(
         //shape = MaterialTheme.shapes.medium,
         shape = RoundedCornerShape(10.dp),
         // modifier = modifier.size(280.dp, 240.dp)
-        modifier = Modifier.padding(10.dp,5.dp,10.dp,10.dp),
+        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
         elevation = 8.dp
     ) {
         Column(
             modifier
-                .background(com.mathroda.common.theme.LightGray)) {
+                .background(com.mathroda.common.theme.LightGray)
+        ) {
 
             //.......................................................................
 
@@ -80,7 +81,8 @@ fun CustomDialogUiSignOut(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
                     .background(com.mathroda.common.theme.LighterGray),
-                horizontalArrangement = Arrangement.SpaceAround) {
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
 
                 TextButton(onClick = {
                     openDialogCustom.value = false

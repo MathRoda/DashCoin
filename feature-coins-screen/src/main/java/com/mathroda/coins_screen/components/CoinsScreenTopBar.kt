@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.mathroda.common.theme.TextWhite
 
 @Composable
 fun CoinsScreenTopBar(
@@ -32,12 +31,12 @@ fun CoinsScreenTopBar(
 
         IconButton(onClick = { onNavigationDrawerClick() }) {
             Icon(
-                imageVector = Icons.Default.Menu ,
+                imageVector = Icons.Default.Menu,
                 contentDescription = "Toggle Drawer",
             )
         }
 
-        Box (Modifier.fillMaxWidth()){
+        Box(Modifier.fillMaxWidth()) {
             Text(
                 text = title,
                 fontWeight = FontWeight.Bold,
@@ -50,5 +49,5 @@ fun CoinsScreenTopBar(
         }
 
     }
-    
+
 }

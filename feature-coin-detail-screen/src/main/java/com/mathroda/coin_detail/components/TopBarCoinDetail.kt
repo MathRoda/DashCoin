@@ -1,11 +1,13 @@
 package com.mathroda.coin_detail.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconToggleButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.mathroda.common.components.BackStackButton
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
 
@@ -37,8 +40,9 @@ fun TopBarCoinDetail(
             .requiredHeight(40.dp)
     ) {
 
-        Box(modifier = Modifier
-            .weight(2f),
+        Box(
+            modifier = Modifier
+                .weight(2f),
             contentAlignment = Alignment.CenterStart
         ) {
             BackStackButton(
@@ -51,10 +55,11 @@ fun TopBarCoinDetail(
         Box(
             modifier = Modifier
                 .weight(6f),
-            contentAlignment = Alignment.Center){
+            contentAlignment = Alignment.Center
+        ) {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
                 AsyncImage(
-                    model = icon ,
+                    model = icon,
                     contentDescription = "Icon",
                     modifier = Modifier
                         .size(30.dp)
@@ -72,7 +77,8 @@ fun TopBarCoinDetail(
         Box(
             modifier = Modifier
                 .weight(2f),
-            contentAlignment = Alignment.CenterEnd){
+            contentAlignment = Alignment.CenterEnd
+        ) {
 
             FavoriteButton(
                 modifier = Modifier.padding(8.dp),
@@ -81,7 +87,7 @@ fun TopBarCoinDetail(
             )
         }
 
-        }
+    }
 }
 
 @Composable
@@ -94,11 +100,11 @@ fun FavoriteButton(
 
 ) {
     IconToggleButton(
-        checked = isFavorite ,
+        checked = isFavorite,
         onCheckedChange = onCLick
     ) {
         Icon(
-            tint =  if (isFavorite) Gold else color ,
+            tint = if (isFavorite) Gold else color,
             modifier = modifier.graphicsLayer {
                 scaleX = 1.3f
                 scaleY = 1.3f
@@ -107,26 +113,5 @@ fun FavoriteButton(
             contentDescription = null
         )
     }
-
-}
-
-@Composable
-fun BackStackButton(
-    modifier: Modifier = Modifier,
-    color: Color = TextWhite,
-    onCLick: () -> Unit
-) {
-    IconButton(onClick = { onCLick() }) {
-        Icon(
-            tint = color,
-            modifier = modifier.graphicsLayer {
-                scaleX = 1.3f
-                scaleY = 1.3f
-            },
-            imageVector = Icons.Outlined.KeyboardArrowLeft,
-            contentDescription = null
-        )
-    }
-
 
 }

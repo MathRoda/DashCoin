@@ -2,7 +2,6 @@ package com.mathroda.coins_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.coins_screen.state.CoinsState
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

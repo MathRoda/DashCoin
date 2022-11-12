@@ -29,7 +29,7 @@ class DataStoreRepository(private val context: Context) {
                 }
             }
             .map {
-                it[ON_BOARDING_KEY]?: false
+                it[ON_BOARDING_KEY] ?: false
             }
 
     suspend fun saveOnBoardingState(completed: Boolean) {

@@ -1,6 +1,6 @@
 package com.mathroda.domain
 
-data class CoinById (
+data class CoinById(
     val availableSupply: Double? = 0.0,
     val icon: String? = "",
     val id: String? = "",
@@ -17,4 +17,4 @@ data class CoinById (
     val volume: Double? = 0.0,
     val websiteUrl: String? = "",
     val priceBtc: Double? = 0.0,
-    )
+)

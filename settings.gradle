@@ -12,7 +12,8 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven {
-            url=uri("https://oss.sonatype.org/content/repositories/snapshots/") }
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+        }
     }
 }
 rootProject.name = "Dash Coin"
@@ -26,3 +27,9 @@ include ':feature-coin-detail-screen'
 include ':feature-common'
 include ':feature-coins-screen'
 include ':feature-profile-screen'
+include ':feature-favorite-coins-screen'
+include ':feature-news-screen'
+include ':feature-onboarding'
+include ':auth-signin-screen'
+include ':auth-signup-screen'
+include ':auth-forgot-password-screen'

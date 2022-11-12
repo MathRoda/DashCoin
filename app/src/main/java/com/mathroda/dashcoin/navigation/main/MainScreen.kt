@@ -24,8 +24,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mathroda.common.navigation.Screens
-import com.mathroda.common.theme.LighterGray
-import com.mathroda.common.theme.TextWhite
 import kotlin.math.roundToInt
 
 @ExperimentalComposeUiApi
@@ -65,19 +63,19 @@ fun MainScreen(navController: NavHostController = rememberAnimatedNavController(
         }
     }
 
-    Scaffold (
+    Scaffold(
         modifier = Modifier.nestedScroll(nestedScrollConnection),
-        bottomBar ={
-             BottomBar(
-                 navController = navController,
-                 state = bottomBarState,
-                 modifier = Modifier
-                     .height(bottomBarHeight)
-                     .offset { IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt()) }
-             )
+        bottomBar = {
+            BottomBar(
+                navController = navController,
+                state = bottomBarState,
+                modifier = Modifier
+                    .height(bottomBarHeight)
+                    .offset { IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt()) }
+            )
 
         }
-            )
+    )
     {
         MainGraph(navController = navController)
     }
@@ -99,7 +97,7 @@ fun BottomBar(
         visible = state.value,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
-    ){
+    ) {
         BottomNavigation(
             modifier = modifier,
             backgroundColor = com.mathroda.common.theme.LighterGray,
@@ -114,18 +112,21 @@ fun BottomBar(
                         Text(text = screen.title!!)
                     },
                     icon = {
-                        Icon(painter = painterResource(id = screen.icon!!) , contentDescription = null)
+                        Icon(
+                            painter = painterResource(id = screen.icon!!),
+                            contentDescription = null
+                        )
                     },
 
                     selected = currentRoute == screen.route,
 
                     onClick = {
                         navController.navigate(screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id){
+                            popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
                             launchSingleTop = true
-                            restoreState =true
+                            restoreState = true
                         }
                     },
 

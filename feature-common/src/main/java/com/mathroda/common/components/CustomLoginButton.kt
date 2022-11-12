@@ -28,7 +28,7 @@ fun CustomLoginButton(
 ) {
     Button(
         onClick = { onClick() },
-        enabled = enabled ,
+        enabled = enabled,
         modifier = modifier
             .background(
                 Brush.horizontalGradient(

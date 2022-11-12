@@ -46,7 +46,7 @@ fun SearchBar(
             .padding(5.dp)
     ) {
         Icon(
-            painter = painterResource(id =R.drawable.ic_search),
+            painter = painterResource(id = R.drawable.ic_search),
             contentDescription = "Search",
             tint = Color.White,
             modifier = Modifier
@@ -72,10 +72,10 @@ fun SearchBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .onFocusChanged {
-                      isHintDisplayed = !it.isFocused
+                        isHintDisplayed = !it.isFocused
                     }
                     .focusRequester(focusRequester),
-            cursorBrush = SolidColor(TextWhite)
+                cursorBrush = SolidColor(TextWhite)
             )
 
             if (isHintDisplayed) {

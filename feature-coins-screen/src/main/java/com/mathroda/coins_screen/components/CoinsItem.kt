@@ -48,7 +48,7 @@ fun CoinsItem(
             ) {
 
                 AsyncImage(
-                    model = coins.icon ,
+                    model = coins.icon,
                     contentDescription = "Icon",
                     modifier = Modifier
                         .size(20.dp)
@@ -63,7 +63,7 @@ fun CoinsItem(
             horizontalAlignment = Alignment.Start,
             modifier = Modifier
                 .weight(5f)
-            ) {
+        ) {
             Text(
                 text = coins.name,
                 style = MaterialTheme.typography.body1,
@@ -73,11 +73,12 @@ fun CoinsItem(
             )
 
             Row {
-                Box(modifier = Modifier
-                    .clip(RoundedCornerShape(2.dp))
-                    .background(com.mathroda.common.theme.LighterGray)
-                    .size(16.dp)
-                    .align(CenterVertically)
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(2.dp))
+                        .background(com.mathroda.common.theme.LighterGray)
+                        .size(16.dp)
+                        .align(CenterVertically)
                 ) {
                     Text(
                         text = coins.rank.toString(),
@@ -113,14 +114,14 @@ fun CoinsItem(
                 color = com.mathroda.common.theme.TextWhite
             )
 
-                Text(
-                    text = coins.priceChange1d.toString() + "%",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (coins.priceChange1d < 0) com.mathroda.common.theme.CustomRed else com.mathroda.common.theme.CustomGreen
-                )
+            Text(
+                text = coins.priceChange1d.toString() + "%",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = if (coins.priceChange1d < 0) com.mathroda.common.theme.CustomRed else com.mathroda.common.theme.CustomGreen
+            )
         }
     }
 
-   Divider( color = com.mathroda.common.theme.LightGray)
+    Divider(color = com.mathroda.common.theme.LightGray)
 }

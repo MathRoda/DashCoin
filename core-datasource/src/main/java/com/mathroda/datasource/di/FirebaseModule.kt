@@ -30,7 +30,7 @@ object FirebaseModule {
     fun providesFirebaseRepository(
         firebaseAuth: FirebaseAuth,
         fireStore: FirebaseFirestore
-        ): FirebaseRepository {
+    ): FirebaseRepository {
         return FirebaseRepositoryImpl(firebaseAuth, fireStore)
     }
 

@@ -13,7 +13,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.domain.CoinById
 
 @Composable
@@ -22,8 +21,8 @@ fun CustomDialog(
     coin: CoinById?,
     navController: NavController,
     onClick: () -> Unit
-    ) {
-    Dialog(onDismissRequest = { openDialogCustom.value = false}) {
+) {
+    Dialog(onDismissRequest = { openDialogCustom.value = false }) {
         CustomDialogUI(
             openDialogCustom = openDialogCustom,
             coin = coin,
@@ -38,7 +37,7 @@ fun CustomDialog(
 fun CustomDialogUI(
     modifier: Modifier = Modifier,
     openDialogCustom: MutableState<Boolean>,
-    onClick: ()-> Unit,
+    onClick: () -> Unit,
     coin: CoinById?,
     navController: NavController
 ) {
@@ -46,12 +45,13 @@ fun CustomDialogUI(
         //shape = MaterialTheme.shapes.medium,
         shape = RoundedCornerShape(10.dp),
         // modifier = modifier.size(280.dp, 240.dp)
-        modifier = Modifier.padding(10.dp,5.dp,10.dp,10.dp),
+        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
         elevation = 8.dp
     ) {
         Column(
             modifier
-                .background(com.mathroda.common.theme.LightGray)) {
+                .background(com.mathroda.common.theme.LightGray)
+        ) {
 
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -82,13 +82,14 @@ fun CustomDialogUI(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
                     .background(com.mathroda.common.theme.LighterGray),
-                horizontalArrangement = Arrangement.SpaceAround) {
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
 
-               TextButton(onClick = {
+                TextButton(onClick = {
                     openDialogCustom.value = false
                 }) {
 
-                   Text(
+                    Text(
                         "Dismiss",
                         fontWeight = FontWeight.Bold,
                         color = com.mathroda.common.theme.TextWhite.copy(ContentAlpha.disabled),

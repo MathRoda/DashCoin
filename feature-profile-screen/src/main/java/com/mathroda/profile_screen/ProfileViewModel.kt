@@ -15,12 +15,12 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository
-): ViewModel(){
+) : ViewModel() {
 
-    private val _userCredential =  MutableStateFlow(User())
-    val userCredential =  _userCredential.asStateFlow()
+    private val _userCredential = MutableStateFlow(User())
+    val userCredential = _userCredential.asStateFlow()
 
-    private var getUserJob: Job ?= null
+    private var getUserJob: Job? = null
 
     init {
         getUserCredential()
@@ -31,7 +31,7 @@ class ProfileViewModel @Inject constructor(
     private fun getUserCredential() {
         getUserJob?.cancel()
         getUserJob = firebaseRepository.getUserCredentials().onEach { result ->
-            when(result) {
+            when (result) {
                 is com.mathroda.core.util.Resource.Loading -> {}
                 is com.mathroda.core.util.Resource.Success -> {
                     result.data?.let {

@@ -95,6 +95,6 @@ fun TimeSpanChip(
             text = time,
             color = if (isSelected) MaterialTheme.colors.background else MaterialTheme.colors.onBackground,
             modifier = Modifier.padding(8.dp)
-                )
+        )
     }
 }

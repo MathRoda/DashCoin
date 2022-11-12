@@ -40,23 +40,23 @@ fun CoinInfoRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-        .fillMaxWidth()
+            .fillMaxWidth()
     ) {
-            Text(
-                text = title,
-                fontWeight = FontWeight.Bold,
-                color = TextWhite,
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.body2,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
+        Text(
+            text = title,
+            fontWeight = FontWeight.Bold,
+            color = TextWhite,
+            textAlign = TextAlign.Start,
+            style = MaterialTheme.typography.body2,
+            modifier = Modifier.padding(bottom = 12.dp)
+        )
 
-                Text(
-                    text = value,
-                    color = TextWhite,
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.body2
-                )
+        Text(
+            text = value,
+            color = TextWhite,
+            textAlign = TextAlign.End,
+            style = MaterialTheme.typography.body2
+        )
 
-        }
     }
+}

@@ -14,7 +14,7 @@ class DashCoinApplication : Application(), Configuration.Provider {
     lateinit var workerFactory: HiltWorkerFactory
 
     @Inject
-     lateinit var createWorkUseCase: CreateWorkUseCase
+    lateinit var createWorkUseCase: CreateWorkUseCase
 
     override fun onCreate() {
         super.onCreate()

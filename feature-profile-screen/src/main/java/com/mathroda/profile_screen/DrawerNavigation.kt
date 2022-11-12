@@ -1,6 +1,5 @@
 package com.mathroda.profile_screen
 
-import android.app.Activity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -47,7 +45,7 @@ fun DrawerNavigation(
     navController: NavController,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val uriHandler  = LocalUriHandler.current
+    val uriHandler = LocalUriHandler.current
     val userCredential = viewModel.userCredential.collectAsState()
 
     DrawerHeader(
@@ -75,10 +73,12 @@ fun DrawerNavigation(
                 contentDescription = "Toggle About",
                 icon = Icons.Default.Favorite
             )
-        ) ,
+        ),
         onItemClick = {
-            when(it.id) {
-                "about" -> {uriHandler.openUri(Constants.DASHCOIN_REPOSITORY)}
+            when (it.id) {
+                "about" -> {
+                    uriHandler.openUri(Constants.DASHCOIN_REPOSITORY)
+                }
             }
         }
     )
@@ -98,25 +98,25 @@ fun DrawerHeader(
     welcomeUser: String?,
     userEmail: String?
 ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.4f)
+            .padding(bottom = 16.dp)
+            .background(com.mathroda.common.theme.BackgroundBlue)
+    ) {
+
+        Image(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.4f)
-                .padding(bottom = 16.dp)
-                .background(com.mathroda.common.theme.BackgroundBlue)
-        ) {
+                .graphicsLayer(scaleY = 0.7f, scaleX = 0.7f),
+            painter = painterResource(id = R.drawable.profile_placeholder),
+            contentDescription = "Profile Placeholder"
+        )
 
-            Image(
-                modifier = Modifier
-                    .graphicsLayer(scaleY = 0.7f, scaleX = 0.7f),
-                painter = painterResource(id = R.drawable.profile_placeholder),
-                contentDescription = "Profile Placeholder"
-            )
-
-            Text(text = "Hi! $welcomeUser" , fontSize = 19.sp)
-            Text(text = userEmail ?: "" , fontSize = 17.sp)
-        }
+        Text(text = "Hi! $welcomeUser", fontSize = 19.sp)
+        Text(text = userEmail ?: "", fontSize = 17.sp)
+    }
 
 }
 
@@ -128,28 +128,28 @@ fun DrawerBody(
 ) {
 
     LazyColumn(modifier = modifier) {
-       items(item) { item ->
-           Row(
-               modifier = Modifier
-                   .fillMaxWidth()
-                   .clickable {
-                       onItemClick(item)
-                   }
-                   .padding(16.dp)
-           ) {
+        items(item) { item ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onItemClick(item)
+                    }
+                    .padding(16.dp)
+            ) {
 
-               Icon(
-                   imageVector = item.icon,
-                   contentDescription = item.contentDescription
-               )
-               Spacer(modifier = Modifier.width(16.dp))
-               Text(
-                   text = item.title,
-                   style = TextStyle(fontSize = 18.sp),
-                   modifier = Modifier.weight(1f)
-               )
-           }
-       }
+                Icon(
+                    imageVector = item.icon,
+                    contentDescription = item.contentDescription
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = item.title,
+                    style = TextStyle(fontSize = 18.sp),
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
     }
 
 }
@@ -188,28 +188,28 @@ fun LogOut(
     viewModel: ProfileViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val openDialogCustom = remember{ mutableStateOf(false) }
+    val openDialogCustom = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
 
-            TopAppBar(title = { Text(text = "Profile") })
-            Spacer(modifier = Modifier.size(32.dp))
-            CustomLoginButton(
-                text = "LOGOUT",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(DarkGray)
-                    .padding(top = 24.dp),
-                color = listOf(
-                    CustomRed,
-                    CustomBrightRed
-                )
-            ) {
-                openDialogCustom.value = true
-            }
+        TopAppBar(title = { Text(text = "Profile") })
+        Spacer(modifier = Modifier.size(32.dp))
+        CustomLoginButton(
+            text = "LOGOUT",
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(DarkGray)
+                .padding(top = 24.dp),
+            color = listOf(
+                CustomRed,
+                CustomBrightRed
+            )
+        ) {
+            openDialogCustom.value = true
+        }
     }
 
     if (openDialogCustom.value) {
@@ -257,15 +257,15 @@ fun DrawerFooter() {
                     )
                 }
 
-                    Spacer(modifier = Modifier.size(12.dp))
+                Spacer(modifier = Modifier.size(12.dp))
 
-                    IconButton(onClick = { uriHandler.openUri(com.mathroda.core.util.Constants.TWITTER) }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_twitter),
-                            modifier = Modifier.size(18.dp),
-                            contentDescription = "Twitter"
-                        )
-                    }
+                IconButton(onClick = { uriHandler.openUri(com.mathroda.core.util.Constants.TWITTER) }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_twitter),
+                        modifier = Modifier.size(18.dp),
+                        contentDescription = "Twitter"
+                    )
+                }
             }
         }
     }

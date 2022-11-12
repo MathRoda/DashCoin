@@ -19,13 +19,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.*
 import com.mathroda.common.R
-import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.common.components.CustomDialog
+import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.common.util.numbersToCurrency
 import com.mathroda.common.util.numbersToFormat
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
-import java.text.NumberFormat
-import java.util.*
 
 @Composable
 fun CoinDetailScreen(
@@ -53,108 +51,108 @@ fun CoinDetailScreen(
             .fillMaxSize()
             .padding(12.dp)
     ) {
-       coinState.coin?.let { coin ->
+        coinState.coin?.let { coin ->
 
-           /**
-            * first thing when the coin detail screen renders it checks
-            * if the coin exist in Firestore and collect the flow as State
-            */
-           viewModel.isFavoriteState(coin)
-           val isFav = viewModel.isFavoriteState.collectAsState()
-           LazyColumn(
-               modifier = Modifier
-                   .fillMaxSize()
-           ) {
-               item {
+            /**
+             * first thing when the coin detail screen renders it checks
+             * if the coin exist in Firestore and collect the flow as State
+             */
+            viewModel.isFavoriteState(coin)
+            val isFav = viewModel.isFavoriteState.collectAsState()
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                item {
 
-                   isFavorite = isFav.value.id == coin.id
-                   val openDialogCustom = remember{ mutableStateOf(false) }
-                   com.mathroda.coin_detail.components.TopBarCoinDetail(
-                       coinSymbol = coin.symbol!!,
-                       icon = coin.icon!!,
-                       navController = navController,
-                       isFavorite = isFavorite,
-                       onCLick = {
-                           isFavorite = !isFavorite
+                    isFavorite = isFav.value.id == coin.id
+                    val openDialogCustom = remember { mutableStateOf(false) }
+                    com.mathroda.coin_detail.components.TopBarCoinDetail(
+                        coinSymbol = coin.symbol!!,
+                        icon = coin.icon!!,
+                        navController = navController,
+                        isFavorite = isFavorite,
+                        onCLick = {
+                            isFavorite = !isFavorite
 
-                           if (isFavorite) {
-                               if (isUserExist.value) {
-                                   viewModel.onEvent(FavoriteCoinEvents.AddCoin(coin))
-                               } else {
-                                   sideEffect = !isUserExist.value
-                               }
+                            if (isFavorite) {
+                                if (isUserExist.value) {
+                                    viewModel.onEvent(FavoriteCoinEvents.AddCoin(coin))
+                                } else {
+                                    sideEffect = !isUserExist.value
+                                }
 
-                           } else openDialogCustom.value = true
-                       }
-                   )
-                   if (openDialogCustom.value){
-                       CustomDialog(
-                           openDialogCustom = openDialogCustom,
-                           coin = coin,
-                           navController = navController
-                       ) {
-                           viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin))
-                       }
-                   }
-                   com.mathroda.coin_detail.components.CoinDetailSection(
-                       price = coin.price!!,
-                       priceChange = coin.priceChange1d!!
-                   )
+                            } else openDialogCustom.value = true
+                        }
+                    )
+                    if (openDialogCustom.value) {
+                        CustomDialog(
+                            openDialogCustom = openDialogCustom,
+                            coin = coin,
+                            navController = navController
+                        ) {
+                            viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin))
+                        }
+                    }
+                    com.mathroda.coin_detail.components.CoinDetailSection(
+                        price = coin.price!!,
+                        priceChange = coin.priceChange1d!!
+                    )
 
-                   com.mathroda.coin_detail.components.Chart(
-                       oneDayChange = coin.priceChange1d!!,
-                       context = LocalContext.current,
-                       charts = chartsState.chart
-                   )
+                    com.mathroda.coin_detail.components.Chart(
+                        oneDayChange = coin.priceChange1d!!,
+                        context = LocalContext.current,
+                        charts = chartsState.chart
+                    )
 
-                   com.mathroda.coin_detail.components.CoinInformation(
-                       modifier = Modifier
-                           .fillMaxWidth()
-                           .background(
-                               color = com.mathroda.common.theme.LighterGray,
-                               shape = RoundedCornerShape(25.dp)
-                           )
-                           .padding(start = 16.dp, top = 16.dp, end = 16.dp),
-                       rank = "${coin.rank}",
-                       volume = numbersToCurrency(coin.volume!!.toInt())!!,
-                       marketCap = numbersToCurrency(coin.marketCap!!.toInt())!!,
-                       availableSupply = "${numbersToFormat(coin.availableSupply!!.toInt())} ${coin.symbol}",
-                       totalSupply = "${numbersToFormat(coin.totalSupply!!.toInt())} ${coin.symbol}"
-                   )
+                    com.mathroda.coin_detail.components.CoinInformation(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = com.mathroda.common.theme.LighterGray,
+                                shape = RoundedCornerShape(25.dp)
+                            )
+                            .padding(start = 16.dp, top = 16.dp, end = 16.dp),
+                        rank = "${coin.rank}",
+                        volume = numbersToCurrency(coin.volume!!.toInt())!!,
+                        marketCap = numbersToCurrency(coin.marketCap!!.toInt())!!,
+                        availableSupply = "${numbersToFormat(coin.availableSupply!!.toInt())} ${coin.symbol}",
+                        totalSupply = "${numbersToFormat(coin.totalSupply!!.toInt())} ${coin.symbol}"
+                    )
 
-                   val uriHandler = LocalUriHandler.current
-                   Row (
-                       horizontalArrangement = Arrangement.Center
-                           ){
-                       com.mathroda.coin_detail.components.LinkButton(
-                           title = "Twitter",
-                           modifier = Modifier
-                               .padding(start = 20.dp, bottom = 20.dp, top = 20.dp)
-                               .clip(RoundedCornerShape(35.dp))
-                               .height(45.dp)
-                               .background(com.mathroda.common.theme.Twitter)
-                               .weight(1f)
-                               .clickable {
-                                   uriHandler.openUri(coin.twitterUrl!!)
-                               }
-                       )
+                    val uriHandler = LocalUriHandler.current
+                    Row(
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        com.mathroda.coin_detail.components.LinkButton(
+                            title = "Twitter",
+                            modifier = Modifier
+                                .padding(start = 20.dp, bottom = 20.dp, top = 20.dp)
+                                .clip(RoundedCornerShape(35.dp))
+                                .height(45.dp)
+                                .background(com.mathroda.common.theme.Twitter)
+                                .weight(1f)
+                                .clickable {
+                                    uriHandler.openUri(coin.twitterUrl!!)
+                                }
+                        )
 
-                       com.mathroda.coin_detail.components.LinkButton(
-                           title = "Website",
-                           modifier = Modifier
-                               .padding(start = 20.dp, bottom = 20.dp, top = 20.dp)
-                               .clip(RoundedCornerShape(35.dp))
-                               .height(45.dp)
-                               .background(com.mathroda.common.theme.LighterGray)
-                               .weight(1f)
-                               .clickable {
-                                   uriHandler.openUri(coin.websiteUrl!!)
-                               }
-                       )
-                   }
-               }
-           }
-       }
+                        com.mathroda.coin_detail.components.LinkButton(
+                            title = "Website",
+                            modifier = Modifier
+                                .padding(start = 20.dp, bottom = 20.dp, top = 20.dp)
+                                .clip(RoundedCornerShape(35.dp))
+                                .height(45.dp)
+                                .background(com.mathroda.common.theme.LighterGray)
+                                .weight(1f)
+                                .clickable {
+                                    uriHandler.openUri(coin.websiteUrl!!)
+                                }
+                        )
+                    }
+                }
+            }
+        }
 
         if (sideEffect) {
             SweetToastUtil.SweetWarning(
@@ -177,7 +175,7 @@ fun CoinDetailScreen(
             }
         }
 
-        if(coinState.error.isNotBlank()) {
+        if (coinState.error.isNotBlank()) {
             Text(
                 text = coinState.error,
                 color = MaterialTheme.colors.error,

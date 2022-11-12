@@ -24,7 +24,7 @@ class CoinViewModel @Inject constructor(
     private val dashCoinRepository: DashCoinRepository,
     private val firebaseRepository: FirebaseRepository,
     savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
 
     private val _coinState = mutableStateOf(CoinState())
     val coinState: State<CoinState> = _coinState
@@ -44,7 +44,6 @@ class CoinViewModel @Inject constructor(
     val isCurrentUserExists = firebaseRepository.isCurrentUserExist()
 
 
-
     init {
         savedStateHandle.get<String>(PARAM_COIN_ID)?.let { coinId ->
             getChart(coinId)
@@ -54,18 +53,18 @@ class CoinViewModel @Inject constructor(
 
     }
 
-     private fun getCoin(coinId: String) {
+    private fun getCoin(coinId: String) {
         dashCoinRepository.getCoinById(coinId).onEach { result ->
-            when(result) {
-                is com.mathroda.core.util.Resource.Success ->{
+            when (result) {
+                is com.mathroda.core.util.Resource.Success -> {
                     _coinState.value = com.mathroda.coin_detail.state.CoinState(coin = result.data)
                 }
-                is com.mathroda.core.util.Resource.Error ->{
+                is com.mathroda.core.util.Resource.Error -> {
                     _coinState.value = com.mathroda.coin_detail.state.CoinState(
                         error = result.message ?: "Unexpected Error"
                     )
                 }
-                is com.mathroda.core.util.Resource.Loading ->{
+                is com.mathroda.core.util.Resource.Loading -> {
                     _coinState.value = com.mathroda.coin_detail.state.CoinState(isLoading = true)
                     delay(300)
                 }
@@ -75,17 +74,17 @@ class CoinViewModel @Inject constructor(
 
     private fun getChart(coinId: String) {
         dashCoinRepository.getChartsData(coinId).onEach { result ->
-            when(result) {
-                is com.mathroda.core.util.Resource.Success ->{
+            when (result) {
+                is com.mathroda.core.util.Resource.Success -> {
                     _chartState.value =
                         com.mathroda.coin_detail.state.ChartState(chart = result.data)
                 }
-                is com.mathroda.core.util.Resource.Error ->{
+                is com.mathroda.core.util.Resource.Error -> {
                     _chartState.value = com.mathroda.coin_detail.state.ChartState(
                         error = result.message ?: "Unexpected Error"
                     )
                 }
-                is com.mathroda.core.util.Resource.Loading ->{
+                is com.mathroda.core.util.Resource.Loading -> {
                     _chartState.value = com.mathroda.coin_detail.state.ChartState(isLoading = true)
                 }
             }
@@ -94,15 +93,16 @@ class CoinViewModel @Inject constructor(
 
     private fun getMarketStatus() {
         dashCoinRepository.getCoinById("bitcoin").onEach { result ->
-            when(result) {
-                is com.mathroda.core.util.Resource.Success ->{
+            when (result) {
+                is com.mathroda.core.util.Resource.Success -> {
                     _marketStatus.value = MarketState(coin = result.data)
                 }
-                is com.mathroda.core.util.Resource.Error ->{
+                is com.mathroda.core.util.Resource.Error -> {
                     _marketStatus.value = MarketState(
-                        error = result.message?: "Unexpected Error")
+                        error = result.message ?: "Unexpected Error"
+                    )
                 }
-                is com.mathroda.core.util.Resource.Loading ->{
+                is com.mathroda.core.util.Resource.Loading -> {
                     _marketStatus.value = MarketState(isLoading = true)
                 }
             }
@@ -140,7 +140,7 @@ class CoinViewModel @Inject constructor(
     fun isFavoriteState(coinById: CoinById) {
         viewModelScope.launch {
             firebaseRepository.isFavoriteState(coinById).collect {
-                _isFavoriteState.emit(it ?:CoinById())
+                _isFavoriteState.emit(it ?: CoinById())
             }
         }
     }

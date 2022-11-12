@@ -4,7 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 
 val enterTransition: EnterTransition by lazy {
-     slideInHorizontally(
+    slideInHorizontally(
         initialOffsetX = { 300 },
         animationSpec = tween(300)
     ) + fadeIn(animationSpec = tween(300))
