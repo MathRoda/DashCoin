@@ -5,27 +5,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.mathroda.dashcoin.core.util.getColorStatus
-import com.mathroda.dashcoin.core.util.getColorStatusToArgb
-import com.mathroda.dashcoin.presentation.ui.theme.Gold
-import com.mathroda.dashcoin.presentation.ui.theme.LightGray
-import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
-import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
+import com.mathroda.common.util.getColorStatus
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
@@ -44,7 +36,7 @@ fun WatchlistItem(
         modifier = modifier
             .padding(10.dp, 5.dp, 10.dp, 10.dp),
         elevation = 12.dp,
-        backgroundColor = LighterGray
+        backgroundColor = com.mathroda.common.theme.LighterGray
 
     ) {
         Column(
@@ -88,12 +80,12 @@ fun WatchlistItem(
                     ) {
                         Text(
                             text = "Statics",
-                            color = TextWhite,
+                            color = com.mathroda.common.theme.TextWhite,
                             fontWeight = FontWeight.Bold
                         )
 
                         Icon(
-                            tint = TextWhite,
+                            tint = com.mathroda.common.theme.TextWhite,
                             modifier = Modifier
                                 .graphicsLayer {
                                     scaleX = 0.8f
@@ -138,7 +130,7 @@ fun WatchlistItem(
                     ) {
                         Box(modifier = Modifier
                             .clip(RoundedCornerShape(5.dp))
-                            .background(LightGray)
+                            .background(com.mathroda.common.theme.LightGray)
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                             contentAlignment = Alignment.Center
 
@@ -147,14 +139,14 @@ fun WatchlistItem(
                                 text = rank,
                                 style = MaterialTheme.typography.body2,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Gold,
+                                color = com.mathroda.common.theme.Gold,
                             )
                         }
                         Text(
                             text = symbol,
                             style = MaterialTheme.typography.body1,
                             fontWeight = FontWeight.Bold,
-                            color = TextWhite,
+                            color = com.mathroda.common.theme.TextWhite,
                             modifier = Modifier
                                 .padding(start = 8.dp)
                                 .align(Alignment.Bottom)

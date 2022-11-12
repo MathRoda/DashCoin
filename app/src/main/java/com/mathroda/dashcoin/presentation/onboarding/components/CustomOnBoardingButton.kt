@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,16 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
-import com.mathroda.dashcoin.presentation.onboarding.utils.OnBoardingPage
-import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
-import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
+import com.mathroda.common.theme.CustomGreen
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun CustomOnBoardingButton(
     text: String = "Discover DashCoin",
     modifier: Modifier = Modifier,
-    color: Color = CustomGreen,
+    color: Color = com.mathroda.common.theme.CustomGreen,
     fontWeight: FontWeight = FontWeight.SemiBold,
     pagerState: PagerState,
     onClick: () -> Unit,

@@ -16,8 +16,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
-import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
+import com.mathroda.common.theme.DarkGray
+import com.mathroda.common.theme.TextWhite
 
 @ExperimentalMaterialApi
 @Composable
@@ -32,7 +32,7 @@ fun NewsCard(
         shape = RoundedCornerShape(15.dp),
         elevation = 5.dp,
         onClick = onClick,
-        backgroundColor = DarkGray
+        backgroundColor = com.mathroda.common.theme.DarkGray
     ) {
         Box(modifier = Modifier.height(200.dp))  {
             AsyncImage(
@@ -61,7 +61,7 @@ fun NewsCard(
                 ) {
                 Text(
                     text = title,
-                    style = TextStyle(color = TextWhite, fontSize = 16.sp)
+                    style = TextStyle(color = com.mathroda.common.theme.TextWhite, fontSize = 16.sp)
                     )
             }
         }

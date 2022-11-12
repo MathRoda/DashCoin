@@ -4,9 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.dashcoin.core.util.Resource
-import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
 import com.mathroda.dashcoin.presentation.news_screen.state.NewsState
+import com.mathroda.datasource.core.DashCoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    private val dashCoinUseCases: DashCoinUseCases
+    private val dashCoinRepository: DashCoinRepository,
 ): ViewModel() {
 
 
@@ -33,17 +32,17 @@ class NewsViewModel @Inject constructor(
     }
 
     private fun getNews(filter: String = "trending") {
-        dashCoinUseCases.getNews(filter).onEach { result ->
+        dashCoinRepository.getNews(filter).onEach { result ->
             when (result) {
-                is Resource.Success -> {
+                is com.mathroda.core.util.Resource.Success -> {
                     _newsState.value = NewsState(news = result.data ?: emptyList())
                 }
-                is Resource.Error -> {
+                is com.mathroda.core.util.Resource.Error -> {
                     _newsState.value = NewsState(
                         error = result.message ?: "Unexpected Error"
                     )
                 }
-                is Resource.Loading -> {
+                is com.mathroda.core.util.Resource.Loading -> {
                     _newsState.value = NewsState(isLoading = true)
                 }
             }

@@ -19,13 +19,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mathroda.dashcoin.core.util.Constants
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomClickableText
-import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
+import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomTextField
 import com.mathroda.dashcoin.presentation.signin_screen.viewmodel.SignInViewModel
-import com.mathroda.dashcoin.presentation.ui.theme.Gold
-import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @ExperimentalMaterialApi
@@ -79,7 +76,7 @@ fun SignInScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     CustomClickableText(
-                        text = Constants.WELCOME_DASH_COIN,
+                        text = com.mathroda.core.util.Constants.WELCOME_DASH_COIN,
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold
                     ) {}
@@ -90,10 +87,10 @@ fun SignInScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     CustomClickableText(
-                        text = Constants.SIGN_IN_TO_ACCESS,
+                        text = com.mathroda.core.util.Constants.SIGN_IN_TO_ACCESS,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = TextWhite
+                        color = com.mathroda.common.theme.TextWhite
                     ) {}
                 }
 
@@ -145,7 +142,7 @@ fun SignInScreen(
                 {
                     CustomClickableText(
                         text = "Forgot Password?",
-                        color = Gold,
+                        color = com.mathroda.common.theme.Gold,
                         fontSize = 14.sp,
                     ) {
                         navigateToForgotPassword()
@@ -177,7 +174,7 @@ fun SignInScreen(
                     Spacer(modifier = Modifier.width(4.dp))
                     CustomClickableText(
                         text = "Register",
-                        color = Gold,
+                        color = com.mathroda.common.theme.Gold,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.W500
                     ) {

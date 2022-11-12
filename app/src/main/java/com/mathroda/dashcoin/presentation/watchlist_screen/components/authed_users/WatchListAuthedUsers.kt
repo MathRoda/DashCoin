@@ -1,6 +1,5 @@
 package com.mathroda.dashcoin.presentation.watchlist_screen.components.authed_users
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -8,34 +7,28 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.mathroda.dashcoin.navigation.main.Screens
-import com.mathroda.dashcoin.presentation.coin_detail.components.Chart
-import com.mathroda.dashcoin.presentation.coin_detail.viewmodel.CoinViewModel
+import com.mathroda.common.navigation.Screens
+import com.mathroda.coin_detail.CoinViewModel
 import com.mathroda.dashcoin.presentation.ui.common.CommonTopBar
-import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
-import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
-import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
 import com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel.WatchListViewModel
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 fun WatchListAuthedUsers(
     watchListViewModel: WatchListViewModel = hiltViewModel(),
-    coinViewModel: CoinViewModel = hiltViewModel(),
+    coinViewModel: com.mathroda.coin_detail.CoinViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val watchListState = watchListViewModel.state.collectAsState()
@@ -44,7 +37,7 @@ fun WatchListAuthedUsers(
 
     Box(
         modifier = Modifier
-            .background(DarkGray)
+            .background(com.mathroda.common.theme.DarkGray)
             .fillMaxSize()
             .padding(12.dp)
     ) {
@@ -67,7 +60,7 @@ fun WatchListAuthedUsers(
                 }
 
 
-                Divider(color = LighterGray, modifier = Modifier.padding(horizontal = 10.dp))
+                Divider(color = com.mathroda.common.theme.LighterGray, modifier = Modifier.padding(horizontal = 10.dp))
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing = isRefresh),
                 onRefresh = { watchListViewModel.refresh() }) {
@@ -94,7 +87,7 @@ fun WatchListAuthedUsers(
         if (marketState.isLoading) {
             CircularProgressIndicator(modifier = Modifier
                 .align(Alignment.Center),
-                color = CustomGreen
+                color = com.mathroda.common.theme.CustomGreen
             )
         }
 

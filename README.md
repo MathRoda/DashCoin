@@ -1,4 +1,4 @@
-![](DashCoin/Dash-Coin.jpg)
+![](art/Dash-Coin.jpg)
 
 # **Dash Coin** 
 
@@ -33,17 +33,17 @@ watch video here [DashCoin Showcase](https://youtu.be/Y8FlGuVJOg8)
 
 ## Insights into the app 🔎
 
-![](DashCoin/Dash-coin-1.jpg)
-![](DashCoin/Dash-coin-2.jpg)
-![](DashCoin/Dash-coin-3.jpg)
+![](art/Dash-coin-1.jpg)
+![](art/Dash-coin-2.jpg)
+![](art/Dash-coin-3.jpg)
 ## 📸 Screenshots 
 
 |   |   |   |
 |---|---|---|
-|![](DashCoin/Screenshot_splashscreen.png)| ![](DashCoin/Screenshot_signin.png) | ![](DashCoin/Screenshot_register.png) 
-|![](DashCoin/home.png)| ![](DashCoin/search.png) | ![](DashCoin/positive-chart.png)
-|![](DashCoin/nigative-chart.png) | ![](DashCoin/watchlist.png) |![](DashCoin/news.png) 
-|![](DashCoin/Screenshot_profile.png) | ![](DashCoin/Screenshot_notification.png) |
+|![](art/Screenshot_splashscreen.png)| ![](art/Screenshot_signin.png) | ![](art/Screenshot_register.png) 
+|![](art/home.png)| ![](art/search.png) | ![](art/positive-chart.png)
+|![](art/nigative-chart.png) | ![](art/watchlist.png) |![](art/news.png) 
+|![](art/Screenshot_profile.png) | ![](art/Screenshot_notification.png) |
 
 
 ### Technical details 
@@ -56,7 +56,7 @@ watch video here [DashCoin Showcase](https://youtu.be/Y8FlGuVJOg8)
 - DashCoin uses Kotlin Coroutines and Flow to handle all asynchronous tasks.
 - DashCoin uses all Jetpack libraries and follows clean architecture. It also has a G.O.A.T rating in Android's  M.A.D scorecard.
 
-![https://madscorecard.withgoogle.com/scorecard/share/1490470347/](DashCoin/summary.png)
+![https://madscorecard.withgoogle.com/scorecard/share/1490470347/](art/summary.png)
 
 
 ## Built With 🛠
@@ -84,13 +84,13 @@ watch video here [DashCoin Showcase](https://youtu.be/Y8FlGuVJOg8)
 
 ## Package Structure
 
-![](DashCoin/structure.jpg)
+![](art/structure.jpg)
     
 
 ## Architecture
 This app uses [***Clean Architecture***](https://medium.com/android-dev-hacks/detailed-guide-on-android-clean-architecture-9eab262a9011) .
 
-![](DashCoin/clean-arch.jpeg)
+![](art/clean-arch.jpeg)
   
 
 

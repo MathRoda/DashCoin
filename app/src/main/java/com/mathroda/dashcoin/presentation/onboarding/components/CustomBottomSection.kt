@@ -5,15 +5,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
-import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
+import com.mathroda.common.theme.LighterGray
+import com.mathroda.common.theme.TextWhite
 
 @Composable
 fun CustomBottomSection(
@@ -27,8 +26,8 @@ fun CustomBottomSection(
     ) {
         FloatingActionButton(
             onClick = onButtonClick,
-            backgroundColor = LighterGray,
-            contentColor = TextWhite,
+            backgroundColor = com.mathroda.common.theme.LighterGray,
+            contentColor = com.mathroda.common.theme.TextWhite,
             modifier = Modifier.align(Alignment.Center)
         ) {
             Icon(

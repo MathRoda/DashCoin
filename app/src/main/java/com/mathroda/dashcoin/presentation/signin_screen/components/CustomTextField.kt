@@ -17,8 +17,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
-import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
+import com.mathroda.common.theme.CustomGreen
+import com.mathroda.common.theme.LighterGray
 
 @Composable
 fun CustomTextField(
@@ -37,8 +37,8 @@ fun CustomTextField(
         label = { Text(text = placeholder, color = Color.LightGray)},
         maxLines = 1,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = CustomGreen,
-            unfocusedBorderColor = LighterGray,
+            focusedBorderColor = com.mathroda.common.theme.CustomGreen,
+            unfocusedBorderColor = com.mathroda.common.theme.LighterGray,
             cursorColor = Color.White
         ),
         isError = isError,

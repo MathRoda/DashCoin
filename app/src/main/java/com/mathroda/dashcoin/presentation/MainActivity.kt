@@ -11,19 +11,16 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.dashcoin.navigation.root.RootNavigationGraph
 import com.mathroda.dashcoin.presentation.splash.SplashViewModel
-import com.mathroda.dashcoin.presentation.ui.theme.DashCoinTheme
+import com.mathroda.common.theme.DashCoinTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Delay
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @AndroidEntryPoint
@@ -38,7 +35,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            DashCoinTheme {
+            com.mathroda.common.theme.DashCoinTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -46,10 +43,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val startDestination by viewModel.startDestination
                     Log.d("mainActivity", startDestination)
-                       RootNavigationGraph(
-                           navHostController = rememberNavController(),
-                           startDestination = startDestination
-                           )
+                    RootNavigationGraph(
+                        navHostController = rememberNavController(),
+                        startDestination = startDestination
+                    )
                 }
             }
         }

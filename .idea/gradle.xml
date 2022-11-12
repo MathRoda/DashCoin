@@ -11,6 +11,16 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core-datasource" />
+            <option value="$PROJECT_DIR$/core-domain" />
+            <option value="$PROJECT_DIR$/core-infrastructure" />
+            <option value="$PROJECT_DIR$/core-network" />
+            <option value="$PROJECT_DIR$/feature-coin-detail-screen" />
+            <option value="$PROJECT_DIR$/feature-coins-screen" />
+            <option value="$PROJECT_DIR$/feature-common" />
+            <option value="$PROJECT_DIR$/feature-profile-screen" />
           </set>
         </option>
       </GradleProjectSettings>

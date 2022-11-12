@@ -2,8 +2,6 @@ package com.mathroda.dashcoin.presentation.onboarding.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.dashcoin.data.datastore.DataStoreRepository
-import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import com.mathroda.dashcoin.presentation.onboarding.utils.OnBoardingPage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreRepository: com.mathroda.datasource.datastore.DataStoreRepository
 ) :ViewModel() {
 
 

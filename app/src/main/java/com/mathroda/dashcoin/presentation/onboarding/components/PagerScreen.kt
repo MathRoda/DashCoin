@@ -11,9 +11,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter.State.Empty.painter
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 import com.mathroda.dashcoin.presentation.onboarding.utils.OnBoardingPage
 
 @Composable

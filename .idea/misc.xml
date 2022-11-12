@@ -19,10 +19,21 @@
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/ic_search.xml" value="0.1" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/ic_trans_dashcoin.xml" value="0.1" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/ic_trans_logo.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/mipmap-anydpi-v26/ic_dashcoin.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/core-infrastructure/src/main/res/drawable/ic_dashcoin_background.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/core-infrastructure/src/main/res/mipmap-anydpi-v26/ic_dashcoin.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/core-infrastructure/src/main/res/mipmap/ic_dashcoin.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/feature-coin-detail-screen/src/main/res/drawable/ic_arrow_positive.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/feature-common/src/main/res/drawable/background_positive_chart.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/feature-common/src/main/res/drawable/ic_arrow_negative.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/feature-common/src/main/res/drawable/ic_news.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/feature-common/src/main/res/drawable/ic_search.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/feature-profile-screen/src/main/res/drawable/ic_github.xml" value="0.1" />
+        <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/feature-profile-screen/src/main/res/drawable/ic_profile_placeholder.xml" value="0.1" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

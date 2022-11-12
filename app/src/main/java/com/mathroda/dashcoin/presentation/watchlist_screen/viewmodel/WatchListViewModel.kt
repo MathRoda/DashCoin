@@ -1,20 +1,16 @@
 package com.mathroda.dashcoin.presentation.watchlist_screen.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.dashcoin.core.util.Resource
-import com.mathroda.dashcoin.data.dto.toCoinDetail
-import com.mathroda.dashcoin.domain.model.CoinById
-import com.mathroda.dashcoin.domain.repository.DashCoinRepository
-import com.mathroda.dashcoin.domain.repository.FirebaseRepository
-import com.mathroda.dashcoin.presentation.watchlist_screen.events.WatchListEvents
+import com.mathroda.core.util.Resource
+import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.dashcoin.presentation.watchlist_screen.state.WatchListState
+import com.mathroda.datasource.core.DashCoinRepository
+import com.mathroda.datasource.firebase.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,7 +19,7 @@ import javax.inject.Inject
 class WatchListViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
     private val dashCoinRepository: DashCoinRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(WatchListState())
     val state: StateFlow<WatchListState> = _state
@@ -31,13 +27,15 @@ class WatchListViewModel @Inject constructor(
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
 
-    private val _isFavoriteState = MutableStateFlow(CoinById())
-    val isFavoriteState: StateFlow<CoinById> = _isFavoriteState
+    private val _isFavoriteState = MutableStateFlow(com.mathroda.domain.CoinById())
+    val isFavoriteState: StateFlow<com.mathroda.domain.CoinById> = _isFavoriteState
 
     private val _addToFavorite = mutableStateOf("")
     val addToFavorite: State<String> = _addToFavorite
 
     val isCurrentUserExists = firebaseRepository.isCurrentUserExist()
+
+
 
     private var getCoinJob: Job? = null
 
@@ -45,16 +43,17 @@ class WatchListViewModel @Inject constructor(
         getAllCoins()
     }
 
-    fun onEvent(events: WatchListEvents) {
-        when(events) {
+    fun onEvent(events: FavoriteCoinEvents) {
+        when (events) {
 
-            is WatchListEvents.AddCoin -> {
+            is FavoriteCoinEvents.AddCoin -> {
                 viewModelScope.launch { //dashCoinUseCases.addCoin(events.coin)
                     firebaseRepository.addCoinFavorite(events.coin).collect { result ->
-                        when(result) {
+                        when (result) {
                             is Resource.Loading -> {}
                             is Resource.Success -> {
-                                _addToFavorite.value = "Coin successfully added to favorite! " }
+                                _addToFavorite.value = "Coin successfully added to favorite! "
+                            }
                             is Resource.Error -> {
                                 _addToFavorite.value = result.message.toString()
                             }
@@ -63,7 +62,7 @@ class WatchListViewModel @Inject constructor(
                 }
             }
 
-            is WatchListEvents.DeleteCoin -> {
+            is FavoriteCoinEvents.DeleteCoin -> {
                 viewModelScope.launch {
                     firebaseRepository.deleteCoinFavorite(events.coin).collect()
                 }
@@ -75,26 +74,25 @@ class WatchListViewModel @Inject constructor(
     private fun getAllCoins() {
         getCoinJob?.cancel()
         getCoinJob = firebaseRepository.getCoinFavorite().onEach { result ->
-                when(result) {
-                    is Resource.Loading -> {}
-                    is Resource.Success -> {
-                        result.data?.let {
-                            _state.emit(WatchListState(coin = result.data))
-                        }
-                    }
-                    is Resource.Error -> {
-                        _state.emit(WatchListState(error = result.message))
+            when (result) {
+                is Resource.Loading -> {}
+                is Resource.Success -> {
+                    result.data?.let {
+                        _state.emit(WatchListState(coin = it))
                     }
                 }
-            }.launchIn(viewModelScope)
+                is Resource.Error -> {
+                    _state.emit(WatchListState(error = result.message))
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
 
-
-    fun isFavoriteState(coinById: CoinById) {
+    fun isFavoriteState(coinById: com.mathroda.domain.CoinById) {
         viewModelScope.launch {
             firebaseRepository.isFavoriteState(coinById).collect {
-                _isFavoriteState.emit(it?: CoinById())
+                _isFavoriteState.emit(it ?: com.mathroda.domain.CoinById())
             }
         }
     }
@@ -107,7 +105,6 @@ class WatchListViewModel @Inject constructor(
         }
 
     }
-
 
 
 }

@@ -18,14 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mathroda.dashcoin.core.util.Constants
-import com.mathroda.dashcoin.navigation.main.Screens
-import com.mathroda.dashcoin.presentation.coin_detail.components.BackStackButton
+import com.mathroda.common.navigation.Screens
 import com.mathroda.dashcoin.presentation.forgot_password.viewmodel.ResetPasswordViewModel
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomClickableText
-import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
+import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomTextField
-import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @Composable
@@ -53,13 +50,13 @@ fun ForgotPasswordScreen(
                     .padding(bottom = 16.dp)
                     .requiredHeight(40.dp)
             ) {
-                BackStackButton {
+                com.mathroda.coin_detail.components.BackStackButton {
                     navController.popBackStack()
                 }
             }
 
                 CustomClickableText(
-                    text = Constants.FORGOT_PASSWORD,
+                    text = com.mathroda.core.util.Constants.FORGOT_PASSWORD,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
                 ) {}
@@ -73,10 +70,10 @@ fun ForgotPasswordScreen(
                     .fillMaxWidth(0.9f)
             ) {
                 CustomClickableText(
-                    text = Constants.FORGOT_PASSWORD_DESCRIPTION,
+                    text = com.mathroda.core.util.Constants.FORGOT_PASSWORD_DESCRIPTION,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = TextWhite
+                    color = com.mathroda.common.theme.TextWhite
                 ) {}
             }
 

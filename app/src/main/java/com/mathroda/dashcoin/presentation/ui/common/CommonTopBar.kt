@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
+import com.mathroda.common.theme.TextWhite
 
 @Composable
 fun CommonTopBar(
@@ -29,7 +29,7 @@ fun CommonTopBar(
             text = title,
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.h2,
-            color = TextWhite ,
+            color = com.mathroda.common.theme.TextWhite,
             modifier = modifier
         )
     }

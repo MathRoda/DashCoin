@@ -6,31 +6,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
-import com.mathroda.dashcoin.core.util.Constants
-import com.mathroda.dashcoin.core.util.Resource
-import com.mathroda.dashcoin.data.datastore.DataStoreRepository
-import com.mathroda.dashcoin.data.dto.toCoinDetail
-import com.mathroda.dashcoin.domain.repository.DashCoinRepository
-import com.mathroda.dashcoin.domain.repository.FirebaseRepository
-import com.mathroda.dashcoin.domain.use_case.DashCoinUseCases
-import com.mathroda.dashcoin.domain.use_case.worker.WorkerOnSuccessUseCase
+import com.mathroda.core.util.Constants.BITCOIN_ID
+import com.mathroda.core.util.Resource
+import com.mathroda.infrastructure.WorkerOnSuccessUseCase
 import com.mathroda.dashcoin.navigation.root.Graph
+import com.mathroda.datasource.core.DashCoinRepository
+import com.mathroda.datasource.firebase.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
-    private val dataStoreRepository: DataStoreRepository,
+    private val dataStoreRepository: com.mathroda.datasource.datastore.DataStoreRepository,
     private val dashCoinRepository: DashCoinRepository,
-    private val dashCoinUseCases: DashCoinUseCases,
-    workerOnSuccessUseCase: WorkerOnSuccessUseCase
+    workerOnSuccessUseCase: com.mathroda.infrastructure.WorkerOnSuccessUseCase
 ): ViewModel() {
 
     private val _isLoading = MutableStateFlow(true)
@@ -72,15 +65,23 @@ class SplashViewModel @Inject constructor(
             when(result) {
                 is Resource.Success -> {
                     result.data?.map {
-                        dashCoinRepository.getCoinById(it.id ?: "").coin.toCoinDetail().let { coinById ->
-                            firebaseRepository.updateFavoriteMarketState(coinById).collect { task ->
-                                when(task) {
-                                    is Resource.Success -> {
-                                        Log.d("task---", it.priceChange1w.toString())
+                        dashCoinRepository.getCoinById(it.id ?: "").collect { result ->
+                            when(result) {
+                                is Resource.Success -> {
+                                    result.data?.let { coinById ->
+                                        firebaseRepository.updateFavoriteMarketState(coinById).collect { task ->
+                                            when(task) {
+                                                is Resource.Success -> {
+                                                    Log.d("task---", it.priceChange1w.toString())
+                                                }
+                                                else -> {}
+                                            }
+                                        }
                                     }
-                                    else -> {}
                                 }
+                                else -> {}
                             }
+
                         }
                     }
                 }
@@ -90,15 +91,18 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun notificationWorker() {
-        onSuccessWorker?.let { listOfWorkInfo ->
+        viewModelScope.launch {
 
-            if (listOfWorkInfo.isEmpty()) {
-                return@let
-            }
-            val workInfo: WorkInfo = listOfWorkInfo[0]
+            onSuccessWorker?.let { listOfWorkInfo ->
 
-            if (workInfo.state == WorkInfo.State.ENQUEUED) {
-                dashCoinUseCases.getCoin(Constants.BITCOIN_ID)
+                if (listOfWorkInfo.isEmpty()) {
+                    return@let
+                }
+                val workInfo: WorkInfo = listOfWorkInfo[0]
+
+                if (workInfo.state == WorkInfo.State.ENQUEUED) {
+                    dashCoinRepository.getCoinById(BITCOIN_ID).collect()
+                }
             }
         }
     }

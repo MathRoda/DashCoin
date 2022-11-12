@@ -20,15 +20,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mathroda.dashcoin.core.util.Constants
-import com.mathroda.dashcoin.domain.model.User
-import com.mathroda.dashcoin.presentation.coin_detail.components.BackStackButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomClickableText
-import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
+import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.dashcoin.presentation.signin_screen.components.CustomTextField
 import com.mathroda.dashcoin.presentation.signup_screen.viewmodel.SignUpViewModel
-import com.mathroda.dashcoin.presentation.ui.theme.Gold
-import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
+import com.mathroda.domain.User
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @Composable
@@ -65,7 +61,7 @@ fun SignUpScreen(
                     .padding(bottom = 16.dp)
                     .requiredHeight(40.dp)
             ) {
-                BackStackButton {
+                com.mathroda.coin_detail.components.BackStackButton {
                     navigateToSignInScreen()
                 }
             }
@@ -74,7 +70,7 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 CustomClickableText(
-                    text = Constants.CREATE_ACCOUNT,
+                    text = com.mathroda.core.util.Constants.CREATE_ACCOUNT,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
                 ) {}
@@ -85,10 +81,10 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 CustomClickableText(
-                    text = Constants.SIGN_UP_TO_GET_STARTED,
+                    text = com.mathroda.core.util.Constants.SIGN_UP_TO_GET_STARTED,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = TextWhite
+                    color = com.mathroda.common.theme.TextWhite
                 ) {}
             }
 
@@ -180,7 +176,7 @@ fun SignUpScreen(
                 Spacer(modifier = Modifier.width(4.dp))
                 CustomClickableText(
                     text = "Login",
-                    color = Gold,
+                    color = com.mathroda.common.theme.Gold,
                     fontSize = 17.sp,
                     fontWeight = FontWeight.W500
                 ) {
@@ -208,7 +204,7 @@ fun SignUpScreen(
                 padding = PaddingValues(bottom = 24.dp)
             )
             LaunchedEffect(Unit ) {
-                val user = User(userName, email)
+                val user = com.mathroda.domain.User(userName, email)
                 viewModel.addUserCredential(user)
                 navigateToSignInScreen()
             }

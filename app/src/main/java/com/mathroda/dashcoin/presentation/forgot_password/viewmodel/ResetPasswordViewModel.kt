@@ -2,9 +2,8 @@ package com.mathroda.dashcoin.presentation.forgot_password.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.dashcoin.core.util.Resource
-import com.mathroda.dashcoin.domain.repository.FirebaseRepository
 import com.mathroda.dashcoin.presentation.forgot_password.state.ResetPasswordState
+import com.mathroda.datasource.firebase.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,13 +22,13 @@ class ResetPasswordViewModel @Inject constructor(
     fun resetPasswordWithEmail(email: String) =
         firebaseRepository.resetPasswordWithEmail(email).onEach { result ->
             when(result) {
-                is Resource.Loading -> {
+                is com.mathroda.core.util.Resource.Loading -> {
                     _resetPassword.emit(ResetPasswordState(isLoading = true))
                 }
-                is Resource.Success -> {
+                is com.mathroda.core.util.Resource.Success -> {
                     _resetPassword.emit(ResetPasswordState(Successful = true))
                 }
-                is Resource.Error -> {
+                is com.mathroda.core.util.Resource.Error -> {
                     _resetPassword.emit(ResetPasswordState(error = result.message ?: "Unexpected error accrued"))
                 }
             }

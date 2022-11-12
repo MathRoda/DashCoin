@@ -12,10 +12,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.*
 import com.mathroda.dashcoin.R
-import com.mathroda.dashcoin.navigation.main.Screens
-import com.mathroda.dashcoin.presentation.signin_screen.components.CustomLoginButton
+import com.mathroda.common.navigation.Screens
+import com.mathroda.common.components.CustomLoginButton
+import com.mathroda.common.theme.CustomBrightGreen
+import com.mathroda.common.theme.CustomGreen
+import com.mathroda.common.theme.DarkGray
 import com.mathroda.dashcoin.presentation.ui.common.CommonTopBar
-import com.mathroda.dashcoin.presentation.ui.theme.*
 
 @Composable
 fun WatchListGhostUsers(navController: NavController) {
@@ -28,7 +30,7 @@ fun WatchListGhostUsers(navController: NavController) {
 
     Box(
         modifier = Modifier
-            .background(DarkGray)
+            .background(com.mathroda.common.theme.DarkGray)
             .fillMaxSize()
             .padding(12.dp)
     ) {
@@ -49,8 +51,8 @@ fun WatchListGhostUsers(navController: NavController) {
                 modifier = Modifier
                     .align(CenterHorizontally),
                 text = "Feature limited for registered users",
-                style = Typography.body1,
-                color = TextWhite.copy(alpha = 0.6f)
+                style = com.mathroda.common.theme.Typography.body1,
+                color = com.mathroda.common.theme.TextWhite.copy(alpha = 0.6f)
             )
             Row(
                 Modifier
@@ -64,7 +66,10 @@ fun WatchListGhostUsers(navController: NavController) {
                         .fillMaxWidth()
                         .background(DarkGray)
                         .padding(bottom = 24.dp),
-                    color = listOf(CustomGreen, CustomBrightGreen)
+                    color = listOf(
+                        CustomGreen,
+                        CustomBrightGreen
+                    )
                 ) {
                     navController.navigate(Screens.SignIn.route)
                 }

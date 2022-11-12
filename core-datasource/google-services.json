@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "438848692298",
+    "project_id": "dashcoin-f3bca",
+    "storage_bucket": "dashcoin-f3bca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438848692298:android:1504969ccb7567a12586b3",
+        "android_client_info": {
+          "package_name": "com.mathroda.datasource"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438848692298-5d0h12bsnnc78jg0ntop8ebps964feje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4JJF5hLkKpS38ZI4dN2axaDGKy9T2VCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438848692298-5d0h12bsnnc78jg0ntop8ebps964feje.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438848692298:android:38e57017e360342c2586b3",
+        "android_client_info": {
+          "package_name": "com.mathroda.datasource"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438848692298-5d0h12bsnnc78jg0ntop8ebps964feje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4JJF5hLkKpS38ZI4dN2axaDGKy9T2VCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438848692298-5d0h12bsnnc78jg0ntop8ebps964feje.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

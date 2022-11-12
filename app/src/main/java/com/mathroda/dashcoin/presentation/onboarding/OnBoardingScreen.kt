@@ -2,22 +2,20 @@ package com.mathroda.dashcoin.presentation.onboarding
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
-import androidx.compose.ui.Alignment.Companion.BottomCenter
-import androidx.compose.ui.Alignment.Companion.BottomEnd
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-import com.mathroda.dashcoin.presentation.onboarding.components.*
-import com.mathroda.dashcoin.presentation.onboarding.utils.OnBoardingPage
+import com.mathroda.dashcoin.presentation.onboarding.components.CustomBottomSection
+import com.mathroda.dashcoin.presentation.onboarding.components.CustomOnBoardingButton
+import com.mathroda.dashcoin.presentation.onboarding.components.OnBoardingTopSection
+import com.mathroda.dashcoin.presentation.onboarding.components.PagerScreen
 import com.mathroda.dashcoin.presentation.onboarding.viewmodel.OnBoardingViewModel
 import kotlinx.coroutines.launch
 

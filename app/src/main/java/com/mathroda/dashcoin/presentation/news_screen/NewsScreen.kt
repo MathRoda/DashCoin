@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.mathroda.dashcoin.presentation.coins_screen.components.SearchBar
+import com.mathroda.coins_screen.components.SearchBar
 import com.mathroda.dashcoin.presentation.news_screen.components.NewsCard
 import com.mathroda.dashcoin.presentation.news_screen.viewmodel.NewsViewModel
 import com.mathroda.dashcoin.presentation.ui.common.CommonTopBar
-import com.mathroda.dashcoin.presentation.ui.theme.CustomGreen
-import com.mathroda.dashcoin.presentation.ui.theme.DarkGray
+import com.mathroda.common.theme.CustomGreen
+import com.mathroda.common.theme.DarkGray
 
 @ExperimentalMaterialApi
 @Composable
@@ -82,7 +82,7 @@ fun NewsScreen(
             CircularProgressIndicator(
                 modifier = Modifier
                     .align(Alignment.Center),
-                color = CustomGreen
+                color = com.mathroda.common.theme.CustomGreen
             )
         }
 
