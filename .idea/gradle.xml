@@ -11,6 +11,22 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/auth-forgot-password-screen" />
+            <option value="$PROJECT_DIR$/auth-signin-screen" />
+            <option value="$PROJECT_DIR$/auth-signup-screen" />
+            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core-datasource" />
+            <option value="$PROJECT_DIR$/core-domain" />
+            <option value="$PROJECT_DIR$/core-infrastructure" />
+            <option value="$PROJECT_DIR$/core-network" />
+            <option value="$PROJECT_DIR$/feature-coin-detail-screen" />
+            <option value="$PROJECT_DIR$/feature-coins-screen" />
+            <option value="$PROJECT_DIR$/feature-common" />
+            <option value="$PROJECT_DIR$/feature-favorite-coins-screen" />
+            <option value="$PROJECT_DIR$/feature-news-screen" />
+            <option value="$PROJECT_DIR$/feature-onboarding" />
+            <option value="$PROJECT_DIR$/feature-profile-screen" />
           </set>
         </option>
       </GradleProjectSettings>

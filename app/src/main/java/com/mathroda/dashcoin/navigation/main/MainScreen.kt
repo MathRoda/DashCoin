@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -21,12 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.mathroda.dashcoin.presentation.ui.theme.LighterGray
-import com.mathroda.dashcoin.presentation.ui.theme.TextWhite
+import com.mathroda.common.navigation.Screens
 import kotlin.math.roundToInt
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
@@ -63,19 +63,19 @@ fun MainScreen(navController: NavHostController = rememberAnimatedNavController(
         }
     }
 
-    Scaffold (
+    Scaffold(
         modifier = Modifier.nestedScroll(nestedScrollConnection),
-        bottomBar ={
-             BottomBar(
-                 navController = navController,
-                 state = bottomBarState,
-                 modifier = Modifier
-                     .height(bottomBarHeight)
-                     .offset { IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt()) }
-             )
+        bottomBar = {
+            BottomBar(
+                navController = navController,
+                state = bottomBarState,
+                modifier = Modifier
+                    .height(bottomBarHeight)
+                    .offset { IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt()) }
+            )
 
         }
-            )
+    )
     {
         MainGraph(navController = navController)
     }
@@ -97,10 +97,10 @@ fun BottomBar(
         visible = state.value,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
-    ){
+    ) {
         BottomNavigation(
             modifier = modifier,
-            backgroundColor = LighterGray,
+            backgroundColor = com.mathroda.common.theme.LighterGray,
         ) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
@@ -112,24 +112,27 @@ fun BottomBar(
                         Text(text = screen.title!!)
                     },
                     icon = {
-                        Icon(painter = painterResource(id = screen.icon!!) , contentDescription = null)
+                        Icon(
+                            painter = painterResource(id = screen.icon!!),
+                            contentDescription = null
+                        )
                     },
 
                     selected = currentRoute == screen.route,
 
                     onClick = {
                         navController.navigate(screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id){
+                            popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
                             launchSingleTop = true
-                            restoreState =true
+                            restoreState = true
                         }
                     },
 
                     alwaysShowLabel = false,
-                    selectedContentColor = TextWhite,
-                    unselectedContentColor = TextWhite.copy(alpha = ContentAlpha.disabled)
+                    selectedContentColor = com.mathroda.common.theme.TextWhite,
+                    unselectedContentColor = com.mathroda.common.theme.TextWhite.copy(alpha = ContentAlpha.disabled)
                 )
             }
         }
