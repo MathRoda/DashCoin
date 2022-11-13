@@ -26,7 +26,9 @@ import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants.SIGN_IN_TO_ACCESS
 import com.mathroda.core.util.Constants.WELCOME_DASH_COIN
+import com.mathroda.signin_screen.state.SignInState
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
+import kotlinx.coroutines.delay
 
 @ExperimentalMaterialApi
 @Composable
@@ -42,6 +44,7 @@ fun SignInScreen(
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
+    var isLoading by remember { mutableStateOf(false) }
     val sigInState = viewModel.signIn.collectAsState()
 
     Scaffold {
@@ -161,9 +164,9 @@ fun SignInScreen(
             CustomLoginButton(
                 text = "LOGIN",
                 modifier = Modifier.fillMaxWidth(),
-                enabled = isEnabled
+                enabled = isEnabled,
+                isLoading = isLoading
             ) {
-                isEnabled = false
                 isError = email.isEmpty() || password.isEmpty()
                 viewModel.signIn(email, password)
             }
@@ -192,29 +195,29 @@ fun SignInScreen(
 
     }
 
+
     if (sigInState.value.isLoading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(
-                Modifier
-                    .padding(top = 50.dp)
-            )
+        LaunchedEffect(Unit) {
+            isEnabled = !isEnabled
+            isLoading = !isLoading
         }
     }
 
 
     if (sigInState.value.signIn != null) {
         LaunchedEffect(Unit) {
+            delay(800)
             navigateToCoinsScreen()
         }
     }
 
 
     if (sigInState.value.error.isNotBlank()) {
-        isEnabled = true
+        LaunchedEffect(Unit) {
+            isEnabled = !isEnabled
+            isLoading = !isLoading
+        }
+
         val errorMsg = sigInState.value.error
         SweetToastUtil.SweetError(
             message = errorMsg,

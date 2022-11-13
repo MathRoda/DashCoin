@@ -42,6 +42,7 @@ fun SignUpScreen(
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
+    var isLoading by remember { mutableStateOf(false) }
     val signUpState = viewModel.signUp.collectAsState()
 
 
@@ -65,7 +66,7 @@ fun SignUpScreen(
                     .requiredHeight(40.dp)
             ) {
                 BackStackButton {
-                    navigateToSignInScreen()
+                    popBackStack()
                 }
             }
             Row(
@@ -160,8 +161,8 @@ fun SignUpScreen(
                 text = "REGISTER",
                 modifier = Modifier.fillMaxWidth(),
                 enabled = isEnabled,
+                isLoading = isLoading
             ) {
-                isEnabled = false
                 isError = email.isEmpty() || password.isEmpty() || userName.isEmpty()
                 val user = User(
                     userName = userName,
@@ -195,12 +196,9 @@ fun SignUpScreen(
     }
 
     if (signUpState.value.isLoading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
+        LaunchedEffect(Unit) {
+            isEnabled = !isEnabled
+            isLoading = !isLoading
         }
     }
 
@@ -211,14 +209,19 @@ fun SignUpScreen(
             padding = PaddingValues(bottom = 24.dp)
         )
         LaunchedEffect(Unit) {
-            val user = com.mathroda.domain.User(userName, email)
+            val user = User(userName, email)
             viewModel.addUserCredential(user)
+            popBackStack()
             navigateToSignInScreen()
         }
     }
 
     if (signUpState.value.error.isNotBlank()) {
-        isEnabled = true
+        LaunchedEffect(Unit) {
+            isEnabled = !isEnabled
+            isLoading = !isLoading
+        }
+
         val errorMsg = signUpState.value.error
         SweetToastUtil.SweetError(
             message = errorMsg,
