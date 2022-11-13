@@ -72,7 +72,7 @@ fun MainGraph(navController: NavHostController) {
         }
 
         composable(
-            route = Screens.CoinsWatchList.route,
+            route = Screens.FavoriteCoinsScreen.route,
             enterTransition = {
                 when (initialState.destination.route) {
                     Screens.CoinDetailScreen.route + "/{coinId}" -> {

@@ -4,18 +4,13 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -23,57 +18,40 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.mathroda.common.components.bottomBarAnimatedScroll
+import com.mathroda.common.components.bottomBarVisibility
 import com.mathroda.common.navigation.Screens
 import kotlin.math.roundToInt
 
+@ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(navController: NavHostController = rememberAnimatedNavController()) {
 
-    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    when (navBackStackEntry?.destination?.route) {
-        Screens.CoinDetailScreen.route + "/{coinId}" -> bottomBarState.value = false
-        Screens.SignIn.route -> bottomBarState.value = false
-        Screens.SignUp.route -> bottomBarState.value = false
-        Screens.ForgotPassword.route -> bottomBarState.value = false
-        else -> bottomBarState.value = true
-    }
     /**
      * bottom bar variables for nested scroll
      */
     val bottomBarHeight = 56.dp
-    val bottomBarHeightPx = with(LocalDensity.current) { bottomBarHeight.roundToPx().toFloat() }
     val bottomBarOffsetHeightPx = remember { mutableStateOf(0f) }
 
-    /**
-     * connect to the nested scroll system and listen to the scroll
-     */
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val delta = available.y
-                val newOffset = bottomBarOffsetHeightPx.value + delta
-                bottomBarOffsetHeightPx.value = newOffset.coerceIn(-bottomBarHeightPx, 0f)
-
-                return Offset.Zero
-            }
-        }
-    }
 
     Scaffold(
-        modifier = Modifier.nestedScroll(nestedScrollConnection),
+        modifier = Modifier.bottomBarAnimatedScroll(
+            height = bottomBarHeight,
+            offsetHeightPx  = bottomBarOffsetHeightPx
+        ),
         bottomBar = {
             BottomBar(
                 navController = navController,
-                state = bottomBarState,
+                state = bottomBarVisibility(navController),
                 modifier = Modifier
                     .height(bottomBarHeight)
-                    .offset { IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt()) }
+                    .offset {
+                        IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt())
+                    }
             )
-
         }
     )
     {
@@ -89,7 +67,7 @@ fun BottomBar(
 ) {
     val screens = listOf(
         Screens.CoinsScreen,
-        Screens.CoinsWatchList,
+        Screens.FavoriteCoinsScreen,
         Screens.CoinsNews
     )
 
