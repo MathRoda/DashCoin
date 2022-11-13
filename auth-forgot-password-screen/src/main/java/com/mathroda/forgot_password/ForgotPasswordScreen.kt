@@ -26,6 +26,7 @@ import com.mathroda.common.navigation.Screens
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
+import kotlinx.coroutines.delay
 
 @Composable
 fun ForgotPasswordScreen(
@@ -37,6 +38,7 @@ fun ForgotPasswordScreen(
         var email by remember { mutableStateOf("") }
         var isError by remember { mutableStateOf(false) }
         var isEnabled by remember { mutableStateOf(true) }
+        var isLoading by remember { mutableStateOf(false) }
         val state = viewModel.resetPassword.collectAsState().value
 
         Column(
@@ -54,6 +56,7 @@ fun ForgotPasswordScreen(
             ) {
                 BackStackButton {
                     navController.popBackStack()
+                    navController.navigate(Screens.SignIn.route)
                 }
             }
 
@@ -103,9 +106,9 @@ fun ForgotPasswordScreen(
             CustomLoginButton(
                 text = "SUBMIT",
                 modifier = Modifier.fillMaxWidth(),
-                enabled = isEnabled
+                enabled = isEnabled,
+                isLoading = isLoading
             ) {
-                isEnabled = !isEnabled
                 isError = email.isEmpty()
                 viewModel.resetPasswordWithEmail(email)
             }
@@ -113,20 +116,13 @@ fun ForgotPasswordScreen(
 
         when {
             state.isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Center
-                ) {
-                    CircularProgressIndicator(
-                        Modifier
-                            .padding(top = 50.dp)
-                    )
+                LaunchedEffect(Unit) {
+                    isEnabled = !isEnabled
+                    isLoading = !isLoading
                 }
             }
 
             state.Successful -> {
-                Log.d("void", state.Successful.toString())
                 SweetToastUtil.SweetSuccess(
                     message = "Email Sent Successfully",
                     duration = Toast.LENGTH_LONG,
@@ -134,13 +130,17 @@ fun ForgotPasswordScreen(
                 )
 
                 LaunchedEffect(Unit) {
+                    delay(800)
                     navController.popBackStack()
                     navController.navigate(Screens.SignIn.route)
                 }
             }
 
             state.error.isNotBlank() -> {
-                isEnabled = true
+                LaunchedEffect(Unit) {
+                    isEnabled = !isEnabled
+                    isLoading = !isLoading
+                }
                 val errorMsg = state.error
                 SweetToastUtil.SweetError(
                     message = errorMsg,

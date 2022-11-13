@@ -62,5 +62,8 @@ dependencies {
     implementation "com.google.accompanist:accompanist-flowlayout:0.17.0"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
+    //lottie
+    implementation("com.airbnb.android:lottie-compose:5.2.0")
+
 
 }
