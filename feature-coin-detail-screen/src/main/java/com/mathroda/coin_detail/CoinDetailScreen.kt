@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.*
+import com.mathroda.coin_detail.components.Chart
+import com.mathroda.coin_detail.components.CoinDetailSection
+import com.mathroda.coin_detail.components.CoinInformation
 import com.mathroda.common.R
 import com.mathroda.common.components.CustomDialog
 import com.mathroda.common.events.FavoriteCoinEvents
@@ -41,6 +44,7 @@ fun CoinDetailScreen(
         iterations = LottieConstants.IterateForever,
     )
     val isUserExist = viewModel.isCurrentUserExists.collectAsState(initial = false)
+
 
 
 
@@ -94,18 +98,18 @@ fun CoinDetailScreen(
                             viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin))
                         }
                     }
-                    com.mathroda.coin_detail.components.CoinDetailSection(
+                    CoinDetailSection(
                         price = coin.price!!,
                         priceChange = coin.priceChange1d!!
                     )
 
-                    com.mathroda.coin_detail.components.Chart(
+                    Chart(
                         oneDayChange = coin.priceChange1d!!,
                         context = LocalContext.current,
                         charts = chartsState.chart
                     )
 
-                    com.mathroda.coin_detail.components.CoinInformation(
+                    CoinInformation(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(

@@ -24,6 +24,8 @@ import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.components.CustomTextField
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
+import com.mathroda.common.util.isValidEmail
+import com.mathroda.common.util.isValidPassword
 import com.mathroda.core.util.Constants.SIGN_IN_TO_ACCESS
 import com.mathroda.core.util.Constants.WELCOME_DASH_COIN
 import com.mathroda.signin_screen.state.SignInState
@@ -167,8 +169,11 @@ fun SignInScreen(
                 enabled = isEnabled,
                 isLoading = isLoading
             ) {
-                isError = email.isEmpty() || password.isEmpty()
-                viewModel.signIn(email, password)
+                if (isValidEmail(email) && isValidPassword(password)) {
+                    viewModel.signIn(email, password)
+                } else {
+                    isError = !isValidEmail(email) || !isValidPassword(password)
+                }
             }
 
             Spacer(modifier = Modifier.weight(0.4f))

@@ -26,4 +26,6 @@ object Constants {
     const val GITHUB = "https://github.com/MathRoda"
     const val TWITTER = "https://twitter.com/mathroda_codes"
     const val DASHCOIN_REPOSITORY = "https://github.com/MathRoda/Dash-Coin-App"
+    const val EMAIL_REGEX = "^[^\\s;]+@[^\\s;]+\\.[^\\s;]+(?:;[^\\s;]+@[^\\s;]+\\.[^\\s;]+)*\$"
+
 }
