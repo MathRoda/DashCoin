@@ -1,15 +1,19 @@
 package com.mathroda.favorite_coins.components.authed_users
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.mathroda.common.theme.LighterGray
 
 @Composable
 fun MarketStatusBar(
@@ -53,7 +57,13 @@ fun MarketStatusItem(
 ) {
     Column(
         modifier = modifier
-            .padding(5.dp)
+            .padding(8.dp)
+            .shadow(4.dp)
+            .background(
+                color = LighterGray,
+                shape = RoundedCornerShape(25),
+            )
+            .padding(vertical = 8.dp)
     ) {
         Row(
             verticalAlignment = CenterVertically,
