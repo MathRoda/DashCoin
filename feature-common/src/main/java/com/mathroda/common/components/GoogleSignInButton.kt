@@ -1,9 +1,7 @@
 package com.mathroda.common.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,51 +11,46 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.*
 import com.mathroda.common.R
-import com.mathroda.common.theme.CustomBrightGreen
-import com.mathroda.common.theme.CustomGreen
+import com.mathroda.common.theme.LighterGray
 
 @Composable
-fun CustomLoginButton(
-    text: String,
+fun GoogleSignInButton(
     modifier: Modifier = Modifier,
-    color: List<Color> = listOf(
-        CustomGreen,
-        CustomBrightGreen
-    ),
     enabled: Boolean = true,
-    isLoading: Boolean = false,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_dots))
     val lottieProgress by animateLottieCompositionAsState(
         composition = lottieComp,
         iterations = LottieConstants.IterateForever,
     )
-
     AnimatedVisibility(visible = enabled) {
         Button(
-            onClick = { onClick() },
             modifier = modifier
-                .background(
-                    Brush.horizontalGradient(
-                        colors = color
-                    ),
-                    shape = RoundedCornerShape(20.dp)
-                )
-                .height(58.dp),
+                .padding(bottom = 48.dp),
+            shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent
+                backgroundColor = LighterGray
             ),
-            elevation = ButtonDefaults.elevation(0.dp, 0.dp)
+            elevation = ButtonDefaults.elevation(0.dp, 0.dp),
+            onClick = onClick
         ) {
-            Text(text = text, fontSize = 20.sp, color = Color.White)
+            Image(
+                painter = painterResource(
+                    id = R.drawable.ic_google_logo
+                ),
+                contentDescription = null
+            )
+            Text(
+                text = "Sign in with Google",
+                modifier = Modifier.padding(6.dp),
+                fontSize = 16.sp
+            )
         }
     }
 

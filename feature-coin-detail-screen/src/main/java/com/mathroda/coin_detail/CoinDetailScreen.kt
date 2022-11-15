@@ -45,10 +45,6 @@ fun CoinDetailScreen(
     )
     val isUserExist = viewModel.isCurrentUserExists.collectAsState(initial = false)
 
-
-
-
-
     Box(
         modifier = Modifier
             .background(com.mathroda.common.theme.DarkGray)

@@ -86,5 +86,9 @@ dependencies {
 
     //firebase
     implementation 'com.google.firebase:firebase-auth-ktx'
+    //Play Services
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$play_services_version"
+    //Play Services Auth
+    implementation "com.google.android.gms:play-services-auth:$play_services_auth_version"
 
 }
