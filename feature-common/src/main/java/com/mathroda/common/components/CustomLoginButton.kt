@@ -44,7 +44,6 @@ fun CustomLoginButton(
     AnimatedVisibility(visible = enabled) {
         Button(
             onClick = { onClick() },
-            enabled = enabled,
             modifier = modifier
                 .background(
                     Brush.horizontalGradient(
@@ -60,15 +59,6 @@ fun CustomLoginButton(
         ) {
             Text(text = text, fontSize = 20.sp, color = Color.White)
         }
-    }
-
-    AnimatedVisibility(visible = isLoading) {
-        LottieAnimation(
-            modifier = modifier
-                .size(150.dp),
-            composition = lottieComp,
-            progress = { lottieProgress },
-        )
     }
 
 }

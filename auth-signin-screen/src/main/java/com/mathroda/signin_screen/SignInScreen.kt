@@ -27,16 +27,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider.getCredential
-import com.mathroda.common.components.CustomClickableText
-import com.mathroda.common.components.CustomLoginButton
-import com.mathroda.common.components.CustomTextField
+import com.mathroda.common.components.*
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
-import com.mathroda.common.util.isValidEmail
-import com.mathroda.common.util.isValidPassword
 import com.mathroda.core.util.Constants.SIGN_IN_TO_ACCESS
 import com.mathroda.core.util.Constants.WELCOME_DASH_COIN
-import com.mathroda.common.components.GoogleSignInButton
+import com.mathroda.signin_screen.components.LoginSection
 import com.mathroda.signin_screen.components.OneTapSignIn
 import com.mathroda.signin_screen.components.SignInWithGoogle
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -54,8 +50,8 @@ fun SignInScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordVisible by remember { mutableStateOf(false) }
-    var isError by remember { mutableStateOf(false) }
-    var isEnabled by remember { mutableStateOf(true) }
+    var isError = remember { mutableStateOf(false) }
+    var isVisible by remember { mutableStateOf(true) }
     var isLoading by remember { mutableStateOf(false) }
     val sigInState = viewModel.signIn.collectAsState()
 
@@ -119,7 +115,7 @@ fun SignInScreen(
                 text = email,
                 placeholder = "Email",
                 onValueChange = { email = it.trim() },
-                isError = isError,
+                isError = isError.value,
                 errorMsg = "*Enter valid email address",
                 isPasswordTextField = false,
                 trailingIcon = {
@@ -138,7 +134,7 @@ fun SignInScreen(
                 placeholder = "Password",
                 isPasswordTextField = !isPasswordVisible,
                 onValueChange = { password = it },
-                isError = isError,
+                isError = isError.value,
                 errorMsg = "*Enter valid password",
                 trailingIcon = {
                     IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
@@ -167,41 +163,30 @@ fun SignInScreen(
                     color = Gold,
                     fontSize = 14.sp,
                 ) {
-                    navigateToForgotPassword()
+                    //navigateToForgotPassword()
+                    isVisible = !isVisible
                 }
             }
 
             Spacer(modifier = Modifier.weight(0.2f))
 
-            CustomLoginButton(
-                text = "LOGIN",
-                modifier = Modifier.fillMaxWidth(),
-                enabled = isEnabled,
-                isLoading = isLoading
-            ) {
-                if (isValidEmail(email) && isValidPassword(password)) {
-                    viewModel.signIn(email, password)
-                } else {
-                    isError = !isValidEmail(email) || !isValidPassword(password)
-                }
-            }
+            LoadingDotsLogin(isLoading = isLoading)
 
-            Spacer(modifier = Modifier.weight(0.1f))
-            Text(
-                text = "--- OR ---",
-                modifier = Modifier.padding(6.dp),
-                fontSize = 12.sp,
-                color = TextWhite.copy(0.2f)
+            LoginSection(
+                customLoginButton = {
+                    viewModel.validatedSignIn(
+                        email = email,
+                        password = password,
+                        isError = isError
+                    )
+                },
+                googleSignInButton = {
+                    isVisible = !isVisible
+                    isLoading = !isLoading
+                    viewModel.oneTapSignIn()
+                },
+                isEnabled = isVisible
             )
-            Spacer(modifier = Modifier.weight(0.1f))
-
-            GoogleSignInButton(
-                modifier = Modifier.fillMaxWidth(),
-                enabled = isEnabled,
-                isLoading = isLoading
-            ) {
-                viewModel.oneTapSignIn()
-            }
 
             Spacer(modifier = Modifier.weight(0.4f))
             Row(
@@ -229,7 +214,7 @@ fun SignInScreen(
 
     if (sigInState.value.isLoading) {
         LaunchedEffect(Unit) {
-            isEnabled = !isEnabled
+            isVisible = !isVisible
             isLoading = !isLoading
         }
     }
@@ -245,7 +230,7 @@ fun SignInScreen(
 
     if (sigInState.value.error.isNotBlank()) {
         LaunchedEffect(Unit) {
-            isEnabled = !isEnabled
+            isVisible = !isVisible
             isLoading = !isLoading
         }
 
@@ -286,6 +271,8 @@ fun SignInScreen(
             if (signedIn) {
                 navigateToCoinsScreen()
             }
-        }
+        },
+        isVisible = { isVisible = it},
+        isLoading = { isLoading = it}
     )
 }

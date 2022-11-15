@@ -17,7 +17,7 @@ fun OneTapSignIn(
     launch: (result: BeginSignInResult) -> Unit,
 ) {
     when(val oneTapResponse = viewModel.oneTapSignInResponse.collectAsState().value) {
-        is Response.Loading -> CircularProgressIndicator()
+        is Response.Loading -> {}
         is Response.Success -> {
             oneTapResponse.data?.let {
                 LaunchedEffect(it) {

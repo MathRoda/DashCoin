@@ -22,8 +22,7 @@ import com.mathroda.common.theme.LighterGray
 fun GoogleSignInButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    isLoading: Boolean = false,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_dots))
     val lottieProgress by animateLottieCompositionAsState(
@@ -55,12 +54,4 @@ fun GoogleSignInButton(
         }
     }
 
-    AnimatedVisibility(visible = isLoading) {
-        LottieAnimation(
-            modifier = modifier
-                .size(150.dp),
-            composition = lottieComp,
-            progress = { lottieProgress },
-        )
-    }
 }

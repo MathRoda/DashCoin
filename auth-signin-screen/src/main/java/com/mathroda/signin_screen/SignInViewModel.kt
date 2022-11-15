@@ -1,5 +1,6 @@
 package com.mathroda.signin_screen
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.AuthCredential
+import com.mathroda.common.util.isValidEmail
+import com.mathroda.common.util.isValidPassword
 import com.mathroda.core.util.Resource
 import com.mathroda.core.util.Response
 import com.mathroda.datasource.firebase.FirebaseRepository
@@ -37,8 +40,19 @@ class SignInViewModel @Inject constructor(
 
 
 
+    fun validatedSignIn(
+        email: String,
+        password: String,
+        isError: MutableState<Boolean>
+    ) {
+        if (isValidEmail(email) && isValidPassword(password)) {
+            signIn(email, password)
+        } else {
+            isError.value = !isValidEmail(email) || !isValidPassword(password)
+        }
+    }
 
-    fun signIn(email: String, password: String) =
+    private fun signIn(email: String, password: String) =
         firebaseRepository.signInWithEmailAndPassword(email, password).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
