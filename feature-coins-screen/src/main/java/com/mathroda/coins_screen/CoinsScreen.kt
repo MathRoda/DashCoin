@@ -22,6 +22,9 @@ import androidx.navigation.NavController
 import com.airbnb.lottie.compose.*
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.mathroda.coins_screen.components.CoinsScreenState
+import com.mathroda.coins_screen.components.FloatingScrollButton
+import com.mathroda.coins_screen.components.ScrollButton
 import com.mathroda.coins_screen.components.isScrollingUp
 import com.mathroda.common.navigation.Screens
 import com.mathroda.profile_screen.DrawerNavigation
@@ -38,11 +41,6 @@ fun CoinScreen(
     val state = viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefresh.collectAsState()
     val searchCoin = remember { mutableStateOf(TextFieldValue("")) }
-    val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(com.mathroda.common.R.raw.loading_main))
-    val lottieProgress by animateLottieCompositionAsState(
-        composition = lottieComp,
-        iterations = LottieConstants.IterateForever,
-    )
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val isUserExists = viewModel.isCurrentUserExist.collectAsState(initial = false).value
@@ -121,62 +119,10 @@ fun CoinScreen(
 
             }
 
-
-            if (state.value.isLoading) {
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    LottieAnimation(
-                        composition = lottieComp,
-                        progress = { lottieProgress },
-                    )
-                }
-            }
-
-            if (state.value.error.isNotEmpty()) {
-                Text(
-                    text = state.value.error,
-                    color = MaterialTheme.colors.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .align(Alignment.Center)
-                )
-            }
+            CoinsScreenState()
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-
-        ) {
-            val firstVisibleItem = lazyListState.firstVisibleItemIndex
-            val isScrollingUp = lazyListState.isScrollingUp()
-
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                com.mathroda.coins_screen.components.FloatingScrollButton(
-                    modifier = Modifier
-                        .padding(bottom = 64.dp, end = 16.dp),
-                    visibility = if (firstVisibleItem <= 4) false else isScrollingUp
-                ) {
-                    scope.launch {
-                        /**
-                         * Scroll to first item in the list
-                         */
-                        lazyListState.animateScrollToItem(0)
-                    }
-                }
-
-            }
-        }
+        ScrollButton(lazyListState = lazyListState)
     }
 
 }
