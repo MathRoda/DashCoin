@@ -17,11 +17,12 @@ fun SignInWithGoogle(
     isLoading: (Boolean) -> Unit
 ) {
     when(val signInWithGoogleResponse = viewModel.signInWithGoogleResponse.collectAsState().value) {
-        is Response.Loading -> {}
+        is Response.Loading -> {
+            isVisible(false)
+            isLoading(true)
+        }
         is Response.Success -> signInWithGoogleResponse.data?.let { signedIn ->
             LaunchedEffect(signedIn){
-                isVisible(true)
-                isLoading(false)
                 navigateToCoinsScreen(signedIn)
             }
         }

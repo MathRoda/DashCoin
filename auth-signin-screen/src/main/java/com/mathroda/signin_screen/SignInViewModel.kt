@@ -32,10 +32,10 @@ class SignInViewModel @Inject constructor(
     private val _signIn = MutableStateFlow(SignInState())
     val signIn = _signIn.asStateFlow()
 
-    private val _oneTapSignInResponse = MutableStateFlow<OneTapSignInResponse>(Response.Loading)
+    private val _oneTapSignInResponse = MutableStateFlow<OneTapSignInResponse>(Response.Success(null))
     val oneTapSignInResponse = _oneTapSignInResponse.asStateFlow()
 
-    private val _signInWithGoogleResponse = MutableStateFlow<SignInWithGoogleResponse>(Response.Loading)
+    private val _signInWithGoogleResponse = MutableStateFlow<SignInWithGoogleResponse>(Response.Success(false))
     val signInWithGoogleResponse = _signInWithGoogleResponse.asStateFlow()
 
 

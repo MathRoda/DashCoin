@@ -181,8 +181,6 @@ fun SignInScreen(
                     )
                 },
                 googleSignInButton = {
-                    isVisible = !isVisible
-                    isLoading = !isLoading
                     viewModel.oneTapSignIn()
                 },
                 isEnabled = isVisible
