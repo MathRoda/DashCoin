@@ -1,5 +1,10 @@
 package com.mathroda.signin_screen
 
+import android.app.Activity.RESULT_OK
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -19,6 +24,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider.getCredential
 import com.mathroda.common.components.CustomClickableText
 import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.components.CustomTextField
@@ -28,7 +36,9 @@ import com.mathroda.common.util.isValidEmail
 import com.mathroda.common.util.isValidPassword
 import com.mathroda.core.util.Constants.SIGN_IN_TO_ACCESS
 import com.mathroda.core.util.Constants.WELCOME_DASH_COIN
-import com.mathroda.signin_screen.state.SignInState
+import com.mathroda.common.components.GoogleSignInButton
+import com.mathroda.signin_screen.components.OneTapSignIn
+import com.mathroda.signin_screen.components.SignInWithGoogle
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import kotlinx.coroutines.delay
 
@@ -176,6 +186,23 @@ fun SignInScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.weight(0.1f))
+            Text(
+                text = "--- OR ---",
+                modifier = Modifier.padding(6.dp),
+                fontSize = 12.sp,
+                color = TextWhite.copy(0.2f)
+            )
+            Spacer(modifier = Modifier.weight(0.1f))
+
+            GoogleSignInButton(
+                modifier = Modifier.fillMaxWidth(),
+                enabled = isEnabled,
+                isLoading = isLoading
+            ) {
+                viewModel.oneTapSignIn()
+            }
+
             Spacer(modifier = Modifier.weight(0.4f))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -199,7 +226,6 @@ fun SignInScreen(
         }
 
     }
-
 
     if (sigInState.value.isLoading) {
         LaunchedEffect(Unit) {
@@ -230,4 +256,36 @@ fun SignInScreen(
         )
         popBackStack()
     }
+
+    val launcher = rememberLauncherForActivityResult(StartIntentSenderForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            try {
+                val credentials = viewModel.onTapClient.getSignInCredentialFromIntent(result.data)
+                val googleIdToken = credentials.googleIdToken
+                val googleCred = getCredential(googleIdToken, null)
+                viewModel.signInWithGoogle(googleCred)
+            }catch (it: ApiException) {
+                Log.e("TAG", it.message.toString() )
+            }
+        }
+    }
+
+    fun launch(signInResult: BeginSignInResult) {
+        val intent = IntentSenderRequest.Builder(signInResult.pendingIntent.intentSender).build()
+        launcher.launch(intent)
+    }
+
+    OneTapSignIn(
+        launch = {
+            launch(it)
+        }
+    )
+
+    SignInWithGoogle(
+        navigateToCoinsScreen = { signedIn ->
+            if (signedIn) {
+                navigateToCoinsScreen()
+            }
+        }
+    )
 }
