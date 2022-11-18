@@ -10,8 +10,9 @@ import com.mathroda.core.util.Constants.BITCOIN_ID
 import com.mathroda.core.util.Resource
 import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.datasource.core.DashCoinRepository
+import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
-import com.mathroda.infrastructure.WorkerOnSuccessUseCase
+import com.mathroda.infrastructure.repository.WorkerProviderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -21,9 +22,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
-    private val dataStoreRepository: com.mathroda.datasource.datastore.DataStoreRepository,
+    private val dataStoreRepository: DataStoreRepository,
     private val dashCoinRepository: DashCoinRepository,
-    workerOnSuccessUseCase: WorkerOnSuccessUseCase
+    workerProviderRepository: WorkerProviderRepository
 ) : ViewModel() {
 
     private val _isLoading = MutableStateFlow(true)
@@ -34,7 +35,7 @@ class SplashViewModel @Inject constructor(
 
     private val isUserExist = firebaseRepository.isCurrentUserExist()
 
-    private val onSuccessWorker = workerOnSuccessUseCase.invoke().value
+    private val onSuccessWorker = workerProviderRepository.onWorkerSuccess().value
 
 
     init {
@@ -60,7 +61,7 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun updateFavoriteCoinsStatus() {
-        firebaseRepository.getCoinFavorite().onEach { result ->
+        firebaseRepository.getAllFavoriteCoins().onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     result.data?.map {
@@ -104,7 +105,13 @@ class SplashViewModel @Inject constructor(
                 val workInfo: WorkInfo = listOfWorkInfo[0]
 
                 if (workInfo.state == WorkInfo.State.ENQUEUED) {
-                    dashCoinRepository.getCoinById(BITCOIN_ID).collect()
+                    isUserExist.collect { isUserExist ->
+                        if (isUserExist) {
+                            firebaseRepository.getAllFavoriteCoins().collect()
+                        } else {
+                            dashCoinRepository.getCoinById(BITCOIN_ID).collect()
+                        }
+                    }
                 }
             }
         }

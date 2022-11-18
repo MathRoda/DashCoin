@@ -23,6 +23,8 @@ interface FirebaseRepository {
 
     fun isCurrentUserExist(): Flow<Boolean>
 
+    fun istUserExist(): Boolean
+
     fun getCurrentUserEmail(): Flow<String>
 
     fun signOut()
@@ -35,7 +37,7 @@ interface FirebaseRepository {
 
     fun isFavoriteState(coinById: CoinById): Flow<CoinById?>
 
-    fun getCoinFavorite(): Flow<com.mathroda.core.util.Resource<List<CoinById>>>
+    fun getAllFavoriteCoins(): Flow<com.mathroda.core.util.Resource<List<CoinById>>>
 
     fun updateFavoriteMarketState(coinById: CoinById): Flow<com.mathroda.core.util.Resource<Task<Void>>>
 

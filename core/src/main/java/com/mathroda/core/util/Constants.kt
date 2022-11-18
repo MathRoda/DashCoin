@@ -19,6 +19,8 @@ object Constants {
     const val TITLE = "Market Status"
     const val DESCRIPTION_POSITIVE = "looking positive today \uD83D\uDE0D "
     const val DESCRIPTION_NEGATIVE = "on the negative side today \uD83D\uDE21"
+    const val DESCRIPTION_MARKET_CHANGE_POSITIVE = "Is having a big market change +5% \uD83D\uDCC8"
+    const val DESCRIPTION_MARKET_CHANGE_NEGATIVE = "Is having a big market change -5% \uD83D\uDCC9"
     const val SYNC_DATA = "syncData"
     const val SYNC_DATA_WORK_NAME = "syncDataWorkName"
     const val BITCOIN_ID = "bitcoin"

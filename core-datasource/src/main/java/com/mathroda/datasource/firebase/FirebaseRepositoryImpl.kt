@@ -92,6 +92,10 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
+    override fun istUserExist(): Boolean {
+        return firebaseAuth.currentUser != null
+    }
+
     override fun getCurrentUserEmail(): Flow<String> {
         return flow {
             firebaseAuth.currentUser?.email?.let {
@@ -177,7 +181,7 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
-    override fun getCoinFavorite(): Flow<com.mathroda.core.util.Resource<List<CoinById>>> {
+    override fun getAllFavoriteCoins(): Flow<com.mathroda.core.util.Resource<List<CoinById>>> {
         return callbackFlow {
             this.trySend(com.mathroda.core.util.Resource.Loading())
             getUserId().collect { userId ->
