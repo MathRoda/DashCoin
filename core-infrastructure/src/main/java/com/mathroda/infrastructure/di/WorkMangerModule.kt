@@ -2,6 +2,7 @@ package com.mathroda.infrastructure.di
 
 import android.app.Application
 import androidx.work.WorkManager
+import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.infrastructure.repository.WorkerProviderRepository
 import com.mathroda.infrastructure.repository.WorkerProviderRepositoryImpl
 import dagger.Module
@@ -21,7 +22,10 @@ object WorkMangerModule {
 
     @Provides
     @Singleton
-    fun providesWorkerProviderRepository(workManager: WorkManager): WorkerProviderRepository {
-        return WorkerProviderRepositoryImpl(workManager)
+    fun providesWorkerProviderRepository(
+        workManager: WorkManager,
+        firebaseRepository: FirebaseRepository
+    ): WorkerProviderRepository {
+        return WorkerProviderRepositoryImpl(workManager, firebaseRepository)
     }
 }

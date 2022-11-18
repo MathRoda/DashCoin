@@ -7,7 +7,10 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
@@ -27,7 +30,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider.getCredential
-import com.mathroda.common.components.*
+import com.mathroda.common.components.CustomClickableText
+import com.mathroda.common.components.CustomTextField
+import com.mathroda.common.components.LoadingDotsLogin
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants.SIGN_IN_TO_ACCESS
@@ -247,8 +252,8 @@ fun SignInScreen(
                 val googleIdToken = credentials.googleIdToken
                 val googleCred = getCredential(googleIdToken, null)
                 viewModel.signInWithGoogle(googleCred)
-            }catch (it: ApiException) {
-                Log.e("TAG", it.message.toString() )
+            } catch (it: ApiException) {
+                Log.e("TAG", it.message.toString())
             }
         }
     }
@@ -270,7 +275,7 @@ fun SignInScreen(
                 navigateToCoinsScreen()
             }
         },
-        isVisible = { isVisible = it},
-        isLoading = { isLoading = it}
+        isVisible = { isVisible = it },
+        isLoading = { isLoading = it }
     )
 }

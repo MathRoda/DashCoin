@@ -18,7 +18,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 
 @Module
@@ -40,14 +39,15 @@ object GoogleServiceModule {
     fun providesSignInRequest(
         app: Application
     ) = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    .setServerClientId(app.getString(R.string.web_client_id))
-                    .setFilterByAuthorizedAccounts(true)
-                    .build())
-            .setAutoSelectEnabled(true)
-            .build()
+        .setGoogleIdTokenRequestOptions(
+            BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                .setSupported(true)
+                .setServerClientId(app.getString(R.string.web_client_id))
+                .setFilterByAuthorizedAccounts(true)
+                .build()
+        )
+        .setAutoSelectEnabled(true)
+        .build()
 
     @Provides
     @Named(SIGN_UP_REQUEST)
@@ -59,7 +59,8 @@ object GoogleServiceModule {
                 .setSupported(true)
                 .setServerClientId(app.getString(R.string.web_client_id))
                 .setFilterByAuthorizedAccounts(false)
-                .build())
+                .build()
+        )
         .build()
 
     @Provides

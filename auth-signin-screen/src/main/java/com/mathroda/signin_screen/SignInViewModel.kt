@@ -1,24 +1,24 @@
 package com.mathroda.signin_screen
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.AuthCredential
-import com.mathroda.common.util.isValidEmail
-import com.mathroda.common.util.isValidPassword
 import com.mathroda.core.util.Resource
 import com.mathroda.core.util.Response
+import com.mathroda.core.util.isValidEmail
+import com.mathroda.core.util.isValidPassword
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.google_service.GoogleServicesRepository
 import com.mathroda.datasource.google_service.OneTapSignInResponse
 import com.mathroda.datasource.google_service.SignInWithGoogleResponse
 import com.mathroda.signin_screen.state.SignInState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,12 +32,13 @@ class SignInViewModel @Inject constructor(
     private val _signIn = MutableStateFlow(SignInState())
     val signIn = _signIn.asStateFlow()
 
-    private val _oneTapSignInResponse = MutableStateFlow<OneTapSignInResponse>(Response.Success(null))
+    private val _oneTapSignInResponse =
+        MutableStateFlow<OneTapSignInResponse>(Response.Success(null))
     val oneTapSignInResponse = _oneTapSignInResponse.asStateFlow()
 
-    private val _signInWithGoogleResponse = MutableStateFlow<SignInWithGoogleResponse>(Response.Success(false))
+    private val _signInWithGoogleResponse =
+        MutableStateFlow<SignInWithGoogleResponse>(Response.Success(false))
     val signInWithGoogleResponse = _signInWithGoogleResponse.asStateFlow()
-
 
 
     fun validatedSignIn(
@@ -73,7 +74,7 @@ class SignInViewModel @Inject constructor(
 
     fun oneTapSignIn() = viewModelScope.launch {
         googleServices.oneTapSignInWithGoogle().collect { result ->
-            when(result) {
+            when (result) {
                 is Response.Loading -> {
                     _oneTapSignInResponse.emit(Response.Loading)
                 }
@@ -89,22 +90,21 @@ class SignInViewModel @Inject constructor(
 
 
     fun signInWithGoogle(googleCred: AuthCredential) = viewModelScope.launch {
-       googleServices.firebaseSignInWithGoogle(googleCred).collect { result ->
-           when(result) {
-               is Response.Loading -> {
-                   _signInWithGoogleResponse.emit(Response.Loading)
-               }
-               is Response.Success -> {
-                   _signInWithGoogleResponse.emit(Response.Success(result.data))
-               }
-               is Response.Failure -> {
-                   _signInWithGoogleResponse.emit(Response.Failure(result.e))
-               }
-           }
+        googleServices.firebaseSignInWithGoogle(googleCred).collect { result ->
+            when (result) {
+                is Response.Loading -> {
+                    _signInWithGoogleResponse.emit(Response.Loading)
+                }
+                is Response.Success -> {
+                    _signInWithGoogleResponse.emit(Response.Success(result.data))
+                }
+                is Response.Failure -> {
+                    _signInWithGoogleResponse.emit(Response.Failure(result.e))
+                }
+            }
 
-       }
+        }
     }
-
 
 
 }
