@@ -40,7 +40,7 @@ fun MainScreen(navController: NavHostController = rememberAnimatedNavController(
     Scaffold(
         modifier = Modifier.bottomBarAnimatedScroll(
             height = bottomBarHeight,
-            offsetHeightPx  = bottomBarOffsetHeightPx
+            offsetHeightPx = bottomBarOffsetHeightPx
         ),
         bottomBar = {
             BottomBar(

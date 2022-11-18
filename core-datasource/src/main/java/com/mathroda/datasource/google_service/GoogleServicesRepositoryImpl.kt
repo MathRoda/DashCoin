@@ -11,7 +11,6 @@ import com.mathroda.core.util.Constants.SIGN_UP_REQUEST
 import com.mathroda.core.util.Constants.USER_COLLECTION
 import com.mathroda.core.util.Response
 import com.mathroda.domain.User
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -28,28 +27,28 @@ class GoogleServicesRepositoryImpl @Inject constructor(
     private var signUpRequest: BeginSignInRequest,
     private val db: FirebaseFirestore
 
-): GoogleServicesRepository {
+) : GoogleServicesRepository {
     override val isUserExist = auth.currentUser != null
 
     override fun oneTapSignInWithGoogle() = flow {
-       try {
-           emit(Response.Loading)
+        try {
+            emit(Response.Loading)
 
-          val signInResult = oneTapClient.beginSignIn(signInRequest).await()
-          emit(Response.Success(signInResult))
-      } catch (e: Exception) {
-          try {
-              val signUpResult = oneTapClient.beginSignIn(signUpRequest).await()
-              emit(Response.Success(signUpResult))
-          } catch (e: Exception) {
-              emit(Response.Failure(e))
-          }
-      }
+            val signInResult = oneTapClient.beginSignIn(signInRequest).await()
+            emit(Response.Success(signInResult))
+        } catch (e: Exception) {
+            try {
+                val signUpResult = oneTapClient.beginSignIn(signUpRequest).await()
+                emit(Response.Success(signUpResult))
+            } catch (e: Exception) {
+                emit(Response.Failure(e))
+            }
+        }
     }
 
     override fun firebaseSignInWithGoogle(googleCred: AuthCredential) = flow {
-         try {
-             emit(Response.Loading)
+        try {
+            emit(Response.Loading)
             val authResult = auth.signInWithCredential(googleCred).await()
             val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
             if (isNewUser) {
