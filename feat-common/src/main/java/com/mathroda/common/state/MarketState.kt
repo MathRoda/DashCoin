@@ -1,7 +1,9 @@
 package com.mathroda.common.state
 
+import com.mathroda.domain.CoinById
+
 data class MarketState(
     val isLoading: Boolean = false,
-    val coin: com.mathroda.domain.CoinById? = null,
+    val coin: CoinById? = null,
     val error: String = ""
 )
