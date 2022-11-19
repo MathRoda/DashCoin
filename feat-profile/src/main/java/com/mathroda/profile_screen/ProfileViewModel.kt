@@ -1,15 +1,16 @@
 package com.mathroda.profile_screen
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathroda.core.state.AuthenticationState
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.domain.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +20,9 @@ class ProfileViewModel @Inject constructor(
 
     private val _userCredential = MutableStateFlow(User())
     val userCredential = _userCredential.asStateFlow()
+
+    private val _authState = mutableStateOf<AuthenticationState>(AuthenticationState.UnauthedUser)
+    val authState: State<AuthenticationState> = _authState
 
     private var getUserJob: Job? = null
 
@@ -41,5 +45,16 @@ class ProfileViewModel @Inject constructor(
                 is com.mathroda.core.util.Resource.Error -> {}
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun uiState() {
+        viewModelScope.launch {
+            firebaseRepository.isCurrentUserExist().collect {
+                when(it) {
+                    true -> _authState.value = AuthenticationState.AuthedUser
+                    false -> _authState.value = AuthenticationState.UnauthedUser
+                }
+            }
+        }
     }
 }

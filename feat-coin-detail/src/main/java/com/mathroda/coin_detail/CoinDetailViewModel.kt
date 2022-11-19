@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CoinViewModel @Inject constructor(
+class CoinDetailViewModel @Inject constructor(
     private val dashCoinRepository: DashCoinRepository,
     private val firebaseRepository: FirebaseRepository,
     savedStateHandle: SavedStateHandle

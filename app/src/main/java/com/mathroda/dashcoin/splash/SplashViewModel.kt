@@ -14,6 +14,7 @@ import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.infrastructure.repository.WorkerProviderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -60,37 +61,39 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun updateFavoriteCoinsStatus() {
-        firebaseRepository.getAllFavoriteCoins().onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    result.data?.map {
-                        dashCoinRepository.getCoinById(it.id ?: "").collect { result ->
-                            when (result) {
-                                is Resource.Success -> {
-                                    result.data?.let { coinById ->
-                                        firebaseRepository.updateFavoriteMarketState(coinById)
-                                            .collect { task ->
-                                                when (task) {
-                                                    is Resource.Success -> {
-                                                        Log.d(
-                                                            "task---",
-                                                            it.priceChange1w.toString()
-                                                        )
+        viewModelScope.launch(Dispatchers.IO) {
+            firebaseRepository.getCoinFavorite().collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        result.data?.map {
+                            dashCoinRepository.getCoinById(it.id ?: "").collect { result ->
+                                when (result) {
+                                    is Resource.Success -> {
+                                        result.data?.let { coinById ->
+                                            firebaseRepository.updateFavoriteMarketState(coinById)
+                                                .collect { task ->
+                                                    when (task) {
+                                                        is Resource.Success -> {
+                                                            Log.d(
+                                                                "task---",
+                                                                it.priceChange1w.toString()
+                                                            )
+                                                        }
+                                                        else -> {}
                                                     }
-                                                    else -> {}
                                                 }
-                                            }
+                                        }
                                     }
+                                    else -> {}
                                 }
-                                else -> {}
-                            }
 
+                            }
                         }
                     }
+                    else -> {}
                 }
-                else -> {}
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
     private fun notificationWorker() {
@@ -106,7 +109,7 @@ class SplashViewModel @Inject constructor(
                 if (workInfo.state == WorkInfo.State.ENQUEUED) {
                     isUserExist.collect { isUserExist ->
                         if (isUserExist) {
-                            firebaseRepository.getAllFavoriteCoins().collect()
+                            firebaseRepository.getCoinFavorite().collect()
                         } else {
                             dashCoinRepository.getCoinById(BITCOIN_ID).collect()
                         }

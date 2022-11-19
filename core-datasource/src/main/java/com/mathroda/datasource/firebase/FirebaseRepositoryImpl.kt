@@ -4,6 +4,8 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mathroda.core.util.Constants
+import com.mathroda.core.util.Resource
 import com.mathroda.domain.CoinById
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -34,9 +36,9 @@ class FirebaseRepositoryImpl constructor(
     override fun signUpWithEmailAndPassword(
         email: String,
         password: String
-    ): Flow<com.mathroda.core.util.Resource<AuthResult>> {
+    ): Flow<Resource<AuthResult>> {
         return flow {
-            emit(com.mathroda.core.util.Resource.Loading())
+            emit(Resource.Loading())
             emit(
                 com.mathroda.core.util.Resource.Success(
                     firebaseAuth.createUserWithEmailAndPassword(email, password).await()
@@ -92,7 +94,7 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
-    override fun istUserExist(): Boolean {
+    override fun isUserExist(): Boolean {
         return firebaseAuth.currentUser != null
     }
 
@@ -181,12 +183,12 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
-    override fun getAllFavoriteCoins(): Flow<com.mathroda.core.util.Resource<List<CoinById>>> {
+    override fun getCoinFavorite(): Flow<Resource<List<CoinById>>> {
         return callbackFlow {
-            this.trySend(com.mathroda.core.util.Resource.Loading())
+            this.trySend(Resource.Loading())
             getUserId().collect { userId ->
                 val snapshot =
-                    fireStore.collection(com.mathroda.core.util.Constants.FAVOURITES_COLLECTION)
+                    fireStore.collection(Constants.FAVOURITES_COLLECTION)
                         .document(userId)
                         .collection("coins")
                 snapshot.addSnapshotListener { value, error ->
@@ -196,7 +198,7 @@ class FirebaseRepositoryImpl constructor(
 
                     value?.let {
                         val data = value.toObjects(CoinById::class.java)
-                        this.trySend(com.mathroda.core.util.Resource.Success(data))
+                        this.trySend(Resource.Success(data))
                     }
                 }
             }

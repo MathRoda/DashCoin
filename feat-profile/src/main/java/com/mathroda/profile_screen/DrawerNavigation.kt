@@ -34,6 +34,7 @@ import com.mathroda.common.components.CustomDialogSignOut
 import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.navigation.Screens
 import com.mathroda.common.theme.*
+import com.mathroda.core.state.AuthenticationState
 import com.mathroda.core.util.Constants
 
 @ExperimentalComposeUiApi
@@ -45,6 +46,8 @@ fun DrawerNavigation(
     navController: NavController,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
+
+    viewModel.uiState()
     val uriHandler = LocalUriHandler.current
     val userCredential = viewModel.userCredential.collectAsState()
 
@@ -84,10 +87,13 @@ fun DrawerNavigation(
     )
 
     /**
-     * Logic for Login / Signout Buttons
+     * Logic for Login / Sign-out Buttons
      **/
 
-    if (isUserExists) LogOut(navController = navController) else Login(navController)
+    when(viewModel.authState.value) {
+        is AuthenticationState.AuthedUser -> LogOut(navController)
+        is AuthenticationState.UnauthedUser -> Login(navController)
+    }
 
     DrawerFooter()
 
@@ -185,8 +191,8 @@ fun Login(navController: NavController) {
 @ExperimentalMaterialApi
 @Composable
 fun LogOut(
-    viewModel: ProfileViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val openDialogCustom = remember { mutableStateOf(false) }
     Box(

@@ -30,7 +30,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @Composable
 fun CoinDetailScreen(
-    viewModel: CoinViewModel = hiltViewModel(),
+    viewModel: CoinDetailViewModel = hiltViewModel(),
     navController: NavController
 ) {
 
