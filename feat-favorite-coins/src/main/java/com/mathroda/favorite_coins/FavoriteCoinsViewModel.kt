@@ -11,6 +11,7 @@ import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.core.state.AuthenticationState
 import com.mathroda.favorite_coins.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -43,19 +44,21 @@ class FavoriteCoinsViewModel @Inject constructor(
 
     private fun getAllCoins() {
         getCoinJob?.cancel()
-        getCoinJob = firebaseRepository.getCoinFavorite().onEach { result ->
-            when (result) {
-                is Resource.Loading -> {}
-                is Resource.Success -> {
-                    result.data?.let {
-                        _state.emit(WatchListState(coin = it))
+        getCoinJob = viewModelScope.launch(Dispatchers.IO) {
+            firebaseRepository.getCoinFavorite().collect { result ->
+                when (result) {
+                    is Resource.Loading -> {}
+                    is Resource.Success -> {
+                        result.data?.let {
+                            _state.emit(WatchListState(coin = it))
+                        }
+                    }
+                    is Resource.Error -> {
+                        _state.emit(WatchListState(error = result.message.toString()))
                     }
                 }
-                is Resource.Error -> {
-                    _state.emit(WatchListState(error = result.message.toString()))
-                }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
 

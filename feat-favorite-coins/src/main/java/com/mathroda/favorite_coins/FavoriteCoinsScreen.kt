@@ -27,7 +27,5 @@ fun WatchListScreen(
         is AuthenticationState.UnauthedUser -> {
             WatchListGhostUsers(navController)
         }
-
-        else -> {}
     }
 }
