@@ -13,6 +13,7 @@ import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.infrastructure.WorkerOnSuccessUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -38,10 +39,9 @@ class SplashViewModel @Inject constructor(
 
 
     init {
-        updateFavoriteCoinsStatus()
         getOnBoardingState()
+        updateFavoriteCoinsStatus()
         notificationWorker()
-
     }
 
     private fun getOnBoardingState() {
@@ -60,37 +60,39 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun updateFavoriteCoinsStatus() {
-        firebaseRepository.getCoinFavorite().onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    result.data?.map {
-                        dashCoinRepository.getCoinById(it.id ?: "").collect { result ->
-                            when (result) {
-                                is Resource.Success -> {
-                                    result.data?.let { coinById ->
-                                        firebaseRepository.updateFavoriteMarketState(coinById)
-                                            .collect { task ->
-                                                when (task) {
-                                                    is Resource.Success -> {
-                                                        Log.d(
-                                                            "task---",
-                                                            it.priceChange1w.toString()
-                                                        )
+        viewModelScope.launch(Dispatchers.IO) {
+            firebaseRepository.getCoinFavorite().collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        result.data?.map {
+                            dashCoinRepository.getCoinById(it.id ?: "").collect { result ->
+                                when (result) {
+                                    is Resource.Success -> {
+                                        result.data?.let { coinById ->
+                                            firebaseRepository.updateFavoriteMarketState(coinById)
+                                                .collect { task ->
+                                                    when (task) {
+                                                        is Resource.Success -> {
+                                                            Log.d(
+                                                                "task---",
+                                                                it.priceChange1w.toString()
+                                                            )
+                                                        }
+                                                        else -> {}
                                                     }
-                                                    else -> {}
                                                 }
-                                            }
+                                        }
                                     }
+                                    else -> {}
                                 }
-                                else -> {}
-                            }
 
+                            }
                         }
                     }
+                    else -> {}
                 }
-                else -> {}
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
     private fun notificationWorker() {

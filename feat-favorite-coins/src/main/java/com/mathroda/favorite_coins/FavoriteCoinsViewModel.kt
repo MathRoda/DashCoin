@@ -8,12 +8,11 @@ import com.mathroda.common.state.MarketState
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
+import com.mathroda.core.state.AuthenticationState
+import com.mathroda.favorite_coins.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,8 +22,8 @@ class FavoriteCoinsViewModel @Inject constructor(
     private val dashCoinRepository: DashCoinRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(com.mathroda.favorite_coins.state.WatchListState())
-    val state: StateFlow<com.mathroda.favorite_coins.state.WatchListState> = _state
+    private val _state = MutableStateFlow(WatchListState())
+    val state: StateFlow<WatchListState> = _state
 
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
@@ -32,13 +31,12 @@ class FavoriteCoinsViewModel @Inject constructor(
     private val _marketStatus = mutableStateOf(MarketState())
     val marketStatus: State<MarketState> = _marketStatus
 
-    val isCurrentUserExists = firebaseRepository.isCurrentUserExist()
-
+    private val _authState = mutableStateOf<AuthenticationState>(AuthenticationState.UnauthedUser)
+    val authState:State<AuthenticationState> = _authState
 
     private var getCoinJob: Job? = null
 
     init {
-        getAllCoins()
         getMarketStatus()
     }
 
@@ -50,11 +48,11 @@ class FavoriteCoinsViewModel @Inject constructor(
                 is Resource.Loading -> {}
                 is Resource.Success -> {
                     result.data?.let {
-                        _state.emit(com.mathroda.favorite_coins.state.WatchListState(coin = it))
+                        _state.emit(WatchListState(coin = it))
                     }
                 }
                 is Resource.Error -> {
-                    _state.emit(com.mathroda.favorite_coins.state.WatchListState(error = result.message))
+                    _state.emit(WatchListState(error = result.message.toString()))
                 }
             }
         }.launchIn(viewModelScope)
@@ -73,19 +71,35 @@ class FavoriteCoinsViewModel @Inject constructor(
     private fun getMarketStatus() {
         dashCoinRepository.getCoinById("bitcoin").onEach { result ->
             when (result) {
-                is com.mathroda.core.util.Resource.Success -> {
+                is Resource.Success -> {
                     _marketStatus.value = MarketState(coin = result.data)
                 }
-                is com.mathroda.core.util.Resource.Error -> {
+                is Resource.Error -> {
                     _marketStatus.value = MarketState(
                         error = result.message ?: "Unexpected Error"
                     )
                 }
-                is com.mathroda.core.util.Resource.Loading -> {
+                is Resource.Loading -> {
                     _marketStatus.value = MarketState(isLoading = true)
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+      fun uiState() {
+        viewModelScope.launch {
+            firebaseRepository.isCurrentUserExist().collect {
+                when (it) {
+
+                    false -> _authState.value = AuthenticationState.UnauthedUser
+
+                    true -> {
+                        _authState.value = AuthenticationState.AuthedUser
+                        getAllCoins()
+                    }
+                }
+            }
+        }
     }
 
 

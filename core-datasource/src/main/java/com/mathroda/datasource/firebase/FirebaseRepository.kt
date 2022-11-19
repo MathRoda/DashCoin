@@ -23,6 +23,8 @@ interface FirebaseRepository {
 
     fun isCurrentUserExist(): Flow<Boolean>
 
+    fun isUserExist(): Boolean
+
     fun getCurrentUserEmail(): Flow<String>
 
     fun signOut()
