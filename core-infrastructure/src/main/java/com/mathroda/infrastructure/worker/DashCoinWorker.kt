@@ -62,39 +62,33 @@ class DashCoinWorker @AssistedInject constructor(
                     withContext(Dispatchers.IO) {
                         firebaseRepository.getAllFavoriteCoins().collect { result ->
                             when (result) {
+                                is Resource.Loading -> {}
                                 is Resource.Success -> {
                                     result.data?.onEach { coin ->
-                                        firebaseRepository.updateFavoriteMarketState(coin).collect{}
+                                        firebaseRepository.updateFavoriteMarketState(coin).collect {}
 
-                                        dashCoinRepository.getCoinById(coin.id ?: BITCOIN_ID).collect {
-                                            when(it) {
-                                                is Resource.Success -> {
-                                                    it.data?.priceChange1d?.let { marketChange ->
-                                                        if (marketChange.is5PercentUp()) {
-                                                            showNotification(
-                                                                context = applicationContext,
-                                                                title = coin.name ?: "Unknown coin",
-                                                                description = Constants.DESCRIPTION_MARKET_CHANGE_POSITIVE,
-                                                                id = coin.rank ?: 0
-                                                            )
-                                                        }
+                                        coin.priceChange1d?.let { marketChange ->
+                                            if (marketChange.is5PercentUp()) {
+                                                showNotification(
+                                                    context = applicationContext,
+                                                    title = coin.name ?: "Unknown coin",
+                                                    description = Constants.DESCRIPTION_MARKET_CHANGE_POSITIVE,
+                                                    id = coin.rank ?: 0
+                                                )
+                                            }
 
-                                                        if (marketChange.is5PercentDown()) {
-                                                            showNotification(
-                                                                context = applicationContext,
-                                                                title = coin.name ?: "Unknown coin",
-                                                                description = Constants.DESCRIPTION_MARKET_CHANGE_NEGATIVE,
-                                                                id = coin.rank ?: 0
-                                                            )
-                                                        }
-                                                    }
-                                                }
-                                                else -> {}
+                                            if (marketChange.is5PercentDown()) {
+                                                showNotification(
+                                                    context = applicationContext,
+                                                    title = coin.name ?: "Unknown coin",
+                                                    description = Constants.DESCRIPTION_MARKET_CHANGE_NEGATIVE,
+                                                    id = coin.rank ?: 0
+                                                )
                                             }
                                         }
                                     }
                                 }
-                                else -> {}
+                                is Resource.Error -> {}
                             }
                         }
                     }

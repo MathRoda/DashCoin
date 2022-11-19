@@ -45,7 +45,7 @@ class FavoriteCoinsViewModel @Inject constructor(
 
     private fun getAllCoins() {
         getCoinJob?.cancel()
-        getCoinJob = firebaseRepository.getCoinFavorite().onEach { result ->
+        getCoinJob = firebaseRepository.getAllFavoriteCoins().onEach { result ->
             when (result) {
                 is Resource.Loading -> {}
                 is Resource.Success -> {
