@@ -65,23 +65,30 @@ class DashCoinWorker @AssistedInject constructor(
                                 is Resource.Loading -> {}
                                 is Resource.Success -> {
                                     result.data?.onEach { coin ->
-                                        coin.priceChange1d?.let { marketChange ->
-                                            if (marketChange.is5PercentUp()) {
-                                                showNotification(
-                                                    context = applicationContext,
-                                                    title = coin.name ?: "Unknown coin",
-                                                    description = Constants.DESCRIPTION_MARKET_CHANGE_POSITIVE,
-                                                    id = coin.rank ?: 0
-                                                )
-                                            }
+                                        dashCoinRepository.getCoinById(coin.id ?: BITCOIN_ID).collect {
+                                            when(it) {
+                                                is Resource.Success -> {
+                                                    it.data?.priceChange1d?.let { marketChange ->
+                                                        if (marketChange.is5PercentUp()) {
+                                                            showNotification(
+                                                                context = applicationContext,
+                                                                title = coin.name ?: "Unknown coin",
+                                                                description = Constants.DESCRIPTION_MARKET_CHANGE_POSITIVE,
+                                                                id = coin.rank ?: 0
+                                                            )
+                                                        }
 
-                                            if (marketChange.is5PercentDown()) {
-                                                showNotification(
-                                                    context = applicationContext,
-                                                    title = coin.name ?: "Unknown coin",
-                                                    description = Constants.DESCRIPTION_MARKET_CHANGE_NEGATIVE,
-                                                    id = coin.rank ?: 0
-                                                )
+                                                        if (marketChange.is5PercentDown()) {
+                                                            showNotification(
+                                                                context = applicationContext,
+                                                                title = coin.name ?: "Unknown coin",
+                                                                description = Constants.DESCRIPTION_MARKET_CHANGE_NEGATIVE,
+                                                                id = coin.rank ?: 0
+                                                            )
+                                                        }
+                                                    }
+                                                }
+                                                else -> {}
                                             }
                                         }
                                     }
