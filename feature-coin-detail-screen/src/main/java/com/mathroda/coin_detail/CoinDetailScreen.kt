@@ -24,8 +24,8 @@ import com.mathroda.coin_detail.components.CoinInformation
 import com.mathroda.common.R
 import com.mathroda.common.components.CustomDialog
 import com.mathroda.common.events.FavoriteCoinEvents
-import com.mathroda.core.util.numbersToCurrency
-import com.mathroda.core.util.numbersToFormat
+import com.mathroda.common.util.numbersToCurrency
+import com.mathroda.common.util.numbersToFormat
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @Composable

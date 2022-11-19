@@ -2,6 +2,7 @@ package com.mathroda
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -25,9 +26,9 @@ import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.components.CustomTextField
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
+import com.mathroda.common.util.isValidEmail
+import com.mathroda.common.util.isValidPassword
 import com.mathroda.core.util.Constants
-import com.mathroda.core.util.isValidEmail
-import com.mathroda.core.util.isValidPassword
 import com.mathroda.domain.User
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
