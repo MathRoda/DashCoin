@@ -39,10 +39,9 @@ class SplashViewModel @Inject constructor(
 
 
     init {
-        updateFavoriteCoinsStatus()
         getOnBoardingState()
+        updateFavoriteCoinsStatus()
         notificationWorker()
-
     }
 
     private fun getOnBoardingState() {
@@ -62,8 +61,7 @@ class SplashViewModel @Inject constructor(
 
     private fun updateFavoriteCoinsStatus() {
         viewModelScope.launch(Dispatchers.IO) {
-
-            firebaseRepository.getCoinFavorite().onEach { result ->
+            firebaseRepository.getCoinFavorite().collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         result.data?.map {
