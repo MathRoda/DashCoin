@@ -20,6 +20,8 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.common.components.CommonTopBar
 import com.mathroda.common.navigation.Screens
+import com.mathroda.common.theme.LighterGray
+import com.mathroda.core.state.AuthenticationState
 import com.mathroda.favorite_coins.FavoriteCoinsViewModel
 
 @ExperimentalFoundationApi
@@ -59,7 +61,7 @@ fun WatchListAuthedUsers(
 
 
             Divider(
-                color = com.mathroda.common.theme.LighterGray,
+                color = LighterGray,
                 modifier = Modifier.padding(horizontal = 10.dp)
             )
             SwipeRefresh(
