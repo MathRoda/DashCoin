@@ -39,10 +39,9 @@ class SplashViewModel @Inject constructor(
 
 
     init {
-        updateFavoriteCoinsStatus()
         getOnBoardingState()
+        updateFavoriteCoinsStatus()
         notificationWorker()
-
     }
 
     private fun getOnBoardingState() {

@@ -62,9 +62,10 @@ class DashCoinWorker @AssistedInject constructor(
                     withContext(Dispatchers.IO) {
                         firebaseRepository.getAllFavoriteCoins().collect { result ->
                             when (result) {
-                                is Resource.Loading -> {}
                                 is Resource.Success -> {
                                     result.data?.onEach { coin ->
+                                        firebaseRepository.updateFavoriteMarketState(coin).collect{}
+
                                         dashCoinRepository.getCoinById(coin.id ?: BITCOIN_ID).collect {
                                             when(it) {
                                                 is Resource.Success -> {
@@ -93,7 +94,7 @@ class DashCoinWorker @AssistedInject constructor(
                                         }
                                     }
                                 }
-                                is Resource.Error -> {}
+                                else -> {}
                             }
                         }
                     }
