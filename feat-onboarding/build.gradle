@@ -44,10 +44,8 @@ android {
 
 dependencies {
 
-    implementation project(":core")
-    implementation project(":core-domain")
     implementation project(":core-datasource")
-    implementation project(":feature-common")
+    implementation project(':feat-common')
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation "androidx.compose.ui:ui:$compose_version"
@@ -82,10 +80,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
 
-    //SweetToast
-    implementation 'com.github.tfaki:ComposableSweetToast:1.0.1'
-
-    //firebase
-    implementation 'com.google.firebase:firebase-auth-ktx'
-
+    //Pager
+    implementation "com.google.accompanist:accompanist-pager:0.24.0-alpha"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.24.0-alpha"
 }

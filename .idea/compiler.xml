@@ -3,22 +3,22 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
       <module name="Dash_Coin.app" target="11" />
-      <module name="Dash_Coin.auth-forgot-password-screen" target="11" />
-      <module name="Dash_Coin.auth-signin-screen" target="11" />
-      <module name="Dash_Coin.auth-signup-screen" target="11" />
       <module name="Dash_Coin.core" target="1.8" />
       <module name="Dash_Coin.core-datasource" target="11" />
       <module name="Dash_Coin.core-infrastructure" target="11" />
       <module name="Dash_Coin.core-network" target="11" />
       <module name="Dash_Coin.core.main" target="1.8" />
       <module name="Dash_Coin.core.test" target="1.8" />
-      <module name="Dash_Coin.feature-coin-detail-screen" target="11" />
-      <module name="Dash_Coin.feature-coins-screen" target="11" />
-      <module name="Dash_Coin.feature-common" target="11" />
-      <module name="Dash_Coin.feature-favorite-coins-screen" target="11" />
-      <module name="Dash_Coin.feature-news-screen" target="11" />
-      <module name="Dash_Coin.feature-onboarding" target="11" />
-      <module name="Dash_Coin.feature-profile-screen" target="11" />
+      <module name="Dash_Coin.feat-auth-forgot-password" target="11" />
+      <module name="Dash_Coin.feat-auth-signin" target="11" />
+      <module name="Dash_Coin.feat-auth-signup" target="11" />
+      <module name="Dash_Coin.feat-coin-detail" target="11" />
+      <module name="Dash_Coin.feat-coins" target="11" />
+      <module name="Dash_Coin.feat-common" target="11" />
+      <module name="Dash_Coin.feat-favorite-coins" target="11" />
+      <module name="Dash_Coin.feat-news" target="11" />
+      <module name="Dash_Coin.feat-onboarding" target="11" />
+      <module name="Dash_Coin.feat-profile" target="11" />
       <module name="DashCoin.buildSrc" target="11" />
       <module name="DashCoin.buildSrc.main" target="11" />
       <module name="DashCoin.buildSrc.test" target="11" />
