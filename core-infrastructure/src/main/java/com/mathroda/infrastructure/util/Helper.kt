@@ -5,5 +5,5 @@ fun Double.is5PercentUp(): Boolean {
 }
 
 fun Double.is5PercentDown(): Boolean {
-    return this >= -5
+    return this <= -5
 }
