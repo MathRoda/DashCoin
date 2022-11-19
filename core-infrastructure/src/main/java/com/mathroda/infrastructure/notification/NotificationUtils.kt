@@ -12,7 +12,7 @@ import com.mathroda.infrastructure.R
 
 object NotificationUtils {
 
-    fun showNotification(context: Context, title: String, description: String, id: Int) {
+    fun showNotification(context: Context, title: String, description: String) {
         val notificationManager =
             context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
@@ -20,7 +20,7 @@ object NotificationUtils {
 
         val builder = createNotificationCompat(context, title, description)
 
-        notificationManager.notify(id, builder.build())
+        notificationManager.notify(1, builder.build())
     }
 
     private fun createNotificationChannel(notificationManager: NotificationManager) {

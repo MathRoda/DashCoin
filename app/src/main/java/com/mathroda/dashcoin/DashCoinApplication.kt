@@ -3,7 +3,7 @@ package com.mathroda.dashcoin
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.mathroda.infrastructure.repository.WorkerProviderRepository
+import com.mathroda.infrastructure.CreateWorkUseCase
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -14,11 +14,11 @@ class DashCoinApplication : Application(), Configuration.Provider {
     lateinit var workerFactory: HiltWorkerFactory
 
     @Inject
-    lateinit var workerProviderRepository: WorkerProviderRepository
+    lateinit var createWorkUseCase: CreateWorkUseCase
 
     override fun onCreate() {
         super.onCreate()
-        workerProviderRepository.createWork()
+        createWorkUseCase.invoke()
     }
 
     override fun getWorkManagerConfiguration() = Configuration.Builder()
