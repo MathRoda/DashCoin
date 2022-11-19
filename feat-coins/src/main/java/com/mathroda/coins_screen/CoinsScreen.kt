@@ -92,9 +92,11 @@ fun CoinScreen(
                                 when (it.action) {
                                     MotionEvent.ACTION_DOWN -> {
                                         focusManger.clearFocus()
+                                        searchCoin.value = TextFieldValue("")
                                     }
                                     MotionEvent.ACTION_UP -> {
                                         focusManger.clearFocus()
+                                        searchCoin.value = TextFieldValue("")
                                     }
                                 }
                                 false
