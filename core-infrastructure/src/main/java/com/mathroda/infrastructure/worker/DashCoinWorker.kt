@@ -60,7 +60,7 @@ class DashCoinWorker @AssistedInject constructor(
                     }
                 } else {
                     withContext(Dispatchers.IO) {
-                        firebaseRepository.getAllFavoriteCoins().collect { result ->
+                        firebaseRepository.getCoinFavorite().collect { result ->
                             when (result) {
                                 is Resource.Loading -> {}
                                 is Resource.Success -> {

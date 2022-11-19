@@ -16,7 +16,8 @@ class WorkerProviderRepositoryImpl @Inject constructor(
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()
 
-    private val isUserExist = firebaseRepository.istUserExist()
+    private val isUserExist = firebaseRepository.isUserExist()
+
     override fun createWork() {
         val workRequest = PeriodicWorkRequestBuilder<DashCoinWorker>(
             isUserExist.timeInteger(), isUserExist.timeUnit(),
