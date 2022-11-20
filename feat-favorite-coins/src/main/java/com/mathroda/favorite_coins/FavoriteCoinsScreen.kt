@@ -7,7 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mathroda.favorite_coins.components.authed_users.WatchListAuthedUsers
 import com.mathroda.favorite_coins.components.ghost_users.WatchListGhostUsers
-import com.mathroda.core.state.AuthenticationState
+import com.mathroda.core.state.UserState
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
@@ -19,13 +19,17 @@ fun WatchListScreen(
     viewModel.uiState()
     when(viewModel.authState.value) {
 
-        is AuthenticationState.AuthedUser -> {
-            viewModel.refresh()
-            WatchListAuthedUsers(navController = navController)
+        is UserState.AuthedUser -> {
+
         }
 
-        is AuthenticationState.UnauthedUser -> {
+        is UserState.UnauthedUser -> {
             WatchListGhostUsers(navController)
+        }
+
+        is UserState.PremiumUser -> {
+            viewModel.refresh()
+            WatchListAuthedUsers(navController = navController)
         }
     }
 }

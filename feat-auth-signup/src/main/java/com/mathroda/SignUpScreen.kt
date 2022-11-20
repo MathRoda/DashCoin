@@ -28,7 +28,7 @@ import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
 import com.mathroda.core.util.isValidEmail
 import com.mathroda.core.util.isValidPassword
-import com.mathroda.domain.User
+import com.mathroda.domain.DashCoinUser
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @Composable
@@ -165,11 +165,11 @@ fun SignUpScreen(
                 isLoading = isLoading
             ) {
                 if (isValidEmail(email) && isValidPassword(password)) {
-                    val user = User(
+                    val dashCoinUser = DashCoinUser(
                         userName = userName,
                         email = email
                     )
-                    viewModel.signUp(user, password)
+                    viewModel.signUp(dashCoinUser, password)
                 } else {
                     isError = !isValidEmail(email) || !isValidPassword(password)
                 }
@@ -213,8 +213,12 @@ fun SignUpScreen(
             padding = PaddingValues(bottom = 24.dp)
         )
         LaunchedEffect(Unit) {
-            val user = User(userName, email)
-            viewModel.addUserCredential(user)
+            val dashCoinUser = DashCoinUser(
+                userName = userName ,
+                email = email,
+                userUid = signUpState.value.signUp?.user?.uid
+            )
+            viewModel.addUserCredential(dashCoinUser)
             popBackStack()
             navigateToSignInScreen()
         }

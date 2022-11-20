@@ -3,6 +3,7 @@ package com.mathroda
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.datasource.firebase.FirebaseRepository
+import com.mathroda.domain.DashCoinUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,9 +21,9 @@ class SignUpViewModel @Inject constructor(
     val signUp: StateFlow<com.mathroda.signup_screen.state.SignUpState> = _signUp
 
 
-    fun signUp(user: com.mathroda.domain.User, password: String) =
+    fun signUp(dashCoinUser: DashCoinUser, password: String) =
         viewModelScope.launch {
-            firebaseRepository.signUpWithEmailAndPassword(user.email!!, password).onEach { result ->
+            firebaseRepository.signUpWithEmailAndPassword(dashCoinUser.email!!, password).onEach { result ->
                 when (result) {
                     is com.mathroda.core.util.Resource.Success -> {
                         _signUp.emit(com.mathroda.signup_screen.state.SignUpState(signUp = result.data))
@@ -41,8 +42,8 @@ class SignUpViewModel @Inject constructor(
             }.launchIn(viewModelScope)
         }
 
-    fun addUserCredential(user: com.mathroda.domain.User) =
-        firebaseRepository.addUserCredential(user).onEach { result ->
+    fun addUserCredential(dashCoinUser: DashCoinUser) =
+        firebaseRepository.addUserCredential(dashCoinUser).onEach { result ->
             when (result) {
                 is com.mathroda.core.util.Resource.Loading -> {}
                 is com.mathroda.core.util.Resource.Success -> {}

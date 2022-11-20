@@ -4,9 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.core.state.AuthenticationState
+import com.mathroda.core.state.UserState
 import com.mathroda.datasource.firebase.FirebaseRepository
-import com.mathroda.domain.User
+import com.mathroda.domain.DashCoinUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -18,11 +18,11 @@ class ProfileViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) : ViewModel() {
 
-    private val _userCredential = MutableStateFlow(User())
+    private val _userCredential = MutableStateFlow(DashCoinUser())
     val userCredential = _userCredential.asStateFlow()
 
-    private val _authState = mutableStateOf<AuthenticationState>(AuthenticationState.UnauthedUser)
-    val authState: State<AuthenticationState> = _authState
+    private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
+    val authState: State<UserState> = _authState
 
     private var getUserJob: Job? = null
 
@@ -51,8 +51,8 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             firebaseRepository.isCurrentUserExist().collect {
                 when(it) {
-                    true -> _authState.value = AuthenticationState.AuthedUser
-                    false -> _authState.value = AuthenticationState.UnauthedUser
+                    true -> _authState.value = UserState.AuthedUser
+                    false -> _authState.value = UserState.UnauthedUser
                 }
             }
         }

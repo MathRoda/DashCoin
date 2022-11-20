@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mathroda.core.util.Constants
 import com.mathroda.core.util.Resource
 import com.mathroda.domain.CoinById
+import com.mathroda.domain.DashCoinUser
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -129,13 +130,13 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
-    override fun addUserCredential(user: com.mathroda.domain.User): Flow<com.mathroda.core.util.Resource<Task<Void>>> {
+    override fun addUserCredential(dashCoinUser: com.mathroda.domain.DashCoinUser): Flow<com.mathroda.core.util.Resource<Task<Void>>> {
         return flow {
             emit(com.mathroda.core.util.Resource.Loading())
             getUserId().collect { userUid ->
                 val userRef = fireStore.collection(com.mathroda.core.util.Constants.USER_COLLECTION)
                     .document(userUid)
-                    .set(user)
+                    .set(dashCoinUser)
 
                 userRef.await()
                 emit(com.mathroda.core.util.Resource.Success(userRef))
@@ -229,7 +230,45 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
-    override fun getUserCredentials(): Flow<com.mathroda.core.util.Resource<com.mathroda.domain.User>> {
+    override fun updateUserToPremium(result: Boolean): Flow<Resource<Task<Void>>> {
+        return flow {
+            getUserId().collect { userUid ->
+                    emit(Resource.Loading())
+                    getUserId().collect {
+                        val favoriteRef =
+                            fireStore.collection(Constants.USER_COLLECTION)
+                                .document(userUid)
+                                .update("premium", result)
+
+                        favoriteRef.await()
+                        emit(Resource.Success(favoriteRef))
+                    }
+            }
+        }.catch {
+            emit(Resource.Error(it.toString()))
+        }
+    }
+
+    override fun updateFavoriteCoinsCount(count: Int): Flow<Resource<Task<Void>>> {
+        return flow {
+            getUserId().collect { userUid ->
+                emit(Resource.Loading())
+                getUserId().collect {
+                    val favoriteRef =
+                        fireStore.collection(Constants.USER_COLLECTION)
+                            .document(userUid)
+                            .update("favoriteCoinsCount", count)
+
+                    favoriteRef.await()
+                    emit(Resource.Success(favoriteRef))
+                }
+            }
+        }.catch {
+            emit(Resource.Error(it.toString()))
+        }
+    }
+
+    override fun getUserCredentials(): Flow<com.mathroda.core.util.Resource<com.mathroda.domain.DashCoinUser>> {
         return callbackFlow {
             this.trySend(com.mathroda.core.util.Resource.Loading())
             getUserId().collect { userId ->
@@ -243,7 +282,7 @@ class FirebaseRepositoryImpl constructor(
                     }
 
                     value?.let {
-                        val data = value.toObject(com.mathroda.domain.User::class.java)
+                        val data = value.toObject(com.mathroda.domain.DashCoinUser::class.java)
                         this.trySend(com.mathroda.core.util.Resource.Success(data!!))
                     }
                 }

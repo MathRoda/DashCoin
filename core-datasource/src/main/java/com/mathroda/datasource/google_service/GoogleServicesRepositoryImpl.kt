@@ -10,7 +10,7 @@ import com.mathroda.core.util.Constants.SIGN_IN_REQUEST
 import com.mathroda.core.util.Constants.SIGN_UP_REQUEST
 import com.mathroda.core.util.Constants.USER_COLLECTION
 import com.mathroda.core.util.Response
-import com.mathroda.domain.User
+import com.mathroda.domain.DashCoinUser
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -71,7 +71,7 @@ class GoogleServicesRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun FirebaseUser.toGoogleUser() = User(
+    private fun FirebaseUser.toGoogleUser() = DashCoinUser(
         userName = displayName,
         image = photoUrl?.toString(),
         email = email
