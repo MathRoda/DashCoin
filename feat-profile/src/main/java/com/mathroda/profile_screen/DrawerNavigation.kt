@@ -98,7 +98,7 @@ fun DrawerNavigation(
     when(viewModel.authState.value) {
         is UserState.AuthedUser -> LogOut(navController)
         is UserState.UnauthedUser -> Login(navController)
-        is UserState.PremiumUser -> {}
+        is UserState.PremiumUser -> LogOut(navController)
     }
 
     DrawerFooter()

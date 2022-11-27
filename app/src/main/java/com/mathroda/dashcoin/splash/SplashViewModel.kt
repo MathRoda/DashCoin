@@ -89,10 +89,6 @@ class SplashViewModel @Inject constructor(
 
                             }
                         }
-
-                        result.data?.size?.let {
-                            firebaseRepository.updateFavoriteCoinsCount(it).collect()
-                        }
                     }
                     else -> {}
                 }

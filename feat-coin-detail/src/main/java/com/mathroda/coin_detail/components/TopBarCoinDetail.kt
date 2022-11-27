@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.mathroda.coin_detail.state.IsFavoriteState
 import com.mathroda.common.components.BackStackButton
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
@@ -26,7 +27,7 @@ fun TopBarCoinDetail(
     coinSymbol: String,
     icon: String,
     navController: NavController,
-    isFavorite: Boolean,
+    isFavorite: IsFavoriteState,
     onCLick: (Boolean) -> Unit
 
 ) {
@@ -93,23 +94,28 @@ fun TopBarCoinDetail(
 @Composable
 fun FavoriteButton(
     modifier: Modifier = Modifier,
-    color: Color = TextWhite,
-    isFavorite: Boolean,
+    isFavorite: IsFavoriteState,
     onCLick: (Boolean) -> Unit
 
 
 ) {
     IconToggleButton(
-        checked = isFavorite,
+        checked = isFavorite == IsFavoriteState.Favorite,
         onCheckedChange = onCLick
     ) {
         Icon(
-            tint = if (isFavorite) Gold else color,
+            tint = when(isFavorite) {
+                is IsFavoriteState.Favorite -> Gold
+                is IsFavoriteState.NotFavorite -> TextWhite
+            },
             modifier = modifier.graphicsLayer {
                 scaleX = 1.3f
                 scaleY = 1.3f
             },
-            imageVector = if (isFavorite) Icons.Filled.Star else Icons.Default.StarBorder,
+            imageVector = when(isFavorite) {
+                is IsFavoriteState.Favorite -> Icons.Filled.Star
+                is IsFavoriteState.NotFavorite -> Icons.Default.StarBorder
+            },
             contentDescription = null
         )
     }

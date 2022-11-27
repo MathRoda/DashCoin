@@ -10,6 +10,7 @@ import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.core.state.UserState
 import com.mathroda.datasource.providers.ProvidersRepository
+import com.mathroda.domain.DashCoinUser
 import com.mathroda.favorite_coins.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -59,6 +60,9 @@ class FavoriteCoinsViewModel @Inject constructor(
                     is Resource.Error -> {
                         _state.emit(WatchListState(error = result.message.toString()))
                     }
+                }
+                result.data?.size?.let {
+                    firebaseRepository.updateFavoriteCoinsCount(it).collect()
                 }
             }
         }

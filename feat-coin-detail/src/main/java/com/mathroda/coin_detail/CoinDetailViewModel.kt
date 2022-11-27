@@ -8,17 +8,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.coin_detail.state.ChartState
 import com.mathroda.coin_detail.state.CoinState
+import com.mathroda.coin_detail.state.IsFavoriteState
 import com.mathroda.common.events.FavoriteCoinEvents
-import com.mathroda.common.state.MarketState
+import com.mathroda.common.state.DialogState
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants.PARAM_COIN_ID
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
+import com.mathroda.datasource.providers.ProvidersRepository
 import com.mathroda.domain.CoinById
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,6 +31,7 @@ import javax.inject.Inject
 class CoinDetailViewModel @Inject constructor(
     private val dashCoinRepository: DashCoinRepository,
     private val firebaseRepository: FirebaseRepository,
+    private val providersRepository: ProvidersRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -35,19 +41,18 @@ class CoinDetailViewModel @Inject constructor(
     private val _chartState = mutableStateOf(ChartState())
     val chartState: State<ChartState> = _chartState
 
-    private val _marketStatus = mutableStateOf(MarketState())
-    val marketStatus: State<MarketState> = _marketStatus
+    private val _favoriteMsg = mutableStateOf("")
+    val favoriteMsg: State<String> = _favoriteMsg
 
-    private val _addToFavorite = mutableStateOf("")
-    val addToFavorite: State<String> = _addToFavorite
+    private val _isFavoriteState = mutableStateOf<IsFavoriteState>(IsFavoriteState.NotFavorite)
+    val isFavoriteState:State<IsFavoriteState> = _isFavoriteState
 
-    private val _isFavoriteState = mutableStateOf(false)
-    val isFavoriteState:State<Boolean> = _isFavoriteState
+    private val _dialogState = mutableStateOf<DialogState>(DialogState.Close)
+    val dialogState:MutableState<DialogState> = _dialogState
 
     private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
     val authState:State<UserState> = _authState
 
-    private val isCurrentUserExists = firebaseRepository.isUserExist()
 
 
     init {
@@ -55,7 +60,6 @@ class CoinDetailViewModel @Inject constructor(
             getChart(coinId)
             getCoin(coinId)
         }
-        getMarketStatus()
 
     }
 
@@ -97,37 +101,20 @@ class CoinDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun getMarketStatus() {
-        dashCoinRepository.getCoinById("bitcoin").onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _marketStatus.value = MarketState(coin = result.data)
-                }
-                is Resource.Error -> {
-                    _marketStatus.value = MarketState(
-                        error = result.message ?: "Unexpected Error"
-                    )
-                }
-                is Resource.Loading -> {
-                    _marketStatus.value = MarketState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
-
     fun onEvent(events: FavoriteCoinEvents) {
         when (events) {
 
             is FavoriteCoinEvents.AddCoin -> {
-                viewModelScope.launch { //dashCoinUseCases.addCoin(events.coin)
+                viewModelScope.launch {
                     firebaseRepository.addCoinFavorite(events.coin).collect { result ->
                         when (result) {
                             is Resource.Loading -> {}
                             is Resource.Success -> {
-                                _addToFavorite.value = "Coin successfully added to favorite! "
+                                _favoriteMsg.value = "${events.coin.name} successfully added to favorite! "
+                                _isFavoriteState.value = IsFavoriteState.Favorite
                             }
                             is Resource.Error -> {
-                                _addToFavorite.value = result.message.toString()
+                                _favoriteMsg.value = result.message.toString()
                             }
                         }
                     }
@@ -137,39 +124,59 @@ class CoinDetailViewModel @Inject constructor(
             is FavoriteCoinEvents.DeleteCoin -> {
                 viewModelScope.launch {
                     firebaseRepository.deleteCoinFavorite(events.coin).collect()
+                    _isFavoriteState.value = IsFavoriteState.NotFavorite
                 }
             }
 
         }
     }
 
-    fun isFavoriteState(coin: CoinById) {
+    fun isFavorite(coin: CoinById) {
         viewModelScope.launch {
             firebaseRepository.isFavoriteState(coin).firstOrNull()?.let {
-                _isFavoriteState.value = it.id == coin.id
+               if (coin.id == it.id) {
+                   _isFavoriteState.value = IsFavoriteState.Favorite
+               } else {
+                   _isFavoriteState.value = IsFavoriteState.NotFavorite
+               }
             }
         }
     }
 
-    fun uiState() {
+    fun userState() {
         viewModelScope.launch {
+            providersRepository.uiStateProvider(
+                state = _authState
+            ) {}
+        }
+    }
 
+    private fun premiumLimit(coin: CoinById, sideEffect: MutableState<Boolean>) {
+        viewModelScope.launch {
+            firebaseRepository.getUserCredentials().collect { result ->
+                result.data?.let { user ->
+                    when(user.isPremiumLimit()) {
+                        true -> onEvent(FavoriteCoinEvents.AddCoin(coin))
+                        false -> sideEffect.value = true
+                    }
+                }
+            }
         }
     }
 
     fun onFavoriteClick(
         coin: CoinById,
         sideEffect: MutableState<Boolean>,
-        openDialog: MutableState<Boolean>
     ) {
-        _isFavoriteState.value = !isFavoriteState.value
-
-        when(isFavoriteState.value) {
-            false -> openDialog.value = true
-            true -> {
-                when(isCurrentUserExists) {
-                    false -> sideEffect.value = !isCurrentUserExists
-                    true -> onEvent(FavoriteCoinEvents.AddCoin(coin))
+        when(_isFavoriteState.value) {
+            is IsFavoriteState.Favorite -> {
+                _dialogState.value = DialogState.Open
+            }
+            is IsFavoriteState.NotFavorite -> {
+                when(_authState.value) {
+                    is UserState.UnauthedUser -> sideEffect.value = true
+                    is UserState.AuthedUser -> premiumLimit(coin, sideEffect)
+                    is UserState.PremiumUser -> onEvent(FavoriteCoinEvents.AddCoin(coin))
                 }
             }
         }

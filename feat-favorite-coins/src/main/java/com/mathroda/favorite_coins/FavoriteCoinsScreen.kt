@@ -29,6 +29,7 @@ fun WatchListScreen(
         }
 
         is UserState.PremiumUser -> {
+            WatchListAuthedUsers(navController = navController)
         }
     }
 }

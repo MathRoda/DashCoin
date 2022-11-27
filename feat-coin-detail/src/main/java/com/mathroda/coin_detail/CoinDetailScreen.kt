@@ -25,6 +25,7 @@ import com.mathroda.coin_detail.components.TopBarCoinDetail
 import com.mathroda.common.R
 import com.mathroda.common.components.CustomDialog
 import com.mathroda.common.events.FavoriteCoinEvents
+import com.mathroda.common.theme.DarkGray
 import com.mathroda.core.util.numbersToCurrency
 import com.mathroda.core.util.numbersToFormat
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -38,16 +39,18 @@ fun CoinDetailScreen(
     val coinState = viewModel.coinState.value
     val chartsState = viewModel.chartState.value
     val sideEffect = remember { mutableStateOf(false) }
-    val openDialog = remember { mutableStateOf(false) }
+    val favoriteMsg = viewModel.favoriteMsg.value
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))
     val lottieProgress by animateLottieCompositionAsState(
         composition = lottieComp,
         iterations = LottieConstants.IterateForever,
     )
 
+    viewModel.userState()
+
     Box(
         modifier = Modifier
-            .background(com.mathroda.common.theme.DarkGray)
+            .background(DarkGray)
             .fillMaxSize()
             .padding(12.dp)
     ) {
@@ -57,7 +60,7 @@ fun CoinDetailScreen(
              * first thing when the coin detail screen renders it checks
              * if the coin exist in Firestore and collect the flow as State
              */
-            viewModel.isFavoriteState(coin)
+            viewModel.isFavorite(coin)
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -72,19 +75,16 @@ fun CoinDetailScreen(
                             viewModel.onFavoriteClick(
                                 coin = coin,
                                 sideEffect = sideEffect,
-                                openDialog = openDialog
                             )
                         }
                     )
 
-                    if (openDialog.value) {
-                        CustomDialog(
-                            openDialogCustom = openDialog,
-                            coin = coin,
-                            navController = navController
-                        ) {
-                            viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin))
-                        }
+                    CustomDialog(
+                        dialogState = viewModel.dialogState,
+                        coin = coin,
+                        navController = navController
+                    ) {
+                        viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin))
                     }
 
                     CoinDetailSection(
@@ -152,7 +152,13 @@ fun CoinDetailScreen(
                 padding = PaddingValues(24.dp),
                 message = "Please Login First"
             )
-            sideEffect.value = !sideEffect.value
+        }
+
+        if (favoriteMsg.isNotBlank()) {
+            SweetToastUtil.SweetSuccess(
+                padding = PaddingValues(24.dp),
+                message = favoriteMsg
+            )
         }
 
         if (coinState.isLoading) {
