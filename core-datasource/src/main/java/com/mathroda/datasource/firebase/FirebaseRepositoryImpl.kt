@@ -41,12 +41,12 @@ class FirebaseRepositoryImpl constructor(
         return flow {
             emit(Resource.Loading())
             emit(
-                com.mathroda.core.util.Resource.Success(
+                Resource.Success(
                     firebaseAuth.createUserWithEmailAndPassword(email, password).await()
                 )
             )
         }.catch {
-            emit(com.mathroda.core.util.Resource.Error(it.toString()))
+            emit(Resource.Error(it.toString()))
         }
     }
 
@@ -55,9 +55,9 @@ class FirebaseRepositoryImpl constructor(
         password: String
     ): Flow<com.mathroda.core.util.Resource<AuthResult>> {
         return flow {
-            emit(com.mathroda.core.util.Resource.Loading())
+            emit(Resource.Loading())
             emit(
-                com.mathroda.core.util.Resource.Success(
+                Resource.Success(
                     firebaseAuth.signInWithEmailAndPassword(
                         email,
                         password
@@ -65,24 +65,24 @@ class FirebaseRepositoryImpl constructor(
                 )
             )
         }.catch {
-            emit(com.mathroda.core.util.Resource.Error(it.message ?: "Unexpected Message"))
+            emit(Resource.Error(it.message ?: "Unexpected Message"))
         }
     }
 
     override fun resetPasswordWithEmail(email: String): Flow<com.mathroda.core.util.Resource<Boolean>> {
         return callbackFlow {
-            this.trySend(com.mathroda.core.util.Resource.Loading())
+            this.trySend(Resource.Loading())
             firebaseAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener { task ->
                     when {
                         task.isSuccessful -> {
-                            this.trySend(com.mathroda.core.util.Resource.Success(true))
+                            this.trySend(Resource.Success(true))
                         }
                     }
                 }
                 .addOnFailureListener { exception ->
                     exception.message?.let {
-                        trySend(com.mathroda.core.util.Resource.Error(it))
+                        trySend(Resource.Error(it))
                     }
                 }
             awaitClose { this.cancel() }
@@ -113,7 +113,7 @@ class FirebaseRepositoryImpl constructor(
 
     override fun addCoinFavorite(coinById: CoinById): Flow<com.mathroda.core.util.Resource<Task<Void>>> {
         return flow {
-            emit(com.mathroda.core.util.Resource.Loading())
+            emit(Resource.Loading())
             getUserId().collect { userUid ->
                 val favoriteRef =
                     fireStore.collection(com.mathroda.core.util.Constants.FAVOURITES_COLLECTION)
@@ -123,32 +123,32 @@ class FirebaseRepositoryImpl constructor(
 
                 favoriteRef.await()
 
-                emit(com.mathroda.core.util.Resource.Success(favoriteRef))
+                emit(Resource.Success(favoriteRef))
             }
         }.catch {
-            emit(com.mathroda.core.util.Resource.Error(it.message ?: "Unexpected Message"))
+            emit(Resource.Error(it.message ?: "Unexpected Message"))
         }
     }
 
     override fun addUserCredential(dashCoinUser: com.mathroda.domain.DashCoinUser): Flow<com.mathroda.core.util.Resource<Task<Void>>> {
         return flow {
-            emit(com.mathroda.core.util.Resource.Loading())
+            emit(Resource.Loading())
             getUserId().collect { userUid ->
                 val userRef = fireStore.collection(com.mathroda.core.util.Constants.USER_COLLECTION)
                     .document(userUid)
                     .set(dashCoinUser)
 
                 userRef.await()
-                emit(com.mathroda.core.util.Resource.Success(userRef))
+                emit(Resource.Success(userRef))
             }
         }.catch {
-            emit(com.mathroda.core.util.Resource.Error(it.message ?: "Unexpected Message"))
+            emit(Resource.Error(it.message ?: "Unexpected Message"))
         }
     }
 
     override fun deleteCoinFavorite(coinById: CoinById): Flow<com.mathroda.core.util.Resource<Task<Void>>> {
         return flow {
-            emit(com.mathroda.core.util.Resource.Loading())
+            emit(Resource.Loading())
             getUserId().collect {
                 val favoriteRef =
                     fireStore.collection(com.mathroda.core.util.Constants.FAVOURITES_COLLECTION)
@@ -157,10 +157,10 @@ class FirebaseRepositoryImpl constructor(
                         .delete()
 
                 favoriteRef.await()
-                emit(com.mathroda.core.util.Resource.Success(favoriteRef))
+                emit(Resource.Success(favoriteRef))
             }
         }.catch {
-            emit(com.mathroda.core.util.Resource.Error(it.toString()))
+            emit(Resource.Error(it.toString()))
         }
     }
 
@@ -211,7 +211,7 @@ class FirebaseRepositoryImpl constructor(
         return flow {
             isCurrentUserExist().collect { exist ->
                 if (exist) {
-                    emit(com.mathroda.core.util.Resource.Loading())
+                    emit(Resource.Loading())
                     getUserId().collect {
                         val favoriteRef =
                             fireStore.collection(com.mathroda.core.util.Constants.FAVOURITES_COLLECTION)
@@ -220,13 +220,13 @@ class FirebaseRepositoryImpl constructor(
                                 .update("priceChange1d", coinById.priceChange1d)
 
                         favoriteRef.await()
-                        emit(com.mathroda.core.util.Resource.Success(favoriteRef))
+                        emit(Resource.Success(favoriteRef))
                     }
                 }
 
             }
         }.catch {
-            emit(com.mathroda.core.util.Resource.Error(it.toString()))
+            emit(Resource.Error(it.toString()))
         }
     }
 
@@ -270,20 +270,20 @@ class FirebaseRepositoryImpl constructor(
 
     override fun getUserCredentials(): Flow<com.mathroda.core.util.Resource<com.mathroda.domain.DashCoinUser>> {
         return callbackFlow {
-            this.trySend(com.mathroda.core.util.Resource.Loading())
+            this.trySend(Resource.Loading())
             getUserId().collect { userId ->
                 val snapShot =
                     fireStore.collection(com.mathroda.core.util.Constants.USER_COLLECTION)
                         .document(userId)
                 snapShot.addSnapshotListener { value, error ->
                     error?.let {
-                        this.trySend(com.mathroda.core.util.Resource.Error(it.message.toString()))
+                        this.trySend(Resource.Error(it.message.toString()))
                         this.close(it)
                     }
 
                     value?.let {
                         val data = value.toObject(com.mathroda.domain.DashCoinUser::class.java)
-                        this.trySend(com.mathroda.core.util.Resource.Success(data!!))
+                        this.trySend(Resource.Success(data!!))
                     }
                 }
             }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.core.state.UserState
 import com.mathroda.datasource.firebase.FirebaseRepository
+import com.mathroda.datasource.providers.ProvidersRepository
 import com.mathroda.domain.DashCoinUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: FirebaseRepository,
+    private val providersRepository: ProvidersRepository
 ) : ViewModel() {
 
     private val _userCredential = MutableStateFlow(DashCoinUser())
@@ -49,12 +51,9 @@ class ProfileViewModel @Inject constructor(
 
     fun uiState() {
         viewModelScope.launch {
-            firebaseRepository.isCurrentUserExist().collect {
-                when(it) {
-                    true -> _authState.value = UserState.AuthedUser
-                    false -> _authState.value = UserState.UnauthedUser
-                }
-            }
+            providersRepository.uiStateProvider(
+                state = _authState
+            ) { }
         }
     }
 }

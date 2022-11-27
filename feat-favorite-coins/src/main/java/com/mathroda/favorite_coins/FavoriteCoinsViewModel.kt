@@ -9,6 +9,7 @@ import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.core.state.UserState
+import com.mathroda.datasource.providers.ProvidersRepository
 import com.mathroda.favorite_coins.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteCoinsViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
-    private val dashCoinRepository: DashCoinRepository
+    private val dashCoinRepository: DashCoinRepository,
+    private val providersRepository: ProvidersRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(WatchListState())
@@ -92,29 +94,11 @@ class FavoriteCoinsViewModel @Inject constructor(
 
       fun uiState() {
         viewModelScope.launch {
-            firebaseRepository.isCurrentUserExist().collect {
-                when (it) {
-                    false -> _authState.value = UserState.UnauthedUser
-
-                    true -> {
-                        firebaseRepository.getUserCredentials().collect { result ->
-                            when(result) {
-                                is Resource.Success -> {
-                                    result.data?.let { user ->
-                                        if (user.isUserPremium()) {
-                                            _authState.value = UserState.PremiumUser
-                                        } else {
-                                            _authState.value = UserState.AuthedUser
-                                        }
-                                    }
-                                }
-                                else -> {}
-                            }
-                        }
-                        getAllCoins()
-                    }
-                }
-            }
+           providersRepository.uiStateProvider(
+               state = _authState
+           ) {
+               getAllCoins()
+           }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.mathroda.onboarding.components
+package com.mathroda.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

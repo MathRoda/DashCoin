@@ -1,4 +1,4 @@
-package com.mathroda.onboarding.components
+package com.mathroda.components
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState

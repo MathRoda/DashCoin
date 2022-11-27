@@ -45,7 +45,6 @@ import com.mathroda.core.util.Constants
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigation(
-    isUserExists: Boolean,
     navController: NavController,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {

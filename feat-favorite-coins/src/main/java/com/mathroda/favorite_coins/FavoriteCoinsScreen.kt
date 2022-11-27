@@ -20,7 +20,8 @@ fun WatchListScreen(
     when(viewModel.authState.value) {
 
         is UserState.AuthedUser -> {
-
+            viewModel.refresh()
+            WatchListAuthedUsers(navController = navController)
         }
 
         is UserState.UnauthedUser -> {
@@ -28,8 +29,6 @@ fun WatchListScreen(
         }
 
         is UserState.PremiumUser -> {
-            viewModel.refresh()
-            WatchListAuthedUsers(navController = navController)
         }
     }
 }
