@@ -18,10 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.*
-import com.mathroda.coin_detail.components.Chart
-import com.mathroda.coin_detail.components.CoinDetailSection
-import com.mathroda.coin_detail.components.CoinInformation
-import com.mathroda.coin_detail.components.TopBarCoinDetail
+import com.mathroda.coin_detail.components.*
 import com.mathroda.common.R
 import com.mathroda.common.components.CustomDialog
 import com.mathroda.common.events.FavoriteCoinEvents
@@ -146,6 +143,8 @@ fun CoinDetailScreen(
                 }
             }
         }
+
+        NotPremiumDialog(dialogState = viewModel.notPremiumDialog)
 
         if (sideEffect.value) {
             SweetToastUtil.SweetWarning(
