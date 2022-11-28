@@ -50,6 +50,9 @@ class CoinDetailViewModel @Inject constructor(
     private val _dialogState = mutableStateOf<DialogState>(DialogState.Close)
     val dialogState:MutableState<DialogState> = _dialogState
 
+    private val _notPremiumDialog = mutableStateOf<DialogState>(DialogState.Close)
+    val notPremiumDialog:MutableState<DialogState> = _notPremiumDialog
+
     private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
     val authState:State<UserState> = _authState
 
@@ -163,7 +166,7 @@ class CoinDetailViewModel @Inject constructor(
                 result.data?.let { user ->
                     when(user.isPremiumLimit()) {
                         true -> onEvent(FavoriteCoinEvents.AddCoin(coin))
-                        false -> sideEffect.value = true
+                        false -> _notPremiumDialog.value = DialogState.Open
                     }
                 }
             }

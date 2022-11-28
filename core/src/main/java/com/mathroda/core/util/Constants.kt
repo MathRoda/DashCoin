@@ -31,5 +31,6 @@ object Constants {
     const val EMAIL_REGEX = "^[^\\s;]+@[^\\s;]+\\.[^\\s;]+(?:;[^\\s;]+@[^\\s;]+\\.[^\\s;]+)*\$"
     const val SIGN_IN_REQUEST = "signInRequest"
     const val SIGN_UP_REQUEST = "signUpRequest"
+    const val UPGRADE_TO_PREMIUM = "Upgrade to PREMIUM \n Add more Coins to your List \n ... "
 
 }
