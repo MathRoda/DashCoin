@@ -21,9 +21,11 @@ import com.airbnb.lottie.compose.*
 import com.mathroda.coin_detail.components.Chart
 import com.mathroda.coin_detail.components.CoinDetailSection
 import com.mathroda.coin_detail.components.CoinInformation
+import com.mathroda.coin_detail.components.TopBarCoinDetail
 import com.mathroda.common.R
 import com.mathroda.common.components.CustomDialog
 import com.mathroda.common.events.FavoriteCoinEvents
+import com.mathroda.common.theme.DarkGray
 import com.mathroda.core.util.numbersToCurrency
 import com.mathroda.core.util.numbersToFormat
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -36,18 +38,19 @@ fun CoinDetailScreen(
 
     val coinState = viewModel.coinState.value
     val chartsState = viewModel.chartState.value
-    var isFavorite by remember { mutableStateOf(false) }
-    var sideEffect by remember { mutableStateOf(false) }
+    val sideEffect = remember { mutableStateOf(false) }
+    val favoriteMsg = viewModel.favoriteMsg.value
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))
     val lottieProgress by animateLottieCompositionAsState(
         composition = lottieComp,
         iterations = LottieConstants.IterateForever,
     )
-    val isUserExist = viewModel.isCurrentUserExists.collectAsState(initial = false)
+
+    viewModel.userState()
 
     Box(
         modifier = Modifier
-            .background(com.mathroda.common.theme.DarkGray)
+            .background(DarkGray)
             .fillMaxSize()
             .padding(12.dp)
     ) {
@@ -57,43 +60,33 @@ fun CoinDetailScreen(
              * first thing when the coin detail screen renders it checks
              * if the coin exist in Firestore and collect the flow as State
              */
-            viewModel.isFavoriteState(coin)
-            val isFav = viewModel.isFavoriteState.collectAsState()
+            viewModel.isFavorite(coin)
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 item {
-
-                    isFavorite = isFav.value.id == coin.id
-                    val openDialogCustom = remember { mutableStateOf(false) }
-                    com.mathroda.coin_detail.components.TopBarCoinDetail(
+                    TopBarCoinDetail(
                         coinSymbol = coin.symbol!!,
                         icon = coin.icon!!,
                         navController = navController,
-                        isFavorite = isFavorite,
+                        isFavorite = viewModel.isFavoriteState.value,
                         onCLick = {
-                            isFavorite = !isFavorite
-
-                            if (isFavorite) {
-                                if (isUserExist.value) {
-                                    viewModel.onEvent(FavoriteCoinEvents.AddCoin(coin))
-                                } else {
-                                    sideEffect = !isUserExist.value
-                                }
-
-                            } else openDialogCustom.value = true
+                            viewModel.onFavoriteClick(
+                                coin = coin,
+                                sideEffect = sideEffect,
+                            )
                         }
                     )
-                    if (openDialogCustom.value) {
-                        CustomDialog(
-                            openDialogCustom = openDialogCustom,
-                            coin = coin,
-                            navController = navController
-                        ) {
-                            viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin))
-                        }
+
+                    CustomDialog(
+                        dialogState = viewModel.dialogState,
+                        coin = coin,
+                        navController = navController
+                    ) {
+                        viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin))
                     }
+
                     CoinDetailSection(
                         price = coin.price!!,
                         priceChange = coin.priceChange1d!!
@@ -154,12 +147,18 @@ fun CoinDetailScreen(
             }
         }
 
-        if (sideEffect) {
+        if (sideEffect.value) {
             SweetToastUtil.SweetWarning(
                 padding = PaddingValues(24.dp),
                 message = "Please Login First"
             )
-            sideEffect = !sideEffect
+        }
+
+        if (favoriteMsg.isNotBlank()) {
+            SweetToastUtil.SweetSuccess(
+                padding = PaddingValues(24.dp),
+                message = favoriteMsg
+            )
         }
 
         if (coinState.isLoading) {

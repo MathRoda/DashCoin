@@ -42,7 +42,6 @@ fun CoinScreen(
     val searchCoin = remember { mutableStateOf(TextFieldValue("")) }
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    val isUserExists = viewModel.isCurrentUserExist.collectAsState(initial = false).value
     val focusManger = LocalFocusManager.current
     val lazyListState = rememberLazyListState()
 
@@ -60,7 +59,6 @@ fun CoinScreen(
         },
         drawerContent = {
             DrawerNavigation(
-                isUserExists = isUserExists,
                 navController = navController
             )
         },

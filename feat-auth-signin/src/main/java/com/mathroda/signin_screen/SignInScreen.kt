@@ -168,8 +168,7 @@ fun SignInScreen(
                     color = Gold,
                     fontSize = 14.sp,
                 ) {
-                    //navigateToForgotPassword()
-                    isVisible = !isVisible
+                    navigateToForgotPassword()
                 }
             }
 

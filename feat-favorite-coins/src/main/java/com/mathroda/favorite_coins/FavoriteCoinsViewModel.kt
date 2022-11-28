@@ -8,7 +8,8 @@ import com.mathroda.common.state.MarketState
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
-import com.mathroda.core.state.AuthenticationState
+import com.mathroda.core.state.UserState
+import com.mathroda.datasource.providers.ProvidersRepository
 import com.mathroda.favorite_coins.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteCoinsViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
-    private val dashCoinRepository: DashCoinRepository
+    private val dashCoinRepository: DashCoinRepository,
+    private val providersRepository: ProvidersRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(WatchListState())
@@ -32,8 +34,9 @@ class FavoriteCoinsViewModel @Inject constructor(
     private val _marketStatus = mutableStateOf(MarketState())
     val marketStatus: State<MarketState> = _marketStatus
 
-    private val _authState = mutableStateOf<AuthenticationState>(AuthenticationState.UnauthedUser)
-    val authState:State<AuthenticationState> = _authState
+    private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
+    val authState:State<UserState> = _authState
+
 
     private var getCoinJob: Job? = null
 
@@ -56,6 +59,9 @@ class FavoriteCoinsViewModel @Inject constructor(
                     is Resource.Error -> {
                         _state.emit(WatchListState(error = result.message.toString()))
                     }
+                }
+                result.data?.size?.let {
+                    firebaseRepository.updateFavoriteCoinsCount(it).collect()
                 }
             }
         }
@@ -89,21 +95,17 @@ class FavoriteCoinsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-      fun uiState() {
+      fun userState() {
         viewModelScope.launch {
-            firebaseRepository.isCurrentUserExist().collect {
-                when (it) {
-
-                    false -> _authState.value = AuthenticationState.UnauthedUser
-
-                    true -> {
-                        _authState.value = AuthenticationState.AuthedUser
-                        getAllCoins()
-                    }
-                }
-            }
+           providersRepository.userStateProvider(
+               function = { getAllCoins() }
+           ).collect { userState ->
+               when(userState) {
+                   is UserState.UnauthedUser -> _authState.value = userState
+                   is UserState.AuthedUser -> _authState.value = userState
+                   is UserState.PremiumUser -> _authState.value = userState
+               }
+           }
         }
     }
-
-
 }

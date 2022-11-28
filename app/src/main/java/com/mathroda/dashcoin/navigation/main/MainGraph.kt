@@ -8,6 +8,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.mathroda.SignUpScreen
 import com.mathroda.coins_screen.CoinScreen
 import com.mathroda.common.navigation.Screens
 import com.mathroda.common.util.enterTransition
@@ -215,7 +216,7 @@ fun MainGraph(navController: NavHostController) {
                 }
             },
         ) {
-            com.mathroda.SignUpScreen(
+            SignUpScreen(
                 navigateToSignInScreen = {
                     navController.navigate(Screens.SignIn.route)
                 },

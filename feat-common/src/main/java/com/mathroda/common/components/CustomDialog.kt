@@ -13,30 +13,34 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import com.mathroda.common.state.DialogState
 import com.mathroda.domain.CoinById
 
 @Composable
 fun CustomDialog(
-    openDialogCustom: MutableState<Boolean>,
+    dialogState: MutableState<DialogState>,
     coin: CoinById?,
     navController: NavController,
     onClick: () -> Unit
 ) {
-    Dialog(onDismissRequest = { openDialogCustom.value = false }) {
-        CustomDialogUI(
-            openDialogCustom = openDialogCustom,
-            coin = coin,
-            navController = navController,
-            onClick = { onClick() }
-        )
+    if (dialogState.value == DialogState.Open) {
+        Dialog(onDismissRequest = { DialogState.Close }) {
+            CustomDialogUI(
+                dialogState = dialogState,
+                coin = coin,
+                navController = navController,
+                onClick = { onClick() }
+            )
+        }
     }
+
 }
 
 
 @Composable
 fun CustomDialogUI(
     modifier: Modifier = Modifier,
-    openDialogCustom: MutableState<Boolean>,
+    dialogState: MutableState<DialogState>,
     onClick: () -> Unit,
     coin: CoinById?,
     navController: NavController
@@ -86,7 +90,7 @@ fun CustomDialogUI(
             ) {
 
                 TextButton(onClick = {
-                    openDialogCustom.value = false
+                    dialogState.value = DialogState.Close
                 }) {
 
                     Text(
@@ -97,7 +101,7 @@ fun CustomDialogUI(
                     )
                 }
                 TextButton(onClick = {
-                    openDialogCustom.value = false
+                    dialogState.value = DialogState.Close
                     onClick()
                     navController.popBackStack()
 

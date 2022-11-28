@@ -12,6 +12,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.mathroda.components.CustomBottomSection
+import com.mathroda.components.CustomOnBoardingButton
+import com.mathroda.components.OnBoardingTopSection
+import com.mathroda.components.PagerScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
@@ -30,7 +34,7 @@ fun OnBoardingScreen(
             .padding(bottom = 32.dp)
     ) {
 
-        com.mathroda.onboarding.components.OnBoardingTopSection(
+        OnBoardingTopSection(
             modifier = Modifier.weight(1f),
             size = pager.size,
             index = state.currentPage,
@@ -52,7 +56,7 @@ fun OnBoardingScreen(
             state = state,
             verticalAlignment = Alignment.Top
         ) { position ->
-            com.mathroda.onboarding.components.PagerScreen(onBoardingPage = pager[position])
+            PagerScreen(onBoardingPage = pager[position])
         }
 
 
@@ -64,7 +68,7 @@ fun OnBoardingScreen(
                 verticalAlignment = Bottom,
                 horizontalArrangement = Arrangement.End
             ) {
-                com.mathroda.onboarding.components.CustomBottomSection() {
+                CustomBottomSection() {
                     if (state.currentPage + 1 < pager.size) scope.launch {
                         state.scrollToPage(state.currentPage + 1)
                     }
@@ -73,7 +77,7 @@ fun OnBoardingScreen(
         }
 
         Box {
-            com.mathroda.onboarding.components.CustomOnBoardingButton(
+            CustomOnBoardingButton(
                 pagerState = state
             ) {
                 viewModel.saveOnBoardingState(completed = true)

@@ -2,7 +2,9 @@ package com.mathroda.datasource.firebase
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.mathroda.core.util.Resource
 import com.mathroda.domain.CoinById
+import com.mathroda.domain.DashCoinUser
 import kotlinx.coroutines.flow.Flow
 
 interface FirebaseRepository {
@@ -31,7 +33,7 @@ interface FirebaseRepository {
 
     fun addCoinFavorite(coinById: CoinById): Flow<com.mathroda.core.util.Resource<Task<Void>>>
 
-    fun addUserCredential(user: com.mathroda.domain.User): Flow<com.mathroda.core.util.Resource<Task<Void>>>
+    fun addUserCredential(dashCoinUser: com.mathroda.domain.DashCoinUser): Flow<com.mathroda.core.util.Resource<Task<Void>>>
 
     fun deleteCoinFavorite(coinById: CoinById): Flow<com.mathroda.core.util.Resource<Task<Void>>>
 
@@ -41,5 +43,9 @@ interface FirebaseRepository {
 
     fun updateFavoriteMarketState(coinById: CoinById): Flow<com.mathroda.core.util.Resource<Task<Void>>>
 
-    fun getUserCredentials(): Flow<com.mathroda.core.util.Resource<com.mathroda.domain.User>>
+    fun updateUserToPremium(result: Boolean): Flow<Resource<Task<Void>>>
+
+    fun updateFavoriteCoinsCount(count: Int): Flow<Resource<Task<Void>>>
+
+    fun getUserCredentials(): Flow<com.mathroda.core.util.Resource<com.mathroda.domain.DashCoinUser>>
 }

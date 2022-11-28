@@ -4,9 +4,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.core.state.AuthenticationState
+import com.mathroda.core.state.UserState
 import com.mathroda.datasource.firebase.FirebaseRepository
-import com.mathroda.domain.User
+import com.mathroda.datasource.providers.ProvidersRepository
+import com.mathroda.domain.DashCoinUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -15,14 +16,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: FirebaseRepository,
+    private val providersRepository: ProvidersRepository
 ) : ViewModel() {
 
-    private val _userCredential = MutableStateFlow(User())
+    private val _userCredential = MutableStateFlow(DashCoinUser())
     val userCredential = _userCredential.asStateFlow()
 
-    private val _authState = mutableStateOf<AuthenticationState>(AuthenticationState.UnauthedUser)
-    val authState: State<AuthenticationState> = _authState
+    private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
+    val authState: State<UserState> = _authState
 
     private var getUserJob: Job? = null
 
@@ -49,10 +51,13 @@ class ProfileViewModel @Inject constructor(
 
     fun uiState() {
         viewModelScope.launch {
-            firebaseRepository.isCurrentUserExist().collect {
-                when(it) {
-                    true -> _authState.value = AuthenticationState.AuthedUser
-                    false -> _authState.value = AuthenticationState.UnauthedUser
+            providersRepository.userStateProvider(
+              function = {}
+            ).collect {userState ->
+                when(userState) {
+                    is UserState.UnauthedUser -> _authState.value = userState
+                    is UserState.AuthedUser -> _authState.value = userState
+                    is UserState.PremiumUser -> _authState.value = userState
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.mathroda.onboarding.components
+package com.mathroda.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background

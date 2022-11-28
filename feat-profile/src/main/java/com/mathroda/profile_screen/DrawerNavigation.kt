@@ -1,5 +1,7 @@
 package com.mathroda.profile_screen
 
+import android.transition.Visibility
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +37,7 @@ import com.mathroda.common.components.CustomDialogSignOut
 import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.navigation.Screens
 import com.mathroda.common.theme.*
-import com.mathroda.core.state.AuthenticationState
+import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
 
 @ExperimentalComposeUiApi
@@ -42,7 +45,6 @@ import com.mathroda.core.util.Constants
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigation(
-    isUserExists: Boolean,
     navController: NavController,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
@@ -50,10 +52,13 @@ fun DrawerNavigation(
     viewModel.uiState()
     val uriHandler = LocalUriHandler.current
     val userCredential = viewModel.userCredential.collectAsState()
+    val isPremium = userCredential.value.isUserPremium()
+
 
     DrawerHeader(
         welcomeUser = userCredential.value.userName ?: "Hi DashCoiner",
-        userEmail = userCredential.value.email
+        userEmail = userCredential.value.email,
+        iconVisibility = isPremium
     )
 
     DrawerBody(
@@ -91,8 +96,9 @@ fun DrawerNavigation(
      **/
 
     when(viewModel.authState.value) {
-        is AuthenticationState.AuthedUser -> LogOut(navController)
-        is AuthenticationState.UnauthedUser -> Login(navController)
+        is UserState.AuthedUser -> LogOut(navController)
+        is UserState.UnauthedUser -> Login(navController)
+        is UserState.PremiumUser -> LogOut(navController)
     }
 
     DrawerFooter()
@@ -102,7 +108,8 @@ fun DrawerNavigation(
 @Composable
 fun DrawerHeader(
     welcomeUser: String?,
-    userEmail: String?
+    userEmail: String?,
+    iconVisibility: Boolean
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -119,8 +126,17 @@ fun DrawerHeader(
             painter = painterResource(id = R.drawable.profile_placeholder),
             contentDescription = "Profile Placeholder"
         )
+        Row(horizontalArrangement = Arrangement.Center ) {
+            AnimatedVisibility(visible = iconVisibility) {
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = "Premium User",
+                    tint = Gold
+                    )
+            }
+            Text(text = "Hi! $welcomeUser", fontSize = 19.sp)
+        }
 
-        Text(text = "Hi! $welcomeUser", fontSize = 19.sp)
         Text(text = userEmail ?: "", fontSize = 17.sp)
     }
 
