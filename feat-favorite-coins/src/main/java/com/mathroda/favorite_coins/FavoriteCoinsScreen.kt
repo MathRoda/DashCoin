@@ -16,7 +16,7 @@ fun WatchListScreen(
     viewModel: FavoriteCoinsViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    viewModel.uiState()
+    viewModel.userState()
     when(viewModel.authState.value) {
 
         is UserState.AuthedUser -> {

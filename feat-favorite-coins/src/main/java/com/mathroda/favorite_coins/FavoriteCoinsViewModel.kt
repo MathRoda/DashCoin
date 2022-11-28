@@ -10,7 +10,6 @@ import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.core.state.UserState
 import com.mathroda.datasource.providers.ProvidersRepository
-import com.mathroda.domain.DashCoinUser
 import com.mathroda.favorite_coins.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -96,12 +95,16 @@ class FavoriteCoinsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-      fun uiState() {
+      fun userState() {
         viewModelScope.launch {
-           providersRepository.uiStateProvider(
-               state = _authState
-           ) {
-               getAllCoins()
+           providersRepository.userStateProvider(
+               function = { getAllCoins() }
+           ).collect { userState ->
+               when(userState) {
+                   is UserState.UnauthedUser -> _authState.value = userState
+                   is UserState.AuthedUser -> _authState.value = userState
+                   is UserState.PremiumUser -> _authState.value = userState
+               }
            }
         }
     }

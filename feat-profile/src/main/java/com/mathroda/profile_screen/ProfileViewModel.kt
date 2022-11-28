@@ -51,9 +51,15 @@ class ProfileViewModel @Inject constructor(
 
     fun uiState() {
         viewModelScope.launch {
-            providersRepository.uiStateProvider(
-                state = _authState
-            ) { }
+            providersRepository.userStateProvider(
+              function = {}
+            ).collect {userState ->
+                when(userState) {
+                    is UserState.UnauthedUser -> _authState.value = userState
+                    is UserState.AuthedUser -> _authState.value = userState
+                    is UserState.PremiumUser -> _authState.value = userState
+                }
+            }
         }
     }
 }
