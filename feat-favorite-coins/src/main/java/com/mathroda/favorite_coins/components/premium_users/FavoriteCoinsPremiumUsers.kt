@@ -1,4 +1,4 @@
-package com.mathroda.favorite_coins.components.authed_users
+package com.mathroda.favorite_coins.components.premium_users
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -28,7 +28,7 @@ import com.mathroda.favorite_coins.components.common.WatchlistItem
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
-fun WatchListAuthedUsers(
+fun WatchListPremiumUsers(
     viewModel: FavoriteCoinsViewModel = hiltViewModel(),
     navController: NavController
 ) {

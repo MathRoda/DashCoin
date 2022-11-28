@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import com.mathroda.favorite_coins.components.authed_users.WatchListAuthedUsers
 import com.mathroda.favorite_coins.components.ghost_users.WatchListGhostUsers
 import com.mathroda.core.state.UserState
+import com.mathroda.favorite_coins.components.premium_users.WatchListPremiumUsers
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
@@ -29,7 +30,8 @@ fun WatchListScreen(
         }
 
         is UserState.PremiumUser -> {
-            WatchListAuthedUsers(navController = navController)
+            viewModel.refresh()
+            WatchListPremiumUsers(navController = navController)
         }
     }
 }

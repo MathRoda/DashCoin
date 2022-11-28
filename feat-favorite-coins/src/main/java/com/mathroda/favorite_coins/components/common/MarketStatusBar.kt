@@ -1,4 +1,4 @@
-package com.mathroda.favorite_coins.components.authed_users
+package com.mathroda.favorite_coins.components.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
