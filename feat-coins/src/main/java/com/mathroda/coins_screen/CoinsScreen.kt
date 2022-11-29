@@ -25,7 +25,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.coins_screen.components.CoinsScreenState
 import com.mathroda.coins_screen.components.ScrollButton
-import com.mathroda.common.navigation.Screens
+import com.mathroda.common.navigation.Destinations
 import com.mathroda.profile_screen.DrawerNavigation
 import kotlinx.coroutines.launch
 
@@ -109,7 +109,7 @@ fun CoinScreen(
                             com.mathroda.coins_screen.components.CoinsItem(
                                 coins = coins,
                                 onItemClick = {
-                                    navController.navigate(Screens.CoinDetailScreen.route + "/${coins.id}")
+                                    navController.navigate(Destinations.CoinDetailScreen.route + "/${coins.id}")
                                 }
                             )
                         }

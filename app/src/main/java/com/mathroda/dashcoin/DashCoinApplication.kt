@@ -3,7 +3,7 @@ package com.mathroda.dashcoin
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.mathroda.infrastructure.repository.WorkerProviderRepository
+import com.mathroda.workmanger.repository.WorkerProviderRepository
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 

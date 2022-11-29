@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import com.airbnb.lottie.compose.*
 import com.mathroda.common.components.CommonTopBar
 import com.mathroda.common.components.CustomLoginButton
-import com.mathroda.common.navigation.Screens
+import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.CustomBrightGreen
 import com.mathroda.common.theme.CustomGreen
 import com.mathroda.common.theme.DarkGray
@@ -71,7 +71,7 @@ fun WatchListGhostUsers(navController: NavController) {
                         CustomBrightGreen
                     )
                 ) {
-                    navController.navigate(Screens.SignIn.route)
+                    navController.navigate(Destinations.SignIn.route)
                 }
             }
 

@@ -1,4 +1,4 @@
-package com.mathroda.infrastructure.repository
+package com.mathroda.workmanger.repository
 
 import androidx.lifecycle.LiveData
 import androidx.work.WorkInfo

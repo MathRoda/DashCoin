@@ -1,4 +1,4 @@
-package com.mathroda.infrastructure.util
+package com.mathroda.workmanger.util
 
 fun Double.is5PercentUp(): Boolean {
     return this >= 5

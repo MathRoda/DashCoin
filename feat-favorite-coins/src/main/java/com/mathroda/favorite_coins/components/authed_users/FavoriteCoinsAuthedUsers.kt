@@ -19,7 +19,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.common.components.CommonTopBar
-import com.mathroda.common.navigation.Screens
+import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.LighterGray
 import com.mathroda.favorite_coins.FavoriteCoinsViewModel
 import com.mathroda.favorite_coins.components.common.MarketStatusBar
@@ -74,7 +74,7 @@ fun WatchListAuthedUsers(
                             modifier = Modifier
                                 .combinedClickable(
                                     onClick = {
-                                        navController.navigate(Screens.CoinDetailScreen.route + "/${coin.id}")
+                                        navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.id}")
                                     },
                                 ),
                             icon = coin.icon!!,

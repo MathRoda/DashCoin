@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.mathroda.common.navigation.Screens
+import com.mathroda.common.navigation.Destinations
 
 @Composable
 fun bottomBarVisibility(
@@ -23,9 +23,9 @@ fun bottomBarVisibility(
     val bottomBarState = rememberSaveable { (mutableStateOf(false)) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     when (navBackStackEntry?.destination?.route) {
-        Screens.CoinsScreen.route -> bottomBarState.value = true
-        Screens.FavoriteCoinsScreen.route -> bottomBarState.value = true
-        Screens.CoinsNews.route -> bottomBarState.value = true
+        Destinations.CoinsScreen.route -> bottomBarState.value = true
+        Destinations.FavoriteCoinsScreen.route -> bottomBarState.value = true
+        Destinations.CoinsNews.route -> bottomBarState.value = true
         else -> bottomBarState.value = false
     }
 

@@ -1,6 +1,5 @@
 package com.mathroda.profile_screen
 
-import android.transition.Visibility
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
@@ -35,7 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mathroda.common.components.CustomDialogSignOut
 import com.mathroda.common.components.CustomLoginButton
-import com.mathroda.common.navigation.Screens
+import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.*
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
@@ -197,7 +196,7 @@ fun Login(navController: NavController) {
                 CustomBrightGreen
             )
         ) {
-            navController.navigate(Screens.SignIn.route)
+            navController.navigate(Destinations.SignIn.route)
         }
     }
 }
@@ -238,7 +237,7 @@ fun LogOut(
         CustomDialogSignOut(openDialogCustom = openDialogCustom) {
             viewModel.signOut()
             navController.popBackStack()
-            navController.navigate(Screens.CoinsScreen.route)
+            navController.navigate(Destinations.CoinsScreen.route)
         }
     }
 }

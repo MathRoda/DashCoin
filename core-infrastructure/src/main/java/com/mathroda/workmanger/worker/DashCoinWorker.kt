@@ -1,4 +1,4 @@
-package com.mathroda.infrastructure.worker
+package com.mathroda.workmanger.worker
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
@@ -12,13 +12,11 @@ import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.providers.ProvidersRepository
-import com.mathroda.infrastructure.notification.NotificationUtils.showNotification
-import com.mathroda.infrastructure.util.is5PercentDown
-import com.mathroda.infrastructure.util.is5PercentUp
+import com.mathroda.notifications.CoinsNotification
+import com.mathroda.workmanger.util.is5PercentDown
+import com.mathroda.workmanger.util.is5PercentUp
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @HiltWorker
 class DashCoinWorker @AssistedInject constructor(
@@ -26,18 +24,19 @@ class DashCoinWorker @AssistedInject constructor(
     @Assisted workerParameters: WorkerParameters,
     private val dashCoinRepository: DashCoinRepository,
     private val firebaseRepository: FirebaseRepository,
-    private val providersRepository: ProvidersRepository
+    private val providersRepository: ProvidersRepository,
+    private val notification: CoinsNotification
 ) : CoroutineWorker(context, workerParameters) {
     private val marketStatusId = Int.MAX_VALUE
     override suspend fun doWork(): Result {
         return try {
             providersRepository.userStateProvider(
                function = {}
-            ).collect { userState ->
-                when(userState) {
-                    is UserState.UnauthedUser -> regularUserNotification()
-                    is UserState.AuthedUser -> regularUserNotification()
-                    is UserState.PremiumUser -> premiumUserNotification()
+            ).collect { state ->
+                when(state) {
+                    is UserState.UnauthedUser -> regularUserNotification(state)
+                    is UserState.AuthedUser -> regularUserNotification(state)
+                    is UserState.PremiumUser -> premiumUserNotification(state)
                 }
             }
             Result.success()
@@ -46,24 +45,24 @@ class DashCoinWorker @AssistedInject constructor(
         }
     }
 
-    private suspend fun regularUserNotification() {
+    private suspend fun regularUserNotification(state: UserState) {
             dashCoinRepository.getCoinById(BITCOIN_ID).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let { coin ->
                             if (coin.priceChange1d!! >= 0) {
-                                showNotification(
-                                    context = applicationContext,
+                                notification.show(
                                     title = Constants.TITLE,
                                     description = DESCRIPTION_POSITIVE,
-                                    id = marketStatusId
+                                    id = marketStatusId,
+                                    state = state
                                 )
                             } else {
-                                showNotification(
-                                    context = applicationContext,
+                                notification.show(
                                     title = Constants.TITLE,
                                     description = Constants.DESCRIPTION_NEGATIVE,
-                                    id = marketStatusId
+                                    id = marketStatusId,
+                                    state = state
                                 )
                             }
                         }
@@ -73,7 +72,7 @@ class DashCoinWorker @AssistedInject constructor(
             }
     }
 
-    private suspend fun premiumUserNotification() {
+    private suspend fun premiumUserNotification(state: UserState) {
             firebaseRepository.getCoinFavorite().collect { result ->
                 when (result) {
                     is Resource.Success -> {
@@ -82,20 +81,20 @@ class DashCoinWorker @AssistedInject constructor(
 
                             coin.priceChange1d?.let { marketChange ->
                                 if (marketChange.is5PercentUp()) {
-                                    showNotification(
-                                        context = applicationContext,
+                                    notification.show(
                                         title = coin.name ?: "Unknown coin",
                                         description = Constants.DESCRIPTION_MARKET_CHANGE_POSITIVE,
-                                        id = coin.rank ?: 0
+                                        id = coin.rank ?: 0,
+                                        state = state
                                     )
                                 }
 
                                 if (marketChange.is5PercentDown()) {
-                                    showNotification(
-                                        context = applicationContext,
+                                    notification.show(
                                         title = coin.name ?: "Unknown coin",
                                         description = Constants.DESCRIPTION_MARKET_CHANGE_NEGATIVE,
-                                        id = coin.rank ?: 0
+                                        id = coin.rank ?: 0,
+                                        state = state
                                     )
                                 }
                             }
