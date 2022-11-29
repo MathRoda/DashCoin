@@ -44,10 +44,13 @@ class WorkerProviderRepositoryImpl @Inject constructor(
         workManager.getWorkInfosByTagLiveData(Constants.SYNC_DATA)
 
     /**
-     * if user exists:
+     * if user state -> Premium:
      * return 10 (to do work every 10 minutes)
      * -
-     * if user doesn't exists:
+     * if user state -> Authed:
+     * return 1 (to do work every 1 day)
+     *
+     * if user state -> Unauthed:
      * return 1 (to do work every 1 day)
      */
     private fun timeLong(state: UserState): Long {
@@ -59,10 +62,13 @@ class WorkerProviderRepositoryImpl @Inject constructor(
     }
 
     /**
-     * if user exists:
+     * if user state -> Premium:
      * return Minutes (to do work every 10 minutes)
      * -
-     * if user doesn't exists:
+     * if user state -> Authed:
+     * return Days (to do work every 1 day)
+     *
+     * if user state -> Unauthed:
      * return Days (to do work every 1 day)
      */
     private fun timeUnit(state: UserState): TimeUnit {
