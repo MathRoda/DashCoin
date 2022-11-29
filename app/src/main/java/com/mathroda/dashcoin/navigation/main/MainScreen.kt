@@ -20,7 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mathroda.common.components.bottomBarAnimatedScroll
 import com.mathroda.common.components.bottomBarVisibility
-import com.mathroda.common.navigation.Screens
+import com.mathroda.common.navigation.Destinations
 import kotlin.math.roundToInt
 
 @ExperimentalFoundationApi
@@ -66,9 +66,9 @@ fun BottomBar(
     modifier: Modifier = Modifier
 ) {
     val screens = listOf(
-        Screens.CoinsScreen,
-        Screens.FavoriteCoinsScreen,
-        Screens.CoinsNews
+        Destinations.CoinsScreen,
+        Destinations.FavoriteCoinsScreen,
+        Destinations.CoinsNews
     )
 
     AnimatedVisibility(

@@ -19,7 +19,7 @@ import com.mathroda.common.components.BackStackButton
 import com.mathroda.common.components.CustomClickableText
 import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.components.CustomTextField
-import com.mathroda.common.navigation.Screens
+import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -53,7 +53,7 @@ fun ForgotPasswordScreen(
             ) {
                 BackStackButton {
                     navController.popBackStack()
-                    navController.navigate(Screens.SignIn.route)
+                    navController.navigate(Destinations.SignIn.route)
                 }
             }
 
@@ -129,7 +129,7 @@ fun ForgotPasswordScreen(
                 LaunchedEffect(Unit) {
                     delay(800)
                     navController.popBackStack()
-                    navController.navigate(Screens.SignIn.route)
+                    navController.navigate(Destinations.SignIn.route)
                 }
             }
 

@@ -1,4 +1,4 @@
-package com.mathroda.infrastructure
+package com.mathroda.workmanger
 
 import org.junit.Assert.*
 import org.junit.Test

@@ -1,9 +1,9 @@
-package com.mathroda.infrastructure
+package com.mathroda.workmanger
 
 import javax.inject.Inject
 
 class CreateWorkUseCase @Inject constructor(
-    private val workerProviderRepository: com.mathroda.infrastructure.repository.WorkerProviderRepository
+    private val workerProviderRepository: com.mathroda.workmanger.repository.WorkerProviderRepository
 ) {
 
     operator fun invoke() = workerProviderRepository.createWork()

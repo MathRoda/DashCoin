@@ -12,7 +12,7 @@ import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
-import com.mathroda.infrastructure.repository.WorkerProviderRepository
+import com.mathroda.workmanger.repository.WorkerProviderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
