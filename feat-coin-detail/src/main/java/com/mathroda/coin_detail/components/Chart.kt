@@ -10,19 +10,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
-import com.mathroda.coin_detail.utils.ChartScreenViewState
+import com.mathroda.coin_detail.utils.ChartViewState
 import com.mathroda.coin_detail.utils.setLineDataSet
 import com.mathroda.common.theme.TextWhite
+import com.mathroda.domain.Charts
+
+enum class TimeRange {
+    ONE_DAY, ONE_WEEK, ONE_MONTH, ONE_YEAR, ALL
+}
 
 @Composable
 fun Chart(
     oneDayChange: Double,
     context: Context,
-    charts: com.mathroda.domain.Charts?
+    charts: Charts
 ) {
 
     val dataSet = mutableListOf<Entry>()
-    charts?.let { chartsValue ->
+    charts.let { chartsValue ->
         chartsValue.chart?.onEach { value ->
             dataSet.add(addEntry(value[0], value[1]))
         }
@@ -35,7 +40,7 @@ fun Chart(
         update = { lineChart ->
 
             val lineDataSet =
-                ChartScreenViewState().getLineDataSet(
+                ChartViewState().getLineDataSet(
                     lineData = dataSet,
                     label = "chart values",
                     oneDayChange = oneDayChange,

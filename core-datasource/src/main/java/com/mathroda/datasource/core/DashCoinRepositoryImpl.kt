@@ -2,6 +2,7 @@ package com.mathroda.datasource.core
 
 import coil.network.HttpException
 import com.mathroda.core.util.Resource
+import com.mathroda.domain.ChartTimeSpan
 import com.mathroda.domain.CoinById
 import com.mathroda.network.DashCoinApi
 import com.mathroda.network.dto.toChart
@@ -46,11 +47,11 @@ class DashCoinRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getChartsData(coinId: String): Flow<Resource<com.mathroda.domain.Charts>> = flow {
+    override fun getChartsData(coinId: String, period: ChartTimeSpan): Flow<Resource<com.mathroda.domain.Charts>> = flow {
 
         try {
             emit(Resource.Loading())
-            val coins = api.getChartsData(coinId).toChart()
+            val coins = api.getChartsData(coinId, period.value).toChart()
             emit(Resource.Success(coins))
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))

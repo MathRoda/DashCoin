@@ -20,7 +20,7 @@ interface DashCoinApi {
     @GET("v1/charts")
     suspend fun getChartsData(
         @Query("coinId") coinId: String,
-        @Query("period") period: String = "24h" //available periods - 24h | 1w | 1m | 3m | 6m | 1y | all
+        @Query("period") period: String, //available periods - 24h | 1w | 1m | 3m | 6m | 1y | all
     ): com.mathroda.network.dto.ChartDto
 
     @GET("v1/news/{filter}")

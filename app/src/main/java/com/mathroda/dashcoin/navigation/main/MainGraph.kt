@@ -10,6 +10,7 @@ import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.mathroda.SignUpScreen
+import com.mathroda.coin_detail.CoinDetailScreen
 import com.mathroda.coins_screen.CoinScreen
 import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.navigation.DestinationsDeepLink
@@ -148,7 +149,7 @@ fun MainGraph(navController: NavHostController) {
                 }
             }
         ) {
-            com.mathroda.coin_detail.CoinDetailScreen(navController = navController)
+            CoinDetailScreen(navController = navController)
         }
         composable(
             route = Destinations.SignIn.route,

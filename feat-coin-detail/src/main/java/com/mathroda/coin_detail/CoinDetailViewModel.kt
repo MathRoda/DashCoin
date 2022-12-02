@@ -6,9 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathroda.coin_detail.components.TimeRange
 import com.mathroda.coin_detail.state.ChartState
 import com.mathroda.coin_detail.state.CoinState
 import com.mathroda.coin_detail.state.IsFavoriteState
+import com.mathroda.coin_detail.utils.ChartViewState
 import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.common.state.DialogState
 import com.mathroda.core.state.UserState
@@ -17,6 +19,7 @@ import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.providers.ProvidersRepository
+import com.mathroda.domain.ChartTimeSpan
 import com.mathroda.domain.CoinById
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -56,12 +59,10 @@ class CoinDetailViewModel @Inject constructor(
     private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
     val authState:State<UserState> = _authState
 
-
-
     init {
         savedStateHandle.get<String>(PARAM_COIN_ID)?.let { coinId ->
-            getChart(coinId)
             getCoin(coinId)
+            getChart(coinId, TimeRange.ONE_DAY)
         }
 
     }
@@ -85,24 +86,34 @@ class CoinDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun getChart(coinId: String) {
-        dashCoinRepository.getChartsData(coinId).onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _chartState.value =
-                       ChartState(chart = result.data)
+    fun getChart(coinId: String, period: TimeRange) {
+            dashCoinRepository.getChartsData(coinId, getTimeSpanByTimeRange(period)).onEach { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        result.data?.let { charts ->
+                            _chartState.value = ChartState(chart =charts)
+                        }
+                    }
+                    is Resource.Error -> {
+                        _chartState.value = ChartState(
+                            error = result.message ?: "Unexpected Error"
+                        )
+                    }
+                    is Resource.Loading -> {
+                        _chartState.value = ChartState(isLoading = true)
+                    }
                 }
-                is Resource.Error -> {
-                    _chartState.value = ChartState(
-                        error = result.message ?: "Unexpected Error"
-                    )
-                }
-                is Resource.Loading -> {
-                    _chartState.value = ChartState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
     }
+
+    private fun getTimeSpanByTimeRange(timeRange: TimeRange): ChartTimeSpan =
+        when (timeRange) {
+            TimeRange.ONE_DAY -> ChartTimeSpan.TIMESPAN_1DAY
+            TimeRange.ONE_WEEK -> ChartTimeSpan.TIMESPAN_1WEK
+            TimeRange.ONE_MONTH -> ChartTimeSpan.TIMESPAN_1MONTH
+            TimeRange.ONE_YEAR -> ChartTimeSpan.TIMESPAN_1YEAR
+            TimeRange.ALL -> ChartTimeSpan.TIMESPAN_ALL
+        }
 
     fun onEvent(events: FavoriteCoinEvents) {
         when (events) {

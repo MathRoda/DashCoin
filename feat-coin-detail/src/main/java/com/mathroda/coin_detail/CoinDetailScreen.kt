@@ -21,6 +21,7 @@ import com.airbnb.lottie.compose.*
 import com.mathroda.coin_detail.components.*
 import com.mathroda.common.R
 import com.mathroda.common.components.CustomDialog
+import com.mathroda.common.components.LoadingDots
 import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.core.util.numbersToCurrency
@@ -89,11 +90,29 @@ fun CoinDetailScreen(
                         priceChange = coin.priceChange1d!!
                     )
 
-                    Chart(
-                        oneDayChange = coin.priceChange1d!!,
-                        context = LocalContext.current,
-                        charts = chartsState.chart
-                    )
+                    TimeRangePicker(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, top = 16.dp, end = 16.dp),
+                    ) { timeRange ->
+                        viewModel.getChart(coin.id!!, timeRange)
+                    }
+
+                    chartsState.chart?.let {
+                        Chart(
+                            oneDayChange = coin.priceChange1d!!,
+                            context = LocalContext.current,
+                            charts = it
+                        )
+                    }
+
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        LoadingDots(isLoading = chartsState.isLoading)
+                    }
+
 
                     CoinInformation(
                         modifier = Modifier
@@ -114,7 +133,7 @@ fun CoinDetailScreen(
                     Row(
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        com.mathroda.coin_detail.components.LinkButton(
+                        LinkButton(
                             title = "Twitter",
                             modifier = Modifier
                                 .padding(start = 20.dp, bottom = 20.dp, top = 20.dp)
@@ -127,7 +146,7 @@ fun CoinDetailScreen(
                                 }
                         )
 
-                        com.mathroda.coin_detail.components.LinkButton(
+                        LinkButton(
                             title = "Website",
                             modifier = Modifier
                                 .padding(start = 20.dp, bottom = 20.dp, top = 20.dp)

@@ -32,7 +32,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider.getCredential
 import com.mathroda.common.components.CustomClickableText
 import com.mathroda.common.components.CustomTextField
-import com.mathroda.common.components.LoadingDotsLogin
+import com.mathroda.common.components.LoadingDots
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants.SIGN_IN_TO_ACCESS
@@ -174,7 +174,7 @@ fun SignInScreen(
 
             Spacer(modifier = Modifier.weight(0.2f))
 
-            LoadingDotsLogin(isLoading = isLoading)
+            LoadingDots(isLoading = isLoading)
 
             LoginSection(
                 customLoginButton = {
