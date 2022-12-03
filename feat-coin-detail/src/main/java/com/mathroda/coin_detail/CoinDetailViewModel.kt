@@ -47,6 +47,9 @@ class CoinDetailViewModel @Inject constructor(
     private val _favoriteMsg = mutableStateOf("")
     val favoriteMsg: State<String> = _favoriteMsg
 
+    private val _sideEffect = mutableStateOf(false)
+    val sideEffect: State<Boolean> = _sideEffect
+
     private val _isFavoriteState = mutableStateOf<IsFavoriteState>(IsFavoriteState.NotFavorite)
     val isFavoriteState:State<IsFavoriteState> = _isFavoriteState
 
@@ -185,8 +188,7 @@ class CoinDetailViewModel @Inject constructor(
     }
 
     fun onFavoriteClick(
-        coin: CoinById,
-        sideEffect: MutableState<Boolean>,
+        coin: CoinById
     ) {
         when(_isFavoriteState.value) {
             is IsFavoriteState.Favorite -> {
@@ -194,8 +196,8 @@ class CoinDetailViewModel @Inject constructor(
             }
             is IsFavoriteState.NotFavorite -> {
                 when(_authState.value) {
-                    is UserState.UnauthedUser -> sideEffect.value = true
-                    is UserState.AuthedUser -> premiumLimit(coin, sideEffect)
+                    is UserState.UnauthedUser -> _sideEffect.value = !_sideEffect.value
+                    is UserState.AuthedUser -> premiumLimit(coin, _sideEffect)
                     is UserState.PremiumUser -> onEvent(FavoriteCoinEvents.AddCoin(coin))
                 }
             }

@@ -36,13 +36,7 @@ fun CoinDetailScreen(
 
     val coinState = viewModel.coinState.value
     val chartsState = viewModel.chartState.value
-    val sideEffect = remember { mutableStateOf(false) }
-    val favoriteMsg = viewModel.favoriteMsg.value
-    val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))
-    val lottieProgress by animateLottieCompositionAsState(
-        composition = lottieComp,
-        iterations = LottieConstants.IterateForever,
-    )
+    val uriHandler = LocalUriHandler.current
 
     viewModel.userState()
 
@@ -71,8 +65,7 @@ fun CoinDetailScreen(
                         isFavorite = viewModel.isFavoriteState.value,
                         onCLick = {
                             viewModel.onFavoriteClick(
-                                coin = coin,
-                                sideEffect = sideEffect,
+                                coin = coin
                             )
                         }
                     )
@@ -106,13 +99,7 @@ fun CoinDetailScreen(
                         )
                     }
 
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        LoadingDots(isLoading = chartsState.isLoading)
-                    }
-
+                    LoadingChartState()
 
                     CoinInformation(
                         modifier = Modifier
@@ -129,7 +116,6 @@ fun CoinDetailScreen(
                         totalSupply = "${numbersToFormat(coin.totalSupply!!.toInt())} ${coin.symbol}"
                     )
 
-                    val uriHandler = LocalUriHandler.current
                     Row(
                         horizontalArrangement = Arrangement.Center
                     ) {
@@ -165,44 +151,7 @@ fun CoinDetailScreen(
 
         NotPremiumDialog(dialogState = viewModel.notPremiumDialog)
 
-        if (sideEffect.value) {
-            SweetToastUtil.SweetWarning(
-                padding = PaddingValues(24.dp),
-                message = "Please Login First"
-            )
-        }
-
-        if (favoriteMsg.isNotBlank()) {
-            SweetToastUtil.SweetSuccess(
-                padding = PaddingValues(24.dp),
-                message = favoriteMsg
-            )
-        }
-
-        if (coinState.isLoading) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center
-            ) {
-                LottieAnimation(
-                    composition = lottieComp,
-                    progress = { lottieProgress },
-                )
-            }
-        }
-
-        if (coinState.error.isNotBlank()) {
-            Text(
-                text = coinState.error,
-                color = MaterialTheme.colors.error,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .align(Alignment.Center)
-            )
-        }
+        CoinDetailScreenState()
     }
 }
 
