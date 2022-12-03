@@ -1,11 +1,10 @@
 package com.mathroda.news_screen.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Filter
-import androidx.compose.material.icons.filled.Filter1
-import androidx.compose.material.icons.filled.Pin
+import androidx.compose.material.Icon
+import androidx.compose.material.IconToggleButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +39,7 @@ fun NewsTopBar(
                 color = TextWhite
             )
         }
-        
+
         Spacer(modifier = Modifier.weight(0.2f))
 
         Box(
@@ -64,7 +63,7 @@ private fun FilterButton(
         onCheckedChange = { onCLick() }
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_filter ) ,
+            painter = painterResource(id = R.drawable.ic_filter),
             contentDescription = null,
             tint = TextWhite
         )

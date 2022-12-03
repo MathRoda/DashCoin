@@ -32,7 +32,7 @@ class NewsViewModel @Inject constructor(
         getNews(defaultFilter)
     }
 
-     fun getNews(filter: NewsFilter) {
+    fun getNews(filter: NewsFilter) {
         dashCoinRepository.getNews(newsFilterConverter(filter)).onEach { result ->
             when (result) {
                 is com.mathroda.core.util.Resource.Success -> {
@@ -53,7 +53,7 @@ class NewsViewModel @Inject constructor(
     }
 
     private fun newsFilterConverter(newsFilter: NewsFilter) =
-        when(newsFilter) {
+        when (newsFilter) {
             NewsFilter.HANDPICKED -> NewsType.HANDPICKED
             NewsFilter.TRENDING -> NewsType.TRENDING
             NewsFilter.LATEST -> NewsType.LATEST
