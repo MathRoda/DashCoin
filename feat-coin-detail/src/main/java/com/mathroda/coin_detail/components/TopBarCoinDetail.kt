@@ -91,7 +91,7 @@ fun TopBarCoinDetail(
 }
 
 @Composable
-fun FavoriteButton(
+private fun FavoriteButton(
     modifier: Modifier = Modifier,
     isFavorite: IsFavoriteState,
     onCLick: (Boolean) -> Unit

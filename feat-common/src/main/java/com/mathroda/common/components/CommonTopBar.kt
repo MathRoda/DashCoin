@@ -29,7 +29,6 @@ fun CommonTopBar(
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.h2,
             color = com.mathroda.common.theme.TextWhite,
-            modifier = modifier
         )
     }
 }
