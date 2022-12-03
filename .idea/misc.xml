@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MathRoda/DashCoin/feat-common/src/main/res/drawable/ic_news.xml" value="0.1" />
+        <entry key="..\:/MathRoda/DashCoin/feat-news/src/main/res/drawable/ic_news.xml" value="0.1" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1155" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/background_negative_chart.xml" value="0.1" />
         <entry key="..\:/Users/gtx/AndroidStudioProjects/DashCoin/app/src/main/res/drawable/background_negative_rate.xml" value="0.1" />

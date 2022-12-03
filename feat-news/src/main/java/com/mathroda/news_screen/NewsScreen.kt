@@ -21,6 +21,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.common.components.CommonTopBar
 import com.mathroda.common.theme.DarkGray
+import com.mathroda.news_screen.components.NewsCard
 
 @ExperimentalMaterialApi
 @Composable
@@ -35,7 +36,7 @@ fun NewsScreen(
         modifier = Modifier
             .background(DarkGray)
             .fillMaxSize()
-            .padding(12.dp)
+            .padding(4.dp)
     ) {
         Column {
             CommonTopBar(title = "Trending News")
@@ -49,13 +50,11 @@ fun NewsScreen(
 
                     LazyColumn {
                         items(state.news) { news ->
-                            com.mathroda.news_screen.components.NewsCard(
-                                newsThumb = news.imgURL,
-                                title = news.title,
-                                onClick = {
-                                    uriHandler.openUri(news.link)
-                                }
-                            )
+                            NewsCard(
+                                news = news
+                            ) {
+                                uriHandler.openUri(news.link)
+                            }
                             Spacer(Modifier.height(15.dp))
                         }
                     }

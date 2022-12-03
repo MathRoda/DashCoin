@@ -19,11 +19,12 @@ data class News(
     val title: String = ""
 )
 
-fun News.toNewsDetail(): com.mathroda.domain.NewsDetail {
+fun News.toNewsDetail(): NewsDetail {
     return NewsDetail(
         description = description,
         id = id,
         imgURL = imgURL,
+        feedDate = feedDate,
         link = link,
         relatedCoins = relatedCoins,
         shareURL = shareURL,
