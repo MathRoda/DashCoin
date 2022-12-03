@@ -3,6 +3,7 @@ package com.mathroda.datasource.core
 import com.mathroda.core.util.Resource
 import com.mathroda.domain.ChartTimeSpan
 import com.mathroda.domain.CoinById
+import com.mathroda.domain.NewsType
 import kotlinx.coroutines.flow.Flow
 
 interface DashCoinRepository {
@@ -14,7 +15,7 @@ interface DashCoinRepository {
 
     fun getChartsData(coinId: String, period: ChartTimeSpan): Flow<Resource<com.mathroda.domain.Charts>>
 
-    fun getNews(filter: String): Flow<Resource<List<com.mathroda.domain.NewsDetail>>>
+    fun getNews(filter: NewsType): Flow<Resource<List<com.mathroda.domain.NewsDetail>>>
 
 
 }

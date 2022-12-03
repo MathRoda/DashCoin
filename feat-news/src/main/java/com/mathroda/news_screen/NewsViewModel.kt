@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.datasource.core.DashCoinRepository
+import com.mathroda.domain.NewsType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,13 +26,14 @@ class NewsViewModel @Inject constructor(
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
 
+    private val defaultFilter = NewsFilter.TRENDING
 
     init {
-        getNews()
+        getNews(defaultFilter)
     }
 
-    private fun getNews(filter: String = "trending") {
-        dashCoinRepository.getNews(filter).onEach { result ->
+     fun getNews(filter: NewsFilter) {
+        dashCoinRepository.getNews(newsFilterConverter(filter)).onEach { result ->
             when (result) {
                 is com.mathroda.core.util.Resource.Success -> {
                     _newsState.value =
@@ -50,10 +52,19 @@ class NewsViewModel @Inject constructor(
 
     }
 
+    private fun newsFilterConverter(newsFilter: NewsFilter) =
+        when(newsFilter) {
+            NewsFilter.HANDPICKED -> NewsType.HANDPICKED
+            NewsFilter.TRENDING -> NewsType.TRENDING
+            NewsFilter.LATEST -> NewsType.LATEST
+            NewsFilter.BULLISH -> NewsType.BULLISH
+            NewsFilter.BEARISH -> NewsType.BEARISH
+        }
+
     fun refresh() {
         viewModelScope.launch {
             _isRefresh.emit(true)
-            getNews()
+            getNews(defaultFilter)
             _isRefresh.emit(false)
         }
     }

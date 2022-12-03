@@ -48,7 +48,7 @@ fun NewsCard(
                 color = LighterGray
             )
             .clickable {
-                 onClick()
+                onClick()
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -64,7 +64,8 @@ fun NewsCard(
             AsyncImage(
                 model = news.imgURL,
                 contentDescription = news.description,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(id = R.drawable.ic_news),
             )
         }
 
@@ -86,7 +87,9 @@ fun NewsCard(
                         text = coin.toString(),
                         color = Gold,
                         style = Typography.body2,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.size(4.dp))
 

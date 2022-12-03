@@ -4,6 +4,7 @@ import coil.network.HttpException
 import com.mathroda.core.util.Resource
 import com.mathroda.domain.ChartTimeSpan
 import com.mathroda.domain.CoinById
+import com.mathroda.domain.NewsType
 import com.mathroda.network.DashCoinApi
 import com.mathroda.network.dto.toChart
 import com.mathroda.network.dto.toCoinDetail
@@ -60,11 +61,11 @@ class DashCoinRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getNews(filter: String): Flow<Resource<List<com.mathroda.domain.NewsDetail>>> =
+    override fun getNews(filter: NewsType): Flow<Resource<List<com.mathroda.domain.NewsDetail>>> =
         flow {
             try {
                 emit(Resource.Loading())
-                val coin = api.getNews(filter).news.map { it.toNewsDetail() }
+                val coin = api.getNews(filter.value).news.map { it.toNewsDetail() }
                 emit(Resource.Success(coin))
             } catch (e: HttpException) {
                 emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
