@@ -62,6 +62,7 @@ class CoinDetailViewModel @Inject constructor(
     val authState: State<UserState> = _authState
 
     init {
+        userState()
         savedStateHandle.get<String>(PARAM_COIN_ID)?.let { coinId ->
             getCoin(coinId)
             getChart(coinId, TimeRange.ONE_DAY)
@@ -160,7 +161,7 @@ class CoinDetailViewModel @Inject constructor(
         }
     }
 
-    fun userState() {
+    private fun userState() {
         viewModelScope.launch {
             providersRepository.userStateProvider(
                 function = {}

@@ -30,8 +30,6 @@ fun CoinDetailScreen(
     val chartsState = viewModel.chartState.value
     val uriHandler = LocalUriHandler.current
 
-    viewModel.userState()
-
     Box(
         modifier = Modifier
             .background(DarkGray)
@@ -51,9 +49,9 @@ fun CoinDetailScreen(
             ) {
                 item {
                     TopBarCoinDetail(
+                        navController = navController,
                         coinSymbol = coin.symbol!!,
                         icon = coin.icon!!,
-                        navController = navController,
                         isFavorite = viewModel.isFavoriteState.value,
                         onCLick = {
                             viewModel.onFavoriteClick(
