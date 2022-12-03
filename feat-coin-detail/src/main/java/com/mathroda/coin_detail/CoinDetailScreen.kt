@@ -5,28 +5,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.airbnb.lottie.compose.*
 import com.mathroda.coin_detail.components.*
-import com.mathroda.common.R
 import com.mathroda.common.components.CustomDialog
-import com.mathroda.common.components.LoadingDots
 import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.core.util.numbersToCurrency
 import com.mathroda.core.util.numbersToFormat
-import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @Composable
 fun CoinDetailScreen(

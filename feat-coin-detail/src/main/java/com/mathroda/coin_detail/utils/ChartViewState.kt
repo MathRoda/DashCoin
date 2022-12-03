@@ -9,7 +9,6 @@ import com.mathroda.common.util.getColorStatusToArgb
 class ChartViewState {
 
 
-
     fun getLineDataSet(
         lineData: List<Entry>,
         label: String,
