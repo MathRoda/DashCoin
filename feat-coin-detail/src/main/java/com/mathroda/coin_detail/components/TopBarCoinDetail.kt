@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -104,7 +103,7 @@ fun FavoriteButton(
         onCheckedChange = onCLick
     ) {
         Icon(
-            tint = when(isFavorite) {
+            tint = when (isFavorite) {
                 is IsFavoriteState.Favorite -> Gold
                 is IsFavoriteState.NotFavorite -> TextWhite
             },
@@ -112,7 +111,7 @@ fun FavoriteButton(
                 scaleX = 1.3f
                 scaleY = 1.3f
             },
-            imageVector = when(isFavorite) {
+            imageVector = when (isFavorite) {
                 is IsFavoriteState.Favorite -> Icons.Filled.Star
                 is IsFavoriteState.NotFavorite -> Icons.Default.StarBorder
             },

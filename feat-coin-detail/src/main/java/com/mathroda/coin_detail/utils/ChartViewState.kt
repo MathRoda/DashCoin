@@ -6,7 +6,8 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.mathroda.common.util.getBackgroundColor
 import com.mathroda.common.util.getColorStatusToArgb
 
-class ChartScreenViewState {
+class ChartViewState {
+
 
     fun getLineDataSet(
         lineData: List<Entry>,

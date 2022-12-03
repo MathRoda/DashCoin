@@ -10,7 +10,8 @@ import com.airbnb.lottie.compose.*
 import com.mathroda.common.R
 
 @Composable
-fun LoadingDotsLogin(
+fun LoadingDots(
+    modifier: Modifier = Modifier,
     isLoading: Boolean
 ) {
 
@@ -22,7 +23,7 @@ fun LoadingDotsLogin(
 
     AnimatedVisibility(visible = isLoading) {
         LottieAnimation(
-            modifier = Modifier
+            modifier = modifier
                 .size(150.dp),
             composition = lottieComp,
             progress = { lottieProgress },

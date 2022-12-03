@@ -1,99 +1,78 @@
 package com.mathroda.coin_detail.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mathroda.common.theme.DarkGray
+import com.mathroda.common.theme.LighterGray
+import com.mathroda.common.theme.TextWhite
 
 @Composable
-fun TimeSpanPicker(
+fun TimeRangePicker(
     modifier: Modifier = Modifier,
-    selectedTimeSpan: com.mathroda.domain.ChartTimeSpan = com.mathroda.domain.ChartTimeSpan.TIMESPAN_1DAY,
-    onTimeSpanSelected: (com.mathroda.domain.ChartTimeSpan) -> Unit = {}
+    onTimeSelected: (TimeRange) -> Unit = {}
 ) {
+    val timeOptions = mapOf(
+        TimeRange.ONE_DAY to "1D",
+        TimeRange.ONE_WEEK to "1W",
+        TimeRange.ONE_MONTH to "1M",
+        TimeRange.ONE_YEAR to "1Y",
+        TimeRange.ALL to "ALL"
+    )
+
+    val selectedTime = remember { mutableStateOf(TimeRange.ONE_DAY) }
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-
-        TimeSpanChip(
-            time = "24H",
-            isSelected = selectedTimeSpan == com.mathroda.domain.ChartTimeSpan.TIMESPAN_1DAY
-        ) {
-            onTimeSpanSelected(com.mathroda.domain.ChartTimeSpan.TIMESPAN_1DAY)
+        timeOptions.map { timeRange ->
+            TimeRangeChip(
+                time = timeRange.value,
+                timeRange = timeRange.key,
+                state = selectedTime,
+                onTimeRangeSelected = { onTimeSelected(timeRange.key) }
+            )
         }
 
-        TimeSpanChip(
-            time = "1W",
-            isSelected = selectedTimeSpan == com.mathroda.domain.ChartTimeSpan.TIMESPAN_1WEK
-        ) {
-            onTimeSpanSelected(com.mathroda.domain.ChartTimeSpan.TIMESPAN_1WEK)
-        }
-
-        TimeSpanChip(
-            time = "1M",
-            isSelected = selectedTimeSpan == com.mathroda.domain.ChartTimeSpan.TIMESPAN_1MONTH
-        ) {
-            onTimeSpanSelected(com.mathroda.domain.ChartTimeSpan.TIMESPAN_1MONTH)
-        }
-
-        TimeSpanChip(
-            time = "3M",
-            isSelected = selectedTimeSpan == com.mathroda.domain.ChartTimeSpan.TIMESPAN_3MONTHS
-        ) {
-            onTimeSpanSelected(com.mathroda.domain.ChartTimeSpan.TIMESPAN_3MONTHS)
-        }
-
-        TimeSpanChip(
-            time = "6M",
-            isSelected = selectedTimeSpan == com.mathroda.domain.ChartTimeSpan.TIMESPAN_6MONTHS
-        ) {
-            onTimeSpanSelected(com.mathroda.domain.ChartTimeSpan.TIMESPAN_6MONTHS)
-        }
-
-        TimeSpanChip(
-            time = "1Y",
-            isSelected = selectedTimeSpan == com.mathroda.domain.ChartTimeSpan.TIMESPAN_1YEAR
-        ) {
-            onTimeSpanSelected(com.mathroda.domain.ChartTimeSpan.TIMESPAN_1YEAR)
-        }
-
-        TimeSpanChip(
-            time = "ALL",
-            isSelected = selectedTimeSpan == com.mathroda.domain.ChartTimeSpan.TIMESPAN_ALL
-        ) {
-            onTimeSpanSelected(com.mathroda.domain.ChartTimeSpan.TIMESPAN_ALL)
-        }
     }
+
 }
 
 @Composable
-fun TimeSpanChip(
+private fun TimeRangeChip(
     time: String,
-    isSelected: Boolean,
-    onTimeSpanSelected: () -> Unit
+    timeRange: TimeRange,
+    state: MutableState<TimeRange>,
+    onTimeRangeSelected: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .background(
-                color = if (isSelected) MaterialTheme.colors.onBackground else MaterialTheme.colors.background,
-                shape = RoundedCornerShape(20.dp)
+                color = if (state.value == timeRange) LighterGray else DarkGray,
+                shape = RoundedCornerShape(8.dp)
             )
-            .clickable {
-                onTimeSpanSelected
-            }
+            .selectable(
+                selected = state.value == timeRange,
+                onClick = {
+                    onTimeRangeSelected()
+                    state.value = timeRange
+                }
+            ),
     ) {
         Text(
             text = time,
-            color = if (isSelected) MaterialTheme.colors.background else MaterialTheme.colors.onBackground,
+            color = TextWhite,
             modifier = Modifier.padding(8.dp)
         )
     }
