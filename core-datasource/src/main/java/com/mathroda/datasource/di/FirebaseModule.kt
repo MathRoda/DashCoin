@@ -5,6 +5,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.firebase.FirebaseRepositoryImpl
 import dagger.Module
@@ -27,11 +28,16 @@ object FirebaseModule {
 
     @Provides
     @Singleton
+    fun providesFirebaseStorage() = FirebaseStorage.getInstance()
+
+    @Provides
+    @Singleton
     fun providesFirebaseRepository(
         firebaseAuth: FirebaseAuth,
-        fireStore: FirebaseFirestore
+        fireStore: FirebaseFirestore,
+        firebaseStorage: FirebaseStorage
     ): FirebaseRepository {
-        return FirebaseRepositoryImpl(firebaseAuth, fireStore)
+        return FirebaseRepositoryImpl(firebaseAuth, fireStore, firebaseStorage)
     }
 
 }
