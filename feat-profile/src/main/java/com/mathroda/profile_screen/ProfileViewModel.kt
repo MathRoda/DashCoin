@@ -30,8 +30,8 @@ class ProfileViewModel @Inject constructor(
     private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
     val authState: State<UserState> = _authState
 
-    private val _isUserImageLoading = mutableStateOf(false)
-    val isUserImageLoading: State<Boolean> = _isUserImageLoading
+    private val _isUploadUserImageLoading = mutableStateOf(false)
+    val isUploadUserImageLoading: State<Boolean> = _isUploadUserImageLoading
 
     private var getUserJob: Job? = null
 
@@ -80,12 +80,12 @@ class ProfileViewModel @Inject constructor(
             ).collect { uploadResult ->
                 when(uploadResult) {
                     is Resource.Loading -> {
-                        _isUserImageLoading.value = true
+                        _isUploadUserImageLoading.value = true
 
                         Log.d("Resource", "Loading Upload...")
                     }
                     is Resource.Success -> {
-                        _isUserImageLoading.value = false
+                        _isUploadUserImageLoading.value = false
 
                         Log.d("Resource", "Success Upload: ${uploadResult.data}")
                         val imageUrl = uploadResult.data ?: ""
@@ -106,7 +106,7 @@ class ProfileViewModel @Inject constructor(
                             }
                     }
                     is Resource.Error -> {
-                        _isUserImageLoading.value = false
+                        _isUploadUserImageLoading.value = false
 
                         Log.d("Resource", "Error Upload: ${uploadResult.message}")
                     }

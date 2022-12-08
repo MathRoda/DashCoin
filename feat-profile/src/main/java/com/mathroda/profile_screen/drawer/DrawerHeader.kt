@@ -17,7 +17,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import com.mathroda.common.theme.BackgroundBlue
 import com.mathroda.common.theme.DashCoinTheme
 import com.mathroda.common.theme.Gold
@@ -41,7 +42,7 @@ fun DrawerHeader(
     welcomeUser: String?,
     userEmail: String?,
     userImage: String?,
-    isUserImageLoading: Boolean,
+    isUploadUserImageLoading: Boolean,
     iconVisibility: Boolean,
     isUserAuthed: Boolean,
     updateProfilePicture: (bitmap: Bitmap) -> Unit,
@@ -57,41 +58,15 @@ fun DrawerHeader(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Box(
-            contentAlignment = Alignment.BottomEnd,
+        ProfilePictureBox(
             modifier = Modifier
                 .padding(bottom = 10.dp)
-        ) {
-            if (userImage == null) {
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth(fraction = 0.5f)
-                        .aspectRatio(1f)
-//                    .graphicsLayer(scaleY = 0.7f, scaleX = 0.7f)
-                    ,
-                    painter = painterResource(id = R.drawable.profile_placeholder),
-                    contentDescription = "Profile Placeholder",
-                    contentScale = ContentScale.Crop
-                )
-            } else {
-                AsyncImage(
-                    model = userImage,
-                    contentDescription = "Profile picture",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth(fraction = 0.4f)
-                        .aspectRatio(1f)
-                        .clip(CircleShape)
-                )
-            }
-
-            if (isUserAuthed) {
-                PickImageButton(
-                    modifier = Modifier.padding(10.dp),
-                    onPickImage = updateProfilePicture,
-                )
-            }
-        }
+            ,
+            userImage = userImage,
+            isUserAuthed = isUserAuthed,
+            isUploadUserImageLoading = isUploadUserImageLoading,
+            updateProfilePicture = updateProfilePicture
+        )
 
         Row(horizontalArrangement = Arrangement.Center ) {
             AnimatedVisibility(visible = iconVisibility) {
@@ -113,6 +88,65 @@ fun DrawerHeader(
 
 }
 
+@Composable
+fun ProfilePictureBox(
+    modifier: Modifier = Modifier,
+    userImage: String?,
+    isUserAuthed: Boolean,
+    isUploadUserImageLoading: Boolean,
+    updateProfilePicture: (bitmap: Bitmap) -> Unit,
+) {
+    var isAsyncImageSate by remember {
+        mutableStateOf<AsyncImagePainter.State>(AsyncImagePainter.State.Empty)
+    }
+
+    Box(
+        contentAlignment = Alignment.BottomEnd,
+        modifier = modifier
+            .fillMaxWidth(fraction = 0.4f)
+            .aspectRatio(1f)
+    ) {
+        AsyncImage(
+            model = userImage,
+            contentDescription = "Profile picture",
+            onLoading = { isAsyncImageSate = it },
+            onSuccess = { isAsyncImageSate = it },
+            onError = { isAsyncImageSate = it },
+            error = painterResource(id = R.drawable.profile_placeholder),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+        )
+
+        if (
+            isUploadUserImageLoading
+            || isAsyncImageSate is AsyncImagePainter.State.Loading
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = MaterialTheme.colors.background.copy(alpha = 0.4f),
+                        shape = CircleShape
+                    )
+            ) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colors.onBackground
+                )
+            }
+        }
+
+        if (isUserAuthed) {
+            PickImageButton(
+                modifier = Modifier.padding(10.dp),
+                onPickImage = updateProfilePicture,
+            )
+        }
+    }
+}
+
 @Preview(device = Devices.PIXEL_4)
 @Composable
 fun DrawerHeaderPreview() {
@@ -124,7 +158,7 @@ fun DrawerHeaderPreview() {
                 welcomeUser = "John Doe",
                 userEmail = "johndoe@gmail.com",
                 userImage = null,
-                isUserImageLoading = true,
+                isUploadUserImageLoading = true,
                 iconVisibility = true,
                 isUserAuthed = true,
                 updateProfilePicture = {}

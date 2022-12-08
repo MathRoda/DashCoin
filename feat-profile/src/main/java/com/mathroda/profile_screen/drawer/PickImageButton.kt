@@ -54,7 +54,7 @@ fun PickImageButton(
             contentDescription = "Pick image",
             modifier = Modifier
                 .background(
-                    color = MaterialTheme.colors.background.copy(alpha = 0.4f),
+                    color = MaterialTheme.colors.background.copy(alpha = 0.8f),
                     shape = CircleShape
                 )
                 .padding(6.dp)
