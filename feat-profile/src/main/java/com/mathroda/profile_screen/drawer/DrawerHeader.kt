@@ -36,15 +36,18 @@ import com.mathroda.common.theme.BackgroundBlue
 import com.mathroda.common.theme.DashCoinTheme
 import com.mathroda.common.theme.Gold
 import com.mathroda.profile_screen.R
+import com.mathroda.profile_screen.drawer.state.UpdatePictureState
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
+import kotlinx.coroutines.delay
 
 @Composable
 fun DrawerHeader(
     welcomeUser: String?,
     userEmail: String?,
     userImage: String?,
-    isUploadUserImageLoading: Boolean,
     iconVisibility: Boolean,
     isUserAuthed: Boolean,
+    updatePictureState: UpdatePictureState,
     updateProfilePicture: (bitmap: Bitmap) -> Unit,
 ) {
     Column(
@@ -64,7 +67,7 @@ fun DrawerHeader(
             ,
             userImage = userImage,
             isUserAuthed = isUserAuthed,
-            isUploadUserImageLoading = isUploadUserImageLoading,
+            updatePictureState = updatePictureState,
             updateProfilePicture = updateProfilePicture
         )
 
@@ -93,9 +96,24 @@ fun ProfilePictureBox(
     modifier: Modifier = Modifier,
     userImage: String?,
     isUserAuthed: Boolean,
-    isUploadUserImageLoading: Boolean,
+    updatePictureState: UpdatePictureState,
     updateProfilePicture: (bitmap: Bitmap) -> Unit,
 ) {
+
+    if (updatePictureState.isFailure) {
+        SweetToastUtil.SweetError(
+            message = "Something goes wrong! Try again later",
+            padding = PaddingValues(bottom = 24.dp)
+        )
+    }
+
+    if (updatePictureState.isSuccess) {
+        SweetToastUtil.SweetSuccess(
+            message = "Profile picture updated successfully",
+            padding = PaddingValues(bottom = 24.dp)
+        )
+    }
+
     var isAsyncImageSate by remember {
         mutableStateOf<AsyncImagePainter.State>(AsyncImagePainter.State.Empty)
     }
@@ -119,8 +137,9 @@ fun ProfilePictureBox(
                 .clip(CircleShape)
         )
 
+        // Show progress indicator if -> picture is uploading || async image is loading
         if (
-            isUploadUserImageLoading
+            updatePictureState.isLoading
             || isAsyncImageSate is AsyncImagePainter.State.Loading
         ) {
             Box(
@@ -158,9 +177,9 @@ fun DrawerHeaderPreview() {
                 welcomeUser = "John Doe",
                 userEmail = "johndoe@gmail.com",
                 userImage = null,
-                isUploadUserImageLoading = true,
                 iconVisibility = true,
                 isUserAuthed = true,
+                updatePictureState = UpdatePictureState(),
                 updateProfilePicture = {}
             )
         }

@@ -73,6 +73,8 @@ dependencies {
     //coil
     implementation("io.coil-kt:coil-compose:2.1.0")
 
+    //SweetToast
+    implementation 'com.github.tfaki:ComposableSweetToast:1.0.1'
 
     // Dagger hilt
     implementation "com.google.dagger:hilt-android:2.43.2"

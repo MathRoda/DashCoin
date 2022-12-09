@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -39,13 +36,13 @@ fun DrawerNavigation(
     val userCredential = viewModel.userCredential.collectAsState()
     val isPremium = userCredential.value.isUserPremium()
     val isAuthedUser = viewModel.authState.value !is UserState.UnauthedUser
-    val isUploadUserImageLoading = viewModel.isUploadUserImageLoading.value
+    val updateProfilePictureState = viewModel.updateProfilePictureState.collectAsState()
 
     DrawerHeader(
         welcomeUser = userCredential.value.userName ?: "Hi DashCoiner",
         userEmail = userCredential.value.email,
         userImage = userCredential.value.image,
-        isUploadUserImageLoading = isUploadUserImageLoading,
+        updatePictureState = updateProfilePictureState.value,
         iconVisibility = isPremium,
         isUserAuthed = isAuthedUser,
         updateProfilePicture = { bitmap ->
