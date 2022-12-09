@@ -21,6 +21,7 @@ import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
 import com.mathroda.profile_screen.ProfileViewModel
 import com.mathroda.profile_screen.menuitem.MenuItems
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
@@ -44,8 +45,8 @@ fun DrawerNavigation(
         userImage = userCredential.value.image,
         iconVisibility = isPremium,
         isUserAuthed = isAuthedUser,
-        updatePictureState = updateProfilePictureState.value,
-        clearUpdatePictureState = { viewModel.clearUpdateProfilePictureState() },
+        updateProfilePictureState = updateProfilePictureState.value,
+        clearUpdateProfilePictureState = { viewModel.clearUpdateProfilePictureState() },
         updateProfilePicture = { bitmap ->
             viewModel.updateProfilePicture(bitmap = bitmap)
         }

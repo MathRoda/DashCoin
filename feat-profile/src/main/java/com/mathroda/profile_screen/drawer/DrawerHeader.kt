@@ -1,31 +1,18 @@
 package com.mathroda.profile_screen.drawer
 
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.os.Build
-import android.provider.MediaStore
-import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +26,6 @@ import com.mathroda.common.theme.Gold
 import com.mathroda.profile_screen.R
 import com.mathroda.profile_screen.drawer.state.UpdatePictureState
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
-import kotlinx.coroutines.delay
 
 @Composable
 fun DrawerHeader(
@@ -48,8 +34,8 @@ fun DrawerHeader(
     userImage: String?,
     iconVisibility: Boolean,
     isUserAuthed: Boolean,
-    updatePictureState: UpdatePictureState,
-    clearUpdatePictureState: () -> Unit,
+    updateProfilePictureState: UpdatePictureState,
+    clearUpdateProfilePictureState: () -> Unit,
     updateProfilePicture: (bitmap: Bitmap) -> Unit,
 ) {
     Column(
@@ -69,8 +55,8 @@ fun DrawerHeader(
             ,
             userImage = userImage,
             isUserAuthed = isUserAuthed,
-            updatePictureState = updatePictureState,
-            clearUpdatePictureState = clearUpdatePictureState,
+            updateProfilePictureState = updateProfilePictureState,
+            clearUpdateProfilePictureState = clearUpdateProfilePictureState,
             updateProfilePicture = updateProfilePicture
         )
 
@@ -99,25 +85,29 @@ fun ProfilePictureBox(
     modifier: Modifier = Modifier,
     userImage: String?,
     isUserAuthed: Boolean,
-    updatePictureState: UpdatePictureState,
-    clearUpdatePictureState: () -> Unit,
+    updateProfilePictureState: UpdatePictureState,
+    clearUpdateProfilePictureState: () -> Unit,
     updateProfilePicture: (bitmap: Bitmap) -> Unit,
 ) {
 
-    if (updatePictureState.isFailure) {
+    /**
+     * Show update profile picture state toasts
+     */
+
+    if (updateProfilePictureState.isFailure) {
         SweetToastUtil.SweetError(
             message = "Something goes wrong! Try again later",
             padding = PaddingValues(bottom = 24.dp)
         )
-        clearUpdatePictureState()
+        clearUpdateProfilePictureState()
     }
 
-    if (updatePictureState.isSuccess) {
+    if (updateProfilePictureState.isSuccess) {
         SweetToastUtil.SweetSuccess(
             message = "Profile picture updated successfully",
             padding = PaddingValues(bottom = 24.dp)
         )
-        clearUpdatePictureState()
+        clearUpdateProfilePictureState()
     }
 
     var isAsyncImageSate by remember {
@@ -145,7 +135,7 @@ fun ProfilePictureBox(
 
         // Show progress indicator if -> picture is uploading || async image is loading
         if (
-            updatePictureState.isLoading
+            updateProfilePictureState.isLoading
             || isAsyncImageSate is AsyncImagePainter.State.Loading
         ) {
             Box(
@@ -184,8 +174,8 @@ fun DrawerHeaderPreview() {
                 userImage = null,
                 iconVisibility = true,
                 isUserAuthed = true,
-                updatePictureState = UpdatePictureState(),
-                clearUpdatePictureState = {},
+                updateProfilePictureState = UpdatePictureState(),
+                clearUpdateProfilePictureState = {},
                 updateProfilePicture = {}
             )
         }
