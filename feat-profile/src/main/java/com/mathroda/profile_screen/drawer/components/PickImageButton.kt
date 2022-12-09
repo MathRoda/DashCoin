@@ -30,8 +30,7 @@ fun PickImageButton(
     ) { uri ->
         uri?.let {
             val bitmap = if (Build.VERSION.SDK_INT < 28) {
-                MediaStore.Images.Media
-                    .getBitmap(context.contentResolver, it)
+                MediaStore.Images.Media.getBitmap(context.contentResolver, it)
             } else {
                 val source = ImageDecoder.createSource(context.contentResolver, it)
                 ImageDecoder.decodeBitmap(source)
@@ -57,7 +56,7 @@ fun PickImageButton(
                     color = MaterialTheme.colors.background.copy(alpha = 0.8f),
                     shape = CircleShape
                 )
-                .padding(6.dp)
+                .padding(10.dp)
         )
     }
 }

@@ -80,6 +80,10 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    fun clearUpdateProfilePictureState() {
+        _updateProfilePictureState.value = UpdatePictureState()
+    }
+
     private fun uploadProfilePicture(imageName: String, bitmap: Bitmap) {
         viewModelScope.launch {
             firebaseRepository.uploadImageToCloud(

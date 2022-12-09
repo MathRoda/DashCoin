@@ -42,9 +42,10 @@ fun DrawerNavigation(
         welcomeUser = userCredential.value.userName ?: "Hi DashCoiner",
         userEmail = userCredential.value.email,
         userImage = userCredential.value.image,
-        updatePictureState = updateProfilePictureState.value,
         iconVisibility = isPremium,
         isUserAuthed = isAuthedUser,
+        updatePictureState = updateProfilePictureState.value,
+        clearUpdatePictureState = { viewModel.clearUpdateProfilePictureState() },
         updateProfilePicture = { bitmap ->
             viewModel.updateProfilePicture(bitmap = bitmap)
         }

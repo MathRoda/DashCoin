@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -48,6 +49,7 @@ fun DrawerHeader(
     iconVisibility: Boolean,
     isUserAuthed: Boolean,
     updatePictureState: UpdatePictureState,
+    clearUpdatePictureState: () -> Unit,
     updateProfilePicture: (bitmap: Bitmap) -> Unit,
 ) {
     Column(
@@ -68,6 +70,7 @@ fun DrawerHeader(
             userImage = userImage,
             isUserAuthed = isUserAuthed,
             updatePictureState = updatePictureState,
+            clearUpdatePictureState = clearUpdatePictureState,
             updateProfilePicture = updateProfilePicture
         )
 
@@ -97,6 +100,7 @@ fun ProfilePictureBox(
     userImage: String?,
     isUserAuthed: Boolean,
     updatePictureState: UpdatePictureState,
+    clearUpdatePictureState: () -> Unit,
     updateProfilePicture: (bitmap: Bitmap) -> Unit,
 ) {
 
@@ -105,6 +109,7 @@ fun ProfilePictureBox(
             message = "Something goes wrong! Try again later",
             padding = PaddingValues(bottom = 24.dp)
         )
+        clearUpdatePictureState()
     }
 
     if (updatePictureState.isSuccess) {
@@ -112,6 +117,7 @@ fun ProfilePictureBox(
             message = "Profile picture updated successfully",
             padding = PaddingValues(bottom = 24.dp)
         )
+        clearUpdatePictureState()
     }
 
     var isAsyncImageSate by remember {
@@ -159,7 +165,6 @@ fun ProfilePictureBox(
 
         if (isUserAuthed) {
             PickImageButton(
-                modifier = Modifier.padding(10.dp),
                 onPickImage = updateProfilePicture,
             )
         }
@@ -180,6 +185,7 @@ fun DrawerHeaderPreview() {
                 iconVisibility = true,
                 isUserAuthed = true,
                 updatePictureState = UpdatePictureState(),
+                clearUpdatePictureState = {},
                 updateProfilePicture = {}
             )
         }
