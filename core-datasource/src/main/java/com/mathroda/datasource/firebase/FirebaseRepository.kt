@@ -1,5 +1,6 @@
 package com.mathroda.datasource.firebase
 
+import android.graphics.Bitmap
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.mathroda.core.util.Resource
@@ -48,4 +49,8 @@ interface FirebaseRepository {
     fun updateFavoriteCoinsCount(count: Int): Flow<Resource<Task<Void>>>
 
     fun getUserCredentials(): Flow<com.mathroda.core.util.Resource<com.mathroda.domain.DashCoinUser>>
+
+    fun uploadImageToCloud(name: String, bitmap: Bitmap): Flow<Resource<String>>
+
+    fun updateUserProfilePicture(imageUrl: String): Flow<Resource<Task<Void>>>
 }

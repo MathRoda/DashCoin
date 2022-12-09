@@ -1,24 +1,28 @@
 package com.mathroda.datasource.firebase
 
+import android.graphics.Bitmap
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.mathroda.core.util.Constants
 import com.mathroda.core.util.Resource
 import com.mathroda.domain.CoinById
 import com.mathroda.domain.DashCoinUser
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
 
 class FirebaseRepositoryImpl constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val fireStore: FirebaseFirestore
+    private val fireStore: FirebaseFirestore,
+    private val firebaseStorage: FirebaseStorage
 ) : FirebaseRepository {
 
     companion object {
@@ -288,6 +292,74 @@ class FirebaseRepositoryImpl constructor(
                 }
             }
             awaitClose { this.cancel() }
+        }
+    }
+
+    override fun uploadImageToCloud(
+        name: String,
+        bitmap: Bitmap
+    ): Flow<Resource<String>> {
+        return callbackFlow {
+            this.trySend(Resource.Loading())
+
+            val storageRef = firebaseStorage.reference
+            val imageRef = storageRef.child("images/$name.jpeg")
+
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            val data = byteArrayOutputStream.toByteArray()
+
+            val uploadTask = imageRef.putBytes(data)
+
+            uploadTask
+                .continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let {
+                            this.trySend(Resource.Error(it.message.toString()))
+                            this.close(it)
+                        }
+                    }
+
+                    imageRef.downloadUrl
+                }
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val downloadUri = task.result
+
+                        if (downloadUri == null) {
+                            this.trySend(Resource.Error("Invalid image URL"))
+                            this.close(null)
+                        } else {
+                            this.trySend(Resource.Success(downloadUri.toString()))
+                        }
+                    } else {
+                        this.trySend(Resource.Error(task.exception?.message.toString()))
+                        this.close(task.exception)
+                    }
+                }
+
+            awaitClose { this.cancel() }
+        }.catch {
+            emit(Resource.Error(it.message.toString()))
+        }
+
+    }
+
+    override fun updateUserProfilePicture(
+        imageUrl: String
+    ): Flow<Resource<Task<Void>>> {
+        return flow {
+            emit(Resource.Loading())
+            getUserId().collect { userId ->
+                val imageRef = fireStore.collection(Constants.USER_COLLECTION)
+                    .document(userId)
+                    .update("image", imageUrl)
+
+                imageRef.await()
+                emit(Resource.Success(imageRef))
+            }
+        }.catch {
+            emit(Resource.Error(it.message.toString()))
         }
     }
 

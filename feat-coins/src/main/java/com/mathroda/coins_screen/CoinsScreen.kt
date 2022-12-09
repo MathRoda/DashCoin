@@ -26,7 +26,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.coins_screen.components.CoinsScreenState
 import com.mathroda.coins_screen.components.ScrollButton
 import com.mathroda.common.navigation.Destinations
-import com.mathroda.profile_screen.DrawerNavigation
+import com.mathroda.profile_screen.drawer.DrawerNavigation
 import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
