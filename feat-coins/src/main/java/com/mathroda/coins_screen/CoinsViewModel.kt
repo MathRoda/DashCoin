@@ -2,6 +2,8 @@ package com.mathroda.coins_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathroda.coins_screen.state.CoinsState
+import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +21,8 @@ class CoinsViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(com.mathroda.coins_screen.state.CoinsState())
-    val state: StateFlow<com.mathroda.coins_screen.state.CoinsState> = _state
+    private val _state = MutableStateFlow(CoinsState())
+    val state: StateFlow<CoinsState> = _state
 
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
@@ -36,24 +38,24 @@ class CoinsViewModel @Inject constructor(
     private fun getCoins() {
         dashCoinRepository.getCoins().onEach { result ->
             when (result) {
-                is com.mathroda.core.util.Resource.Success -> {
+                is Resource.Success -> {
                     _state.emit(
-                        com.mathroda.coins_screen.state.CoinsState(
+                        CoinsState(
                             coins = result.data ?: emptyList()
                         )
                     )
                 }
-                is com.mathroda.core.util.Resource.Error -> {
+                is Resource.Error -> {
                     _state.emit(
-                        com.mathroda.coins_screen.state.CoinsState(
+                        CoinsState(
                             error = result.message ?: "Unexpected Error"
                         )
                     )
 
                 }
-                is com.mathroda.core.util.Resource.Loading -> {
+                is Resource.Loading -> {
                     _state.emit(
-                        com.mathroda.coins_screen.state.CoinsState(isLoading = true)
+                        CoinsState(isLoading = true)
                     )
                 }
             }

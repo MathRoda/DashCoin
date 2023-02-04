@@ -81,13 +81,11 @@ fun CoinDetailScreen(
                         viewModel.getChart(coin.id!!, timeRange)
                     }
 
-                    chartsState.chart?.let {
-                        Chart(
-                            oneDayChange = coin.priceChange1d!!,
-                            context = LocalContext.current,
-                            charts = it
-                        )
-                    }
+                    Chart(
+                        oneDayChange = coin.priceChange1d!!,
+                        context = LocalContext.current,
+                        charts = chartsState
+                    )
 
                     LoadingChartState()
 

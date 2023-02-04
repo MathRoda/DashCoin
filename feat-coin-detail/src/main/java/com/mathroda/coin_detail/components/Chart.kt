@@ -9,11 +9,10 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
+import com.mathroda.coin_detail.state.ChartState
 import com.mathroda.coin_detail.utils.ChartViewState
 import com.mathroda.coin_detail.utils.setLineDataSet
 import com.mathroda.common.theme.TextWhite
-import com.mathroda.domain.Charts
 
 enum class TimeRange {
     ONE_DAY, ONE_WEEK, ONE_MONTH, ONE_YEAR, ALL
@@ -23,16 +22,8 @@ enum class TimeRange {
 fun Chart(
     oneDayChange: Double,
     context: Context,
-    charts: Charts
+    charts: ChartState
 ) {
-
-    val dataSet = mutableListOf<Entry>()
-    charts.let { chartsValue ->
-        chartsValue.chart?.onEach { value ->
-            dataSet.add(addEntry(value[0], value[1]))
-        }
-    }
-
     AndroidView(
         factory = {
             LineChart(context)
@@ -41,7 +32,7 @@ fun Chart(
 
             val lineDataSet =
                 ChartViewState().getLineDataSet(
-                    lineData = dataSet,
+                    lineData = charts.chart,
                     label = "chart values",
                     oneDayChange = oneDayChange,
                     context = context
@@ -69,7 +60,3 @@ fun Chart(
             .requiredHeight(300.dp)
     )
 }
-
-
-fun addEntry(x: Float, y: Float) =
-    Entry(x, y)

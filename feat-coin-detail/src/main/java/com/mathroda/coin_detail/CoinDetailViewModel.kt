@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.mikephil.charting.data.Entry
 import com.mathroda.coin_detail.components.TimeRange
 import com.mathroda.coin_detail.state.ChartState
 import com.mathroda.coin_detail.state.CoinState
@@ -67,7 +68,6 @@ class CoinDetailViewModel @Inject constructor(
             getCoin(coinId)
             getChart(coinId, TimeRange.ONE_DAY)
         }
-
     }
 
     private fun getCoin(coinId: String) {
@@ -93,8 +93,14 @@ class CoinDetailViewModel @Inject constructor(
         dashCoinRepository.getChartsData(coinId, getTimeSpanByTimeRange(period)).onEach { result ->
             when (result) {
                 is Resource.Success -> {
+                    val chartsEntry = mutableListOf<Entry>()
+
                     result.data?.let { charts ->
-                        _chartState.value = ChartState(chart = charts)
+                        charts.chart?.forEach { value ->
+                            chartsEntry.add(addEntry(value[0], value[1]))
+                        }
+
+                        _chartState.value = ChartState(chart = chartsEntry)
                     }
                 }
                 is Resource.Error -> {
@@ -205,4 +211,5 @@ class CoinDetailViewModel @Inject constructor(
         }
     }
 
+    private fun addEntry(x: Float, y: Float) = Entry(x, y)
 }
