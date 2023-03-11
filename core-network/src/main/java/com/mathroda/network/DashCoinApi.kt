@@ -9,7 +9,8 @@ interface DashCoinApi {
     @GET("v1/coins")
     suspend fun getCoins(
         @Query("currency") currency: String = "USD",
-        @Query("skip") skip: Int = 0
+        @Query("skip") skip: Int,
+        @Query("limit") limit: Int = 10
     ): com.mathroda.network.dto.CoinsDto
 
     @GET("v1/coins/{coinId}")

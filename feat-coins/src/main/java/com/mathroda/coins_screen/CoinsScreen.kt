@@ -3,13 +3,11 @@ package com.mathroda.coins_screen
 import android.view.MotionEvent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
@@ -19,12 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.mathroda.coins_screen.components.CoinsItem
 import com.mathroda.coins_screen.components.CoinsScreenState
+import com.mathroda.coins_screen.components.CoinsScreenTopBar
 import com.mathroda.coins_screen.components.ScrollButton
+import com.mathroda.common.components.InfiniteListHandler
 import com.mathroda.common.navigation.Destinations
 import com.mathroda.profile_screen.drawer.DrawerNavigation
 import kotlinx.coroutines.launch
@@ -39,6 +41,7 @@ fun CoinScreen(
 ) {
     val state = viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefresh.collectAsState()
+    val paginationState by viewModel.paginationState.collectAsState()
     val searchCoin = remember { mutableStateOf(TextFieldValue("")) }
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -48,7 +51,7 @@ fun CoinScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            com.mathroda.coins_screen.components.CoinsScreenTopBar(
+            CoinsScreenTopBar(
                 title = "Live Prices",
                 onNavigationDrawerClick = {
                     scope.launch {
@@ -106,13 +109,29 @@ fun CoinScreen(
                                     it.id.contains(isBeingSearched, ignoreCase = true) ||
                                     it.symbol.contains(isBeingSearched, ignoreCase = true)
                         }, key = { it.id }) { coins ->
-                            com.mathroda.coins_screen.components.CoinsItem(
+                            CoinsItem(
                                 coins = coins,
                                 onItemClick = {
                                     navController.navigate(Destinations.CoinDetailScreen.route + "/${coins.id}")
                                 }
                             )
                         }
+                        item {
+                            if (paginationState.isLoading) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
+                            }
+                        }
+                    }
+
+                    InfiniteListHandler(lazyListState = lazyListState) {
+                        viewModel.getCoinsPaginated()
                     }
                 }
 

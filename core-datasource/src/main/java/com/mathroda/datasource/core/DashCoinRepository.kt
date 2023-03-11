@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface DashCoinRepository {
 
     // api requests
-    fun getCoins(): Flow<Resource<List<com.mathroda.domain.Coins>>>
+    fun getCoins(skip: Int): Flow<Resource<List<com.mathroda.domain.Coins>>>
 
     fun getCoinById(coinId: String): Flow<Resource<CoinById>>
 

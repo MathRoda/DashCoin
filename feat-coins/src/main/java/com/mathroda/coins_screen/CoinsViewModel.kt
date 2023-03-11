@@ -3,72 +3,118 @@ package com.mathroda.coins_screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.coins_screen.state.CoinsState
+import com.mathroda.coins_screen.state.PaginationState
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
-import com.mathroda.datasource.firebase.FirebaseRepository
+import com.mathroda.domain.Coins
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.Collections.emptyList
+import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @HiltViewModel
 class CoinsViewModel @Inject constructor(
-    private val dashCoinRepository: DashCoinRepository,
-    private val firebaseRepository: FirebaseRepository,
+    private val dashCoinRepository: DashCoinRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CoinsState())
-    val state: StateFlow<CoinsState> = _state
+    val state = _state.asStateFlow()
+
+    private val _paginationState = MutableStateFlow(PaginationState())
+    val paginationState = _paginationState.asStateFlow()
+
 
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
 
-    val isCurrentUserExist = firebaseRepository.isCurrentUserExist()
-
 
     init {
-        getCoins()
+        if (_state.value.coins.isEmpty()) {
+            getCoins()
+        }
     }
 
-
-    private fun getCoins() {
-        dashCoinRepository.getCoins().onEach { result ->
+    fun getCoins() {
+       dashCoinRepository.getCoins(
+            skip = _paginationState.value.skip
+        ).onEach { result ->
             when (result) {
-                is Resource.Success -> {
-                    _state.emit(
-                        CoinsState(
-                            coins = result.data ?: emptyList()
-                        )
-                    )
-                }
-                is Resource.Error -> {
-                    _state.emit(
-                        CoinsState(
-                            error = result.message ?: "Unexpected Error"
-                        )
-                    )
-
-                }
-                is Resource.Loading -> {
-                    _state.emit(
-                        CoinsState(isLoading = true)
-                    )
-                }
+                is Resource.Success -> result.data?.let { data -> onRequestSuccess(data) }
+                is Resource.Error -> onRequestError(result.message)
+                is Resource.Loading -> onRequestLoading()
             }
-        }.launchIn(viewModelScope)
+        }.launchIn(viewModelScope + SupervisorJob())
+    }
+
+    fun getCoinsPaginated() {
+        if (!_paginationState.value.endReached && _state.value.coins.isNotEmpty()) {
+            getCoins()
+        }
+    }
+
+    private fun onRequestSuccess(
+        data: List<Coins>
+    ) {
+        _state.update {
+            it.copy(
+                coins = it.coins + data,
+                isLoading = false
+            )
+        }
+
+        val listSize = _state.value.coins.size
+        _paginationState.update {
+            it.copy(
+                skip = listSize,
+                endReached = data.isEmpty() || listSize == COINS_LIMIT,
+                isLoading = false
+            )
+        }
+    }
+
+    private fun onRequestError(
+        message: String?
+    ) {
+        _state.update {
+            it.copy(
+                error = message ?: "Unexpected Error",
+                isLoading = false
+            )
+        }
+    }
+    private fun onRequestLoading() {
+        if (_state.value.coins.isEmpty()) {
+            _state.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+        }
+
+        if (_state.value.coins.isNotEmpty()) {
+            _paginationState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+        }
     }
 
     fun refresh() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _isRefresh.emit(true)
+            _paginationState.update { it.copy(skip = 0) }
+            _state.update { it.copy(coins = emptyList()) }
             getCoins()
             _isRefresh.emit(false)
         }
 
     }
 
+    companion object {
+        const val COINS_LIMIT = 200
+    }
 }

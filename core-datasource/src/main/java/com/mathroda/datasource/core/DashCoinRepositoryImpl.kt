@@ -10,10 +10,7 @@ import com.mathroda.network.dto.toChart
 import com.mathroda.network.dto.toCoinDetail
 import com.mathroda.network.dto.toCoins
 import com.mathroda.network.dto.toNewsDetail
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
 import javax.inject.Inject
@@ -23,17 +20,16 @@ class DashCoinRepositoryImpl @Inject constructor(
 ) : DashCoinRepository {
 
     //api requests functions implementation
-    override fun getCoins(): Flow<Resource<List<com.mathroda.domain.Coins>>> = callbackFlow {
+    override fun getCoins(skip: Int): Flow<Resource<List<com.mathroda.domain.Coins>>> = flow {
         try {
-            this.trySend(Resource.Loading())
-            val coins = api.getCoins().coins.map { it.toCoins() }
-            this.trySend(Resource.Success(coins))
+            emit(Resource.Loading())
+            val coins = api.getCoins(skip = skip).coins.map { it.toCoins() }
+            emit(Resource.Success(coins))
         } catch (e: HttpException) {
-            this.trySend(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
+            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
         } catch (e: IOException) {
-            this.trySend(Resource.Error("Couldn't reach server. Check your internet connection"))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
-        awaitClose { this.cancel() }
     }
 
     override fun getCoinById(coinId: String): Flow<Resource<CoinById>> = flow {

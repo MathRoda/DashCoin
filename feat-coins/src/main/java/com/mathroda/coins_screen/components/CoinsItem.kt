@@ -76,9 +76,10 @@ fun CoinsItem(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(2.dp))
+                        .padding(0.dp)
                         .background(com.mathroda.common.theme.LighterGray)
-                        .size(16.dp)
                         .align(CenterVertically)
+                        .padding(2.dp)
                 ) {
                     Text(
                         text = coins.rank.toString(),
