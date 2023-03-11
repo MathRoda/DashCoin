@@ -7,10 +7,26 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="Embedded JDK" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core-datasource" />
+            <option value="$PROJECT_DIR$/core-domain" />
+            <option value="$PROJECT_DIR$/core-infrastructure" />
+            <option value="$PROJECT_DIR$/core-network" />
+            <option value="$PROJECT_DIR$/feat-auth-forgot-password" />
+            <option value="$PROJECT_DIR$/feat-auth-signin" />
+            <option value="$PROJECT_DIR$/feat-auth-signup" />
+            <option value="$PROJECT_DIR$/feat-coin-detail" />
+            <option value="$PROJECT_DIR$/feat-coins" />
+            <option value="$PROJECT_DIR$/feat-common" />
+            <option value="$PROJECT_DIR$/feat-favorite-coins" />
+            <option value="$PROJECT_DIR$/feat-news" />
+            <option value="$PROJECT_DIR$/feat-onboarding" />
+            <option value="$PROJECT_DIR$/feat-profile" />
           </set>
         </option>
       </GradleProjectSettings>
