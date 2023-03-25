@@ -7,7 +7,7 @@ object Constants {
     //const val DATABASE_NAME = "coins_db"
     const val CREATE_ACCOUNT = "Create Account,"
     const val WELCOME_DASH_COIN = "Welcome to /DashCoin"
-    const val SIGN_IN_TO_ACCESS = "Login to track your crypto assets."
+    const val SIGN_IN_TO_ACCESS = "Login to track your favorite coins."
     const val SIGN_UP_TO_GET_STARTED = "Register to get access to /Dash Coin."
     const val FORGOT_PASSWORD = "Forgot your password?"
     const val FORGOT_PASSWORD_DESCRIPTION =

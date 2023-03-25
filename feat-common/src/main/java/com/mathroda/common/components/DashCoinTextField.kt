@@ -21,7 +21,7 @@ import com.mathroda.common.theme.CustomGreen
 import com.mathroda.common.theme.LighterGray
 
 @Composable
-fun CustomTextField(
+fun DashCoinTextField(
     text: String,
     placeholder: String,
     isPasswordTextField: Boolean,

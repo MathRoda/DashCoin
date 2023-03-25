@@ -14,8 +14,6 @@ import com.airbnb.lottie.compose.*
 import com.mathroda.common.components.CommonTopBar
 import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.navigation.Destinations
-import com.mathroda.common.theme.CustomBrightGreen
-import com.mathroda.common.theme.CustomGreen
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.favorite_coins.R
 
@@ -30,7 +28,7 @@ fun WatchListGhostUsers(navController: NavController) {
 
     Box(
         modifier = Modifier
-            .background(com.mathroda.common.theme.DarkGray)
+            .background(DarkGray)
             .fillMaxSize()
             .padding(12.dp)
     ) {
@@ -66,10 +64,6 @@ fun WatchListGhostUsers(navController: NavController) {
                         .fillMaxWidth()
                         .background(DarkGray)
                         .padding(bottom = 24.dp),
-                    color = listOf(
-                        CustomGreen,
-                        CustomBrightGreen
-                    )
                 ) {
                     navController.navigate(Destinations.SignIn.route)
                 }

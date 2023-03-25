@@ -12,24 +12,21 @@ import com.mathroda.signin_screen.SignInViewModel
 fun SignInWithGoogle(
     viewModel: SignInViewModel = hiltViewModel(),
     navigateToCoinsScreen: (signedIn: Boolean) -> Unit,
-    isVisible: (Boolean) -> Unit,
-    isLoading: (Boolean) -> Unit
+    updateScreenState: (isVisible: Boolean, isLoading: Boolean) -> Unit
 ) {
     when (val signInWithGoogleResponse =
         viewModel.signInWithGoogleResponse.collectAsState().value) {
         is Response.Loading -> {
-            isVisible(false)
-            isLoading(true)
+           updateScreenState(false, true)
         }
         is Response.Success -> signInWithGoogleResponse.data?.let { signedIn ->
-            LaunchedEffect(signedIn) {
-                navigateToCoinsScreen(signedIn)
-            }
+            if (signedIn) navigateToCoinsScreen(true)
+
+            if (!signedIn) navigateToCoinsScreen(false)
         }
         is Response.Failure -> {
             LaunchedEffect(Unit) {
-                isVisible(true)
-                isLoading(false)
+                updateScreenState(true, false)
                 Log.e("dashcoinfirebase", signInWithGoogleResponse.e.toString())
             }
         }
