@@ -17,11 +17,12 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 
-@OptIn(ExperimentalPagerApi::class)
+
+@ExperimentalPagerApi
 @Composable
 fun CustomOnBoardingButton(
-    text: String = "Discover DashCoin",
     modifier: Modifier = Modifier,
+    text: String = "Discover DashCoin",
     color: Color = com.mathroda.common.theme.CustomGreen,
     fontWeight: FontWeight = FontWeight.SemiBold,
     pagerState: PagerState,

@@ -1,6 +1,9 @@
 package com.mathroda.common.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,11 +25,16 @@ fun LoadingDots(
     )
 
     AnimatedVisibility(visible = isLoading) {
-        LottieAnimation(
-            modifier = modifier
-                .size(150.dp),
-            composition = lottieComp,
-            progress = { lottieProgress },
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            LottieAnimation(
+                modifier = modifier
+                    .size(150.dp),
+                composition = lottieComp,
+                progress = { lottieProgress },
+            )
+        }
     }
 }

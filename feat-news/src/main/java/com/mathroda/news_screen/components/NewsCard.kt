@@ -35,9 +35,7 @@ fun NewsCard(
                 shape = RoundedCornerShape(15.dp),
                 color = LighterGray
             )
-            .clickable {
-                onClick()
-            },
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Card(
