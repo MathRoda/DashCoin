@@ -18,7 +18,8 @@ import com.mathroda.components.OnBoardingTopSection
 import com.mathroda.components.PagerScreen
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+
+@ExperimentalPagerApi
 @Composable
 fun OnBoardingScreen(
     viewModel: OnBoardingViewModel = hiltViewModel(),
@@ -47,7 +48,8 @@ fun OnBoardingScreen(
                 if (state.currentPage + 1 < pager.size) scope.launch {
                     state.scrollToPage(pager.size - 1)
                 }
-            }
+            },
+            isSkipVisible = state.currentPage != 2
         )
 
         HorizontalPager(
@@ -68,7 +70,7 @@ fun OnBoardingScreen(
                 verticalAlignment = Bottom,
                 horizontalArrangement = Arrangement.End
             ) {
-                CustomBottomSection() {
+                CustomBottomSection {
                     if (state.currentPage + 1 < pager.size) scope.launch {
                         state.scrollToPage(state.currentPage + 1)
                     }
@@ -76,14 +78,13 @@ fun OnBoardingScreen(
             }
         }
 
-        Box {
-            CustomOnBoardingButton(
-                pagerState = state
-            ) {
-                viewModel.saveOnBoardingState(completed = true)
-                popBackStack()
-            }
+        CustomOnBoardingButton(
+            pagerState = state
+        ) {
+            viewModel.saveOnBoardingState(completed = true)
+            popBackStack()
         }
+
     }
 
 
