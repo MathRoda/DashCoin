@@ -38,8 +38,7 @@ fun CoinDetailScreen(
     ) {
         coinState.coin?.let { coin ->
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 item {
                     TopBarCoinDetail(
@@ -47,17 +46,12 @@ fun CoinDetailScreen(
                         coinSymbol = coin.symbol,
                         icon = coin.icon,
                         isFavorite = viewModel.isFavoriteState.value,
-                        onCLick = {
-                            viewModel.onFavoriteClick(
-                                coin = coin
-                            )
-                        }
+                        onCLick = { viewModel.onFavoriteClick(coin) }
                     )
 
                     CustomDialog(
                         dialogState = viewModel.dialogState,
-                        coin = coin,
-                        navController = navController
+                        coin = coin
                     ) {
                         viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin))
                     }

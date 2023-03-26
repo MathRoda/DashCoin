@@ -23,7 +23,6 @@ import com.mathroda.domain.ChartTimeSpan
 import com.mathroda.domain.CoinById
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -44,8 +43,8 @@ class CoinDetailViewModel @Inject constructor(
     private val _chartState = mutableStateOf(ChartState())
     val chartState: State<ChartState> = _chartState
 
-    private val _favoriteMsg = mutableStateOf("")
-    val favoriteMsg: State<String> = _favoriteMsg
+    private val _favoriteMsg = mutableStateOf(IsFavoriteState.Messages())
+    val favoriteMsg: State<IsFavoriteState.Messages> = _favoriteMsg
 
     private val _sideEffect = mutableStateOf(false)
     val sideEffect: State<Boolean> = _sideEffect
@@ -147,15 +146,13 @@ class CoinDetailViewModel @Inject constructor(
                 viewModelScope.launch {
                     firebaseRepository.addCoinFavorite(events.coin).collect { result ->
                         when (result) {
-                            is Resource.Loading -> {}
                             is Resource.Success -> {
-                                _favoriteMsg.value =
-                                    "${events.coin.name} successfully added to favorite! "
+                                _favoriteMsg.value = IsFavoriteState.Messages(
+                                    favoriteMessage = "${events.coin.name} successfully added to favorite! "
+                                )
                                 _isFavoriteState.value = IsFavoriteState.Favorite
                             }
-                            is Resource.Error -> {
-                                _favoriteMsg.value = result.message.toString()
-                            }
+                            else-> {}
                         }
                     }
                 }
@@ -163,8 +160,17 @@ class CoinDetailViewModel @Inject constructor(
 
             is FavoriteCoinEvents.DeleteCoin -> {
                 viewModelScope.launch {
-                    firebaseRepository.deleteCoinFavorite(events.coin).collect()
-                    _isFavoriteState.value = IsFavoriteState.NotFavorite
+                    firebaseRepository.deleteCoinFavorite(events.coin).collect { result ->
+                        when(result) {
+                            is Resource.Success -> {
+                                _favoriteMsg.value = IsFavoriteState.Messages(
+                                    notFavoriteMessage = "${events.coin.name} removed from favorite! "
+                                )
+                                _isFavoriteState.value = IsFavoriteState.NotFavorite
+                            }
+                            else -> {}
+                        }
+                    }
                 }
             }
 

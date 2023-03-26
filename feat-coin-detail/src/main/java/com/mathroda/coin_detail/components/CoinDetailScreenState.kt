@@ -69,13 +69,24 @@ fun BoxScope.CoinDetailScreenState(
 
 
     /**
-     * when favorite a coin state
+     * when add favorite a coin state
      */
 
-    if (favoriteMsg.isNotBlank()) {
+    if (favoriteMsg.favoriteMessage.isNotEmpty()) {
         SweetToastUtil.SweetSuccess(
             padding = PaddingValues(24.dp),
-            message = favoriteMsg
+            message = favoriteMsg.favoriteMessage
+        )
+    }
+
+    /**
+     * when remove favorite a coin state
+     */
+
+    if (favoriteMsg.notFavoriteMessage.isNotEmpty()) {
+        SweetToastUtil.SweetError(
+            padding = PaddingValues(24.dp),
+            message = favoriteMsg.notFavoriteMessage
         )
     }
 

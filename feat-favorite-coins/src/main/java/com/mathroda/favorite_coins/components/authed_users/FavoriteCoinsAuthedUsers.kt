@@ -2,7 +2,6 @@ package com.mathroda.favorite_coins.components.authed_users
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -49,7 +48,7 @@ fun WatchListAuthedUsers(
     ) {
 
 
-        CommonTopBar(title = "Watch List")
+        CommonTopBar(title = "Favorite Coins")
 
         marketState.coin?.let { status ->
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -77,17 +76,12 @@ fun WatchListAuthedUsers(
                 LazyColumn {
                     items(watchListState.coin) { coin ->
                         WatchlistItem(
-                            modifier = Modifier
-                                .clickable (
-                                    onClick = {
-                                        navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.id}")
-                                    }
-                                ),
                             icon = coin.icon,
                             coinName = coin.name,
                             symbol = coin.symbol,
                             rank = coin.rank.toString(),
-                            marketStatus = coin.priceChange1d
+                            marketStatus = coin.priceChange1d,
+                            onItemClick = { navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.id}") }
                         )
                     }
                 }

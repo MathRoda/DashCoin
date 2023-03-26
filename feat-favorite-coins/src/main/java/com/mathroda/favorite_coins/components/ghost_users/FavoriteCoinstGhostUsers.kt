@@ -35,7 +35,7 @@ fun WatchListGhostUsers(navController: NavController) {
         Column(
             verticalArrangement = Arrangement.Center
         ) {
-            CommonTopBar(title = "Watch List")
+            CommonTopBar(title = "Favorite Coins")
 
             LottieAnimation(
                 modifier = Modifier

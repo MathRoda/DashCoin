@@ -12,7 +12,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.navigation.NavController
 import com.mathroda.common.state.DialogState
 import com.mathroda.domain.CoinById
 
@@ -20,7 +19,6 @@ import com.mathroda.domain.CoinById
 fun CustomDialog(
     dialogState: MutableState<DialogState>,
     coin: CoinById?,
-    navController: NavController,
     onClick: () -> Unit
 ) {
     if (dialogState.value == DialogState.Open) {
@@ -28,7 +26,6 @@ fun CustomDialog(
             CustomDialogUI(
                 dialogState = dialogState,
                 coin = coin,
-                navController = navController,
                 onClick = { onClick() }
             )
         }
@@ -43,8 +40,8 @@ fun CustomDialogUI(
     dialogState: MutableState<DialogState>,
     onClick: () -> Unit,
     coin: CoinById?,
-    navController: NavController
 ) {
+
     Card(
         //shape = MaterialTheme.shapes.medium,
         shape = RoundedCornerShape(10.dp),
@@ -103,7 +100,6 @@ fun CustomDialogUI(
                 TextButton(onClick = {
                     dialogState.value = DialogState.Close
                     onClick()
-                    navController.popBackStack()
 
                 }) {
                     Text(

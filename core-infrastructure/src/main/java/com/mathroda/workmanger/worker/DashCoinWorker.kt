@@ -50,20 +50,25 @@ class DashCoinWorker @AssistedInject constructor(
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let { coin ->
-                            if (coin.priceChange1d >= 0) {
+                            if (coin.priceChange1d > 0) {
                                 notification.show(
                                     title = Constants.TITLE,
                                     description = DESCRIPTION_POSITIVE,
                                     id = marketStatusId,
                                     state = state
                                 )
-                            } else {
+                                return@collect
+                            }
+
+                            if (coin.priceChange1d < 0) {
                                 notification.show(
                                     title = Constants.TITLE,
                                     description = Constants.DESCRIPTION_NEGATIVE,
                                     id = marketStatusId,
                                     state = state
                                 )
+
+                                return@collect
                             }
                         }
                     }
