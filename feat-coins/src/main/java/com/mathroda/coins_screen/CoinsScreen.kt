@@ -108,7 +108,7 @@ fun CoinScreen(
                             it.name.contains(isBeingSearched, ignoreCase = true) ||
                                     it.id.contains(isBeingSearched, ignoreCase = true) ||
                                     it.symbol.contains(isBeingSearched, ignoreCase = true)
-                        }, key = { it.id }) { coins ->
+                        }, key = { it.uniqueId }) { coins ->
                             CoinsItem(
                                 coins = coins,
                                 onItemClick = {

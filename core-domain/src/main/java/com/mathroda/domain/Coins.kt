@@ -1,7 +1,10 @@
 package com.mathroda.domain
 
+import java.util.*
+
 
 data class Coins(
+    val uniqueId: String = UUID.randomUUID().toString(),
     val id: String,
     val icon: String,
     val marketCap: Double,
