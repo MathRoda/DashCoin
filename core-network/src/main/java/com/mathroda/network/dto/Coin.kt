@@ -1,5 +1,7 @@
 package com.mathroda.network.dto
 
+import com.mathroda.domain.Coins
+
 data class Coin(
     val availableSupply: Double,
     val contractAddress: String,
@@ -23,16 +25,16 @@ data class Coin(
     val websiteUrl: String
 )
 
-fun Coin.toCoins(): com.mathroda.domain.Coins {
-    return com.mathroda.domain.Coins(
-        id,
-        icon,
-        marketCap,
-        name,
-        price,
-        priceChange1d,
-        rank,
-        symbol
+fun Coin.toCoins(): Coins {
+    return Coins(
+        id = id,
+        icon = icon,
+        marketCap = marketCap,
+        name = name,
+        price = price,
+        priceChange1d = priceChange1d,
+        rank = rank,
+        symbol = symbol
     )
 }
 
