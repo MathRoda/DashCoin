@@ -13,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.*
 import com.mathroda.coin_detail.CoinDetailViewModel
 import com.mathroda.common.R
+import com.mathroda.common.components.InternetConnectivityManger
 import com.mathroda.common.components.LoadingDots
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
@@ -59,6 +60,10 @@ fun BoxScope.CoinDetailScreenState(
                     .padding(horizontal = 20.dp)
                     .align(Alignment.Center)
             )
+
+            InternetConnectivityManger {
+               viewModel.updateUiState()
+            }
         }
     }
 

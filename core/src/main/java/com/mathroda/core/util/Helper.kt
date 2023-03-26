@@ -4,13 +4,13 @@ import java.text.NumberFormat
 import java.util.*
 import java.util.regex.Pattern
 
-fun numbersToCurrency(number: Int): String? {
+fun numbersToCurrency(number: Int): String {
     val numberFormat = NumberFormat.getCurrencyInstance()
     numberFormat.currency = Currency.getInstance("USD")
     return numberFormat.format(number)
 }
 
-fun numbersToFormat(number: Int): String? {
+fun numbersToFormat(number: Int): String {
     val numberFormat = NumberFormat.getNumberInstance()
     return numberFormat.format(number)
 }

@@ -19,7 +19,9 @@ import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.common.components.CommonTopBar
+import com.mathroda.common.components.InternetConnectivityManger
 import com.mathroda.common.navigation.Destinations
+import com.mathroda.common.theme.CustomGreen
 import com.mathroda.common.theme.LighterGray
 import com.mathroda.favorite_coins.FavoriteCoinsViewModel
 import com.mathroda.favorite_coins.components.common.MarketStatusBar
@@ -32,9 +34,9 @@ fun WatchListPremiumUsers(
     viewModel: FavoriteCoinsViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val watchListState = viewModel.state.collectAsState()
+    val watchListState by viewModel.state.collectAsState()
     val isRefresh by viewModel.isRefresh.collectAsState()
-    val marketState = viewModel.marketStatus.value
+    val marketState by viewModel.marketStatus
 
     Box(
         modifier = Modifier
@@ -46,17 +48,15 @@ fun WatchListPremiumUsers(
         Column {
             CommonTopBar(title = "Watch List")
             marketState.coin?.let { status ->
-                LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    item {
-                        MarketStatusBar(
-                            marketStatus1h = status.priceChange1h!!,
-                            marketStatus1d = status.priceChange1d!!,
-                            marketStatus1w = status.priceChange1w!!,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 18.dp, bottom = 12.dp)
-                        )
-                    }
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    MarketStatusBar(
+                        marketStatus1h = status.priceChange1h,
+                        marketStatus1d = status.priceChange1d,
+                        marketStatus1w = status.priceChange1w,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 18.dp, bottom = 12.dp)
+                    )
                 }
             }
 
@@ -69,7 +69,7 @@ fun WatchListPremiumUsers(
                 state = rememberSwipeRefreshState(isRefreshing = isRefresh),
                 onRefresh = { viewModel.refresh() }) {
                 LazyColumn {
-                    items(watchListState.value.coin) { coin ->
+                    items(watchListState.coin) { coin ->
                         WatchlistItem(
                             modifier = Modifier
                                 .combinedClickable(
@@ -77,22 +77,22 @@ fun WatchListPremiumUsers(
                                         navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.id}")
                                     },
                                 ),
-                            icon = coin.icon!!,
-                            coinName = coin.name!!,
-                            symbol = coin.symbol!!,
+                            icon = coin.icon,
+                            coinName = coin.name,
+                            symbol = coin.symbol,
                             rank = coin.rank.toString(),
-                            marketStatus = coin.priceChange1d ?: 0.0
+                            marketStatus = coin.priceChange1d
                         )
                     }
                 }
             }
 
         }
-        if (marketState.isLoading) {
+        if (watchListState.isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier
                     .align(Alignment.Center),
-                color = com.mathroda.common.theme.CustomGreen
+                color = CustomGreen
             )
         }
 
@@ -106,6 +106,10 @@ fun WatchListPremiumUsers(
                     .padding(horizontal = 20.dp)
                     .align(Alignment.Center)
             )
+
+            InternetConnectivityManger {
+                viewModel.refresh()
+            }
         }
     }
 

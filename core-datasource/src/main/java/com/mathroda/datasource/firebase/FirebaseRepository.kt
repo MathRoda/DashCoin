@@ -5,12 +5,11 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.mathroda.core.util.Resource
 import com.mathroda.domain.CoinById
-import com.mathroda.domain.DashCoinUser
 import kotlinx.coroutines.flow.Flow
 
 interface FirebaseRepository {
 
-    fun getUserId(): Flow<String>
+    fun getUserId(): String?
 
     fun signUpWithEmailAndPassword(
         email: String,
@@ -46,7 +45,7 @@ interface FirebaseRepository {
 
     fun updateUserToPremium(result: Boolean): Flow<Resource<Task<Void>>>
 
-    fun updateFavoriteCoinsCount(count: Int): Flow<Resource<Task<Void>>>
+    suspend fun updateFavoriteCoinsCount(count: Int)
 
     fun getUserCredentials(): Flow<com.mathroda.core.util.Resource<com.mathroda.domain.DashCoinUser>>
 
