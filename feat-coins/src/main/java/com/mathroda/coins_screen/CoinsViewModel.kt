@@ -37,20 +37,22 @@ class CoinsViewModel @Inject constructor(
         }
     }
 
-    fun getCoins() {
-       dashCoinRepository.getCoins(
-            skip = _paginationState.value.skip
-        ).onEach { result ->
-            when (result) {
-                is Resource.Success -> result.data?.let { data -> onRequestSuccess(data) }
-                is Resource.Error -> onRequestError(result.message)
-                is Resource.Loading -> onRequestLoading()
-            }
-        }.launchIn(viewModelScope + SupervisorJob())
+    private fun getCoins() {
+       dashCoinRepository.getCoins(skip = _paginationState.value.skip)
+           .distinctUntilChanged()
+           .onEach { result ->
+                when (result) {
+                    is Resource.Success -> result.data?.let { data -> onRequestSuccess(data) }
+                    is Resource.Error -> onRequestError(result.message)
+                    is Resource.Loading -> onRequestLoading()
+                }
+           }
+           .launchIn(viewModelScope + SupervisorJob())
     }
 
     fun getCoinsPaginated() {
         if (!_paginationState.value.endReached && _state.value.coins.isNotEmpty()) {
+            if (_paginationState.value.isLoading) return
             getCoins()
         }
     }
@@ -105,16 +107,20 @@ class CoinsViewModel @Inject constructor(
 
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
-            _isRefresh.emit(true)
+            updateRefreshState(true)
             _paginationState.update { it.copy(skip = 0) }
             _state.update { it.copy(coins = emptyList()) }
             getCoins()
-            _isRefresh.emit(false)
+            updateRefreshState(false)
         }
 
     }
 
+    private fun updateRefreshState(
+        value: Boolean
+    ) = _isRefresh.update { value }
+
     companion object {
-        const val COINS_LIMIT = 200
+        const val COINS_LIMIT = 400
     }
 }
