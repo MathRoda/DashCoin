@@ -113,6 +113,7 @@ fun SignInScreen(
                 isError = screenState.isError,
                 errorMsg = "*Enter valid email address",
                 isPasswordTextField = false,
+                singleLine = true,
                 trailingIcon = {
                     if (screenState.email.isNotBlank()) {
                         IconButton(
@@ -132,6 +133,7 @@ fun SignInScreen(
                 isPasswordTextField = !screenState.isPasswordVisible,
                 onValueChange = viewModel::updatePasswordState,
                 isError = screenState.isError,
+                singleLine = true,
                 errorMsg = "*Enter valid password",
                 trailingIcon = {
                     IconButton(
