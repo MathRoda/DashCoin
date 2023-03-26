@@ -35,7 +35,7 @@ class CoinDetailViewModel @Inject constructor(
     private val dashCoinRepository: DashCoinRepository,
     private val firebaseRepository: FirebaseRepository,
     private val providersRepository: ProvidersRepository,
-    savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _coinState = mutableStateOf(CoinState())
@@ -63,7 +63,11 @@ class CoinDetailViewModel @Inject constructor(
     val authState: State<UserState> = _authState
 
     init {
-        userState()
+        updateUserState()
+        updateUiState()
+    }
+
+    fun updateUiState() {
         savedStateHandle.get<String>(PARAM_COIN_ID)?.let { coinId ->
             getCoin(coinId)
             getChart(coinId, TimeRange.ONE_DAY)
@@ -75,6 +79,7 @@ class CoinDetailViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _coinState.value = CoinState(coin = result.data)
+                    isFavorite()
                 }
                 is Resource.Error -> {
                     _coinState.value = CoinState(
@@ -89,7 +94,7 @@ class CoinDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getChart(coinId: String, period: TimeRange) {
+    private fun getChart(coinId: String, period: TimeRange) {
         dashCoinRepository.getChartsData(coinId, getTimeSpanByTimeRange(period)).onEach { result ->
             when (result) {
                 is Resource.Success -> {
@@ -113,6 +118,17 @@ class CoinDetailViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun onTimeSpanChanged(
+        timeRange: TimeRange
+    ) {
+       _coinState.value.coin?.id?.let { coinId ->
+           getChart(
+               coinId = coinId,
+               period = timeRange
+           )
+       }
     }
 
     private fun getTimeSpanByTimeRange(timeRange: TimeRange): ChartTimeSpan =
@@ -155,8 +171,8 @@ class CoinDetailViewModel @Inject constructor(
         }
     }
 
-    fun isFavorite(coin: CoinById) {
-        viewModelScope.launch {
+    private suspend fun isFavorite() {
+        _coinState.value.coin?.let { coin ->
             firebaseRepository.isFavoriteState(coin).firstOrNull()?.let {
                 if (coin.id == it.id) {
                     _isFavoriteState.value = IsFavoriteState.Favorite
@@ -167,7 +183,7 @@ class CoinDetailViewModel @Inject constructor(
         }
     }
 
-    private fun userState() {
+    private fun updateUserState() {
         viewModelScope.launch {
             providersRepository.userStateProvider(
                 function = {}

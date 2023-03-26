@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.common.state.MarketState
+import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
-import com.mathroda.core.state.UserState
 import com.mathroda.datasource.providers.ProvidersRepository
 import com.mathroda.favorite_coins.state.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,10 +26,10 @@ class FavoriteCoinsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(WatchListState())
-    val state: StateFlow<WatchListState> = _state
+    val state: StateFlow<WatchListState> = _state.asStateFlow()
 
     private val _isRefresh = MutableStateFlow(false)
-    val isRefresh: StateFlow<Boolean> = _isRefresh
+    val isRefresh: StateFlow<Boolean> = _isRefresh.asStateFlow()
 
     private val _marketStatus = mutableStateOf(MarketState())
     val marketStatus: State<MarketState> = _marketStatus
@@ -50,18 +50,34 @@ class FavoriteCoinsViewModel @Inject constructor(
         getCoinJob = viewModelScope.launch(Dispatchers.IO) {
             firebaseRepository.getCoinFavorite().collect { result ->
                 when (result) {
-                    is Resource.Loading -> {}
+                    is Resource.Loading -> {
+                        _state.update {
+                            it.copy(
+                                isLoading = true
+                            )
+                        }
+                    }
                     is Resource.Success -> {
-                        result.data?.let {
-                            _state.emit(WatchListState(coin = it))
+                        result.data?.let { data ->
+                            _state.update {
+                                it.copy(
+                                    coin = data,
+                                    isLoading = false,
+                                    error = ""
+                                )
+                            }
+
+                            firebaseRepository.updateFavoriteCoinsCount(data.size)
                         }
                     }
                     is Resource.Error -> {
-                        _state.emit(WatchListState(error = result.message.toString()))
+                        _state.update {
+                            it.copy(
+                                error = result.message ?: "Unknown Error",
+                                isLoading = false
+                            )
+                        }
                     }
-                }
-                result.data?.size?.let {
-                    firebaseRepository.updateFavoriteCoinsCount(it).collect()
                 }
             }
         }
@@ -71,6 +87,7 @@ class FavoriteCoinsViewModel @Inject constructor(
     fun refresh() {
         viewModelScope.launch {
             _isRefresh.emit(true)
+            getMarketStatus()
             getAllCoins()
             _isRefresh.emit(false)
         }
@@ -89,7 +106,7 @@ class FavoriteCoinsViewModel @Inject constructor(
                     )
                 }
                 is Resource.Loading -> {
-                    _marketStatus.value = MarketState(isLoading = true)
+                   // _marketStatus.value = MarketState(isLoading = true)
                 }
             }
         }.launchIn(viewModelScope)

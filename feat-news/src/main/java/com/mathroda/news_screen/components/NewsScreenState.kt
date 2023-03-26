@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mathroda.common.components.InternetConnectivityManger
 import com.mathroda.common.theme.CustomGreen
 import com.mathroda.news_screen.NewsViewModel
 
@@ -39,6 +40,10 @@ fun BoxScope.NewsScreenState(
                     .padding(horizontal = 20.dp)
                     .align(Alignment.Center)
             )
+
+            InternetConnectivityManger {
+                viewModel.refresh()
+            }
         }
     }
 }

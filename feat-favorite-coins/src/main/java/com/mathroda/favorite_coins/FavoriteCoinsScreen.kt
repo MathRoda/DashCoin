@@ -2,12 +2,13 @@ package com.mathroda.favorite_coins
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.mathroda.core.state.UserState
 import com.mathroda.favorite_coins.components.authed_users.WatchListAuthedUsers
 import com.mathroda.favorite_coins.components.ghost_users.WatchListGhostUsers
-import com.mathroda.core.state.UserState
 import com.mathroda.favorite_coins.components.premium_users.WatchListPremiumUsers
 
 @ExperimentalMaterialApi
@@ -17,7 +18,6 @@ fun WatchListScreen(
     viewModel: FavoriteCoinsViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    viewModel.userState()
     when(viewModel.authState.value) {
 
         is UserState.AuthedUser -> {
@@ -33,5 +33,9 @@ fun WatchListScreen(
             viewModel.refresh()
             WatchListPremiumUsers(navController = navController)
         }
+    }
+
+    LaunchedEffect(true) {
+        viewModel.userState()
     }
 }

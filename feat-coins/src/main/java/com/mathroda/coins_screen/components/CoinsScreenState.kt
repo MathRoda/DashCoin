@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.*
 import com.mathroda.coins_screen.CoinsViewModel
 import com.mathroda.common.R
+import com.mathroda.common.components.InternetConnectivityManger
 
 @Composable
 fun BoxScope.CoinsScreenState(
@@ -52,6 +53,10 @@ fun BoxScope.CoinsScreenState(
                     .padding(horizontal = 20.dp)
                     .align(Alignment.Center)
             )
+
+            InternetConnectivityManger {
+                viewModel.refresh()
+            }
         }
     }
 

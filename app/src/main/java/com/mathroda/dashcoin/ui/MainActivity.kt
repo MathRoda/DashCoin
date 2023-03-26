@@ -16,6 +16,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
+import com.mathroda.common.theme.DashCoinTheme
 import com.mathroda.dashcoin.navigation.root.RootNavigationGraph
 import com.mathroda.dashcoin.splash.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            com.mathroda.common.theme.DashCoinTheme {
+            DashCoinTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
