@@ -59,7 +59,6 @@ class CoinDetailViewModel @Inject constructor(
     val notPremiumDialog: MutableState<DialogState> = _notPremiumDialog
 
     private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
-    val authState: State<UserState> = _authState
 
     init {
         updateUserState()
@@ -203,7 +202,7 @@ class CoinDetailViewModel @Inject constructor(
         }
     }
 
-    private fun premiumLimit(coin: CoinById, sideEffect: MutableState<Boolean>) {
+    private fun premiumLimit(coin: CoinById) {
         viewModelScope.launch {
             firebaseRepository.getUserCredentials().collect { result ->
                 result.data?.let { user ->
@@ -226,7 +225,7 @@ class CoinDetailViewModel @Inject constructor(
             is IsFavoriteState.NotFavorite -> {
                 when (_authState.value) {
                     is UserState.UnauthedUser -> _sideEffect.value = !_sideEffect.value
-                    is UserState.AuthedUser -> premiumLimit(coin, _sideEffect)
+                    is UserState.AuthedUser -> premiumLimit(coin)
                     is UserState.PremiumUser -> onEvent(FavoriteCoinEvents.AddCoin(coin))
                 }
             }
