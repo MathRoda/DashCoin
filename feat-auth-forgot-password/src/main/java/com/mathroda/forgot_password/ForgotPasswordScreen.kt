@@ -18,7 +18,7 @@ import androidx.navigation.NavController
 import com.mathroda.common.components.BackStackButton
 import com.mathroda.common.components.CustomClickableText
 import com.mathroda.common.components.CustomLoginButton
-import com.mathroda.common.components.CustomTextField
+import com.mathroda.common.components.DashCoinTextField
 import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
@@ -82,7 +82,7 @@ fun ForgotPasswordScreen(
             Spacer(modifier = Modifier.height(60.dp))
 
 
-            CustomTextField(
+            DashCoinTextField(
                 text = email,
                 placeholder = "Email ID",
                 onValueChange = { email = it.trim() },
@@ -103,8 +103,6 @@ fun ForgotPasswordScreen(
             CustomLoginButton(
                 text = "SUBMIT",
                 modifier = Modifier.fillMaxWidth(),
-                enabled = isEnabled,
-                isLoading = isLoading
             ) {
                 isError = email.isEmpty()
                 viewModel.resetPasswordWithEmail(email)

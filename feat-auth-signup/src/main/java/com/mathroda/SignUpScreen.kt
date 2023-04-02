@@ -22,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mathroda.common.components.BackStackButton
 import com.mathroda.common.components.CustomClickableText
 import com.mathroda.common.components.CustomLoginButton
-import com.mathroda.common.components.CustomTextField
+import com.mathroda.common.components.DashCoinTextField
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
@@ -96,7 +96,7 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.height(60.dp))
 
-            CustomTextField(
+            DashCoinTextField(
                 text = userName,
                 placeholder = "Username",
                 isPasswordTextField = false,
@@ -114,7 +114,7 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CustomTextField(
+            DashCoinTextField(
                 text = email,
                 placeholder = "Email",
                 isPasswordTextField = false,
@@ -132,7 +132,7 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CustomTextField(
+            DashCoinTextField(
                 text = password,
                 placeholder = "Password",
                 isPasswordTextField = !isPasswordVisible,
@@ -161,8 +161,6 @@ fun SignUpScreen(
             CustomLoginButton(
                 text = "REGISTER",
                 modifier = Modifier.fillMaxWidth(),
-                enabled = isEnabled,
-                isLoading = isLoading
             ) {
                 if (isValidEmail(email) && isValidPassword(password)) {
                     val dashCoinUser = DashCoinUser(

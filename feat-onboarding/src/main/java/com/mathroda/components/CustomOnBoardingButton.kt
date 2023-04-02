@@ -1,7 +1,6 @@
 package com.mathroda.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -16,40 +15,38 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import com.mathroda.common.theme.CustomGreen
 
-@OptIn(ExperimentalPagerApi::class)
+
+@ExperimentalPagerApi
 @Composable
 fun CustomOnBoardingButton(
-    text: String = "Discover DashCoin",
     modifier: Modifier = Modifier,
-    color: Color = com.mathroda.common.theme.CustomGreen,
+    text: String = "Discover DashCoin",
     fontWeight: FontWeight = FontWeight.SemiBold,
     pagerState: PagerState,
     onClick: () -> Unit,
 ) {
-    Row(
-        modifier = modifier
-            .padding(horizontal = 64.dp),
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.Center
+    AnimatedVisibility(
+        visible = pagerState.currentPage == 2
     ) {
-        AnimatedVisibility(
-            visible = pagerState.currentPage == 2,
-            modifier.fillMaxWidth()
+        Row(
+            modifier = modifier
+                .padding(horizontal = 24.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.Center
         ) {
-
             Button(
                 onClick = { onClick() },
                 modifier = modifier
-                    .background(
-                        color = color,
-                        shape = RoundedCornerShape(30.dp)
-                    )
+                    .fillMaxWidth()
                     .height(48.dp),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Transparent
+                    backgroundColor = CustomGreen
                 ),
-                elevation = ButtonDefaults.elevation(0.dp)
+                elevation = ButtonDefaults.elevation(0.dp),
+                shape = RoundedCornerShape(30.dp)
             ) {
                 Text(
                     text = text,
@@ -60,5 +57,4 @@ fun CustomOnBoardingButton(
             }
         }
     }
-
 }

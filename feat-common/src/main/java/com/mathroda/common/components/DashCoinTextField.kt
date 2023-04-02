@@ -21,13 +21,14 @@ import com.mathroda.common.theme.CustomGreen
 import com.mathroda.common.theme.LighterGray
 
 @Composable
-fun CustomTextField(
+fun DashCoinTextField(
     text: String,
     placeholder: String,
     isPasswordTextField: Boolean,
     isError: Boolean = false,
     onValueChange: (String) -> Unit,
     errorMsg: String = "",
+    singleLine: Boolean = false,
     trailingIcon: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
@@ -49,6 +50,7 @@ fun CustomTextField(
         else VisualTransformation.None,
         trailingIcon = trailingIcon,
         keyboardOptions = keyboardOptions,
+        singleLine = singleLine
     )
 }
 
@@ -105,7 +107,7 @@ fun CustomTextFieldWithError(
             maxLines = maxLines,
             interactionSource = interactionSource,
             shape = shape,
-            colors = colors
+            colors = colors,
         )
 
         if (isError) {

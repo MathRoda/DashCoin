@@ -28,7 +28,8 @@ fun WatchlistItem(
     coinName: String,
     symbol: String,
     rank: String,
-    marketStatus: Double = 0.0
+    marketStatus: Double = 0.0,
+    onItemClick: () -> Unit
 ) {
 
     Card(
@@ -36,7 +37,8 @@ fun WatchlistItem(
         modifier = modifier
             .padding(10.dp, 5.dp, 10.dp, 10.dp),
         elevation = 12.dp,
-        backgroundColor = com.mathroda.common.theme.LighterGray
+        backgroundColor = com.mathroda.common.theme.LighterGray,
+        onClick = onItemClick
 
     ) {
         Column(

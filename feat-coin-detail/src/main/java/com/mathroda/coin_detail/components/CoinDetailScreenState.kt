@@ -13,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.*
 import com.mathroda.coin_detail.CoinDetailViewModel
 import com.mathroda.common.R
+import com.mathroda.common.components.InternetConnectivityManger
 import com.mathroda.common.components.LoadingDots
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
@@ -59,18 +60,33 @@ fun BoxScope.CoinDetailScreenState(
                     .padding(horizontal = 20.dp)
                     .align(Alignment.Center)
             )
+
+            InternetConnectivityManger {
+               viewModel.updateUiState()
+            }
         }
     }
 
 
     /**
-     * when favorite a coin state
+     * when add favorite a coin state
      */
 
-    if (favoriteMsg.isNotBlank()) {
+    if (favoriteMsg.favoriteMessage.isNotEmpty()) {
         SweetToastUtil.SweetSuccess(
             padding = PaddingValues(24.dp),
-            message = favoriteMsg
+            message = favoriteMsg.favoriteMessage
+        )
+    }
+
+    /**
+     * when remove favorite a coin state
+     */
+
+    if (favoriteMsg.notFavoriteMessage.isNotEmpty()) {
+        SweetToastUtil.SweetError(
+            padding = PaddingValues(24.dp),
+            message = favoriteMsg.notFavoriteMessage
         )
     }
 

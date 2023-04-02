@@ -16,11 +16,13 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,7 +33,7 @@ import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider.getCredential
 import com.mathroda.common.components.CustomClickableText
-import com.mathroda.common.components.CustomTextField
+import com.mathroda.common.components.DashCoinTextField
 import com.mathroda.common.components.LoadingDots
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
@@ -50,61 +52,50 @@ fun SignInScreen(
     navigateToSignUpScreen: () -> Unit,
     navigateToForgotPassword: () -> Unit,
     popBackStack: () -> Unit,
-    viewModel: SignInViewModel = hiltViewModel()
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var isPasswordVisible by remember { mutableStateOf(false) }
-    var isError = remember { mutableStateOf(false) }
-    var isVisible by remember { mutableStateOf(true) }
-    var isLoading by remember { mutableStateOf(false) }
+    val viewModel = hiltViewModel<SignInViewModel>()
+
+    val screenState by viewModel.screenState.collectAsState()
     val sigInState = viewModel.signIn.collectAsState()
 
     Scaffold {
 
         Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 32.dp)
+                .padding(16.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier
-                    .fillMaxWidth()
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.End
             ) {
-                IconButton(onClick = {
-                    popBackStack()
-                    navigateToCoinsScreen()
-                }) {
+                IconButton(
+                    onClick = {
+                        popBackStack()
+                        navigateToCoinsScreen()
+                    }
+                ) {
                     Icon(
                         tint = Color.White,
-                        modifier = Modifier.graphicsLayer {
-                            scaleX = 1f
-                            scaleY = 1f
-                        },
                         imageVector = Icons.Filled.Close,
                         contentDescription = null
                     )
                 }
             }
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.fillMaxWidth()
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Start
             ) {
                 CustomClickableText(
                     text = WELCOME_DASH_COIN,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
                 ) {}
-            }
-            Spacer(modifier = Modifier.height(5.dp))
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.fillMaxWidth()
-            ) {
+
+                Spacer(modifier = Modifier.height(5.dp))
+
                 CustomClickableText(
                     text = SIGN_IN_TO_ACCESS,
                     fontSize = 16.sp,
@@ -113,19 +104,21 @@ fun SignInScreen(
                 ) {}
             }
 
-
             Spacer(modifier = Modifier.height(60.dp))
 
-            CustomTextField(
-                text = email,
+            DashCoinTextField(
+                text = screenState.email,
                 placeholder = "Email",
-                onValueChange = { email = it.trim() },
-                isError = isError.value,
+                onValueChange = { viewModel.updateEmailState(it.trim()) },
+                isError = screenState.isError,
                 errorMsg = "*Enter valid email address",
                 isPasswordTextField = false,
+                singleLine = true,
                 trailingIcon = {
-                    if (email.isNotBlank()) {
-                        IconButton(onClick = { email = "" }) {
+                    if (screenState.email.isNotBlank()) {
+                        IconButton(
+                            onClick = { viewModel.updateEmailState("") }
+                        ) {
                             Icon(imageVector = Icons.Default.Clear, contentDescription = null)
                         }
                     }
@@ -134,17 +127,20 @@ fun SignInScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CustomTextField(
-                text = password,
+            DashCoinTextField(
+                text = screenState.password,
                 placeholder = "Password",
-                isPasswordTextField = !isPasswordVisible,
-                onValueChange = { password = it },
-                isError = isError.value,
+                isPasswordTextField = !screenState.isPasswordVisible,
+                onValueChange = viewModel::updatePasswordState,
+                isError = screenState.isError,
+                singleLine = true,
                 errorMsg = "*Enter valid password",
                 trailingIcon = {
-                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    IconButton(
+                        onClick = { viewModel.updateIsPasswordVisible(!screenState.isPasswordVisible) }
+                    ) {
                         Icon(
-                            imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            imageVector = if (screenState.isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                             tint = Color.Gray,
                             contentDescription = "Password Toggle"
                         )
@@ -156,6 +152,8 @@ fun SignInScreen(
                 )
 
             )
+
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -172,25 +170,20 @@ fun SignInScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.weight(0.2f))
+            Spacer(modifier = Modifier.height(8.dp))
 
-            LoadingDots(isLoading = isLoading)
+            LoadingDots(isLoading = screenState.isLoading)
 
             LoginSection(
-                customLoginButton = {
-                    viewModel.validatedSignIn(
-                        email = email,
-                        password = password,
-                        isError = isError
-                    )
-                },
+                customLoginButton = viewModel::validatedSignIn,
                 googleSignInButton = {
                     viewModel.oneTapSignIn()
                 },
-                isEnabled = isVisible
+                isEnabled = screenState.isVisible
             )
 
-            Spacer(modifier = Modifier.weight(0.4f))
+            Spacer(modifier = Modifier.height(8.dp))
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
@@ -214,15 +207,11 @@ fun SignInScreen(
 
     }
 
-    if (sigInState.value.isLoading) {
-        LaunchedEffect(Unit) {
-            isVisible = !isVisible
-            isLoading = !isLoading
-        }
-    }
-
-
     if (sigInState.value.signIn != null) {
+        SweetToastUtil.SweetSuccess(
+            message = "You logged in successfully",
+            padding = PaddingValues(bottom = 24.dp)
+        )
         LaunchedEffect(Unit) {
             delay(800)
             navigateToCoinsScreen()
@@ -231,10 +220,6 @@ fun SignInScreen(
 
 
     if (sigInState.value.error.isNotBlank()) {
-        LaunchedEffect(Unit) {
-            isVisible = !isVisible
-            isLoading = !isLoading
-        }
 
         val errorMsg = sigInState.value.error
         SweetToastUtil.SweetError(
@@ -274,7 +259,6 @@ fun SignInScreen(
                 navigateToCoinsScreen()
             }
         },
-        isVisible = { isVisible = it },
-        isLoading = { isLoading = it }
+        updateScreenState = viewModel::updateIsVisibleIsLoadingState
     )
 }

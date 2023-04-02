@@ -6,7 +6,6 @@ import com.mathroda.core.util.Constants
 import com.mathroda.datasource.providers.ProvidersRepository
 import com.mathroda.workmanger.worker.DashCoinWorker
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -33,7 +32,7 @@ class WorkerProviderRepositoryImpl @Inject constructor(
 
                 workManager.enqueueUniquePeriodicWork(
                     Constants.SYNC_DATA_WORK_NAME,
-                    ExistingPeriodicWorkPolicy.REPLACE,
+                    ExistingPeriodicWorkPolicy.UPDATE,
                     workRequest
                 )
             }

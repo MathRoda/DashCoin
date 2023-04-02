@@ -3,10 +3,17 @@ package com.mathroda.profile_screen.drawer
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -16,12 +23,12 @@ import androidx.navigation.NavController
 import com.mathroda.common.components.CustomDialogSignOut
 import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.navigation.Destinations
-import com.mathroda.common.theme.*
+import com.mathroda.common.theme.CustomRed
+import com.mathroda.common.theme.DarkGray
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
 import com.mathroda.profile_screen.ProfileViewModel
 import com.mathroda.profile_screen.menuitem.MenuItems
-import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
@@ -112,10 +119,6 @@ fun Login(navController: NavController) {
                 .fillMaxWidth()
                 .background(DarkGray)
                 .padding(top = 24.dp),
-            color = listOf(
-                CustomGreen,
-                CustomBrightGreen
-            )
         ) {
             navController.navigate(Destinations.SignIn.route)
         }
@@ -145,10 +148,7 @@ fun LogOut(
                 .fillMaxWidth()
                 .background(DarkGray)
                 .padding(top = 24.dp),
-            color = listOf(
-                CustomRed,
-                CustomBrightRed
-            )
+            backgroundColor = CustomRed
         ) {
             openDialogCustom.value = true
         }

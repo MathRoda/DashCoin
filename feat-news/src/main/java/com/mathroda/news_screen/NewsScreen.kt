@@ -36,7 +36,6 @@ fun NewsScreen(
         modifier = Modifier
             .background(DarkGray)
             .fillMaxSize()
-            .padding(4.dp)
     ) {
         Column {
 
@@ -56,25 +55,27 @@ fun NewsScreen(
                 viewModel.getNews(filter)
             }
 
-            Row(
-                modifier = Modifier.padding(12.dp)
-            ) {
-                SwipeRefresh(
-                    state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
-                    onRefresh = { viewModel.refresh() }) {
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+                onRefresh = { viewModel.refresh() }) {
 
-                    LazyColumn {
-                        items(state.news) { news ->
-                            NewsCard(
-                                news = news
-                            ) {
-                                uriHandler.openUri(news.link)
-                            }
-                            Spacer(Modifier.height(15.dp))
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 12.dp)
+                ) {
+                    items(state.news) { news ->
+                        Spacer(Modifier.height(8.dp))
+
+                        NewsCard(
+                            news = news
+                        ) {
+                            uriHandler.openUri(news.link)
                         }
+
+                        Spacer(Modifier.height(8.dp))
                     }
                 }
             }
+
         }
 
         NewsScreenState()

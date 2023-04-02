@@ -37,7 +37,7 @@ class CoinsViewModel @Inject constructor(
         }
     }
 
-    private fun getCoins() {
+    fun getCoins() {
        dashCoinRepository.getCoins(skip = _paginationState.value.skip)
            .distinctUntilChanged()
            .onEach { result ->
@@ -63,7 +63,8 @@ class CoinsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 coins = it.coins + data,
-                isLoading = false
+                isLoading = false,
+                error = ""
             )
         }
 
@@ -83,7 +84,7 @@ class CoinsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 error = message ?: "Unexpected Error",
-                isLoading = false
+                isLoading = false,
             )
         }
     }

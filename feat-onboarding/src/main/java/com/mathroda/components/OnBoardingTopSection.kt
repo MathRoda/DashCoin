@@ -20,6 +20,7 @@ fun OnBoardingTopSection(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onSkipClick: () -> Unit = {},
+    isSkipVisible: Boolean,
     size: Int,
     index: Int
 ) {
@@ -43,12 +44,14 @@ fun OnBoardingTopSection(
         Indicators(size = size, index = index)
 
         // Skip Button
-        TextButton(
-            onClick = onSkipClick,
-            modifier = Modifier.align(Alignment.CenterEnd),
-            contentPadding = PaddingValues(0.dp)
-        ) {
-            Text(text = "Skip", color = com.mathroda.common.theme.TextWhite)
+        if (isSkipVisible) {
+            TextButton(
+                onClick = onSkipClick,
+                modifier = Modifier.align(Alignment.CenterEnd),
+                contentPadding = PaddingValues(0.dp)
+            ) {
+                Text(text = "Skip", color = com.mathroda.common.theme.TextWhite)
+            }
         }
     }
 }

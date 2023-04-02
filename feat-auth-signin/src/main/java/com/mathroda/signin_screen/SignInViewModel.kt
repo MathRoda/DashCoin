@@ -1,6 +1,5 @@
 package com.mathroda.signin_screen
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -14,11 +13,9 @@ import com.mathroda.datasource.google_service.GoogleServicesRepository
 import com.mathroda.datasource.google_service.OneTapSignInResponse
 import com.mathroda.datasource.google_service.SignInWithGoogleResponse
 import com.mathroda.signin_screen.state.SignInState
+import com.mathroda.signin_screen.state.SigniInScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,6 +29,9 @@ class SignInViewModel @Inject constructor(
     private val _signIn = MutableStateFlow(SignInState())
     val signIn = _signIn.asStateFlow()
 
+    private val _screenState = MutableStateFlow(SigniInScreenState())
+    val screenState = _screenState.asStateFlow()
+
     private val _oneTapSignInResponse =
         MutableStateFlow<OneTapSignInResponse>(Response.Success(null))
     val oneTapSignInResponse = _oneTapSignInResponse.asStateFlow()
@@ -41,15 +41,18 @@ class SignInViewModel @Inject constructor(
     val signInWithGoogleResponse = _signInWithGoogleResponse.asStateFlow()
 
 
-    fun validatedSignIn(
-        email: String,
-        password: String,
-        isError: MutableState<Boolean>
-    ) {
-        if (isValidEmail(email) && isValidPassword(password)) {
-            signIn(email, password)
+    fun validatedSignIn() {
+        if (isValidEmail(_screenState.value.email) && isValidPassword(_screenState.value.password)) {
+            signIn(
+                email = _screenState.value.email,
+                password = _screenState.value.password
+            )
         } else {
-            isError.value = !isValidEmail(email) || !isValidPassword(password)
+            _screenState.update {
+                it.copy(
+                    isError = !isValidEmail(_screenState.value.email) || !isValidPassword(_screenState.value.password)
+                )
+            }
         }
     }
 
@@ -58,6 +61,11 @@ class SignInViewModel @Inject constructor(
             when (result) {
                 is Resource.Loading -> {
                     _signIn.emit(SignInState(isLoading = true))
+                    updateIsVisibleIsLoadingState(
+                        isVisible = false,
+                        isLoading = true
+                    )
+
                 }
                 is Resource.Success -> {
                     _signIn.emit(SignInState(signIn = result.data))
@@ -67,6 +75,11 @@ class SignInViewModel @Inject constructor(
                         SignInState(
                             error = result.message ?: "Unexpected error accrued"
                         )
+                    )
+
+                    updateIsVisibleIsLoadingState(
+                        isVisible = true,
+                        isLoading = false
                     )
                 }
             }
@@ -107,4 +120,31 @@ class SignInViewModel @Inject constructor(
     }
 
 
+    fun updateEmailState(
+        value: String
+    ) {
+        _screenState.update { it.copy(email = value) }
+        resetErrorState()
+    }
+
+    fun updatePasswordState(
+        value: String
+    ) = _screenState.update { it.copy(password = value) }
+
+    private fun resetErrorState()
+        = _screenState.update { it.copy(isError = false) }
+
+    fun updateIsPasswordVisible(
+        value: Boolean
+    ) = _screenState.update { it.copy(isPasswordVisible = value) }
+
+    fun updateIsVisibleIsLoadingState(
+        isVisible: Boolean,
+        isLoading: Boolean
+    ) = _screenState.update {
+        it.copy(
+            isVisible = isVisible,
+            isLoading = isLoading
+        )
+    }
 }

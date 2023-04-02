@@ -50,20 +50,25 @@ class DashCoinWorker @AssistedInject constructor(
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let { coin ->
-                            if (coin.priceChange1d!! >= 0) {
+                            if (coin.priceChange1d > 0) {
                                 notification.show(
                                     title = Constants.TITLE,
                                     description = DESCRIPTION_POSITIVE,
                                     id = marketStatusId,
                                     state = state
                                 )
-                            } else {
+                                return@collect
+                            }
+
+                            if (coin.priceChange1d < 0) {
                                 notification.show(
                                     title = Constants.TITLE,
                                     description = Constants.DESCRIPTION_NEGATIVE,
                                     id = marketStatusId,
                                     state = state
                                 )
+
+                                return@collect
                             }
                         }
                     }
@@ -79,21 +84,21 @@ class DashCoinWorker @AssistedInject constructor(
                         result.data?.onEach { coin ->
                             firebaseRepository.updateFavoriteMarketState(coin).collect {}
 
-                            coin.priceChange1d?.let { marketChange ->
+                            coin.priceChange1d.let { marketChange ->
                                 if (marketChange.is5PercentUp()) {
                                     notification.show(
-                                        title = coin.name ?: "Unknown coin",
+                                        title = coin.name ,
                                         description = Constants.DESCRIPTION_MARKET_CHANGE_POSITIVE,
-                                        id = coin.rank ?: 0,
+                                        id = coin.rank,
                                         state = state
                                     )
                                 }
 
                                 if (marketChange.is5PercentDown()) {
                                     notification.show(
-                                        title = coin.name ?: "Unknown coin",
+                                        title = coin.name,
                                         description = Constants.DESCRIPTION_MARKET_CHANGE_NEGATIVE,
-                                        id = coin.rank ?: 0,
+                                        id = coin.rank,
                                         state = state
                                     )
                                 }

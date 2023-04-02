@@ -68,7 +68,7 @@ class SplashViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         result.data?.map {
-                            dashCoinRepository.getCoinById(it.id ?: "").collect { result ->
+                            dashCoinRepository.getCoinById(it.id).collect { result ->
                                 when (result) {
                                     is Resource.Success -> {
                                         result.data?.let { coinById ->

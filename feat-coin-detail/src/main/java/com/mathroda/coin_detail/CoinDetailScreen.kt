@@ -37,40 +37,28 @@ fun CoinDetailScreen(
             .padding(12.dp)
     ) {
         coinState.coin?.let { coin ->
-
-            /**
-             * first thing when the coin detail screen renders it checks
-             * if the coin exist in Firestore and collect the flow as State
-             */
-            viewModel.isFavorite(coin)
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 item {
                     TopBarCoinDetail(
                         navController = navController,
-                        coinSymbol = coin.symbol!!,
-                        icon = coin.icon!!,
+                        coinSymbol = coin.symbol,
+                        icon = coin.icon,
                         isFavorite = viewModel.isFavoriteState.value,
-                        onCLick = {
-                            viewModel.onFavoriteClick(
-                                coin = coin
-                            )
-                        }
+                        onCLick = { viewModel.onFavoriteClick(coin) }
                     )
 
                     CustomDialog(
                         dialogState = viewModel.dialogState,
-                        coin = coin,
-                        navController = navController
+                        coin = coin
                     ) {
                         viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin))
                     }
 
                     CoinDetailSection(
-                        price = coin.price!!,
-                        priceChange = coin.priceChange1d!!
+                        price = coin.price,
+                        priceChange = coin.priceChange1d
                     )
 
                     TimeRangePicker(
@@ -78,11 +66,11 @@ fun CoinDetailScreen(
                             .fillMaxWidth()
                             .padding(start = 16.dp, top = 16.dp, end = 16.dp),
                     ) { timeRange ->
-                        viewModel.getChart(coin.id!!, timeRange)
+                        viewModel.onTimeSpanChanged(timeRange)
                     }
 
                     Chart(
-                        oneDayChange = coin.priceChange1d!!,
+                        oneDayChange = coin.priceChange1d,
                         context = LocalContext.current,
                         charts = chartsState
                     )
@@ -98,10 +86,10 @@ fun CoinDetailScreen(
                             )
                             .padding(start = 16.dp, top = 16.dp, end = 16.dp),
                         rank = "${coin.rank}",
-                        volume = numbersToCurrency(coin.volume!!.toInt())!!,
-                        marketCap = numbersToCurrency(coin.marketCap!!.toInt())!!,
-                        availableSupply = "${numbersToFormat(coin.availableSupply!!.toInt())} ${coin.symbol}",
-                        totalSupply = "${numbersToFormat(coin.totalSupply!!.toInt())} ${coin.symbol}"
+                        volume = numbersToCurrency(coin.volume.toInt()),
+                        marketCap = numbersToCurrency(coin.marketCap.toInt()),
+                        availableSupply = "${numbersToFormat(coin.availableSupply.toInt())} ${coin.symbol}",
+                        totalSupply = "${numbersToFormat(coin.totalSupply.toInt())} ${coin.symbol}"
                     )
 
                     Row(
@@ -116,7 +104,7 @@ fun CoinDetailScreen(
                                 .background(com.mathroda.common.theme.Twitter)
                                 .weight(1f)
                                 .clickable {
-                                    uriHandler.openUri(coin.twitterUrl!!)
+                                    uriHandler.openUri(coin.twitterUrl)
                                 }
                         )
 
@@ -129,7 +117,7 @@ fun CoinDetailScreen(
                                 .background(com.mathroda.common.theme.LighterGray)
                                 .weight(1f)
                                 .clickable {
-                                    uriHandler.openUri(coin.websiteUrl!!)
+                                    uriHandler.openUri(coin.websiteUrl)
                                 }
                         )
                     }
