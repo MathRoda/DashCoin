@@ -1,4 +1,4 @@
-package com.mathroda.domain
+package com.mathroda.domain.model
 
 data class DashCoinUser(
     val userUid: String? = "",

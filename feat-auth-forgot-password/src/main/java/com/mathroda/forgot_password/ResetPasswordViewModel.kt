@@ -2,7 +2,9 @@ package com.mathroda.forgot_password
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathroda.core.util.Resource
 import com.mathroda.datasource.firebase.FirebaseRepository
+import com.mathroda.forgot_password.state.ResetPasswordState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,29 +18,29 @@ class ResetPasswordViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _resetPassword =
-        MutableStateFlow(com.mathroda.forgot_password.state.ResetPasswordState())
+        MutableStateFlow(ResetPasswordState())
     val resetPassword = _resetPassword.asStateFlow()
 
     fun resetPasswordWithEmail(email: String) =
         firebaseRepository.resetPasswordWithEmail(email).onEach { result ->
             when (result) {
-                is com.mathroda.core.util.Resource.Loading -> {
+                is Resource.Loading -> {
                     _resetPassword.emit(
-                        com.mathroda.forgot_password.state.ResetPasswordState(
+                        ResetPasswordState(
                             isLoading = true
                         )
                     )
                 }
-                is com.mathroda.core.util.Resource.Success -> {
+                is Resource.Success -> {
                     _resetPassword.emit(
-                        com.mathroda.forgot_password.state.ResetPasswordState(
+                        ResetPasswordState(
                             Successful = true
                         )
                     )
                 }
-                is com.mathroda.core.util.Resource.Error -> {
+                is Resource.Error -> {
                     _resetPassword.emit(
-                        com.mathroda.forgot_password.state.ResetPasswordState(
+                        ResetPasswordState(
                             error = result.message ?: "Unexpected error accrued"
                         )
                     )

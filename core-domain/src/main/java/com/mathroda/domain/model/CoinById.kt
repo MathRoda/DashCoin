@@ -1,4 +1,4 @@
-package com.mathroda.domain
+package com.mathroda.domain.model
 
 data class CoinById(
     val availableSupply: Double = 0.0,
@@ -18,3 +18,17 @@ data class CoinById(
     val websiteUrl: String = "",
     val priceBtc: Double = 0.0,
 )
+
+fun CoinById.toFavoriteCoin(): FavoriteCoin {
+    return FavoriteCoin(
+        coinId = id,
+        name = name,
+        symbol = symbol,
+        price = price,
+        icon = icon,
+        rank = rank,
+        priceChanged1w = priceChange1w,
+        priceChanged1h = priceChange1h,
+        priceChanged1d = priceChange1d
+    )
+}

@@ -1,6 +1,7 @@
 package com.mathroda.network.di
 
 import com.mathroda.core.util.Constants.BASE_URL
+import com.mathroda.network.DashCoinApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,11 +16,11 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun providesDashCoinApi(): com.mathroda.network.DashCoinApi {
+    fun providesDashCoinApi(): DashCoinApi {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(com.mathroda.network.DashCoinApi::class.java)
+            .create(DashCoinApi::class.java)
     }
 }

@@ -16,10 +16,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.mathroda.coin_detail.state.IsFavoriteState
 import com.mathroda.common.components.BackStackButton
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
+import com.mathroda.core.state.IsFavoriteState
 
 @Composable
 fun TopBarCoinDetail(

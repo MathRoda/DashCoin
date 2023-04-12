@@ -1,6 +1,6 @@
 package com.mathroda.network.dto
 
-import com.mathroda.domain.NewsDetail
+import com.mathroda.domain.model.NewsDetail
 
 data class News(
     val coins: List<Any> = emptyList(),

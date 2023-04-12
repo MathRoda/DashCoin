@@ -1,6 +1,6 @@
 package com.mathroda.network.dto
 
-import com.mathroda.domain.Coins
+import com.mathroda.domain.model.Coins
 
 data class Coin(
     val availableSupply: Double,

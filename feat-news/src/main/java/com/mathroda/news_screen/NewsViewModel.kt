@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.datasource.core.DashCoinRepository
-import com.mathroda.domain.NewsType
+import com.mathroda.domain.model.NewsType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +33,7 @@ class NewsViewModel @Inject constructor(
     }
 
     fun getNews(filter: NewsFilter) {
-        dashCoinRepository.getNews(newsFilterConverter(filter)).onEach { result ->
+        dashCoinRepository.getNewsRemote(newsFilterConverter(filter)).onEach { result ->
             when (result) {
                 is com.mathroda.core.util.Resource.Success -> {
                     _newsState.value =

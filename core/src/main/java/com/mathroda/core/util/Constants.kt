@@ -32,5 +32,6 @@ object Constants {
     const val SIGN_IN_REQUEST = "signInRequest"
     const val SIGN_UP_REQUEST = "signUpRequest"
     const val UPGRADE_TO_PREMIUM = "Upgrade to PREMIUM \n Add more Coins to your List \n ... "
+    const val DB_NAME = "dashcoin_db"
 
 }

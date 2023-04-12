@@ -80,8 +80,8 @@ fun WatchListAuthedUsers(
                             coinName = coin.name,
                             symbol = coin.symbol,
                             rank = coin.rank.toString(),
-                            marketStatus = coin.priceChange1d,
-                            onItemClick = { navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.id}") }
+                            marketStatus = coin.priceChanged1d,
+                            onItemClick = { navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.coinId}") }
                         )
                     }
                 }

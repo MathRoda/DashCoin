@@ -2,8 +2,6 @@ package com.mathroda.common.navigation
 
 import android.net.Uri
 import androidx.core.net.toUri
-import com.mathroda.common.navigation.DestinationsDeepLink.HomePattern
-import com.mathroda.domain.CoinById
 
 object DestinationsDeepLink {
 

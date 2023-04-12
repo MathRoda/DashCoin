@@ -15,8 +15,9 @@ import java.io.IOException
 class DataStoreRepository(private val context: Context) {
 
     companion object {
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("on_boarding_pref")
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("dashcoin_pref")
         val ON_BOARDING_KEY = booleanPreferencesKey("on_boarding_completed")
+        val USER_EXIST_KEY = booleanPreferencesKey("is_user_exist")
     }
 
     val readOnBoardingState: Flow<Boolean> =
@@ -35,6 +36,25 @@ class DataStoreRepository(private val context: Context) {
     suspend fun saveOnBoardingState(completed: Boolean) {
         context.dataStore.edit {
             it[ON_BOARDING_KEY] = completed
+        }
+    }
+
+    val readIsUserExistState: Flow<Boolean> =
+        context.dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }
+            .map {
+                it[USER_EXIST_KEY] ?: false
+            }
+
+    suspend fun saveIsUserExist(exist: Boolean) {
+        context.dataStore.edit {
+            it[USER_EXIST_KEY] = exist
         }
     }
 
