@@ -36,6 +36,6 @@ fun WatchListScreen(
     }
 
     LaunchedEffect(true) {
-        viewModel.userState()
+        viewModel.init()
     }
 }

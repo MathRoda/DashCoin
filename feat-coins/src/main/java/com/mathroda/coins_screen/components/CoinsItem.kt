@@ -20,11 +20,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.mathroda.domain.model.Coins
 
 @Composable
 fun CoinsItem(
-    coins: com.mathroda.domain.Coins,
-    onItemClick: (com.mathroda.domain.Coins) -> Unit
+    coins: Coins,
+    onItemClick: (Coins) -> Unit
 ) {
 
     Column(

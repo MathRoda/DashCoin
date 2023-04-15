@@ -58,12 +58,13 @@ fun SignInScreen(
     val screenState by viewModel.screenState.collectAsState()
     val sigInState = viewModel.signIn.collectAsState()
 
-    Scaffold {
+    Scaffold { paddingValues ->
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
+                .padding(paddingValues)
         ) {
 
             Column(

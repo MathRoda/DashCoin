@@ -1,7 +1,10 @@
 package com.mathroda.datasource.di
 
+import com.example.cache.dbo.favoritecoins.FavoriteCoinsDao
+import com.example.cache.dbo.user.UserDao
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.core.DashCoinRepositoryImpl
+import com.mathroda.network.DashCoinApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,9 +18,15 @@ object CoreModule {
     @Provides
     @Singleton
     fun providesDashCoinRepository(
-        api: com.mathroda.network.DashCoinApi
+        api: DashCoinApi,
+        favoriteCoinDao: FavoriteCoinsDao,
+        userDao: UserDao
     ): DashCoinRepository {
-        return DashCoinRepositoryImpl(api)
+        return DashCoinRepositoryImpl(
+            api,
+            favoriteCoinDao,
+            userDao
+        )
     }
 
 }

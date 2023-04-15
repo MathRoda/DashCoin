@@ -1,28 +1,31 @@
 package com.mathroda.profile_screen
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Resource
+import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
-import com.mathroda.datasource.providers.ProvidersRepository
-import com.mathroda.domain.DashCoinUser
+import com.mathroda.datasource.usecases.DashCoinUseCases
+import com.mathroda.domain.model.DashCoinUser
 import com.mathroda.profile_screen.drawer.state.UpdatePictureState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
-    private val providersRepository: ProvidersRepository
+    private val dashCoinUseCases: DashCoinUseCases,
+    private val dashCoinRepository: DashCoinRepository
 ) : ViewModel() {
 
     private val _userCredential = MutableStateFlow(DashCoinUser())
@@ -34,39 +37,28 @@ class ProfileViewModel @Inject constructor(
     private val _updateProfilePictureState = MutableStateFlow(UpdatePictureState())
     val updateProfilePictureState = _updateProfilePictureState.asStateFlow()
 
-    private var getUserJob: Job? = null
-
-    init {
-        getUserCredential()
+    fun signOut() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dashCoinUseCases.signOut()
+            updateUiState()
+            _userCredential.value = DashCoinUser()
+        }
     }
 
-    fun signOut() = firebaseRepository.signOut()
-
-    private fun getUserCredential() {
-        getUserJob?.cancel()
-        getUserJob = firebaseRepository.getUserCredentials().onEach { result ->
-            when (result) {
-                is com.mathroda.core.util.Resource.Loading -> {}
-                is com.mathroda.core.util.Resource.Success -> {
-                    result.data?.let {
-                        _userCredential.emit(it)
-                    }
-                }
-                is com.mathroda.core.util.Resource.Error -> {}
+    fun getUserCredential() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dashCoinRepository.getDashCoinUser().collect{
+                _userCredential.value = it ?: DashCoinUser()
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
-    fun uiState() {
+    fun updateUiState() {
         viewModelScope.launch {
-            providersRepository.userStateProvider(
+            dashCoinUseCases.userStateProvider(
               function = {}
-            ).collect {userState ->
-                when(userState) {
-                    is UserState.UnauthedUser -> _authState.value = userState
-                    is UserState.AuthedUser -> _authState.value = userState
-                    is UserState.PremiumUser -> _authState.value = userState
-                }
+            ).collect { userState ->
+                _authState.value = userState
             }
         }
     }
@@ -124,6 +116,10 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    fun isUserPremium(): Flow<Boolean> {
+        return dashCoinRepository.isUserPremiumLocal()
     }
 
 }

@@ -1,4 +1,4 @@
-package com.mathroda.domain
+package com.mathroda.domain.model
 
 enum class NewsType(val value: String) {
     HANDPICKED("handpicked"),

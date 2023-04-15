@@ -1,9 +1,8 @@
 package com.mathroda.di
 
 import android.app.Application
-import android.content.Context
 import androidx.work.WorkManager
-import com.mathroda.datasource.providers.ProvidersRepository
+import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.notifications.CoinsNotification
 import com.mathroda.notifications.CoinsNotificationChannel
 import com.mathroda.workmanger.repository.WorkerProviderRepository
@@ -24,7 +23,7 @@ object WorkMangerModule {
     @Singleton
     @Provides
     fun providesCoroutineScope(): CoroutineScope {
-        return CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        return CoroutineScope(SupervisorJob() + Dispatchers.IO)
     }
 
     @Singleton
@@ -51,8 +50,8 @@ object WorkMangerModule {
     fun providesWorkerProviderRepository(
         workManager: WorkManager,
         scope: CoroutineScope,
-        providerRepository: ProvidersRepository
+        dashCoinUseCases: DashCoinUseCases
     ): WorkerProviderRepository {
-        return WorkerProviderRepositoryImpl(workManager, scope, providerRepository)
+        return WorkerProviderRepositoryImpl(workManager, scope, dashCoinUseCases)
     }
 }

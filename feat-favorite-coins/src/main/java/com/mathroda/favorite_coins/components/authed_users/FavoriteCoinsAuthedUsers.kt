@@ -74,15 +74,17 @@ fun WatchListAuthedUsers(
                 state = rememberSwipeRefreshState(isRefreshing = isRefresh),
                 onRefresh = { viewModel.refresh() }) {
                 LazyColumn {
-                    items(watchListState.coin) { coin ->
-                        WatchlistItem(
-                            icon = coin.icon,
-                            coinName = coin.name,
-                            symbol = coin.symbol,
-                            rank = coin.rank.toString(),
-                            marketStatus = coin.priceChange1d,
-                            onItemClick = { navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.id}") }
-                        )
+                    items(watchListState.coin) { state ->
+                        state.coin.let { coin ->
+                            WatchlistItem(
+                                icon = coin.icon,
+                                coinName = coin.name,
+                                symbol = coin.symbol,
+                                rank = coin.rank.toString(),
+                                marketStatus = coin.priceChanged1d,
+                                onItemClick = { navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.coinId}") }
+                            )
+                        }
                     }
                 }
             }

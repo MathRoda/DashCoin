@@ -10,10 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -38,13 +35,16 @@ fun DrawerNavigation(
     navController: NavController,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
-
-    viewModel.uiState()
     val uriHandler = LocalUriHandler.current
     val userCredential = viewModel.userCredential.collectAsState()
-    val isPremium = userCredential.value.isUserPremium()
+    val isPremium by viewModel.isUserPremium().collectAsState(initial = false)
     val isAuthedUser = viewModel.authState.value !is UserState.UnauthedUser
     val updateProfilePictureState = viewModel.updateProfilePictureState.collectAsState()
+
+    LaunchedEffect(true) {
+        viewModel.updateUiState()
+        viewModel.getUserCredential()
+    }
 
     DrawerHeader(
         welcomeUser = userCredential.value.userName ?: "Hi DashCoiner",

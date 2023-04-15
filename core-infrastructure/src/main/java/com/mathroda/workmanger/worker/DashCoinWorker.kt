@@ -10,27 +10,29 @@ import com.mathroda.core.util.Constants.BITCOIN_ID
 import com.mathroda.core.util.Constants.DESCRIPTION_POSITIVE
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
-import com.mathroda.datasource.firebase.FirebaseRepository
-import com.mathroda.datasource.providers.ProvidersRepository
+import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.notifications.CoinsNotification
 import com.mathroda.workmanger.util.is5PercentDown
 import com.mathroda.workmanger.util.is5PercentUp
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.withContext
 
 @HiltWorker
 class DashCoinWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val dashCoinRepository: DashCoinRepository,
-    private val firebaseRepository: FirebaseRepository,
-    private val providersRepository: ProvidersRepository,
+    private val dashCoinUseCases: DashCoinUseCases,
     private val notification: CoinsNotification
 ) : CoroutineWorker(context, workerParameters) {
     private val marketStatusId = Int.MAX_VALUE
-    override suspend fun doWork(): Result {
-        return try {
-            providersRepository.userStateProvider(
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+
+       return@withContext try {
+            dashCoinUseCases.userStateProvider(
                function = {}
             ).collect { state ->
                 when(state) {
@@ -46,7 +48,7 @@ class DashCoinWorker @AssistedInject constructor(
     }
 
     private suspend fun regularUserNotification(state: UserState) {
-            dashCoinRepository.getCoinById(BITCOIN_ID).collect { result ->
+            dashCoinRepository.getCoinByIdRemote(BITCOIN_ID).firstOrNull()?.let { result ->
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let { coin ->
@@ -57,7 +59,7 @@ class DashCoinWorker @AssistedInject constructor(
                                     id = marketStatusId,
                                     state = state
                                 )
-                                return@collect
+                                return
                             }
 
                             if (coin.priceChange1d < 0) {
@@ -68,7 +70,7 @@ class DashCoinWorker @AssistedInject constructor(
                                     state = state
                                 )
 
-                                return@collect
+                                return
                             }
                         }
                     }
@@ -78,13 +80,11 @@ class DashCoinWorker @AssistedInject constructor(
     }
 
     private suspend fun premiumUserNotification(state: UserState) {
-            firebaseRepository.getCoinFavorite().collect { result ->
+            dashCoinUseCases.getAllFavoriteCoins().firstOrNull()?.let { result ->
                 when (result) {
                     is Resource.Success -> {
                         result.data?.onEach { coin ->
-                            firebaseRepository.updateFavoriteMarketState(coin).collect {}
-
-                            coin.priceChange1d.let { marketChange ->
+                            coin.priceChanged1d.let { marketChange ->
                                 if (marketChange.is5PercentUp()) {
                                     notification.show(
                                         title = coin.name ,
@@ -92,6 +92,7 @@ class DashCoinWorker @AssistedInject constructor(
                                         id = coin.rank,
                                         state = state
                                     )
+                                    return
                                 }
 
                                 if (marketChange.is5PercentDown()) {
@@ -101,6 +102,7 @@ class DashCoinWorker @AssistedInject constructor(
                                         id = coin.rank,
                                         state = state
                                     )
+                                    return
                                 }
                             }
                         }

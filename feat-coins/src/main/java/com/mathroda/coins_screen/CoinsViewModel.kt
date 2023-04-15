@@ -6,7 +6,8 @@ import com.mathroda.coins_screen.state.CoinsState
 import com.mathroda.coins_screen.state.PaginationState
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
-import com.mathroda.domain.Coins
+import com.mathroda.datasource.firebase.FirebaseRepository
+import com.mathroda.domain.model.Coins
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CoinsViewModel @Inject constructor(
-    private val dashCoinRepository: DashCoinRepository
+    private val dashCoinRepository: DashCoinRepository,
+    private val firebaseRepository: FirebaseRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CoinsState())
@@ -35,10 +37,11 @@ class CoinsViewModel @Inject constructor(
         if (_state.value.coins.isEmpty()) {
             getCoins()
         }
+        cacheDashCoinUser()
     }
 
-    fun getCoins() {
-       dashCoinRepository.getCoins(skip = _paginationState.value.skip)
+    private fun getCoins() {
+       dashCoinRepository.getCoinsRemote(skip = _paginationState.value.skip)
            .distinctUntilChanged()
            .onEach { result ->
                 when (result) {
@@ -52,7 +55,6 @@ class CoinsViewModel @Inject constructor(
 
     fun getCoinsPaginated() {
         if (!_paginationState.value.endReached && _state.value.coins.isNotEmpty()) {
-            if (_paginationState.value.isLoading) return
             getCoins()
         }
     }
@@ -116,11 +118,26 @@ class CoinsViewModel @Inject constructor(
         }
 
     }
-
     private fun updateRefreshState(
         value: Boolean
     ) = _isRefresh.update { value }
 
+    private fun cacheDashCoinUser() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dashCoinRepository.getDashCoinUser().collect { user ->
+                if (user != null) {
+                    return@collect
+                }
+
+                firebaseRepository.getUserCredentials().collect {
+                    when(it) {
+                        is Resource.Success -> it.data?.run { dashCoinRepository.cacheDashCoinUser(this) }
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
     companion object {
         const val COINS_LIMIT = 400
     }

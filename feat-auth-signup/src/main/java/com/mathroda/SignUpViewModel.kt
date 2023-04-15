@@ -2,10 +2,13 @@ package com.mathroda
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathroda.core.util.Resource
+import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
-import com.mathroda.domain.DashCoinUser
+import com.mathroda.domain.model.DashCoinUser
 import com.mathroda.signup_screen.state.SignUpState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -15,40 +18,40 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: FirebaseRepository,
+    private val dashCoinRepository: DashCoinRepository
 ) : ViewModel() {
 
-    private val _signUp = MutableStateFlow(com.mathroda.signup_screen.state.SignUpState())
-    val signUp: StateFlow<com.mathroda.signup_screen.state.SignUpState> = _signUp
+    private val _signUp = MutableStateFlow(SignUpState())
+    val signUp: StateFlow<SignUpState> = _signUp
 
 
     fun signUp(dashCoinUser: DashCoinUser, password: String) =
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             firebaseRepository.signUpWithEmailAndPassword(dashCoinUser.email!!, password).onEach { result ->
                 when (result) {
-                    is com.mathroda.core.util.Resource.Success -> {
+                    is Resource.Success -> {
                         _signUp.emit(SignUpState(signUp = result.data))
                     }
-                    is com.mathroda.core.util.Resource.Error -> {
+                    is Resource.Error -> {
                         _signUp.emit(
-                            com.mathroda.signup_screen.state.SignUpState(
+                            SignUpState(
                                 error = result.message ?: "Unexpected Error"
                             )
                         )
                     }
-                    is com.mathroda.core.util.Resource.Loading -> {
-                        _signUp.emit(com.mathroda.signup_screen.state.SignUpState(isLoading = true))
+                    is Resource.Loading -> {
+                        _signUp.emit(SignUpState(isLoading = true))
                     }
                 }
-            }.launchIn(viewModelScope)
+            }
         }
 
     fun addUserCredential(dashCoinUser: DashCoinUser) =
         firebaseRepository.addUserCredential(dashCoinUser).onEach { result ->
             when (result) {
-                is com.mathroda.core.util.Resource.Loading -> {}
-                is com.mathroda.core.util.Resource.Success -> {}
-                is com.mathroda.core.util.Resource.Error -> {}
+                is Resource.Success -> { dashCoinRepository.cacheDashCoinUser(dashCoinUser) }
+                else -> {}
             }
 
         }.launchIn(viewModelScope)

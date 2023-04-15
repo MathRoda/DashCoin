@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +22,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 fun BoxScope.CoinDetailScreenState(
     viewModel: CoinDetailViewModel = hiltViewModel()
 ) {
-    val coinState = viewModel.coinState.value
+    val coinState by viewModel.coinState.collectAsState()
     val favoriteMsg = viewModel.favoriteMsg.value
     val sideEffect = viewModel.sideEffect.value
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))

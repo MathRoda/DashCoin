@@ -18,7 +18,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,7 +44,8 @@ class SplashViewModel @Inject constructor(
 
     init {
         getOnBoardingState()
-        updateFavoriteCoinsStatus()
+        updateIsUserExistPref()
+        cacheDashCoinUser()
         notificationWorker()
     }
 
@@ -62,42 +64,6 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private fun updateFavoriteCoinsStatus() {
-        viewModelScope.launch(Dispatchers.IO) {
-            firebaseRepository.getCoinFavorite().collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        result.data?.map {
-                            dashCoinRepository.getCoinById(it.id).collect { result ->
-                                when (result) {
-                                    is Resource.Success -> {
-                                        result.data?.let { coinById ->
-                                            firebaseRepository.updateFavoriteMarketState(coinById)
-                                                .collect { task ->
-                                                    when (task) {
-                                                        is Resource.Success -> {
-                                                            Log.d(
-                                                                "task---",
-                                                                it.priceChange1w.toString()
-                                                            )
-                                                        }
-                                                        else -> {}
-                                                    }
-                                                }
-                                        }
-                                    }
-                                    else -> {}
-                                }
-
-                            }
-                        }
-                    }
-                    else -> {}
-                }
-            }
-        }
-    }
-
     private fun notificationWorker() {
         viewModelScope.launch {
 
@@ -109,11 +75,11 @@ class SplashViewModel @Inject constructor(
                 val workInfo: WorkInfo = listOfWorkInfo[0]
 
                 if (workInfo.state == WorkInfo.State.ENQUEUED) {
-                    isUserExist.collect { isUserExist ->
+                    dataStoreRepository.readIsUserExistState.collect { isUserExist ->
                         if (isUserExist) {
-                            firebaseRepository.getCoinFavorite().collect()
+                            dashCoinRepository.getFavoriteCoins().firstOrNull()
                         } else {
-                            dashCoinRepository.getCoinById(BITCOIN_ID).collect()
+                            dashCoinRepository.getCoinByIdRemote(BITCOIN_ID).firstOrNull()
                         }
                     }
                 }
@@ -121,5 +87,32 @@ class SplashViewModel @Inject constructor(
         }
     }
 
+    private fun updateIsUserExistPref() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreRepository.readIsUserExistState.firstOrNull()?.let { doesExist ->
+                Log.d("userDoesExist", doesExist.toString())
+                if (doesExist) {
+                    return@launch
+                }
+                isUserExist.collect { dataStoreRepository.saveIsUserExist(it) }
+            }
+        }
+    }
 
+    private fun cacheDashCoinUser() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dashCoinRepository.getDashCoinUser().first().let { user ->
+                if (user != null) {
+                    return@launch
+                }
+
+                firebaseRepository.getUserCredentials().collect {
+                    when(it) {
+                        is Resource.Success -> it.data?.run { dashCoinRepository.cacheDashCoinUser(this) }
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
 }

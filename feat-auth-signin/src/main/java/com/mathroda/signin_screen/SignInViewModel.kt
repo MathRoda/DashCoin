@@ -15,6 +15,7 @@ import com.mathroda.datasource.google_service.SignInWithGoogleResponse
 import com.mathroda.signin_screen.state.SignInState
 import com.mathroda.signin_screen.state.SigniInScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -85,7 +86,7 @@ class SignInViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
 
-    fun oneTapSignIn() = viewModelScope.launch {
+    fun oneTapSignIn() = viewModelScope.launch(Dispatchers.IO) {
         googleServices.oneTapSignInWithGoogle().collect { result ->
             when (result) {
                 is Response.Loading -> {
