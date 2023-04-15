@@ -40,7 +40,7 @@ class CoinsViewModel @Inject constructor(
         cacheDashCoinUser()
     }
 
-    fun getCoins() {
+    private fun getCoins() {
        dashCoinRepository.getCoinsRemote(skip = _paginationState.value.skip)
            .distinctUntilChanged()
            .onEach { result ->
@@ -55,7 +55,6 @@ class CoinsViewModel @Inject constructor(
 
     fun getCoinsPaginated() {
         if (!_paginationState.value.endReached && _state.value.coins.isNotEmpty()) {
-            if (_paginationState.value.isLoading) return
             getCoins()
         }
     }

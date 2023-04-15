@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
+      <module name="Dash Coin.Dash_Coin.core-cache" target="11" />
       <module name="Dash_Coin.app" target="11" />
       <module name="Dash_Coin.core" target="1.8" />
       <module name="Dash_Coin.core-cache" target="11" />

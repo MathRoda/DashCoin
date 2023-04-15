@@ -26,6 +26,14 @@ class WorkerProviderRepositoryImpl @Inject constructor(
 
 
     override fun createWork() {
+
+        /**
+         * Notification disabled until nex release
+         */
+        if (Constants.disableNotifications) {
+            return
+        }
+
         updateUserState()
 
         val workRequest = PeriodicWorkRequestBuilder<DashCoinWorker>(

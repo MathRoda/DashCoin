@@ -16,7 +16,6 @@ import com.mathroda.network.dto.toChart
 import com.mathroda.network.dto.toCoinDetail
 import com.mathroda.network.dto.toCoins
 import com.mathroda.network.dto.toNewsDetail
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -33,7 +32,6 @@ class DashCoinRepositoryImpl @Inject constructor(
     override fun getCoinsRemote(skip: Int): Flow<Resource<List<Coins>>> = flow {
         try {
             emit(Resource.Loading())
-            delay(500)
             val coins = api.getCoins(skip = skip).coins.map { it.toCoins() }
             emit(Resource.Success(coins))
         } catch (e: HttpException) {
