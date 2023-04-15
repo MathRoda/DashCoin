@@ -1,6 +1,6 @@
 package com.mathroda.common.state
 
-import com.mathroda.domain.CoinById
+import com.mathroda.domain.model.CoinById
 
 data class MarketState(
     val isLoading: Boolean = false,

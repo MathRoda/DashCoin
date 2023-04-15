@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.mathroda.common.state.DialogState
-import com.mathroda.domain.CoinById
+import com.mathroda.domain.model.CoinById
 
 @Composable
 fun CustomDialog(

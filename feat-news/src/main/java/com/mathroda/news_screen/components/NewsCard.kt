@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mathroda.common.theme.*
-import com.mathroda.domain.NewsDetail
+import com.mathroda.domain.model.NewsDetail
 import com.mathroda.news_screen.R
 
 @Composable

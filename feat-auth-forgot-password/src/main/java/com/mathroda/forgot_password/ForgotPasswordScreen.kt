@@ -30,17 +30,19 @@ fun ForgotPasswordScreen(
     navController: NavController,
     viewModel: ResetPasswordViewModel = hiltViewModel()
 ) {
-    Scaffold {
 
-        var email by remember { mutableStateOf("") }
-        var isError by remember { mutableStateOf(false) }
-        var isEnabled by remember { mutableStateOf(true) }
-        var isLoading by remember { mutableStateOf(false) }
-        val state = viewModel.resetPassword.collectAsState().value
+    var email by remember { mutableStateOf("") }
+    var isError by remember { mutableStateOf(false) }
+    var isEnabled by remember { mutableStateOf(true) }
+    var isLoading by remember { mutableStateOf(false) }
+    val state = viewModel.resetPassword.collectAsState().value
+
+    Scaffold { paddingValues ->
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
                 .padding(horizontal = 16.dp, vertical = 32.dp),
         ) {
             Row(

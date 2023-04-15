@@ -1,6 +1,6 @@
 package com.mathroda.coins_screen.state
 
-import com.mathroda.domain.Coins
+import com.mathroda.domain.model.Coins
 
 data class CoinsState(
     val isLoading: Boolean = false,

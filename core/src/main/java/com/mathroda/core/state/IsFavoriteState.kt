@@ -1,4 +1,4 @@
-package com.mathroda.coin_detail.state
+package com.mathroda.core.state
 
 sealed class IsFavoriteState {
     object Favorite : IsFavoriteState()

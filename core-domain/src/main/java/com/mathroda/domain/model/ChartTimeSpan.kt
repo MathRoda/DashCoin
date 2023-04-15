@@ -1,4 +1,4 @@
-package com.mathroda.domain
+package com.mathroda.domain.model
 
 enum class ChartTimeSpan(val value: String) {
     TIMESPAN_1DAY("24h"),

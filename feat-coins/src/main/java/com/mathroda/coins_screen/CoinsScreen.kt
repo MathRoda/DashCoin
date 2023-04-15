@@ -69,10 +69,11 @@ fun CoinScreen(
         drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
         drawerScrimColor = com.mathroda.common.theme.LightGray
 
-    ) {
+    ) { paddingValues ->
         Box(
             modifier = Modifier
                 .background(com.mathroda.common.theme.DarkGray)
+                .padding(paddingValues)
                 .fillMaxSize()
         ) {
             Column {

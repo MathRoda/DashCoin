@@ -13,13 +13,14 @@ android {
         applicationId "com.mathroda.dashcoin"
         minSdk 21
         targetSdk 33
-        versionCode 2
-        versionName "2.0.1"
+        versionCode 3
+        versionName "2.0.2"
 
         testInstrumentationRunner "com.mathroda.dashcoin.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary true
         }
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {

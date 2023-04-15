@@ -3,9 +3,13 @@ package com.mathroda.coin_detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +23,7 @@ import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.core.util.numbersToCurrency
 import com.mathroda.core.util.numbersToFormat
+import com.mathroda.domain.model.toFavoriteCoin
 
 @Composable
 fun CoinDetailScreen(
@@ -26,21 +31,25 @@ fun CoinDetailScreen(
     navController: NavController
 ) {
 
-    val coinState = viewModel.coinState.value
+    val coinState = viewModel.coinState.collectAsState().value
     val chartsState = viewModel.chartState.value
     val uriHandler = LocalUriHandler.current
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(true) {
+        viewModel.updateUserState()
+        viewModel.updateUiState()
+    }
 
     Box(
         modifier = Modifier
             .background(DarkGray)
             .fillMaxSize()
-            .padding(12.dp)
     ) {
+
         coinState.coin?.let { coin ->
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                item {
+            Scaffold(
+                topBar = {
                     TopBarCoinDetail(
                         navController = navController,
                         coinSymbol = coin.symbol,
@@ -48,12 +57,20 @@ fun CoinDetailScreen(
                         isFavorite = viewModel.isFavoriteState.value,
                         onCLick = { viewModel.onFavoriteClick(coin) }
                     )
-
+                }
+            ) { paddingValues ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(scrollState)
+                        .padding(8.dp)
+                        .padding(paddingValues)
+                ) {
                     CustomDialog(
                         dialogState = viewModel.dialogState,
                         coin = coin
                     ) {
-                        viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin))
+                        viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin.toFavoriteCoin()))
                     }
 
                     CoinDetailSection(

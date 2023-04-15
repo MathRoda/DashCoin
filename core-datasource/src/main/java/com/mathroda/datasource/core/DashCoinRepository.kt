@@ -1,21 +1,42 @@
 package com.mathroda.datasource.core
 
 import com.mathroda.core.util.Resource
-import com.mathroda.domain.ChartTimeSpan
-import com.mathroda.domain.CoinById
-import com.mathroda.domain.NewsType
+import com.mathroda.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface DashCoinRepository {
 
     // api requests
-    fun getCoins(skip: Int): Flow<Resource<List<com.mathroda.domain.Coins>>>
+    fun getCoinsRemote(skip: Int): Flow<Resource<List<Coins>>>
 
-    fun getCoinById(coinId: String): Flow<Resource<CoinById>>
+    fun getCoinByIdRemote(coinId: String): Flow<Resource<CoinById>>
 
-    fun getChartsData(coinId: String, period: ChartTimeSpan): Flow<Resource<com.mathroda.domain.Charts>>
+    fun getChartsDataRemote(coinId: String, period: ChartTimeSpan): Flow<Resource<Charts>>
 
-    fun getNews(filter: NewsType): Flow<Resource<List<com.mathroda.domain.NewsDetail>>>
+    fun getNewsRemote(filter: NewsType): Flow<Resource<List<NewsDetail>>>
 
+    fun getFavoriteCoins(): Flow<List<FavoriteCoin>>
+
+    fun getFavoriteCoinByIdLocal(
+        coinId: String
+    ): FavoriteCoin?
+
+    suspend fun addFavoriteCoin(coin: FavoriteCoin)
+
+    suspend fun removeFavoriteCoin(coin: FavoriteCoin)
+
+    suspend fun addAllFavoriteCoins(coins: List<FavoriteCoin>)
+
+    fun getDashCoinUser(): Flow<DashCoinUser?>
+
+    suspend fun cacheDashCoinUser(user: DashCoinUser)
+
+    suspend fun removeDashCoinUserRecord()
+
+    fun getFavoriteCoinsCount(): Flow<Int>
+
+    fun isUserPremiumLocal(): Flow<Boolean>
+
+    suspend fun removeAllFavoriteCoins()
 
 }

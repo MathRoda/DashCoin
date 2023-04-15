@@ -28,7 +28,7 @@ import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
 import com.mathroda.core.util.isValidEmail
 import com.mathroda.core.util.isValidPassword
-import com.mathroda.domain.DashCoinUser
+import com.mathroda.domain.model.DashCoinUser
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @Composable
@@ -51,11 +51,13 @@ fun SignUpScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp, vertical = 32.dp),
-    ) {
+    ) { paddingValues ->
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxWidth()
         ) {
 
             Row(

@@ -1,6 +1,6 @@
 package com.mathroda.network.dto
 
-import com.mathroda.domain.Charts
+import com.mathroda.domain.model.Charts
 
 data class ChartDto(
     val chart: List<List<Float>>,
