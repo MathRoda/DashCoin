@@ -9,12 +9,15 @@ import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
-import com.mathroda.domain.model.FavoriteCoin
 import com.mathroda.domain.model.toFavoriteCoin
+import com.mathroda.favorite_coins.state.CoinState
 import com.mathroda.favorite_coins.state.FavoriteCoinsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,13 +39,16 @@ class FavoriteCoinsViewModel @Inject constructor(
     private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
     val authState:State<UserState> = _authState
 
-    fun userState() {
+    fun init() {
+        userState()
+        getAllCoins()
+        getMarketStatus()
+        updateFavoriteCoins()
+    }
+    private fun userState() {
         viewModelScope.launch(Dispatchers.IO) {
             dashCoinUseCases.userStateProvider(
-                function = {
-                    getAllCoins()
-                    getMarketStatus()
-                }
+                function = {}
             ).collect { userState -> _authState.value = userState}
         }
     }
@@ -64,8 +70,8 @@ class FavoriteCoinsViewModel @Inject constructor(
 
     private suspend fun getAllFavoriteCoinsAuthed() {
         dashCoinRepository.getFavoriteCoins().collect { result ->
-            updateFavoriteCoinsState(coins = result)
-            updateFavoriteCoins()
+            val state = result.map { CoinState().copy(coin = it) }
+            updateFavoriteCoinsState(coins = state)
         }
     }
 
@@ -74,27 +80,47 @@ class FavoriteCoinsViewModel @Inject constructor(
             when (result) {
                 is Resource.Loading -> updateFavoriteCoinsState(isLoading = true)
                 is Resource.Success -> {
-                    result.data?.let { data -> updateFavoriteCoinsState(coins = data) }
-                    updateFavoriteCoins()
+                    result.data?.let { data ->
+                        val state = data.map { CoinState().copy(coin = it) }
+                        updateFavoriteCoinsState(coins = state)
+                    }
                 }
                 is Resource.Error -> updateFavoriteCoinsState(error = result.message)
             }
         }
     }
 
-    private suspend fun updateFavoriteCoins() {
-        _state.value.coin.forEach { favoriteCoin ->
-            val id = favoriteCoin.coinId
-            val result = dashCoinRepository.getCoinByIdRemote(id).firstOrNull()
-
-            if (result is Resource.Success) {
-                result.data?.let { dashCoinRepository.addFavoriteCoin(it.toFavoriteCoin()) }
+    private fun updateFavoriteCoins() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = mutableListOf<CoinState>()
+            val coins = _state.value.coin
+            if (coins.isEmpty()) {
+                return@launch
             }
+
+            coins.forEach { favoriteCoinState ->
+                if (favoriteCoinState.updated) {
+                    return@forEach
+                }
+
+                val id = favoriteCoinState.coin.coinId
+                dashCoinRepository.getCoinByIdRemote(id).collect { result ->
+                    if (result is Resource.Success && result.data != null) {
+                        result.data?.run { dashCoinRepository.addFavoriteCoin(this.toFavoriteCoin()) }
+                        val state = favoriteCoinState.copy(updated = true)
+                        list.add(state)
+                    }
+                }
+            }
+
+            updateFavoriteCoinsState(
+                coins = list
+            )
         }
     }
     private fun getMarketStatus() {
         viewModelScope.launch(Dispatchers.IO) {
-            dashCoinRepository.getCoinByIdRemote("bitcoin").firstOrNull()?.let { result ->
+            dashCoinRepository.getCoinByIdRemote("bitcoin").collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         _marketStatus.value = MarketState(coin = result.data)
@@ -116,7 +142,7 @@ class FavoriteCoinsViewModel @Inject constructor(
         viewModelScope.launch {
             _isRefresh.update { true }
             getMarketStatus()
-            getAllCoins()
+            updateFavoriteCoins()
             _isRefresh.update { false }
         }
 
@@ -124,7 +150,7 @@ class FavoriteCoinsViewModel @Inject constructor(
 
     private fun updateFavoriteCoinsState(
         isLoading: Boolean? = null,
-        coins: List<FavoriteCoin>? = null,
+        coins: List<CoinState>? = null,
         isEmpty: Boolean? = null,
         error: String? = null
     ) {
