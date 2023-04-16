@@ -1,12 +1,18 @@
 package com.mathroda.workmanger.repository
 
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
+import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.workmanger.worker.DashCoinWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -15,10 +21,11 @@ import javax.inject.Inject
 class WorkerProviderRepositoryImpl @Inject constructor(
     private val workManager: WorkManager,
     private val scope: CoroutineScope,
-    private val dashCoinUseCases: DashCoinUseCases
+    private val dashCoinUseCases: DashCoinUseCases,
+    private val dataStoreRepository: DataStoreRepository
 ) : WorkerProviderRepository {
 
-    private val userState = MutableStateFlow(UserState.UnauthedUser)
+    private val userState: MutableStateFlow<UserState> = MutableStateFlow(UserState.UnauthedUser)
 
     private val workConstraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -26,35 +33,44 @@ class WorkerProviderRepositoryImpl @Inject constructor(
 
 
     override fun createWork() {
+        scope.launch {
+            dataStoreRepository.readNotificationPreference.collect { enabled ->
+                if (enabled) {
+                    updateUserState()
+                    createWorker()
+                }
 
-        /**
-         * Notification disabled until nex release
-         */
-        if (Constants.disableNotifications) {
-            return
+                if (!enabled) {
+                    workManager.cancelUniqueWork(Constants.NOTIFICATION_WORKER)
+                }
+            }
         }
+    }
 
-        updateUserState()
-
+    private fun createWorker() {
         val workRequest = PeriodicWorkRequestBuilder<DashCoinWorker>(
-            repeatInterval = timeLong(userState.value), repeatIntervalTimeUnit = timeUnit(userState.value),
-            flexTimeInterval = timeLong(userState.value), flexTimeIntervalUnit = timeUnit(userState.value)
-        ).setConstraints(workConstraints).setInitialDelay(15, TimeUnit.MINUTES)
-            .addTag(Constants.SYNC_DATA).build()
+            repeatInterval = timeLong(userState.value),
+            repeatIntervalTimeUnit = timeUnit(userState.value),
+            flexTimeInterval = timeLong(userState.value),
+            flexTimeIntervalUnit = timeUnit(userState.value)
+        ).setConstraints(workConstraints)
+            .setInitialDelay(5, TimeUnit.SECONDS)
+            .addTag(Constants.SYNC_DATA)
+            .build()
 
         workManager.enqueueUniquePeriodicWork(
-            Constants.SYNC_DATA_WORK_NAME,
+            Constants.NOTIFICATION_WORKER,
             ExistingPeriodicWorkPolicy.UPDATE,
             workRequest
         )
     }
-    private fun updateUserState() {
-        scope.launch {
-            dashCoinUseCases.userStateProvider(function = {}).collect {
-                userState.update { it }
-            }
+
+    private suspend fun updateUserState() {
+        dashCoinUseCases.userStateProvider(function = {}).firstOrNull()?.let {
+            userState.update { it }
         }
     }
+
     override fun onWorkerSuccess() =
         workManager.getWorkInfosByTagLiveData(Constants.SYNC_DATA)
 
@@ -92,5 +108,9 @@ class WorkerProviderRepositoryImpl @Inject constructor(
             is UserState.AuthedUser -> TimeUnit.DAYS
             is UserState.PremiumUser -> TimeUnit.MINUTES
         }
+    }
+
+    companion object {
+        const val TAG = "DebugDashCoin"
     }
 }

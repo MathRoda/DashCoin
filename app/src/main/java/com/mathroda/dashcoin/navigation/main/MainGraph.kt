@@ -21,6 +21,7 @@ import com.mathroda.common.util.popExitTransition
 import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.favorite_coins.WatchListScreen
 import com.mathroda.news_screen.NewsScreen
+import com.mathroda.profile_screen.settings.SettingsScreen
 import com.mathroda.signin_screen.SignInScreen
 
 @ExperimentalFoundationApi
@@ -242,6 +243,12 @@ fun MainGraph(navController: NavHostController) {
 
         composable(route = Destinations.ForgotPassword.route) {
             com.mathroda.forgot_password.ForgotPasswordScreen(navController = navController)
+        }
+
+        composable(
+            route = Destinations.Settings.route
+        ) {
+            SettingsScreen()
         }
     }
 

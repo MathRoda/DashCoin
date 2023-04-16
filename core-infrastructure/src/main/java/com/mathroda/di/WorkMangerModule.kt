@@ -2,6 +2,7 @@ package com.mathroda.di
 
 import android.app.Application
 import androidx.work.WorkManager
+import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.notifications.CoinsNotification
 import com.mathroda.notifications.CoinsNotificationChannel
@@ -50,8 +51,9 @@ object WorkMangerModule {
     fun providesWorkerProviderRepository(
         workManager: WorkManager,
         scope: CoroutineScope,
-        dashCoinUseCases: DashCoinUseCases
+        dashCoinUseCases: DashCoinUseCases,
+        dataStoreRepository: DataStoreRepository
     ): WorkerProviderRepository {
-        return WorkerProviderRepositoryImpl(workManager, scope, dashCoinUseCases)
+        return WorkerProviderRepositoryImpl(workManager, scope, dashCoinUseCases, dataStoreRepository)
     }
 }
