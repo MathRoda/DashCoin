@@ -22,7 +22,7 @@ object Constants {
     const val DESCRIPTION_MARKET_CHANGE_POSITIVE = "Is having a big market change +5% \uD83D\uDCC8"
     const val DESCRIPTION_MARKET_CHANGE_NEGATIVE = "Is having a big market change -5% \uD83D\uDCC9"
     const val SYNC_DATA = "syncData"
-    const val SYNC_DATA_WORK_NAME = "syncDataWorkName"
+    const val NOTIFICATION_WORKER = "notificationWorker"
     const val BITCOIN_ID = "bitcoin"
     const val LINKEDIN = "https://www.linkedin.com/in/mathroda/"
     const val GITHUB = "https://github.com/MathRoda"
@@ -33,10 +33,4 @@ object Constants {
     const val SIGN_UP_REQUEST = "signUpRequest"
     const val UPGRADE_TO_PREMIUM = "Upgrade to PREMIUM \n Add more Coins to your List \n ... "
     const val DB_NAME = "dashcoin_db"
-
-    /**
-     * Notification's will be disabled until nex release
-     */
-    const val disableNotifications = true
-
 }

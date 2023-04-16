@@ -18,6 +18,7 @@ class DataStoreRepository(private val context: Context) {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("dashcoin_pref")
         val ON_BOARDING_KEY = booleanPreferencesKey("on_boarding_completed")
         val USER_EXIST_KEY = booleanPreferencesKey("is_user_exist")
+        val NOTIFICATIONS_ENABLED = booleanPreferencesKey("is_notifications_enabled")
     }
 
     val readOnBoardingState: Flow<Boolean> =
@@ -55,6 +56,25 @@ class DataStoreRepository(private val context: Context) {
     suspend fun saveIsUserExist(exist: Boolean) {
         context.dataStore.edit {
             it[USER_EXIST_KEY] = exist
+        }
+    }
+
+    val readNotificationPreference: Flow<Boolean> =
+        context.dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }
+            .map {
+                it[NOTIFICATIONS_ENABLED] ?: true
+            }
+
+    suspend fun saveNotificationPreference(enabled: Boolean) {
+        context.dataStore.edit {
+            it[NOTIFICATIONS_ENABLED] = enabled
         }
     }
 

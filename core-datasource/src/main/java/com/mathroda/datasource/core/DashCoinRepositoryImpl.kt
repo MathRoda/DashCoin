@@ -10,7 +10,14 @@ import com.example.cache.dbo.user.toUserEntity
 import com.example.cache.mapper.toDomain
 import com.example.cache.mapper.toEntity
 import com.mathroda.core.util.Resource
-import com.mathroda.domain.model.*
+import com.mathroda.domain.model.ChartTimeSpan
+import com.mathroda.domain.model.Charts
+import com.mathroda.domain.model.CoinById
+import com.mathroda.domain.model.Coins
+import com.mathroda.domain.model.DashCoinUser
+import com.mathroda.domain.model.FavoriteCoin
+import com.mathroda.domain.model.NewsDetail
+import com.mathroda.domain.model.NewsType
 import com.mathroda.network.DashCoinApi
 import com.mathroda.network.dto.toChart
 import com.mathroda.network.dto.toCoinDetail
@@ -104,7 +111,8 @@ class DashCoinRepositoryImpl @Inject constructor(
     }
 
     override suspend fun cacheDashCoinUser(user: DashCoinUser) {
-        return userDao.insertUser(user.toUserEntity())
+        userDao.deleteUser()
+        userDao.insertUser(user.toUserEntity())
     }
 
     override suspend fun removeDashCoinUserRecord() {

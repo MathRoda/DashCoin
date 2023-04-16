@@ -60,6 +60,7 @@ dependencies {
     implementation project(':feat-coins')
     implementation project(':feat-favorite-coins')
     implementation project(':feat-news')
+    implementation project(':feat-profile')
     implementation project(':feat-onboarding')
     implementation project(':feat-auth-signin')
     implementation project(':feat-auth-signup')
