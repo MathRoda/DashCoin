@@ -22,6 +22,10 @@ class SettingViewModel @Inject constructor(
     val enableNotificationsState = _enableNotificationsState.asStateFlow()
 
     fun init() {
+       updateInitNotificationState()
+    }
+
+    private fun updateInitNotificationState() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = dataStoreRepository.readNotificationPreference.first()
             if (result) {

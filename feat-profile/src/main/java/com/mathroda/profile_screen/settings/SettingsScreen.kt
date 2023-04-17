@@ -13,16 +13,25 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mathroda.common.components.CommonTopBar
 import com.mathroda.profile_screen.settings.components.EnableNotifications
+import com.mathroda.profile_screen.settings.components.VersionItem
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    navigateBack: () -> Unit
+) {
 
     val viewModel = hiltViewModel<SettingViewModel>()
 
     val notificationsState by viewModel.enableNotificationsState.collectAsState()
 
     Scaffold(
-        topBar = { CommonTopBar(title = "Settings") }
+        topBar = {
+            CommonTopBar(
+                title = "Settings",
+                navigateEnabled = true,
+                onNavigateBack = navigateBack
+            )
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -34,6 +43,8 @@ fun SettingsScreen() {
                 state = notificationsState,
                 onEnabledClick = viewModel::updateNotificationState
             )
+
+            VersionItem()
         }
     }
 

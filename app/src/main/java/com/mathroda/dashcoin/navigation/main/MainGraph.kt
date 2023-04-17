@@ -248,7 +248,9 @@ fun MainGraph(navController: NavHostController) {
         composable(
             route = Destinations.Settings.route
         ) {
-            SettingsScreen()
+            SettingsScreen(
+                navigateBack = { navController.popBackStack() }
+            )
         }
     }
 

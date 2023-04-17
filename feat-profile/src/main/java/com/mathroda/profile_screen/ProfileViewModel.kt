@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,6 +40,7 @@ class ProfileViewModel @Inject constructor(
     fun signOut() {
         viewModelScope.launch(Dispatchers.IO) {
             dashCoinUseCases.signOut()
+            clearUpdateProfilePictureState()
             updateUiState()
             _userCredential.value = DashCoinUser()
         }
@@ -89,6 +90,13 @@ class ProfileViewModel @Inject constructor(
                     is Resource.Success -> {
                         val imageUrl = uploadResult.data ?: ""
                         updateProfilePicture(imageUrl = imageUrl)
+                        firebaseRepository.getUserCredentials().collect { result ->
+                            if (result is Resource.Success) {
+                                result.data?.let {
+                                    dashCoinRepository.cacheDashCoinUser(it)
+                                }
+                            }
+                        }
                     }
                     is Resource.Error -> {
                         _updateProfilePictureState.value = UpdatePictureState(isFailure = true)
