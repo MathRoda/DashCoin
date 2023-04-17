@@ -39,7 +39,8 @@ fun NewsFilterPicker(
 
     AnimatedVisibility(visible = isVisible) {
         Row(
-            modifier = modifier,
+            modifier = modifier
+                .padding(bottom = 16.dp),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             filterOptions.map { filter ->

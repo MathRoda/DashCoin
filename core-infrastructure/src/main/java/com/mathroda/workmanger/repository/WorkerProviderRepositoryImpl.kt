@@ -51,10 +51,10 @@ class WorkerProviderRepositoryImpl @Inject constructor(
         val workRequest = PeriodicWorkRequestBuilder<DashCoinWorker>(
             repeatInterval = timeLong(userState.value),
             repeatIntervalTimeUnit = timeUnit(userState.value),
-            flexTimeInterval = timeLong(userState.value),
-            flexTimeIntervalUnit = timeUnit(userState.value)
+           // flexTimeInterval = timeLong(userState.value),
+           // flexTimeIntervalUnit = timeUnit(userState.value)
         ).setConstraints(workConstraints)
-            .setInitialDelay(5, TimeUnit.SECONDS)
+            .setInitialDelay(30, TimeUnit.MINUTES)
             .addTag(Constants.SYNC_DATA)
             .build()
 
