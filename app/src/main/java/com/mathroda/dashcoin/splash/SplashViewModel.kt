@@ -19,6 +19,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,7 +42,7 @@ class SplashViewModel @Inject constructor(
 
     private val onSuccessWorker = workerProviderRepository.onWorkerSuccess().value
 
-    private val userExist = mutableStateOf(false)
+    private val userExist = MutableStateFlow(false)
 
 
     init {
@@ -94,7 +95,7 @@ class SplashViewModel @Inject constructor(
             dataStoreRepository.readIsUserExistState.firstOrNull()?.let { doesExist ->
                 Log.d("userDoesExist", doesExist.toString())
                 if (doesExist) {
-                    userExist.value = true
+                    userExist.update { true }
                     return@launch
                 }
                 isUserExist.collect { dataStoreRepository.saveIsUserExist(it) }

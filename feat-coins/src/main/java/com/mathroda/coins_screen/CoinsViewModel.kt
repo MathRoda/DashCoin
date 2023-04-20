@@ -39,12 +39,14 @@ class CoinsViewModel @Inject constructor(
 
     init {
         if (_state.value.coins.isEmpty()) {
-            getCoins()
+            getCoins(0)
         }
     }
 
-    private fun getCoins() {
-       dashCoinRepository.getCoinsRemote(skip = _paginationState.value.skip)
+    private fun getCoins(
+        skip: Int
+    ) {
+       dashCoinRepository.getCoinsRemote(skip = skip)
            .distinctUntilChanged()
            .onEach { result ->
                 when (result) {
@@ -58,7 +60,7 @@ class CoinsViewModel @Inject constructor(
 
     fun getCoinsPaginated() {
         if (!_paginationState.value.endReached && _state.value.coins.isNotEmpty()) {
-            getCoins()
+            getCoins(_paginationState.value.skip)
         }
     }
 
@@ -116,7 +118,7 @@ class CoinsViewModel @Inject constructor(
             updateRefreshState(true)
             _paginationState.update { it.copy(skip = 0) }
             _state.update { it.copy(coins = emptyList()) }
-            getCoins()
+            getCoins(0)
             updateRefreshState(false)
         }
 
