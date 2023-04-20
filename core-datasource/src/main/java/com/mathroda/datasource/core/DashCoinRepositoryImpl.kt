@@ -86,7 +86,7 @@ class DashCoinRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun getFavoriteCoins(): Flow<List<FavoriteCoin>> {
+    override fun getFlowFavoriteCoins(): Flow<List<FavoriteCoin>> {
         return favoriteCoinsDao.getAllFavoriteCoins().map { it.toDomain() }
     }
 
@@ -99,7 +99,7 @@ class DashCoinRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeFavoriteCoin(coin: FavoriteCoin) {
-        coin.toEntity().coinId?.run { favoriteCoinsDao.deleteFavoriteCoin(this) }
+        coin.toEntity().coinId.run { favoriteCoinsDao.deleteFavoriteCoin(this) }
     }
 
     override suspend fun addAllFavoriteCoins(coins: List<FavoriteCoin>) {

@@ -7,27 +7,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import com.mathroda.core.util.Constants.BITCOIN_ID
-import com.mathroda.core.util.Resource
 import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
+import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.workmanger.repository.WorkerProviderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository,
+    firebaseRepository: FirebaseRepository,
     private val dataStoreRepository: DataStoreRepository,
     private val dashCoinRepository: DashCoinRepository,
+    private val dashCoinUseCases: DashCoinUseCases,
     workerProviderRepository: WorkerProviderRepository
 ) : ViewModel() {
 
@@ -44,8 +44,8 @@ class SplashViewModel @Inject constructor(
 
     init {
         getOnBoardingState()
-        updateIsUserExistPref()
         cacheDashCoinUser()
+        updateIsUserExistPref()
         notificationWorker()
     }
 
@@ -77,7 +77,7 @@ class SplashViewModel @Inject constructor(
                 if (workInfo.state == WorkInfo.State.ENQUEUED) {
                     dataStoreRepository.readIsUserExistState.collect { isUserExist ->
                         if (isUserExist) {
-                            dashCoinRepository.getFavoriteCoins().firstOrNull()
+                            dashCoinRepository.getFlowFavoriteCoins().firstOrNull()
                         } else {
                             dashCoinRepository.getCoinByIdRemote(BITCOIN_ID).firstOrNull()
                         }
@@ -101,18 +101,7 @@ class SplashViewModel @Inject constructor(
 
     private fun cacheDashCoinUser() {
         viewModelScope.launch(Dispatchers.IO) {
-            dashCoinRepository.getDashCoinUser().first().let { user ->
-                if (user != null) {
-                    return@launch
-                }
-
-                firebaseRepository.getUserCredentials().collect {
-                    when(it) {
-                        is Resource.Success -> it.data?.run { dashCoinRepository.cacheDashCoinUser(this) }
-                        else -> {}
-                    }
-                }
-            }
+            dashCoinUseCases.cacheDashCoinUser()
         }
     }
 }

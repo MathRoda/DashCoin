@@ -184,7 +184,7 @@ class FirebaseRepositoryImpl constructor(
         return favoriteCoin
     }
 
-    override fun getCoinFavorite(): Flow<Resource<List<FavoriteCoin>>> {
+    override fun getFlowFavoriteCoins(): Flow<Resource<List<FavoriteCoin>>> {
         return callbackFlow {
             try {
                 this.trySend(Resource.Loading())

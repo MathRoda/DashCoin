@@ -16,18 +16,18 @@ class GetFavoriteCoinsUseCase @Inject constructor(
     operator fun invoke(): Flow<Resource<List<FavoriteCoin>>> {
         return flow {
             emit(Resource.Loading())
-            dashCoinRepository.getFavoriteCoins().collect { coins ->
+            dashCoinRepository.getFlowFavoriteCoins().collect { coins ->
                 if (coins.isNotEmpty()) {
                     emit(Resource.Success(coins))
                 }
 
                 if (coins.isEmpty()) {
-                    firebaseRepository.getCoinFavorite().collect { result ->
+                    firebaseRepository.getFlowFavoriteCoins().collect { result ->
                         when(result) {
                             is Resource.Success -> {
                                 result.data?.let {
-                                    dashCoinRepository.addAllFavoriteCoins(it)
                                     emit(Resource.Success(it))
+                                    dashCoinRepository.addAllFavoriteCoins(it)
                                 }
                             }
                             is Resource.Error -> emit(Resource.Error(result.message ?: "unknown error"))

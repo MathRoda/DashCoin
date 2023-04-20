@@ -10,9 +10,9 @@ import com.mathroda.core.util.Constants.BITCOIN_ID
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
-import com.mathroda.notifications.CoinsNotification
-import com.mathroda.notifications.showNegative
-import com.mathroda.notifications.showPositive
+import com.mathroda.notifications.coins.CoinsNotification
+import com.mathroda.notifications.coins.showNegative
+import com.mathroda.notifications.coins.showPositive
 import com.mathroda.workmanger.util.is5PercentDown
 import com.mathroda.workmanger.util.is5PercentUp
 import dagger.assisted.Assisted

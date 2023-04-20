@@ -39,12 +39,16 @@ class FavoriteCoinsViewModel @Inject constructor(
     private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
     val authState:State<UserState> = _authState
 
-    fun init() {
+    init {
         userState()
+    }
+
+    fun init() {
         getAllCoins()
         getMarketStatus()
         updateFavoriteCoins()
     }
+
     private fun userState() {
         viewModelScope.launch(Dispatchers.IO) {
             dashCoinUseCases.userStateProvider(
@@ -69,7 +73,7 @@ class FavoriteCoinsViewModel @Inject constructor(
     }
 
     private suspend fun getAllFavoriteCoinsAuthed() {
-        dashCoinRepository.getFavoriteCoins().collect { result ->
+        dashCoinRepository.getFlowFavoriteCoins().collect { result ->
             val state = result.map { CoinState().copy(coin = it) }
             updateFavoriteCoinsState(coins = state)
         }
@@ -139,12 +143,12 @@ class FavoriteCoinsViewModel @Inject constructor(
     }
 
     fun refresh() {
-        viewModelScope.launch {
+        /*viewModelScope.launch {
             _isRefresh.update { true }
             getMarketStatus()
-            updateFavoriteCoins()
+            getAllCoins()
             _isRefresh.update { false }
-        }
+        }*/
 
     }
 

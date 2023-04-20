@@ -1,4 +1,4 @@
-package com.mathroda.notifications
+package com.mathroda.notifications.coins
 
 import android.app.Application
 import android.app.PendingIntent
@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 import com.mathroda.common.navigation.DestinationsDeepLink
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
-import com.mathroda.notifications.CoinsNotification.Companion.marketStatusId
+import com.mathroda.notifications.coins.CoinsNotification.Companion.marketStatusId
 import com.mathroda.notifications.util.getNotificationManager
 import com.mathroda.workmanger.R
 import dagger.hilt.android.qualifiers.ApplicationContext

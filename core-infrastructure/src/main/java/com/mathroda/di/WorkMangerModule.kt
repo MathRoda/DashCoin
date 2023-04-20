@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.work.WorkManager
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
-import com.mathroda.notifications.CoinsNotification
-import com.mathroda.notifications.CoinsNotificationChannel
+import com.mathroda.notifications.coins.CoinsNotification
+import com.mathroda.notifications.coins.CoinsNotificationChannel
+import com.mathroda.notifications.sync.SyncNotification
+import com.mathroda.notifications.sync.SyncNotificationChannel
 import com.mathroda.workmanger.repository.WorkerProviderRepository
 import com.mathroda.workmanger.repository.WorkerProviderRepositoryImpl
 import dagger.Module
@@ -29,8 +31,14 @@ object WorkMangerModule {
 
     @Singleton
     @Provides
-    fun providesCoinsNotificationChannel(context: Application):CoinsNotificationChannel {
+    fun providesCoinsNotificationChannel(context: Application): CoinsNotificationChannel {
         return CoinsNotificationChannel(context)
+    }
+
+    @Singleton
+    @Provides
+    fun providesSyncNotificationChannel(context: Application): SyncNotificationChannel {
+        return SyncNotificationChannel(context)
     }
 
     @Provides
@@ -38,8 +46,14 @@ object WorkMangerModule {
     fun providesCoinsNotification(
         context: Application,
         channel: CoinsNotificationChannel
-    ) =
-        CoinsNotification(context, channel)
+    ) = CoinsNotification(context, channel)
+
+    @Provides
+    @Singleton
+    fun providesSyncNotification(
+        context: Application,
+        channel: SyncNotificationChannel
+    ) = SyncNotification(context, channel)
 
     @Provides
     @Singleton

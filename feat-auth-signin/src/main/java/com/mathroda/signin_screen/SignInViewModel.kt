@@ -8,15 +8,21 @@ import com.mathroda.core.util.Resource
 import com.mathroda.core.util.Response
 import com.mathroda.core.util.isValidEmail
 import com.mathroda.core.util.isValidPassword
+import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.google_service.GoogleServicesRepository
 import com.mathroda.datasource.google_service.OneTapSignInResponse
 import com.mathroda.datasource.google_service.SignInWithGoogleResponse
+import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.signin_screen.state.SignInState
 import com.mathroda.signin_screen.state.SigniInScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +30,9 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
     private val googleServices: GoogleServicesRepository,
-    val onTapClient: SignInClient
+    val onTapClient: SignInClient,
+    private val dashCoinUseCases: DashCoinUseCases,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 
     private val _signIn = MutableStateFlow(SignInState())
@@ -68,9 +76,7 @@ class SignInViewModel @Inject constructor(
                     )
 
                 }
-                is Resource.Success -> {
-                    _signIn.emit(SignInState(signIn = result.data))
-                }
+                is Resource.Success -> onSignInSuccess(result.data)
                 is Resource.Error -> {
                     _signIn.emit(
                         SignInState(
@@ -85,6 +91,14 @@ class SignInViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+
+    private suspend fun onSignInSuccess(
+        data: Any?
+    ) {
+        _signIn.emit(SignInState(signIn = data))
+        dataStoreRepository.saveIsUserExist(true)
+        dashCoinUseCases.cacheDashCoinUser()
+    }
 
     fun oneTapSignIn() = viewModelScope.launch(Dispatchers.IO) {
         googleServices.oneTapSignInWithGoogle().collect { result ->
