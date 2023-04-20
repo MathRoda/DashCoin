@@ -3,7 +3,6 @@ package com.mathroda.favorite_coins
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mathroda.core.state.UserState
@@ -33,9 +32,5 @@ fun WatchListScreen(
             viewModel.refresh()
             WatchListPremiumUsers(navController = navController)
         }
-    }
-
-    LaunchedEffect(true) {
-        viewModel.init()
     }
 }

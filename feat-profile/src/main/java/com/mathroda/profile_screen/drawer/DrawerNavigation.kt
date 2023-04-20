@@ -1,23 +1,22 @@
 package com.mathroda.profile_screen.drawer
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mathroda.common.navigation.Destinations
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
 import com.mathroda.profile_screen.ProfileViewModel
-import com.mathroda.profile_screen.menuitem.MenuItems
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
@@ -32,10 +31,19 @@ fun DrawerNavigation(
     val isPremium by viewModel.isUserPremium().collectAsState(initial = false)
     val isAuthedUser = viewModel.authState.value !is UserState.UnauthedUser
     val updateProfilePictureState = viewModel.updateProfilePictureState.collectAsState()
+    val menuItems = viewModel.getMenuListItems()
+    val toast = viewModel.toastState.value
+
+    if (toast.first) {
+        SweetToastUtil.SweetSuccess(
+            message = toast.second,
+            padding = PaddingValues(bottom = 65.dp)
+        )
+        viewModel.updateToastState(false, "")
+    }
 
     LaunchedEffect(true) {
-        viewModel.updateUiState()
-        viewModel.getUserCredential()
+        viewModel.init()
     }
 
     DrawerHeader(
@@ -52,34 +60,12 @@ fun DrawerNavigation(
     )
 
     DrawerBody(
-        item = listOf(
-            MenuItems(
-                id = "settings",
-                title = "Settings",
-                contentDescription = "Toggle Home",
-                icon = Icons.Default.Settings
-            ),
-          /*MenuItems(
-                id = "help",
-                title = "Help Center",
-                contentDescription = "Toggle About",
-                icon = Icons.Default.Help
-            ),*/
-            MenuItems(
-                id = "about",
-                title = "About DashCoin",
-                contentDescription = "Toggle About",
-                icon = Icons.Default.Favorite
-            )
-        ),
+        item = menuItems,
         onItemClick = {
             when (it.id) {
-                "about" -> {
-                    uriHandler.openUri(Constants.DASHCOIN_REPOSITORY)
-                }
-                "settings" -> {
-                    navController.navigate(Destinations.Settings.route)
-                }
+                "about" -> uriHandler.openUri(Constants.DASHCOIN_REPOSITORY)
+                "settings" -> navController.navigate(Destinations.Settings.route)
+                "syncData" -> viewModel.onSyncClicked()
             }
         }
     )

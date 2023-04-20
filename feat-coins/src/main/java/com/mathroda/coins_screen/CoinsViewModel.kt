@@ -6,20 +6,24 @@ import com.mathroda.coins_screen.state.CoinsState
 import com.mathroda.coins_screen.state.PaginationState
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
-import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.domain.model.Coins
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @HiltViewModel
 class CoinsViewModel @Inject constructor(
-    private val dashCoinRepository: DashCoinRepository,
-    private val firebaseRepository: FirebaseRepository
+    private val dashCoinRepository: DashCoinRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CoinsState())
@@ -37,7 +41,6 @@ class CoinsViewModel @Inject constructor(
         if (_state.value.coins.isEmpty()) {
             getCoins()
         }
-        cacheDashCoinUser()
     }
 
     private fun getCoins() {
@@ -122,22 +125,6 @@ class CoinsViewModel @Inject constructor(
         value: Boolean
     ) = _isRefresh.update { value }
 
-    private fun cacheDashCoinUser() {
-        viewModelScope.launch(Dispatchers.IO) {
-            dashCoinRepository.getDashCoinUser().collect { user ->
-                if (user != null) {
-                    return@collect
-                }
-
-                firebaseRepository.getUserCredentials().collect {
-                    when(it) {
-                        is Resource.Success -> it.data?.run { dashCoinRepository.cacheDashCoinUser(this) }
-                        else -> {}
-                    }
-                }
-            }
-        }
-    }
     companion object {
         const val COINS_LIMIT = 400
     }

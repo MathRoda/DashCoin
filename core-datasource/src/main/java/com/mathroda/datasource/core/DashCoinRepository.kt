@@ -1,7 +1,14 @@
 package com.mathroda.datasource.core
 
 import com.mathroda.core.util.Resource
-import com.mathroda.domain.model.*
+import com.mathroda.domain.model.ChartTimeSpan
+import com.mathroda.domain.model.Charts
+import com.mathroda.domain.model.CoinById
+import com.mathroda.domain.model.Coins
+import com.mathroda.domain.model.DashCoinUser
+import com.mathroda.domain.model.FavoriteCoin
+import com.mathroda.domain.model.NewsDetail
+import com.mathroda.domain.model.NewsType
 import kotlinx.coroutines.flow.Flow
 
 interface DashCoinRepository {
@@ -15,7 +22,7 @@ interface DashCoinRepository {
 
     fun getNewsRemote(filter: NewsType): Flow<Resource<List<NewsDetail>>>
 
-    fun getFavoriteCoins(): Flow<List<FavoriteCoin>>
+    fun getFlowFavoriteCoins(): Flow<List<FavoriteCoin>>
 
     fun getFavoriteCoinByIdLocal(
         coinId: String
