@@ -14,7 +14,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -44,10 +43,6 @@ fun WatchListAuthedUsers(
     val watchListState by viewModel.state.collectAsState()
     val isRefresh by viewModel.isRefresh.collectAsState()
     val marketState by viewModel.marketStatus
-
-    LaunchedEffect(true) {
-        viewModel.init()
-    }
 
     Column(
         modifier = Modifier

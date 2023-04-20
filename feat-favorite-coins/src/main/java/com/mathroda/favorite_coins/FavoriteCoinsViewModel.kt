@@ -36,14 +36,11 @@ class FavoriteCoinsViewModel @Inject constructor(
     private val _marketStatus = mutableStateOf(MarketState())
     val marketStatus: State<MarketState> = _marketStatus
 
-    private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
-    val authState:State<UserState> = _authState
-
-    init {
-        userState()
-    }
+    private val _authState = MutableStateFlow<UserState>(UserState.UnauthedUser)
+    val authState = _authState.asStateFlow()
 
     fun init() {
+        userState()
         getAllCoins()
         getMarketStatus()
         updateFavoriteCoins()
@@ -53,7 +50,7 @@ class FavoriteCoinsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             dashCoinUseCases.userStateProvider(
                 function = {}
-            ).collect { userState -> _authState.value = userState}
+            ).collect { userState -> _authState.update { userState } }
         }
     }
 

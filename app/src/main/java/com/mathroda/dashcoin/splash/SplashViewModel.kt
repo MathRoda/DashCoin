@@ -41,6 +41,8 @@ class SplashViewModel @Inject constructor(
 
     private val onSuccessWorker = workerProviderRepository.onWorkerSuccess().value
 
+    private val userExist = mutableStateOf(false)
+
 
     init {
         getOnBoardingState()
@@ -92,6 +94,7 @@ class SplashViewModel @Inject constructor(
             dataStoreRepository.readIsUserExistState.firstOrNull()?.let { doesExist ->
                 Log.d("userDoesExist", doesExist.toString())
                 if (doesExist) {
+                    userExist.value = true
                     return@launch
                 }
                 isUserExist.collect { dataStoreRepository.saveIsUserExist(it) }
@@ -100,8 +103,10 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun cacheDashCoinUser() {
-        viewModelScope.launch(Dispatchers.IO) {
-            dashCoinUseCases.cacheDashCoinUser()
+        if (userExist.value) {
+            viewModelScope.launch(Dispatchers.IO) {
+                dashCoinUseCases.cacheDashCoinUser()
+            }
         }
     }
 }
