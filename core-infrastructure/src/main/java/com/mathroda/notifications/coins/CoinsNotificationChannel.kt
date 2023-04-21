@@ -1,4 +1,4 @@
-package com.mathroda.notifications
+package com.mathroda.notifications.coins
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,8 +11,8 @@ class CoinsNotificationChannel(context: Context) {
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = Constants.CHANNEL_NAME
-            val description = Constants.CHANNEL_DESCRIPTION
+            val name = Constants.COINS_CHANNEL_NAME
+            val description = Constants.COINS_CHANNEL_DESCRIPTION
             val importance = NotificationManager.IMPORTANCE_HIGH
 
             NotificationChannel(CHANNEL_ID, name, importance).apply {

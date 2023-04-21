@@ -1,4 +1,4 @@
-package com.mathroda.notifications
+package com.mathroda.notifications.coins
 
 import android.app.Application
 import android.app.PendingIntent
@@ -8,6 +8,8 @@ import android.net.Uri
 import androidx.core.app.NotificationCompat
 import com.mathroda.common.navigation.DestinationsDeepLink
 import com.mathroda.core.state.UserState
+import com.mathroda.core.util.Constants
+import com.mathroda.notifications.coins.CoinsNotification.Companion.marketStatusId
 import com.mathroda.notifications.util.getNotificationManager
 import com.mathroda.workmanger.R
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -70,5 +72,29 @@ class CoinsNotification @Inject constructor(
 
     companion object {
         private const val REQUEST_CODE_OPEN_TASK = 1_121_111
+        const val marketStatusId = Int.MAX_VALUE
+
     }
+}
+
+fun CoinsNotification.showPositive(
+    state: UserState
+) {
+    show(
+        id = marketStatusId,
+        title = Constants.TITLE,
+        description = Constants.DESCRIPTION_POSITIVE,
+        state = state
+    )
+}
+
+fun CoinsNotification.showNegative(
+    state: UserState
+) {
+    show(
+        id = marketStatusId,
+        title = Constants.TITLE,
+        description = Constants.DESCRIPTION_NEGATIVE,
+        state = state
+    )
 }

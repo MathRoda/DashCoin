@@ -10,7 +10,14 @@ import com.example.cache.dbo.user.toUserEntity
 import com.example.cache.mapper.toDomain
 import com.example.cache.mapper.toEntity
 import com.mathroda.core.util.Resource
-import com.mathroda.domain.model.*
+import com.mathroda.domain.model.ChartTimeSpan
+import com.mathroda.domain.model.Charts
+import com.mathroda.domain.model.CoinById
+import com.mathroda.domain.model.Coins
+import com.mathroda.domain.model.DashCoinUser
+import com.mathroda.domain.model.FavoriteCoin
+import com.mathroda.domain.model.NewsDetail
+import com.mathroda.domain.model.NewsType
 import com.mathroda.network.DashCoinApi
 import com.mathroda.network.dto.toChart
 import com.mathroda.network.dto.toCoinDetail
@@ -79,7 +86,7 @@ class DashCoinRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun getFavoriteCoins(): Flow<List<FavoriteCoin>> {
+    override fun getFlowFavoriteCoins(): Flow<List<FavoriteCoin>> {
         return favoriteCoinsDao.getAllFavoriteCoins().map { it.toDomain() }
     }
 
@@ -92,7 +99,7 @@ class DashCoinRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeFavoriteCoin(coin: FavoriteCoin) {
-        coin.toEntity().coinId?.run { favoriteCoinsDao.deleteFavoriteCoin(this) }
+        coin.toEntity().coinId.run { favoriteCoinsDao.deleteFavoriteCoin(this) }
     }
 
     override suspend fun addAllFavoriteCoins(coins: List<FavoriteCoin>) {
@@ -104,7 +111,8 @@ class DashCoinRepositoryImpl @Inject constructor(
     }
 
     override suspend fun cacheDashCoinUser(user: DashCoinUser) {
-        return userDao.insertUser(user.toUserEntity())
+        userDao.deleteUser()
+        userDao.insertUser(user.toUserEntity())
     }
 
     override suspend fun removeDashCoinUserRecord() {

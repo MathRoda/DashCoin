@@ -30,4 +30,7 @@ sealed class Destinations(
     object SignIn : Destinations(route = "sign_in")
     object ForgotPassword : Destinations(route = "forgot_password")
 
+    object Settings: Destinations(route = "settings")
+
+
 }

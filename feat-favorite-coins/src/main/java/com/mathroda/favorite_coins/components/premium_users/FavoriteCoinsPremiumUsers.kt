@@ -2,7 +2,11 @@ package com.mathroda.favorite_coins.components.premium_users
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
@@ -23,6 +27,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.common.components.CommonTopBar
 import com.mathroda.common.components.InternetConnectivityManger
 import com.mathroda.common.navigation.Destinations
+import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.LighterGray
 import com.mathroda.favorite_coins.FavoriteCoinsViewModel
 import com.mathroda.favorite_coins.components.common.MarketStatusBar
@@ -41,7 +46,7 @@ fun WatchListPremiumUsers(
 
     Box(
         modifier = Modifier
-            .background(com.mathroda.common.theme.DarkGray)
+            .background(DarkGray)
             .fillMaxSize()
             .padding(12.dp)
     ) {

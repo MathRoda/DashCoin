@@ -6,18 +6,20 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mathroda.domain.model.FavoriteCoin
 import kotlinx.parcelize.Parcelize
+import org.jetbrains.annotations.NotNull
 
 @Entity(
     tableName = "FavoriteCoin"
 )
 @Parcelize
 data class FavoriteCoinEntity(
-    @ColumnInfo(name = "CoinId") val coinId: String?,
+    @NotNull
+    @PrimaryKey
+    @ColumnInfo(name = "CoinId") val coinId: String,
     @ColumnInfo(name = "Name") val name: String?,
     @ColumnInfo(name = "Symbol") val symbol: String?,
     @ColumnInfo(name = "Icon") val icon: String?,
     @ColumnInfo(name = "Price") val price: Double?,
-    @PrimaryKey
     @ColumnInfo(name = "Rank") val rank: Int,
     @ColumnInfo(name = "PriceChanged1d") val priceChanged1d: Double?,
     @ColumnInfo(name = "PriceChanged1h") val priceChanged1h: Double?,
@@ -26,7 +28,7 @@ data class FavoriteCoinEntity(
 
 fun FavoriteCoinEntity.toDomain(): FavoriteCoin {
     return FavoriteCoin(
-        coinId = coinId ?: "",
+        coinId = coinId,
         name = name ?: "",
         symbol = symbol ?: "",
         icon = icon ?: "",

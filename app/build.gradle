@@ -14,7 +14,7 @@ android {
         minSdk 21
         targetSdk 33
         versionCode 3
-        versionName "2.0.2"
+        versionName "2.0.3"
 
         testInstrumentationRunner "com.mathroda.dashcoin.CustomTestRunner"
         vectorDrawables {
@@ -60,6 +60,7 @@ dependencies {
     implementation project(':feat-coins')
     implementation project(':feat-favorite-coins')
     implementation project(':feat-news')
+    implementation project(':feat-profile')
     implementation project(':feat-onboarding')
     implementation project(':feat-auth-signin')
     implementation project(':feat-auth-signup')

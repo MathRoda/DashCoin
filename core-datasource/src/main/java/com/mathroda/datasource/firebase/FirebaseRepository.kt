@@ -40,7 +40,7 @@ interface FirebaseRepository {
 
     fun isFavoriteState(coin: FavoriteCoin): FavoriteCoin?
 
-    fun getCoinFavorite(): Flow<Resource<List<FavoriteCoin>>>
+    fun getFlowFavoriteCoins(): Flow<Resource<List<FavoriteCoin>>>
 
     fun updateFavoriteMarketState(coin: FavoriteCoin): Flow<Resource<Task<Void>>>
 

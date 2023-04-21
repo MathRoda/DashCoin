@@ -17,7 +17,7 @@ interface FavoriteCoinsDao {
     @Upsert
     suspend fun upsertFavoriteCoin(coin: FavoriteCoinEntity)
 
-    @Insert
+    @Upsert
     suspend fun insertAllFavoriteCoins(coins: List<FavoriteCoinEntity>)
 
     @Query("DELETE FROM FavoriteCoin " +

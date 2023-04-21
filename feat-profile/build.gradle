@@ -49,6 +49,7 @@ dependencies {
     implementation project(":core-domain")
     implementation project(":core-datasource")
     implementation project(':feat-common')
+    implementation project(':core-infrastructure')
 
     implementation "androidx.core:core-ktx:$androidx_core"
     implementation "androidx.compose.ui:ui:$compose_version"

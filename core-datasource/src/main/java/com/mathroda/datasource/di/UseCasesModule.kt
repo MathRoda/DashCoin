@@ -57,17 +57,30 @@ object UseCasesModule {
 
     @Provides
     @Singleton
+    fun providesCacheUserDataUseCase(
+        dashCoinRepository: DashCoinRepository,
+        firebaseRepository: FirebaseRepository
+    ): CacheUserDataUseCase {
+        return CacheUserDataUseCase(
+            dashCoinRepository, firebaseRepository
+        )
+    }
+
+    @Provides
+    @Singleton
     fun providesDashCoinUseCases(
         isFavorite: IsFavoriteStateUseCase,
         getAllFavoriteCoins: GetFavoriteCoinsUseCase,
         userStateProvider: ProvideUserStateUseCase,
-        signOutUseCase: SignOutUseCase
+        signOutUseCase: SignOutUseCase,
+        cacheUserData: CacheUserDataUseCase
     ): DashCoinUseCases {
         return DashCoinUseCases(
             isFavorite,
             getAllFavoriteCoins,
             userStateProvider,
-            signOutUseCase
+            signOutUseCase,
+            cacheUserData
         )
     }
 }
