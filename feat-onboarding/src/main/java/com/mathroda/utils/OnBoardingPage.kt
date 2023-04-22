@@ -11,8 +11,8 @@ sealed class OnBoardingPage(
 ) {
     object FirstScreen : OnBoardingPage(
         image = R.drawable.ic_onboarding_second,
-        title = "Top 100 Coin",
-        description = "get access to all information's about the top 100 coin in the market"
+        title = "Top Coins",
+        description = "get access to all information's about the top coins in the market"
     )
 
     object SecondScreen : OnBoardingPage(
@@ -23,7 +23,7 @@ sealed class OnBoardingPage(
 
     object ThirdScreen : OnBoardingPage(
         image = R.drawable.ic_onboarding_third,
-        title = "The Hottest News",
-        description = "You have access to the hottest and newest news about the market"
+        title = "Hottest News",
+        description = "You have access to the hottest and newest news about the crypto market"
     )
 }

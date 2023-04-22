@@ -111,7 +111,6 @@ class DashCoinRepositoryImpl @Inject constructor(
     }
 
     override suspend fun cacheDashCoinUser(user: DashCoinUser) {
-        userDao.deleteUser()
         userDao.insertUser(user.toUserEntity())
     }
 

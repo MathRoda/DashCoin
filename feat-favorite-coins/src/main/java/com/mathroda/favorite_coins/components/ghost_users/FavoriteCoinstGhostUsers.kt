@@ -1,7 +1,14 @@
 package com.mathroda.favorite_coins.components.ghost_users
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,13 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.airbnb.lottie.compose.*
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mathroda.common.components.CommonTopBar
 import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.favorite_coins.R
 
+@ExperimentalLayoutApi
 @Composable
 fun WatchListGhostUsers(navController: NavController) {
 
@@ -26,20 +38,21 @@ fun WatchListGhostUsers(navController: NavController) {
         iterations = LottieConstants.IterateForever
     )
 
-    Box(
-        modifier = Modifier
-            .background(DarkGray)
-            .fillMaxSize()
-            .padding(12.dp)
-    ) {
+    Scaffold(
+        topBar = { CommonTopBar(title = "Favorite Coins") }
+    ) { paddingValues ->
         Column(
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier
+                .background(DarkGray)
+                .fillMaxSize()
+                .padding(16.dp)
+                .padding(paddingValues),
+            //verticalArrangement = Arrangement.Center,
+            horizontalAlignment = CenterHorizontally
         ) {
-            CommonTopBar(title = "Favorite Coins")
-
             LottieAnimation(
                 modifier = Modifier
-                    .padding(top = 16.dp)
+                    .padding(top = 16.dp, end = 24.dp)
                     .graphicsLayer(scaleY = 0.6f, scaleX = 0.6f),
                 composition = lottieComp,
                 progress = { lottieProgress },
@@ -68,8 +81,6 @@ fun WatchListGhostUsers(navController: NavController) {
                     navController.navigate(Destinations.SignIn.route)
                 }
             }
-
-
         }
     }
 }

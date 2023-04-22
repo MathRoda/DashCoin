@@ -13,7 +13,11 @@ data class DashCoinUser(
     }
 
     fun isPremiumLimit(): Boolean {
-        return favoriteCoinsCount < 3
+        return favoriteCoinsCount >= FAVORITE_COINS_LIMIT
+    }
+
+    companion object {
+        private const val FAVORITE_COINS_LIMIT = 400
     }
 
 }

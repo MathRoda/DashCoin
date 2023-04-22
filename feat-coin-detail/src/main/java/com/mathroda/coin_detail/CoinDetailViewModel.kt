@@ -204,8 +204,8 @@ class CoinDetailViewModel @Inject constructor(
             dashCoinRepository.getDashCoinUser().collect { result ->
                 result?.let { user ->
                     when (user.isPremiumLimit()) {
-                        true -> onEvent(FavoriteCoinEvents.AddCoin(coin.toFavoriteCoin()))
-                        false -> _notPremiumDialog.value = DialogState.Open
+                        false -> onEvent(FavoriteCoinEvents.AddCoin(coin.toFavoriteCoin()))
+                        true -> _notPremiumDialog.value = DialogState.Open
                     }
                 }
             }
