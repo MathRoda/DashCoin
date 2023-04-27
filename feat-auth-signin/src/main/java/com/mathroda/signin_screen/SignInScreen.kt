@@ -5,7 +5,16 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -110,7 +119,7 @@ fun SignInScreen(
             DashCoinTextField(
                 text = screenState.email,
                 placeholder = "Email",
-                onValueChange = { viewModel.updateEmailState(it.trim()) },
+                onValueChange = viewModel::updateEmailState,
                 isError = screenState.isError,
                 errorMsg = "*Enter valid email address",
                 isPasswordTextField = false,

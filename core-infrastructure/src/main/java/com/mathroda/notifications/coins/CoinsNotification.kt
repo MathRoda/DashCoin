@@ -66,7 +66,7 @@ class CoinsNotification @Inject constructor(
         return when(state) {
             is UserState.UnauthedUser -> DestinationsDeepLink.getHomeUri()
             is UserState.AuthedUser -> DestinationsDeepLink.getHomeUri()
-            is UserState.PremiumUser -> DestinationsDeepLink.getFavoriteCoinsUri()
+            is UserState.PremiumUser -> DestinationsDeepLink.getHomeUri()
         }
     }
 
