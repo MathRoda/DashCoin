@@ -1,6 +1,6 @@
 package com.mathroda.signin_screen.state
 
-data class SigniInScreenState(
+data class SignInScreenState(
     val email: String = "",
     val password: String = "",
     val isPasswordVisible: Boolean = false,

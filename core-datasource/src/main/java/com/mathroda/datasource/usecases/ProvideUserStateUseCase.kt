@@ -22,7 +22,7 @@ class ProvideUserStateUseCase @Inject constructor(
                 return@flow
             }
 
-            dashCoinRepository.isUserPremiumLocal().collect { isPremium ->
+            dashCoinRepository.isUserPremiumLocal().firstOrNull()?.let { isPremium ->
                 if (!isPremium) {
                     emit(UserState.AuthedUser)
                 }

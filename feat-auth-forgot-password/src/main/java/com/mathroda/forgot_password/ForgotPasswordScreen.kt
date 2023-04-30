@@ -1,13 +1,26 @@
 package com.mathroda.forgot_password
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -19,6 +32,7 @@ import com.mathroda.common.components.BackStackButton
 import com.mathroda.common.components.CustomClickableText
 import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.components.DashCoinTextField
+import com.mathroda.common.components.LoadingDots
 import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
@@ -31,10 +45,7 @@ fun ForgotPasswordScreen(
     viewModel: ResetPasswordViewModel = hiltViewModel()
 ) {
 
-    var email by remember { mutableStateOf("") }
-    var isError by remember { mutableStateOf(false) }
-    var isEnabled by remember { mutableStateOf(true) }
-    var isLoading by remember { mutableStateOf(false) }
+    val screenState by viewModel.screenState.collectAsState()
     val state = viewModel.resetPassword.collectAsState().value
 
     Scaffold { paddingValues ->
@@ -85,15 +96,15 @@ fun ForgotPasswordScreen(
 
 
             DashCoinTextField(
-                text = email,
+                text = screenState.email,
                 placeholder = "Email ID",
-                onValueChange = { email = it.trim() },
-                isError = isError,
+                onValueChange = viewModel::updateEmailState,
+                isError = screenState.isError,
                 errorMsg = "*Enter valid email address",
                 isPasswordTextField = false,
                 trailingIcon = {
-                    if (email.isNotBlank()) {
-                        IconButton(onClick = { email = "" }) {
+                    if (screenState.email.isNotBlank()) {
+                        IconButton(onClick = { viewModel.updateEmailState("") }) {
                             Icon(imageVector = Icons.Default.Clear, contentDescription = null)
                         }
                     }
@@ -102,22 +113,20 @@ fun ForgotPasswordScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CustomLoginButton(
-                text = "SUBMIT",
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                isError = email.isEmpty()
-                viewModel.resetPasswordWithEmail(email)
+            LoadingDots(isLoading = screenState.isLoading)
+
+            AnimatedVisibility(visible = screenState.isVisible) {
+                CustomLoginButton(
+                    text = "SUBMIT",
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    viewModel.validateEmail()
+                }
             }
         }
 
         when {
-            state.isLoading -> {
-                LaunchedEffect(Unit) {
-                    isEnabled = !isEnabled
-                    isLoading = !isLoading
-                }
-            }
+            state.isLoading -> {}
 
             state.Successful -> {
                 SweetToastUtil.SweetSuccess(
@@ -129,15 +138,10 @@ fun ForgotPasswordScreen(
                 LaunchedEffect(Unit) {
                     delay(800)
                     navController.popBackStack()
-                    navController.navigate(Destinations.SignIn.route)
                 }
             }
 
             state.error.isNotBlank() -> {
-                LaunchedEffect(Unit) {
-                    isEnabled = !isEnabled
-                    isLoading = !isLoading
-                }
                 val errorMsg = state.error
                 SweetToastUtil.SweetError(
                     message = errorMsg,

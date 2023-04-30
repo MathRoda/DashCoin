@@ -14,8 +14,8 @@ import com.mathroda.datasource.google_service.GoogleServicesRepository
 import com.mathroda.datasource.google_service.OneTapSignInResponse
 import com.mathroda.datasource.google_service.SignInWithGoogleResponse
 import com.mathroda.datasource.usecases.DashCoinUseCases
+import com.mathroda.signin_screen.state.SignInScreenState
 import com.mathroda.signin_screen.state.SignInState
-import com.mathroda.signin_screen.state.SigniInScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +38,7 @@ class SignInViewModel @Inject constructor(
     private val _signIn = MutableStateFlow(SignInState())
     val signIn = _signIn.asStateFlow()
 
-    private val _screenState = MutableStateFlow(SigniInScreenState())
+    private val _screenState = MutableStateFlow(SignInScreenState())
     val screenState = _screenState.asStateFlow()
 
     private val _oneTapSignInResponse =
@@ -138,7 +138,7 @@ class SignInViewModel @Inject constructor(
     fun updateEmailState(
         value: String
     ) {
-        _screenState.update { it.copy(email = value) }
+        _screenState.update { it.copy(email = value.trim()) }
         resetErrorState()
     }
 
