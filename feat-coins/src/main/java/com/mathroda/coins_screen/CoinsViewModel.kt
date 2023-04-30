@@ -43,7 +43,7 @@ class CoinsViewModel @Inject constructor(
         }
     }
 
-    private fun getCoins(
+    internal fun getCoins(
         skip: Int
     ) {
        dashCoinRepository.getCoinsRemote(skip = skip)
@@ -64,7 +64,7 @@ class CoinsViewModel @Inject constructor(
         }
     }
 
-    private fun onRequestSuccess(
+    internal fun onRequestSuccess(
         data: List<Coins>
     ) {
         _state.update {
@@ -79,13 +79,13 @@ class CoinsViewModel @Inject constructor(
         _paginationState.update {
             it.copy(
                 skip = listSize,
-                endReached = data.isEmpty() || listSize == COINS_LIMIT,
+                endReached = data.isEmpty() || listSize >= COINS_LIMIT,
                 isLoading = false
             )
         }
     }
 
-    private fun onRequestError(
+    internal fun onRequestError(
         message: String?
     ) {
         _state.update {
@@ -95,7 +95,7 @@ class CoinsViewModel @Inject constructor(
             )
         }
     }
-    private fun onRequestLoading() {
+    internal fun onRequestLoading() {
         if (_state.value.coins.isEmpty()) {
             _state.update {
                 it.copy(
@@ -126,6 +126,20 @@ class CoinsViewModel @Inject constructor(
     private fun updateRefreshState(
         value: Boolean
     ) = _isRefresh.update { value }
+
+    fun updateState(
+        isLoading: Boolean = false,
+        coins: List<Coins> = emptyList(),
+        error: String = ""
+    ) {
+        _state.update {
+            it.copy(
+                isLoading = isLoading,
+                coins = coins,
+                error = error
+            )
+        }
+    }
 
     companion object {
         const val COINS_LIMIT = 400
