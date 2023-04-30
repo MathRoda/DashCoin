@@ -182,11 +182,8 @@ class CoinDetailViewModel @Inject constructor(
 
     private fun isFavorite(coin: FavoriteCoin) {
         viewModelScope.launch(Dispatchers.IO) {
-            dashCoinUseCases.isFavoriteState(coin).collect { result ->
-                when(result) {
-                    is Resource.Success -> result.data?.let { state ->  _isFavoriteState.value = state }
-                    else -> {}
-                }
+            dashCoinUseCases.isFavoriteState(coin).let { result ->
+                _isFavoriteState.value = result
             }
         }
     }
