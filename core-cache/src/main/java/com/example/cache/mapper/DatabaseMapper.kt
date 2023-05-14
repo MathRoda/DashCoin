@@ -9,7 +9,7 @@ object DatabaseMapper: EntityMapper<List<FavoriteCoin>, List<FavoriteCoinEntity>
     override fun toDomain(entity: List<FavoriteCoinEntity>): List<FavoriteCoin> {
         return entity.map { data ->
             FavoriteCoin(
-                coinId = data.coinId ?: "",
+                coinId = data.coinId ,
                 name = data.name ?: "",
                 symbol = data.symbol ?: "",
                 icon = data.icon ?: "",

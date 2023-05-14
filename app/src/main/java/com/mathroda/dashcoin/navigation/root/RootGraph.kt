@@ -2,6 +2,7 @@ package com.mathroda.dashcoin.navigation.root
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -11,6 +12,7 @@ import androidx.navigation.compose.composable
 import com.mathroda.dashcoin.navigation.main.MainScreen
 import com.mathroda.dashcoin.navigation.onboarding.onBoardingNavGraph
 
+@ExperimentalLayoutApi
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi

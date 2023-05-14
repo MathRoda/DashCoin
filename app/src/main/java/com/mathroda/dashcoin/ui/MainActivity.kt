@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -21,6 +22,7 @@ import com.mathroda.dashcoin.navigation.root.RootNavigationGraph
 import com.mathroda.dashcoin.splash.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+@ExperimentalLayoutApi
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi

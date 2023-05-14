@@ -2,8 +2,8 @@ package com.mathroda.notifications.sync
 
 import android.app.Application
 import androidx.core.app.NotificationCompat
+import com.mathroda.infrastructure.R
 import com.mathroda.notifications.util.getNotificationManager
-import com.mathroda.workmanger.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
