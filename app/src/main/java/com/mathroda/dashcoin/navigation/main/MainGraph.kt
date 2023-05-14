@@ -2,6 +2,8 @@ package com.mathroda.dashcoin.navigation.main
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -24,13 +26,14 @@ import com.mathroda.news_screen.NewsScreen
 import com.mathroda.profile_screen.settings.SettingsScreen
 import com.mathroda.signin_screen.SignInScreen
 
+@ExperimentalLayoutApi
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 
-fun MainGraph(navController: NavHostController) {
+fun MainGraph(navController: NavHostController, paddingValues: PaddingValues) {
 
     AnimatedNavHost(
         navController = navController,

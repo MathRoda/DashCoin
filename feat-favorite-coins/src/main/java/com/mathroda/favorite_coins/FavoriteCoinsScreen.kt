@@ -1,6 +1,7 @@
 package com.mathroda.favorite_coins
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,6 +13,7 @@ import com.mathroda.favorite_coins.components.authed_users.WatchListAuthedUsers
 import com.mathroda.favorite_coins.components.ghost_users.WatchListGhostUsers
 import com.mathroda.favorite_coins.components.premium_users.WatchListPremiumUsers
 
+@ExperimentalLayoutApi
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
