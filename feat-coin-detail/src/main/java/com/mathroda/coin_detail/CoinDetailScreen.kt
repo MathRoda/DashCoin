@@ -2,7 +2,14 @@ package com.mathroda.coin_detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -17,7 +24,15 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mathroda.coin_detail.components.*
+import com.mathroda.coin_detail.components.Chart
+import com.mathroda.coin_detail.components.CoinDetailScreenState
+import com.mathroda.coin_detail.components.CoinDetailSection
+import com.mathroda.coin_detail.components.CoinInformation
+import com.mathroda.coin_detail.components.LinkButton
+import com.mathroda.coin_detail.components.LoadingChartState
+import com.mathroda.coin_detail.components.NotPremiumDialog
+import com.mathroda.coin_detail.components.TimeRangePicker
+import com.mathroda.coin_detail.components.TopBarCoinDetail
 import com.mathroda.common.components.CustomDialog
 import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.common.theme.DarkGray
@@ -86,11 +101,13 @@ fun CoinDetailScreen(
                         viewModel.onTimeSpanChanged(timeRange)
                     }
 
-                    Chart(
-                        oneDayChange = coin.priceChange1d,
-                        context = LocalContext.current,
-                        charts = chartsState
-                    )
+                    if (!chartsState.isLoading){
+                        Chart(
+                            oneDayChange = coin.priceChange1d,
+                            context = LocalContext.current,
+                            charts = chartsState
+                        )
+                    }
 
                     LoadingChartState()
 

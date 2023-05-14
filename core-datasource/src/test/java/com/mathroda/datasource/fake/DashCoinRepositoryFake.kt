@@ -3,6 +3,9 @@ package com.mathroda.datasource.fake
 import com.example.cache.dbo.favoritecoins.FavoriteCoinEntity
 import com.example.cache.dbo.favoritecoins.toDomain
 import com.example.cache.dbo.favoritecoins.toEntity
+import com.example.cache.dbo.user.UserEntity
+import com.example.cache.dbo.user.toDashCoinUser
+import com.example.cache.dbo.user.toUserEntity
 import com.example.cache.mapper.toEntity
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
@@ -15,9 +18,11 @@ import com.mathroda.domain.model.FavoriteCoin
 import com.mathroda.domain.model.NewsDetail
 import com.mathroda.domain.model.NewsType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class DashCoinRepositoryFake: DashCoinRepository {
     private val favoriteCoinDB = mutableListOf<FavoriteCoinEntity?>()
+    private val userDB = mutableListOf<UserEntity?>()
 
     override fun getCoinsRemote(skip: Int): Flow<Resource<List<Coins>>> {
         TODO("Not yet implemented")
@@ -39,7 +44,11 @@ class DashCoinRepositoryFake: DashCoinRepository {
     }
 
     override fun getFlowFavoriteCoins(): Flow<List<FavoriteCoin>> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(
+                favoriteCoinDB.map { it?.toDomain() ?: FavoriteCoin() }.toList()
+            )
+        }
     }
 
     override fun getFavoriteCoinByIdLocal(coinId: String): FavoriteCoin? {
@@ -63,15 +72,17 @@ class DashCoinRepositoryFake: DashCoinRepository {
     }
 
     override fun getDashCoinUser(): Flow<DashCoinUser?> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(userDB.first()?.toDashCoinUser())
+        }
     }
 
     override suspend fun cacheDashCoinUser(user: DashCoinUser) {
-        TODO("Not yet implemented")
+        userDB.add(user.toUserEntity())
     }
 
     override suspend fun removeDashCoinUserRecord() {
-        TODO("Not yet implemented")
+        userDB.clear()
     }
 
     override fun getFavoriteCoinsCount(): Flow<Int> {
@@ -83,6 +94,6 @@ class DashCoinRepositoryFake: DashCoinRepository {
     }
 
     override suspend fun removeAllFavoriteCoins() {
-        TODO("Not yet implemented")
+        favoriteCoinDB.clear()
     }
 }

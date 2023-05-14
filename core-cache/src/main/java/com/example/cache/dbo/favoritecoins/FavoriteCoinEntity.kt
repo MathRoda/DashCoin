@@ -6,14 +6,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mathroda.domain.model.FavoriteCoin
 import kotlinx.parcelize.Parcelize
-import org.jetbrains.annotations.NotNull
 
 @Entity(
     tableName = "FavoriteCoin"
 )
 @Parcelize
 data class FavoriteCoinEntity(
-    @NotNull
     @PrimaryKey
     @ColumnInfo(name = "CoinId") val coinId: String,
     @ColumnInfo(name = "Name") val name: String?,

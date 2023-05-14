@@ -34,7 +34,7 @@ class ProvideUserStateUseCaseTest {
     }
 
     @Test
-    fun `when user does not exist return UnauthedUser state`() = runTest {
+    fun `when user does not exist return UnauthedUser`() = runTest {
         every { dataStore.readIsUserExistState } returns flowOf(false)
         every { firebase.isUserExist() } returns false
 
@@ -45,7 +45,7 @@ class ProvideUserStateUseCaseTest {
     }
 
     @Test
-    fun `when user does exist but is not premium return AuthedUser state`() = runTest {
+    fun `when user does exist but is not premium return AuthedUser`() = runTest {
         every { dataStore.readIsUserExistState } returns flowOf(true)
         every { firebase.isUserExist() } returns true
         every { dashCoin.isUserPremiumLocal() } returns flowOf(false)
@@ -57,7 +57,7 @@ class ProvideUserStateUseCaseTest {
     }
 
     @Test
-    fun `when user does exist and he is premium return PremiumUser state`() = runTest {
+    fun `when user does exist and he is premium return PremiumUser`() = runTest {
         every { dataStore.readIsUserExistState } returns flowOf(true)
         every { firebase.isUserExist() } returns true
         every { dashCoin.isUserPremiumLocal() } returns flowOf(true)

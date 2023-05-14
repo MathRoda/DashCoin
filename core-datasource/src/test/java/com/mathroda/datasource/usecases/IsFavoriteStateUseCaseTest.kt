@@ -22,7 +22,7 @@ class IsFavoriteStateUseCaseTest {
     }
 
     @Test
-    fun `if coins is not found in Local DB return Not Favorite`() = runTest {
+    fun `if coin is not found in Local DB return Not Favorite`() = runTest {
         val bitcoin = FavoriteCoin(coinId = "bitcoin")
         val ethereum = FavoriteCoin(coinId = "ethereum")
         dashCoin.addFavoriteCoin(ethereum)
@@ -34,7 +34,7 @@ class IsFavoriteStateUseCaseTest {
     }
 
     @Test
-    fun `if coins is found in Local DB return Favorite`() = runTest {
+    fun `if coin is found in Local DB return Favorite`() = runTest {
         val bitcoin = FavoriteCoin(coinId = "bitcoin")
         dashCoin.addFavoriteCoin(bitcoin)
 
