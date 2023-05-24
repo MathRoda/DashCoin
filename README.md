@@ -39,14 +39,14 @@ watch video here [DashCoin Showcase](https://youtu.be/Y8FlGuVJOg8)
 ![](art/Dash-coin-2.jpg)
 ![](art/Dash-coin-3.jpg)
 
-## 📸 Screenshots
+<!-- ## 📸 Screenshots
 
 |   |   |   |
 |---|---|---|
 |![](art/Screenshot_splashscreen.png)| ![](art/Screenshot_signin.png) | ![](art/Screenshot_register.png)
 |![](art/home.png)| ![](art/search.png) | ![](art/positive-chart.png)
 |![](art/nigative-chart.png) | ![](art/watchlist.png) |![](art/news.png)
-|![](art/Screenshot_profile.png) | ![](art/Screenshot_notification.png) |
+|![](art/Screenshot_profile.png) | ![](art/Screenshot_notification.png) | -->
 
 ### Technical details
 
