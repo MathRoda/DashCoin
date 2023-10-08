@@ -20,8 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -51,30 +50,31 @@ class SignInViewModel @Inject constructor(
 
 
     fun validatedSignIn() {
-        if (isValidEmail(_screenState.value.email) && isValidPassword(_screenState.value.password)) {
+        val email = _screenState.value.email
+        val password = _screenState.value.password
+
+        if (isValidEmail(email) && isValidPassword(password)) {
             signIn(
-                email = _screenState.value.email,
-                password = _screenState.value.password
+                email = email,
+                password = password
             )
         } else {
             _screenState.update {
                 it.copy(
-                    isError = !isValidEmail(_screenState.value.email) || !isValidPassword(_screenState.value.password)
+                    isError = true
                 )
             }
         }
     }
 
-    private fun signIn(email: String, password: String) =
-        firebaseRepository.signInWithEmailAndPassword(email, password).onEach { result ->
+    private fun signIn(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
+        firebaseRepository.signInWithEmailAndPassword(email, password).collectLatest { result ->
             when (result) {
                 is Resource.Loading -> {
-                    _signIn.emit(SignInState(isLoading = true))
                     updateIsVisibleIsLoadingState(
                         isVisible = false,
                         isLoading = true
                     )
-
                 }
                 is Resource.Success -> onSignInSuccess(result.data)
                 is Resource.Error -> {
@@ -90,12 +90,12 @@ class SignInViewModel @Inject constructor(
                     )
                 }
             }
-        }.launchIn(viewModelScope)
-
+        }
+    }
     private suspend fun onSignInSuccess(
         data: Any?
     ) {
-        _signIn.emit(SignInState(signIn = data))
+        _signIn.update { it.copy(signIn = data) }
         dataStoreRepository.saveIsUserExist(true)
         dashCoinUseCases.cacheDashCoinUser()
     }

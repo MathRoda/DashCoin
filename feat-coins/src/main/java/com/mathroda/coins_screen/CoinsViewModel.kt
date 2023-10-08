@@ -59,9 +59,15 @@ class CoinsViewModel @Inject constructor(
     }
 
     fun getCoinsPaginated() {
-        if (!_paginationState.value.endReached && _state.value.coins.isNotEmpty()) {
-            getCoins(_paginationState.value.skip)
+        if (_state.value.coins.isEmpty()) {
+            return
         }
+
+        if (_paginationState.value.endReached) {
+            return
+        }
+
+        getCoins(_paginationState.value.skip)
     }
 
     internal fun onRequestSuccess(

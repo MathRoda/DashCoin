@@ -57,12 +57,10 @@ class FirebaseRepositoryImpl constructor(
     ): Flow<Resource<AuthResult>> {
         return flow {
             emit(Resource.Loading())
-
             val result = firebaseAuth.signInWithEmailAndPassword(
                 email,
                 password
             ).await()
-
             emit(Resource.Success(result))
         }.catch {
             emit(Resource.Error(it.message ?: "Unexpected Message"))

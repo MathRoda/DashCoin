@@ -28,7 +28,11 @@ class DashCoinRepositoryFake: DashCoinRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getCoinByIdRemote(coinId: String): Flow<Resource<CoinById>> {
+    override fun getCoinByIdRemoteFlow(coinId: String): Flow<Resource<CoinById>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getCoinByIdRemote(coinId: String): CoinById {
         TODO("Not yet implemented")
     }
 
@@ -59,7 +63,7 @@ class DashCoinRepositoryFake: DashCoinRepository {
         }
     }
 
-    override suspend fun addFavoriteCoin(coin: FavoriteCoin) {
+    override suspend fun upsertFavoriteCoin(coin: FavoriteCoin) {
         favoriteCoinDB.add(coin.toEntity())
     }
 
@@ -71,10 +75,8 @@ class DashCoinRepositoryFake: DashCoinRepository {
         favoriteCoinDB.addAll(coins.toEntity())
     }
 
-    override fun getDashCoinUser(): Flow<DashCoinUser?> {
-        return flow {
-            emit(userDB.first()?.toDashCoinUser())
-        }
+    override fun getDashCoinUser(): DashCoinUser? {
+            return userDB.first()?.toDashCoinUser()
     }
 
     override suspend fun cacheDashCoinUser(user: DashCoinUser) {
@@ -89,7 +91,7 @@ class DashCoinRepositoryFake: DashCoinRepository {
         TODO("Not yet implemented")
     }
 
-    override fun isUserPremiumLocal(): Flow<Boolean> {
+    override fun isUserPremiumLocal(): Boolean {
         TODO("Not yet implemented")
     }
 

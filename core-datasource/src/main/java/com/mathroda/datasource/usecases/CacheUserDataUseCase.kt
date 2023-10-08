@@ -11,16 +11,14 @@ class CacheUserDataUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke() {
-        dashCoinRepository.getDashCoinUser().collect{ user ->
-            if (user != null) {
-                return@collect
-            }
+       val user =  dashCoinRepository.getDashCoinUser()
+        if (user != null) {
+            return
+        }
 
-            firebaseRepository.getUserCredentials().collect {
-                when (it) {
-                    is Resource.Success -> it.data?.run { dashCoinRepository.cacheDashCoinUser(this) }
-                    else -> {}
-                }
+        firebaseRepository.getUserCredentials().collect { result ->
+            if (result is Resource.Success) {
+                result.data?.run { dashCoinRepository.cacheDashCoinUser(this) }
             }
         }
     }

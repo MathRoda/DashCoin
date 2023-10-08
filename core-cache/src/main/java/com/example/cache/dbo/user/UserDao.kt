@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
 
     @Query("SELECT * FROM User LIMIT 1")
-    fun getUser(): Flow<UserEntity?>
+    fun getUser(): UserEntity?
 
     @Query("SELECT COUNT (*) FROM User WHERE IsPremium = 1")
     fun isUserPremium(): Flow<Boolean>

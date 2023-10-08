@@ -6,7 +6,7 @@ data class FavoriteCoinsState(
     val isLoading: Boolean = false,
     val coin: List<CoinState> = emptyList(),
     val isEmpty: Boolean = false,
-    val error: String = ""
+    val error: String = "",
 )
 
 data class CoinState(

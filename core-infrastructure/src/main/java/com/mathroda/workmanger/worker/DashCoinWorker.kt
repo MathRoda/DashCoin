@@ -32,15 +32,12 @@ class DashCoinWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
 
        return@withContext try {
-            dashCoinUseCases.userStateProvider(
-               function = {}
-            ).collect { state ->
-                when(state) {
-                    is UserState.UnauthedUser -> regularUserNotification(state)
-                    is UserState.AuthedUser -> regularUserNotification(state)
-                    is UserState.PremiumUser -> premiumUserNotification(state)
-                }
+           when(val state = dashCoinUseCases.userStateProvider.invoke()) {
+                is UserState.UnauthedUser -> regularUserNotification(state)
+                is UserState.AuthedUser -> regularUserNotification(state)
+                is UserState.PremiumUser -> premiumUserNotification()
             }
+
             Result.success()
         } catch (exception: Exception) {
             Result.failure()
@@ -48,24 +45,17 @@ class DashCoinWorker @AssistedInject constructor(
     }
 
     private suspend fun regularUserNotification(state: UserState) {
-        dashCoinRepository.getCoinByIdRemote(BITCOIN_ID).collect { result ->
-            if (result is Resource.Success) {
-                result.data?.let { coin ->
-                    if (coin.priceChange1d > 0) {
-                        notification.showPositive(state)
-                    }
+        val coin = dashCoinRepository.getCoinByIdRemote(BITCOIN_ID)
+        if (coin.priceChange1d > 0){
+            notification.showPositive(state)
+        }
 
-                    if (coin.priceChange1d < 0) {
-                        notification.showNegative(state)
-                    }
-
-                    return@collect
-                }
-            }
+        if (coin.priceChange1d < 0) {
+            notification.showNegative(state)
         }
     }
 
-    private suspend fun premiumUserNotification(state: UserState) {
+    private suspend fun premiumUserNotification() {
         dashCoinUseCases.getAllFavoriteCoins().collect { result ->
             if (result is Resource.Success) {
                 if (result.data.isNullOrEmpty()) {
@@ -73,13 +63,13 @@ class DashCoinWorker @AssistedInject constructor(
                 }
 
                 result.data?.let { coins ->
-                    coins.forEach {
+                    coins.map {
                         if (it.priceChanged1d.is5PercentUp()) {
                             notification.show(
                                 title = it.name ,
                                 description = Constants.DESCRIPTION_MARKET_CHANGE_POSITIVE,
                                 id = it.rank,
-                                state = state
+                                state = UserState.PremiumUser
                             )
                         }
 
@@ -88,7 +78,7 @@ class DashCoinWorker @AssistedInject constructor(
                                 title = it.name ,
                                 description = Constants.DESCRIPTION_MARKET_CHANGE_NEGATIVE,
                                 id = it.rank,
-                                state = state
+                                state = UserState.PremiumUser
                             )
                         }
                     }

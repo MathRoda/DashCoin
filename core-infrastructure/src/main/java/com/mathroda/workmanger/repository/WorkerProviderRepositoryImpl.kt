@@ -11,8 +11,8 @@ import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.workmanger.worker.DashCoinWorker
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -33,7 +33,7 @@ class WorkerProviderRepositoryImpl @Inject constructor(
 
 
     override fun createWork() {
-        scope.launch {
+        scope.launch(Dispatchers.IO) {
             dataStoreRepository.readNotificationPreference.collect { enabled ->
                 if (enabled) {
                     updateUserState()
@@ -66,9 +66,7 @@ class WorkerProviderRepositoryImpl @Inject constructor(
     }
 
     private suspend fun updateUserState() {
-        dashCoinUseCases.userStateProvider(function = {}).firstOrNull()?.let {
-            userState.update { it }
-        }
+        userState.update { dashCoinUseCases.userStateProvider() }
     }
 
     override fun onWorkerSuccess() =

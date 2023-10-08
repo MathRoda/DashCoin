@@ -4,9 +4,7 @@ import com.mathroda.core.state.UserState
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ProvideUserStateUseCase @Inject constructor(
@@ -15,25 +13,17 @@ class ProvideUserStateUseCase @Inject constructor(
     private val dashCoinRepository: DashCoinRepository
 ) {
 
-    operator fun invoke(function: () -> Unit): Flow<UserState> {
-        return flow {
-            if (!isUserExist()) {
-                emit(UserState.UnauthedUser)
-                return@flow
-            }
-
-            dashCoinRepository.isUserPremiumLocal().firstOrNull()?.let { isPremium ->
-                if (!isPremium) {
-                    emit(UserState.AuthedUser)
-                }
-
-                if (isPremium) {
-                    emit(UserState.PremiumUser)
-                }
-            }
-
-            function()
+    suspend operator fun invoke(): UserState {
+        if (!isUserExist()) {
+            return UserState.UnauthedUser
         }
+
+        val isPremium =  dashCoinRepository.isUserPremiumLocal()
+        if (!isPremium) {
+            return UserState.AuthedUser
+        }
+
+        return UserState.PremiumUser
     }
 
     private suspend fun isUserExist(): Boolean {

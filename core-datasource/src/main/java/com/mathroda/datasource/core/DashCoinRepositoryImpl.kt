@@ -48,7 +48,7 @@ class DashCoinRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getCoinByIdRemote(coinId: String): Flow<Resource<CoinById>> = flow {
+    override fun getCoinByIdRemoteFlow(coinId: String): Flow<Resource<CoinById>> = flow {
         try {
             emit(Resource.Loading())
             val coin = api.getCoinById(coinId).coin.toCoinDetail()
@@ -58,6 +58,10 @@ class DashCoinRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
+    }
+
+    override suspend fun getCoinByIdRemote(coinId: String): CoinById {
+        return api.getCoinById(coinId).coin.toCoinDetail()
     }
 
     override fun getChartsDataRemote(coinId: String, period: ChartTimeSpan): Flow<Resource<Charts>> = flow {
@@ -94,7 +98,7 @@ class DashCoinRepositoryImpl @Inject constructor(
         return favoriteCoinsDao.getFavoriteCoinById(coinId)?.toDomain()
     }
 
-    override suspend fun addFavoriteCoin(coin: FavoriteCoin) {
+    override suspend fun upsertFavoriteCoin(coin: FavoriteCoin) {
         favoriteCoinsDao.upsertFavoriteCoin(coin.toEntity())
     }
 
@@ -106,8 +110,8 @@ class DashCoinRepositoryImpl @Inject constructor(
         favoriteCoinsDao.insertAllFavoriteCoins(coins.toEntity())
     }
 
-    override fun getDashCoinUser(): Flow<DashCoinUser?> {
-        return userDao.getUser().map { it?.toDashCoinUser() }
+    override fun getDashCoinUser(): DashCoinUser? {
+        return userDao.getUser()?.toDashCoinUser()
     }
 
     override suspend fun cacheDashCoinUser(user: DashCoinUser) {
@@ -122,12 +126,8 @@ class DashCoinRepositoryImpl @Inject constructor(
         return favoriteCoinsDao.getFavoriteCoinsCount()
     }
 
-    override fun isUserPremiumLocal(): Flow<Boolean> {
-        return flow {
-            userDao.getUser().collect { user ->
-                user?.let { emit(it.toDashCoinUser().isUserPremium()) }
-            }
-        }
+    override fun isUserPremiumLocal(): Boolean {
+        return userDao.getUser()?.toDashCoinUser()?.isUserPremium() == true
     }
 
     override suspend fun removeAllFavoriteCoins() {

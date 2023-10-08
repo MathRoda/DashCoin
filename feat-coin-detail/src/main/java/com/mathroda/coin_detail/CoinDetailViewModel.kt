@@ -27,7 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -74,7 +73,7 @@ class CoinDetailViewModel @Inject constructor(
 
     private fun getCoin(coinId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            dashCoinRepository.getCoinByIdRemote(coinId).collect { result ->
+            dashCoinRepository.getCoinByIdRemoteFlow(coinId).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         _coinState.update { CoinState(coin = result.data) }
@@ -131,6 +130,12 @@ class CoinDetailViewModel @Inject constructor(
        }
     }
 
+    fun updateDialogState(
+        state: DialogState
+    ) {
+        _dialogState.value = state
+    }
+
     private fun getTimeSpanByTimeRange(timeRange: TimeRange): ChartTimeSpan =
         when (timeRange) {
             TimeRange.ONE_DAY -> ChartTimeSpan.TIMESPAN_1DAY
@@ -150,12 +155,12 @@ class CoinDetailViewModel @Inject constructor(
     }
 
     private suspend fun addFavoriteCoin(coin: FavoriteCoin) {
-        dashCoinRepository.addFavoriteCoin(coin)
+        dashCoinRepository.upsertFavoriteCoin(coin)
         updateFavoriteCoinsCount()
 
         _isFavoriteState.value = IsFavoriteState.Favorite
         _favoriteMsg.value = IsFavoriteState.Messages(
-            favoriteMessage = "${coin.name} successfully added to favorite! "
+            favoriteMessage = "${coin.name} successfully added to favorite!"
         )
     }
 
@@ -165,17 +170,16 @@ class CoinDetailViewModel @Inject constructor(
 
         _isFavoriteState.value = IsFavoriteState.NotFavorite
         _favoriteMsg.value = IsFavoriteState.Messages(
-            notFavoriteMessage = "${coin.name} removed from favorite! "
+            notFavoriteMessage = "${coin.name} removed from favorite!"
         )
     }
 
     private fun updateFavoriteCoinsCount() {
         viewModelScope.launch(Dispatchers.IO) {
-            dashCoinRepository.getDashCoinUser().firstOrNull()?.let { user ->
-                dashCoinRepository.getFlowFavoriteCoins().collect {
-                    val dashCoinUser = user.copy(favoriteCoinsCount = it.size )
-                    dashCoinRepository.cacheDashCoinUser(dashCoinUser)
-                }
+            val user = dashCoinRepository.getDashCoinUser() ?: return@launch
+            dashCoinRepository.getFlowFavoriteCoins().collect {
+                val dashCoinUser = user.copy(favoriteCoinsCount = it.size )
+                dashCoinRepository.cacheDashCoinUser(dashCoinUser)
             }
         }
     }
@@ -189,22 +193,18 @@ class CoinDetailViewModel @Inject constructor(
     }
 
     fun updateUserState() {
-        viewModelScope.launch {
-            dashCoinUseCases.userStateProvider(
-                function = {}
-            ).collect { userState -> _authState.value = userState}
+        viewModelScope.launch (Dispatchers.IO){
+            _authState.value =  dashCoinUseCases.userStateProvider()
         }
     }
 
     private fun premiumLimit(coin: CoinById) {
-        viewModelScope.launch {
-            dashCoinRepository.getDashCoinUser().collect { result ->
-                result?.let { user ->
-                    when (user.isPremiumLimit()) {
-                        false -> onEvent(FavoriteCoinEvents.AddCoin(coin.toFavoriteCoin()))
-                        true -> _notPremiumDialog.value = DialogState.Open
-                    }
-                }
+        viewModelScope.launch(Dispatchers.IO) {
+            val user = dashCoinRepository.getDashCoinUser() ?: return@launch
+            if (user.isPremiumLimit()) {
+                _notPremiumDialog.value = DialogState.Open
+            } else {
+                onEvent(FavoriteCoinEvents.AddCoin(coin.toFavoriteCoin()))
             }
         }
     }

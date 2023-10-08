@@ -16,7 +16,9 @@ interface DashCoinRepository {
     // api requests
     fun getCoinsRemote(skip: Int): Flow<Resource<List<Coins>>>
 
-    fun getCoinByIdRemote(coinId: String): Flow<Resource<CoinById>>
+    fun getCoinByIdRemoteFlow(coinId: String): Flow<Resource<CoinById>>
+
+    suspend fun getCoinByIdRemote(coinId: String): CoinById
 
     fun getChartsDataRemote(coinId: String, period: ChartTimeSpan): Flow<Resource<Charts>>
 
@@ -28,13 +30,13 @@ interface DashCoinRepository {
         coinId: String
     ): FavoriteCoin?
 
-    suspend fun addFavoriteCoin(coin: FavoriteCoin)
+    suspend fun upsertFavoriteCoin(coin: FavoriteCoin)
 
     suspend fun removeFavoriteCoin(coin: FavoriteCoin)
 
     suspend fun addAllFavoriteCoins(coins: List<FavoriteCoin>)
 
-    fun getDashCoinUser(): Flow<DashCoinUser?>
+    fun getDashCoinUser(): DashCoinUser?
 
     suspend fun cacheDashCoinUser(user: DashCoinUser)
 
@@ -42,7 +44,7 @@ interface DashCoinRepository {
 
     fun getFavoriteCoinsCount(): Flow<Int>
 
-    fun isUserPremiumLocal(): Flow<Boolean>
+    fun isUserPremiumLocal(): Boolean
 
     suspend fun removeAllFavoriteCoins()
 

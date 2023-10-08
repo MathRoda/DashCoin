@@ -17,6 +17,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -50,6 +51,7 @@ fun CoinDetailScreen(
     val chartsState = viewModel.chartState.value
     val uriHandler = LocalUriHandler.current
     val scrollState = rememberScrollState()
+    val dialogState by viewModel.dialogState
 
     LaunchedEffect(true) {
         viewModel.updateUserState()
@@ -82,8 +84,9 @@ fun CoinDetailScreen(
                         .padding(paddingValues)
                 ) {
                     CustomDialog(
-                        dialogState = viewModel.dialogState,
-                        coin = coin
+                        dialogState = dialogState,
+                        coin = coin,
+                        onDialogStateChanged = viewModel::updateDialogState
                     ) {
                         viewModel.onEvent(FavoriteCoinEvents.DeleteCoin(coin.toFavoriteCoin()))
                     }

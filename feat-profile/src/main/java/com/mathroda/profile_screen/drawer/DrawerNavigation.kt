@@ -28,7 +28,7 @@ fun DrawerNavigation(
 ) {
     val uriHandler = LocalUriHandler.current
     val userCredential = viewModel.userCredential.collectAsState()
-    val isPremium by viewModel.isUserPremium().collectAsState(initial = false)
+    val isPremium by viewModel.isUserPremium.collectAsState()
     val isAuthedUser = viewModel.authState.value !is UserState.UnauthedUser
     val updateProfilePictureState = viewModel.updateProfilePictureState.collectAsState()
     val menuItems = viewModel.getMenuListItems()

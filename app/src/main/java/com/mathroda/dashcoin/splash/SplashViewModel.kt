@@ -47,8 +47,8 @@ class SplashViewModel @Inject constructor(
 
     init {
         getOnBoardingState()
-        cacheDashCoinUser()
         updateIsUserExistPref()
+        cacheDashCoinUser()
         notificationWorker()
     }
 
@@ -68,22 +68,20 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun notificationWorker() {
-        viewModelScope.launch {
-
+        viewModelScope.launch(Dispatchers.IO) {
             onSuccessWorker?.let { listOfWorkInfo ->
 
                 if (listOfWorkInfo.isEmpty()) {
-                    return@let
+                    return@launch
                 }
+
                 val workInfo: WorkInfo = listOfWorkInfo[0]
 
                 if (workInfo.state == WorkInfo.State.ENQUEUED) {
-                    dataStoreRepository.readIsUserExistState.collect { isUserExist ->
-                        if (isUserExist) {
-                            dashCoinRepository.getFlowFavoriteCoins().firstOrNull()
-                        } else {
-                            dashCoinRepository.getCoinByIdRemote(BITCOIN_ID).firstOrNull()
-                        }
+                    if (userExist.value) {
+                        dashCoinRepository.getFlowFavoriteCoins().firstOrNull()
+                    } else {
+                        dashCoinRepository.getCoinByIdRemote(BITCOIN_ID)
                     }
                 }
             }
@@ -96,9 +94,9 @@ class SplashViewModel @Inject constructor(
                 Log.d("userDoesExist", doesExist.toString())
                 if (doesExist) {
                     userExist.update { true }
-                    return@launch
+                } else {
+                    isUserExist.collect { dataStoreRepository.saveIsUserExist(it) }
                 }
-                isUserExist.collect { dataStoreRepository.saveIsUserExist(it) }
             }
         }
     }

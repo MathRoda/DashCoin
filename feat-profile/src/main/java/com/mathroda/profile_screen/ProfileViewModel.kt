@@ -15,17 +15,19 @@ import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.domain.model.DashCoinUser
+import com.mathroda.domain.model.FavoriteCoin
 import com.mathroda.notifications.sync.SyncNotification
 import com.mathroda.profile_screen.drawer.state.SyncState
 import com.mathroda.profile_screen.drawer.state.UpdatePictureState
 import com.mathroda.profile_screen.menuitem.MenuItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
@@ -50,11 +52,15 @@ class ProfileViewModel @Inject constructor(
     private val _toastState = mutableStateOf(Pair(false, ""))
     val toastState = _toastState
 
-    private val syncState = mutableStateOf<SyncState>(SyncState.NeedSync)
+    private val _isUserPremium = MutableStateFlow(false)
+    val isUserPremium = _isUserPremium.asStateFlow()
+
+    private val syncState = mutableStateOf<SyncState>(SyncState.UpToDate)
 
     fun init() {
         getUserCredential()
         updateUiState()
+        isUserPremium()
         getIfSyncNeeded()
     }
 
@@ -68,19 +74,14 @@ class ProfileViewModel @Inject constructor(
 
     private fun getUserCredential() {
         viewModelScope.launch(Dispatchers.IO) {
-            dashCoinRepository.getDashCoinUser().firstOrNull().let{
-                _userCredential.value = it ?: DashCoinUser()
-            }
+            val user = dashCoinRepository.getDashCoinUser()
+            _userCredential.value = user ?: DashCoinUser()
         }
     }
 
     private fun updateUiState() {
-        viewModelScope.launch {
-            dashCoinUseCases.userStateProvider(
-              function = {}
-            ).collect { userState ->
-                _authState.value = userState
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            _authState.value = dashCoinUseCases.userStateProvider()
         }
     }
 
@@ -147,8 +148,11 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun isUserPremium(): Flow<Boolean> {
-        return dashCoinRepository.isUserPremiumLocal()
+    private fun isUserPremium() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isUserPremium = dashCoinRepository.isUserPremiumLocal()
+            _isUserPremium.update { isUserPremium }
+        }
     }
 
     fun getMenuListItems(): List<MenuItems> {
@@ -191,8 +195,8 @@ class ProfileViewModel @Inject constructor(
 
     fun onSyncClicked() {
         viewModelScope.launch(Dispatchers.IO) {
-            when(syncState.value){
-                is SyncState.NeedSync -> syncCoinsToCloud()
+            when(val result = syncState.value){
+                is SyncState.NeedSync -> syncCoinsToCloud(result.coins)
                 is SyncState.UpToDate -> updateToastState(
                     showToast = true,
                     message = "Up to date"
@@ -202,40 +206,38 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private suspend fun syncCoinsToCloud() {
-        dashCoinRepository.getFlowFavoriteCoins().firstOrNull()?.let { coins ->
-            if (coins.isEmpty()) {
-                updateToastState(
-                    showToast = true,
-                    message = "Up to date"
-                )
-                return
-            }
-
-            coins.forEach { coin ->
-                firebaseRepository.addCoinFavorite(coin).collect()
-            }
-
-            showSyncNotification()
+    private suspend fun syncCoinsToCloud(
+        coins: List<FavoriteCoin>
+    ) {
+        if (coins.isEmpty()) {
+            updateToastState(
+                showToast = true,
+                message = "Up to date"
+            )
+            return
         }
+
+        coins.map { coin ->
+            firebaseRepository.addCoinFavorite(coin).first()
+        }
+
+        showSyncNotification()
     }
 
     private fun getIfSyncNeeded() {
         viewModelScope.launch(Dispatchers.IO) {
-            firebaseRepository.getFlowFavoriteCoins().collect { result ->
-                if (result.data.isNullOrEmpty()) {
-                    syncState.value = SyncState.NeedSync
+            firebaseRepository.getFlowFavoriteCoins().collectLatest { cloudCoins ->
+                if (cloudCoins.data.isNullOrEmpty()) {
+                    syncState.value = SyncState.NeedSync(emptyList())
                 }
 
-                result.data?.let { cloudCoins ->
-                    dashCoinRepository.getFlowFavoriteCoins().firstOrNull()?.let { localCoins ->
-                        val cloud = cloudCoins.map { it.coinId }
-                        val local = localCoins.map { it.coinId }
-                        if (cloud.containsAll(local)) {
-                            syncState.value = SyncState.UpToDate
-                        } else {
-                            syncState.value = SyncState.NeedSync
-                        }
+                dashCoinRepository.getFlowFavoriteCoins().firstOrNull()?.let { localCoins ->
+                    val cloud = cloudCoins.data?.map { it.coinId }
+                    val local = localCoins.map { it.coinId }
+                    if (cloud?.containsAll(local) == true) {
+                        syncState.value = SyncState.UpToDate
+                    } else {
+                        syncState.value = SyncState.NeedSync(localCoins)
                     }
                 }
             }

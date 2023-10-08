@@ -1,11 +1,18 @@
 package com.mathroda.common.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -15,31 +22,52 @@ import androidx.compose.ui.window.Dialog
 import com.mathroda.common.state.DialogState
 import com.mathroda.domain.model.CoinById
 
+
 @Composable
-fun CustomDialog(
-    dialogState: MutableState<DialogState>,
-    coin: CoinById?,
+fun DeleteAllCoinsDialog(
+    dialogState: DialogState,
+    onDialogStateChanged: (DialogState) -> Unit,
     onClick: () -> Unit
 ) {
-    if (dialogState.value == DialogState.Open) {
+    if (dialogState == DialogState.Open) {
         Dialog(onDismissRequest = { DialogState.Close }) {
             CustomDialogUI(
-                dialogState = dialogState,
-                coin = coin,
+                title = "Are You Sure",
+                description = "You want to delete all your favorite coins ?",
+                onDialogStateChanged = onDialogStateChanged,
                 onClick = { onClick() }
             )
         }
     }
+}
 
+@Composable
+fun CustomDialog(
+    dialogState: DialogState,
+    onDialogStateChanged: (DialogState) -> Unit,
+    coin: CoinById?,
+    onClick: () -> Unit
+) {
+    if (dialogState == DialogState.Open) {
+        Dialog(onDismissRequest = { DialogState.Close }) {
+            CustomDialogUI(
+                title = "Are You Sure",
+                description = "You want to Unwatch ${coin?.id} ?",
+                onDialogStateChanged = onDialogStateChanged,
+                onClick = { onClick() }
+            )
+        }
+    }
 }
 
 
 @Composable
 fun CustomDialogUI(
     modifier: Modifier = Modifier,
-    dialogState: MutableState<DialogState>,
+    onDialogStateChanged: (DialogState) -> Unit,
     onClick: () -> Unit,
-    coin: CoinById?,
+    title: String,
+    description: String,
 ) {
 
     Card(
@@ -56,7 +84,7 @@ fun CustomDialogUI(
 
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "Are You Sure",
+                    text = title,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 5.dp)
@@ -67,7 +95,7 @@ fun CustomDialogUI(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "You want to Unwatch ${coin?.id} ?",
+                    text = description,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 10.dp, start = 25.dp, end = 25.dp)
@@ -87,7 +115,7 @@ fun CustomDialogUI(
             ) {
 
                 TextButton(onClick = {
-                    dialogState.value = DialogState.Close
+                    onDialogStateChanged(DialogState.Close)
                 }) {
 
                     Text(
@@ -98,7 +126,7 @@ fun CustomDialogUI(
                     )
                 }
                 TextButton(onClick = {
-                    dialogState.value = DialogState.Close
+                    onDialogStateChanged(DialogState.Close)
                     onClick()
 
                 }) {

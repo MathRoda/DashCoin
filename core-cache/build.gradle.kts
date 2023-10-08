@@ -48,6 +48,7 @@ dependencies {
     implementation(Deps.AndroidX.Core.coreKtx)
     implementation(Deps.AndroidX.AppCompat.appcompat)
     implementation(Deps.Google.AndroidMaterial.material)
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
     testImplementation(Deps.Junit.junit4)
 
     // Dagger hilt
