@@ -7,6 +7,7 @@ import com.mathroda.coins_screen.state.PaginationState
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.domain.model.Coins
+import com.mathroda.internetconnectivity.InternetConnectivityManger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CoinsViewModel @Inject constructor(
-    private val dashCoinRepository: DashCoinRepository
+    private val dashCoinRepository: DashCoinRepository,
+    val connectivityManger: InternetConnectivityManger
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CoinsState())

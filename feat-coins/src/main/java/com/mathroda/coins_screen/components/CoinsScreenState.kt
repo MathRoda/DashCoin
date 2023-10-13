@@ -1,6 +1,11 @@
 package com.mathroda.coins_screen.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -11,10 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.airbnb.lottie.compose.*
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mathroda.coins_screen.CoinsViewModel
 import com.mathroda.common.R
-import com.mathroda.common.components.InternetConnectivityManger
+import com.mathroda.internetconnectivity.InternetState
 
 @Composable
 fun BoxScope.CoinsScreenState(
@@ -26,6 +35,7 @@ fun BoxScope.CoinsScreenState(
         composition = lottieComp,
         iterations = LottieConstants.IterateForever,
     )
+    val connectivityState by viewModel.connectivityManger.getState().collectAsState(initial = InternetState.IDLE)
 
     when {
         state.isLoading -> {
@@ -54,7 +64,7 @@ fun BoxScope.CoinsScreenState(
                     .align(Alignment.Center)
             )
 
-            InternetConnectivityManger {
+            if(connectivityState is InternetState.Available) {
                 viewModel.refresh()
             }
         }

@@ -15,8 +15,12 @@ import androidx.compose.ui.platform.LocalContext
 import java.util.Objects
 import kotlin.math.sqrt
 
+
+/**
+ * Unused but could a learning resource
+ */
 @Composable
-fun PhoneShakingManger(
+internal fun PhoneShakingManger(
     onPhoneShaking: () -> Unit
 ) {
     val context = LocalContext.current

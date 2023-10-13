@@ -58,6 +58,7 @@ dependencies {
     implementation(project(":core-datasource"))
     implementation(project(":feat-common"))
     implementation(project(":feat-profile"))
+    implementation(project(":core-infrastructure"))
 
     with(Deps.AndroidX.Compose) {
         implementation(ui)

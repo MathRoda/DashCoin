@@ -22,6 +22,7 @@ import com.mathroda.domain.model.ChartTimeSpan
 import com.mathroda.domain.model.CoinById
 import com.mathroda.domain.model.FavoriteCoin
 import com.mathroda.domain.model.toFavoriteCoin
+import com.mathroda.internetconnectivity.InternetConnectivityManger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -37,6 +38,7 @@ import javax.inject.Inject
 class CoinDetailViewModel @Inject constructor(
     private val dashCoinRepository: DashCoinRepository,
     private val dashCoinUseCases: DashCoinUseCases,
+    val connectivityManger: InternetConnectivityManger,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

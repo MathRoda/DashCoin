@@ -7,13 +7,15 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mathroda.common.components.InternetConnectivityManger
 import com.mathroda.common.theme.CustomGreen
+import com.mathroda.internetconnectivity.InternetState
 import com.mathroda.news_screen.NewsViewModel
 
 @Composable
@@ -21,6 +23,7 @@ fun BoxScope.NewsScreenState(
     viewModel: NewsViewModel = hiltViewModel()
 ) {
     val state = viewModel.newsState.value
+    val connectivityState by viewModel.connectivityManger.getState().collectAsState(initial = InternetState.IDLE)
 
     when {
         state.isLoading -> {
@@ -41,7 +44,7 @@ fun BoxScope.NewsScreenState(
                     .align(Alignment.Center)
             )
 
-            InternetConnectivityManger {
+            if(connectivityState is InternetState.Available) {
                 viewModel.refresh()
             }
         }

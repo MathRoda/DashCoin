@@ -13,6 +13,7 @@ import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.domain.model.toFavoriteCoin
 import com.mathroda.favorite_coins.state.CoinState
 import com.mathroda.favorite_coins.state.FavoriteCoinsState
+import com.mathroda.phoneshaking.PhoneShakingManger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteCoinsViewModel @Inject constructor(
     private val dashCoinRepository: DashCoinRepository,
-    private val dashCoinUseCases: DashCoinUseCases
+    private val dashCoinUseCases: DashCoinUseCases,
+    val phoneShakingManger: PhoneShakingManger
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(FavoriteCoinsState())

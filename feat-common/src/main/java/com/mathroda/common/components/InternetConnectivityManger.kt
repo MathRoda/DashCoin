@@ -11,9 +11,12 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 
+/**
+ * Unused but could a learning resource
+ */
 @SuppressLint("MissingPermission")
 @Composable
-fun InternetConnectivityManger(
+internal fun InternetConnectivityManger(
     onInternetAvailable: () -> Unit
 ) {
     val context = LocalContext.current

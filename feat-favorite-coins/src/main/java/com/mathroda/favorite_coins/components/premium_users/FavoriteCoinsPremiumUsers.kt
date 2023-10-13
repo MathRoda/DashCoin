@@ -25,7 +25,6 @@ import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.common.components.CommonTopBar
-import com.mathroda.common.components.InternetConnectivityManger
 import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.LighterGray
@@ -110,10 +109,6 @@ fun WatchListPremiumUsers(
                     .padding(horizontal = 20.dp)
                     .align(Alignment.Center)
             )
-
-            InternetConnectivityManger {
-                viewModel.refresh()
-            }
         }
     }
 

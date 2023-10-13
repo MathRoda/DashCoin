@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":core-domain"))
     implementation(project(":core-datasource"))
     implementation(project(":feat-common"))
+    implementation(project(":core-infrastructure"))
 
     with(Deps.AndroidX.Compose) {
         implementation(ui)

@@ -4,10 +4,14 @@ import android.app.Application
 import androidx.work.WorkManager
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
+import com.mathroda.internetconnectivity.InternetConnectivityManger
+import com.mathroda.internetconnectivity.InternetConnectivityMangerImpl
 import com.mathroda.notifications.coins.CoinsNotification
 import com.mathroda.notifications.coins.CoinsNotificationChannel
 import com.mathroda.notifications.sync.SyncNotification
 import com.mathroda.notifications.sync.SyncNotificationChannel
+import com.mathroda.phoneshaking.PhoneShakingManger
+import com.mathroda.phoneshaking.PhoneShakingMangerImpl
 import com.mathroda.workmanger.repository.WorkerProviderRepository
 import com.mathroda.workmanger.repository.WorkerProviderRepositoryImpl
 import dagger.Module
@@ -69,5 +73,22 @@ object WorkMangerModule {
         dataStoreRepository: DataStoreRepository
     ): WorkerProviderRepository {
         return WorkerProviderRepositoryImpl(workManager, scope, dashCoinUseCases, dataStoreRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun getPhoneShakingManger(
+        context: Application
+    ): PhoneShakingManger {
+        return PhoneShakingMangerImpl(context)
+    }
+
+
+    @Provides
+    @Singleton
+    fun getInternetConnectivityManger(
+        context: Application
+    ): InternetConnectivityManger {
+        return InternetConnectivityMangerImpl(context)
     }
 }
