@@ -22,13 +22,14 @@ import com.mathroda.phoneshaking.PhoneShakingState
 @ExperimentalFoundationApi
 @Composable
 fun WatchListScreen(
-    viewModel: FavoriteCoinsViewModel = hiltViewModel(),
     navController: NavController
 ) {
+    val viewModel = hiltViewModel<FavoriteCoinsViewModel>()
     val dialogState by viewModel.dialogState.collectAsState()
     val phoneShakingState by viewModel.phoneShakingManger.getState().collectAsState(initial = PhoneShakingState.IDLE)
+    val userState by viewModel.authState.collectAsState()
 
-    when(viewModel.authState.collectAsState().value) {
+    when(userState) {
 
         is UserState.AuthedUser -> {
             WatchListAuthedUsers(navController = navController)

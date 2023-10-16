@@ -53,4 +53,6 @@ interface FirebaseRepository {
     fun uploadImageToCloud(name: String, bitmap: Bitmap): Flow<Resource<String>>
 
     fun updateUserProfilePicture(imageUrl: String): Flow<Resource<Task<Void>>>
+
+    suspend fun removeAllFavoriteCoins()
 }

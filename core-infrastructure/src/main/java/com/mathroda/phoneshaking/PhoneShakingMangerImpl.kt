@@ -46,8 +46,8 @@ class PhoneShakingMangerImpl @Inject constructor(
                         acceleration = acceleration * 0.9f + delta
 
 
-                        // acceleration value is over 12
-                        if (acceleration > 12) {
+                        // acceleration value is over 16
+                        if (acceleration > 16) {
                             trySend(PhoneShakingState.IsShaking)
                         }
                     }

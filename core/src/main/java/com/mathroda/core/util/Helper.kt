@@ -1,7 +1,9 @@
 package com.mathroda.core.util
 
 import java.text.NumberFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Currency
+import java.util.Date
 import java.util.regex.Pattern
 
 fun numbersToCurrency(number: Int): String {
@@ -22,3 +24,5 @@ fun isValidEmail(email: String): Boolean {
 fun isValidPassword(password: String): Boolean {
     return password.isNotEmpty() && password.length >= 6
 }
+
+fun getCurrentDate(): Date = Calendar.getInstance().time

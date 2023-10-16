@@ -4,8 +4,12 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.cache.converter.DateTypeConverter
+import com.mathroda.core.util.getCurrentDate
 import com.mathroda.domain.model.FavoriteCoin
 import kotlinx.parcelize.Parcelize
+import java.util.Date
 
 @Entity(
     tableName = "FavoriteCoin"
@@ -22,6 +26,9 @@ data class FavoriteCoinEntity(
     @ColumnInfo(name = "PriceChanged1d") val priceChanged1d: Double?,
     @ColumnInfo(name = "PriceChanged1h") val priceChanged1h: Double?,
     @ColumnInfo(name = "PriceChanged1w") val priceChanged1w: Double?,
+    @TypeConverters(DateTypeConverter::class)
+    @ColumnInfo(name = "LastUpdated") val lastUpdated: Date?
+
 ): Parcelable
 
 fun FavoriteCoinEntity.toDomain(): FavoriteCoin {
@@ -34,7 +41,8 @@ fun FavoriteCoinEntity.toDomain(): FavoriteCoin {
         rank = rank,
         priceChanged1d = priceChanged1d ?: 0.0,
         priceChanged1h = priceChanged1h ?: 0.0,
-        priceChanged1w = priceChanged1w ?: 0.0
+        priceChanged1w = priceChanged1w ?: 0.0,
+        lastUpdated = lastUpdated ?: getCurrentDate()
     )
 }
 
@@ -48,7 +56,8 @@ fun FavoriteCoin.toEntity(): FavoriteCoinEntity {
         rank = rank,
         priceChanged1d = priceChanged1d,
         priceChanged1h = priceChanged1h,
-        priceChanged1w = priceChanged1w
+        priceChanged1w = priceChanged1w,
+        lastUpdated = lastUpdated
     )
 }
 

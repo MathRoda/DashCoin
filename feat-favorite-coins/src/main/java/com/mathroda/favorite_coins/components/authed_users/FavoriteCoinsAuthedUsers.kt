@@ -36,9 +36,9 @@ import com.mathroda.favorite_coins.components.common.WatchlistItem
 @ExperimentalMaterialApi
 @Composable
 fun WatchListAuthedUsers(
-    viewModel: FavoriteCoinsViewModel = hiltViewModel(),
     navController: NavController
 ) {
+    val viewModel = hiltViewModel<FavoriteCoinsViewModel>()
     val watchListState by viewModel.state.collectAsState()
     val isRefresh by viewModel.isRefresh.collectAsState()
     val marketState by viewModel.marketStatus
@@ -53,18 +53,19 @@ fun WatchListAuthedUsers(
 
         CommonTopBar(title = "Favorite Coins")
 
-        marketState.coin?.let { status ->
-            Column(modifier = Modifier.fillMaxWidth()) {
-                MarketStatusBar(
-                    marketStatus1h = status.priceChange1h,
-                    marketStatus1d = status.priceChange1d,
-                    marketStatus1w = status.priceChange1w,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 18.dp, bottom = 12.dp)
-                )
-            }
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+            MarketStatusBar(
+                marketStatus1h = marketState.coin?.priceChange1h ?: 0.0,
+                marketStatus1d = marketState.coin?.priceChange1d ?: 0.0,
+                marketStatus1w = marketState.coin?.priceChange1w ?: 0.0,
+                isLoading = marketState.isLoading,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 18.dp, bottom = 12.dp)
+            )
         }
+
 
 
         Divider(
@@ -77,17 +78,15 @@ fun WatchListAuthedUsers(
                 state = rememberSwipeRefreshState(isRefreshing = isRefresh),
                 onRefresh = { viewModel.refresh() }) {
                 LazyColumn {
-                    items(watchListState.coin) { state ->
-                        state.coin.let { coin ->
-                            WatchlistItem(
-                                icon = coin.icon,
-                                coinName = coin.name,
-                                symbol = coin.symbol,
-                                rank = coin.rank.toString(),
-                                marketStatus = coin.priceChanged1d,
-                                onItemClick = { navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.coinId}") }
-                            )
-                        }
+                    items(watchListState.coin) { coin ->
+                        WatchlistItem(
+                            icon = coin.icon,
+                            coinName = coin.name,
+                            symbol = coin.symbol,
+                            rank = coin.rank.toString(),
+                            marketStatus = coin.priceChanged1d,
+                            onItemClick = { navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.coinId}") }
+                        )
                     }
                 }
             }

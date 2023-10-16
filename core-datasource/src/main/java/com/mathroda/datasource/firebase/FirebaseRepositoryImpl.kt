@@ -353,4 +353,13 @@ class FirebaseRepositoryImpl constructor(
         }
     }
 
+    override suspend fun removeAllFavoriteCoins() {
+        val userId = getUserId() ?: return
+        val favoriteRef = fireStore.collection(Constants.FAVOURITES_COLLECTION)
+            .document(userId)
+            .delete()
+
+        favoriteRef.await()
+    }
+
 }

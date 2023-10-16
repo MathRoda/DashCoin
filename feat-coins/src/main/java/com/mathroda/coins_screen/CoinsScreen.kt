@@ -3,7 +3,13 @@ package com.mathroda.coins_screen
 import android.view.MotionEvent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -11,7 +17,12 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
@@ -26,8 +37,11 @@ import com.mathroda.coins_screen.components.CoinsItem
 import com.mathroda.coins_screen.components.CoinsScreenState
 import com.mathroda.coins_screen.components.CoinsScreenTopBar
 import com.mathroda.coins_screen.components.ScrollButton
+import com.mathroda.coins_screen.components.SearchBar
 import com.mathroda.common.components.InfiniteListHandler
 import com.mathroda.common.navigation.Destinations
+import com.mathroda.common.theme.DarkGray
+import com.mathroda.common.theme.LightGray
 import com.mathroda.profile_screen.drawer.DrawerNavigation
 import kotlinx.coroutines.launch
 
@@ -65,28 +79,32 @@ fun CoinScreen(
                 navController = navController
             )
         },
-        drawerBackgroundColor = com.mathroda.common.theme.DarkGray,
+        drawerBackgroundColor = DarkGray,
         drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-        drawerScrimColor = com.mathroda.common.theme.LightGray
+        drawerScrimColor = LightGray
 
     ) { paddingValues ->
         Box(
             modifier = Modifier
-                .background(com.mathroda.common.theme.DarkGray)
+                .background(DarkGray)
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
             Column {
-                com.mathroda.coins_screen.components.SearchBar(
-                    hint = "Search...",
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                SearchBar(
+                    hint = if (searchCoin.value.text.isEmpty()) "Search..." else "",
+                    modifier = Modifier.fillMaxWidth(),
                     state = searchCoin
                 )
                 val isBeingSearched = searchCoin.value.text
                 SwipeRefresh(
                     state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
-                    onRefresh = { viewModel.refresh() }) {
+                    onRefresh = {
+                        if (isBeingSearched.isEmpty()) {
+                            viewModel.refresh()
+                        }
+                    }
+                ) {
 
                     LazyColumn(
                         modifier = Modifier
@@ -94,11 +112,9 @@ fun CoinScreen(
                                 when (it.action) {
                                     MotionEvent.ACTION_DOWN -> {
                                         focusManger.clearFocus()
-                                        searchCoin.value = TextFieldValue("")
                                     }
                                     MotionEvent.ACTION_UP -> {
                                         focusManger.clearFocus()
-                                        searchCoin.value = TextFieldValue("")
                                     }
                                 }
                                 false

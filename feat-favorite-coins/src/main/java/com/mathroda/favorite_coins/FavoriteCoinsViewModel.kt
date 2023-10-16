@@ -1,5 +1,6 @@
 package com.mathroda.favorite_coins
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,20 +9,22 @@ import com.mathroda.common.state.DialogState
 import com.mathroda.common.state.MarketState
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Resource
+import com.mathroda.core.util.getCurrentDate
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
+import com.mathroda.domain.model.FavoriteCoin
 import com.mathroda.domain.model.toFavoriteCoin
-import com.mathroda.favorite_coins.state.CoinState
 import com.mathroda.favorite_coins.state.FavoriteCoinsState
 import com.mathroda.phoneshaking.PhoneShakingManger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,19 +49,20 @@ class FavoriteCoinsViewModel @Inject constructor(
     private val _dialogState = MutableStateFlow<DialogState>(DialogState.Close)
     val dialogState = _dialogState.asStateFlow()
 
-    fun init() {
-        userState()
-        updateFavoriteCoins()
-    }
+    private var firstLoad = true
 
-    private fun userState() {
+    fun init() {
+        if (!firstLoad) {
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             val userState = dashCoinUseCases.userStateProvider()
             _authState.update { userState }
+            getMarketStatus(userState)
             getAllCoins(userState)
-            if (userState != UserState.UnauthedUser) {
-                getMarketStatus()
-            }
+            updateFavoriteCoins(userState)
+            firstLoad = false
         }
     }
 
@@ -76,8 +80,7 @@ class FavoriteCoinsViewModel @Inject constructor(
 
     private suspend fun getAllFavoriteCoinsAuthed() {
         dashCoinRepository.getFlowFavoriteCoins().collect { result ->
-            val state = result.map { CoinState().copy(coin = it) }
-            updateFavoriteCoinsState(coins = state)
+            updateFavoriteCoinsState(coins = result)
         }
     }
 
@@ -87,8 +90,7 @@ class FavoriteCoinsViewModel @Inject constructor(
                 is Resource.Loading -> updateFavoriteCoinsState(isLoading = true)
                 is Resource.Success -> {
                     result.data?.let { data ->
-                        val state = data.map { CoinState().copy(coin = it) }
-                        updateFavoriteCoinsState(coins = state)
+                        updateFavoriteCoinsState(coins = data)
                     }
                 }
                 is Resource.Error -> updateFavoriteCoinsState(error = result.message)
@@ -96,36 +98,50 @@ class FavoriteCoinsViewModel @Inject constructor(
         }
     }
 
-    private fun updateFavoriteCoins() {
+    private fun updateFavoriteCoins(
+        user: UserState
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val list = mutableListOf<CoinState>()
             val coins = _state.value.coin
             if (coins.isEmpty()) {
                 return@launch
             }
 
-            coins.map { favoriteCoinState ->
-                if (!favoriteCoinState.updated) {
-                    val id = favoriteCoinState.coin.coinId
-                    val result = dashCoinRepository.getCoinByIdRemoteFlow(id).first()
-                    if (result is Resource.Success && result.data != null) {
-                        result.data?.run { dashCoinRepository.upsertFavoriteCoin(this.toFavoriteCoin()) }
-                        val state = favoriteCoinState.copy(updated = true)
-                        list.add(state)
-                    }
+            coins.map { favoriteCoin ->
+                val lastUpdated = favoriteCoin.lastUpdated
+                Log.d(TAG, "${favoriteCoin.coinId} was updated ${isCurrentBiggerThanLastUpdated(lastUpdated)} minutes")
+                if (isCurrentBiggerThanLastUpdated(lastUpdated) >= 5) {
+                    val id = favoriteCoin.coinId
+                    val result = dashCoinRepository.getCoinByIdRemote(id)
+                    val coin = result.toFavoriteCoin().copy(lastUpdated = getCurrentDate())
+                    dashCoinRepository.upsertFavoriteCoin(coin)
                 }
             }
 
-            updateFavoriteCoinsState(
-                coins = list
-            )
+
+            getAllCoins(user)
+
         }
     }
-    private fun getMarketStatus() {
+
+    private fun isCurrentBiggerThanLastUpdated(lastUpdated: Date): Long {
+        val currentDate = getCurrentDate()
+        val difference = currentDate.time - lastUpdated.time
+        return difference / (60 * 1000)
+    }
+
+    private fun getMarketStatus(
+        user: UserState
+    ) {
+        if (user == UserState.UnauthedUser) {
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             dashCoinRepository.getCoinByIdRemoteFlow("bitcoin").collect { result ->
                 when (result) {
                     is Resource.Success -> {
+                        delay(300)
                         _marketStatus.value = MarketState(coin = result.data)
                     }
                     is Resource.Error -> {
@@ -134,7 +150,7 @@ class FavoriteCoinsViewModel @Inject constructor(
                         )
                     }
                     is Resource.Loading -> {
-                        // _marketStatus.value = MarketState(isLoading = true)
+                         _marketStatus.value = MarketState(isLoading = true)
                     }
                 }
             }
@@ -142,18 +158,13 @@ class FavoriteCoinsViewModel @Inject constructor(
     }
 
     fun refresh() {
-        /*viewModelScope.launch {
-            _isRefresh.update { true }
-            getMarketStatus()
-            getAllCoins()
-            _isRefresh.update { false }
-        }*/
-
+        val userState = _authState.value
+        updateFavoriteCoins(userState)
     }
 
     private fun updateFavoriteCoinsState(
         isLoading: Boolean? = null,
-        coins: List<CoinState>? = null,
+        coins: List<FavoriteCoin>? = null,
         isEmpty: Boolean? = null,
         error: String? = null
     ) {
@@ -181,5 +192,9 @@ class FavoriteCoinsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             dashCoinRepository.removeAllFavoriteCoins()
         }
+    }
+
+    companion object {
+        private const val TAG = "FavoriteCoinsScreen"
     }
 }

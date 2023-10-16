@@ -129,7 +129,11 @@ fun SignInScreen(
                         IconButton(
                             onClick = { viewModel.updateEmailState("") }
                         ) {
-                            Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = null,
+                                tint = Color.Gray
+                            )
                         }
                     }
                 }

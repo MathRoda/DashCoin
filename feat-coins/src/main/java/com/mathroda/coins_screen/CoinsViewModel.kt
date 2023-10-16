@@ -55,6 +55,7 @@ class CoinsViewModel @Inject constructor(
                     is Resource.Success -> result.data?.let { data -> onRequestSuccess(data) }
                     is Resource.Error -> onRequestError(result.message)
                     is Resource.Loading -> onRequestLoading()
+                    else -> Unit
                 }
            }
            .launchIn(viewModelScope + SupervisorJob())

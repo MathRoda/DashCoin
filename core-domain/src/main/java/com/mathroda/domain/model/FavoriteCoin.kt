@@ -1,5 +1,8 @@
 package com.mathroda.domain.model
 
+import com.mathroda.core.util.getCurrentDate
+import java.util.Date
+
 data class FavoriteCoin(
     val coinId: String = "",
     val name: String = "",
@@ -10,4 +13,5 @@ data class FavoriteCoin(
     val priceChanged1d: Double = 0.0,
     val priceChanged1h: Double = 0.0,
     val priceChanged1w: Double = 0.0,
+    val lastUpdated: Date = getCurrentDate()
 )
