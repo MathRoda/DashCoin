@@ -19,10 +19,11 @@ import com.mathroda.domain.model.FavoriteCoin
 import com.mathroda.domain.model.NewsDetail
 import com.mathroda.domain.model.NewsType
 import com.mathroda.network.DashCoinApi
+import com.mathroda.network.dto.ChartDto
 import com.mathroda.network.dto.toChart
 import com.mathroda.network.dto.toCoinDetail
 import com.mathroda.network.dto.toCoins
-import com.mathroda.network.dto.toNewsDetail
+import com.mathroda.network.dto.toNewsDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -39,7 +40,9 @@ class DashCoinRepositoryImpl @Inject constructor(
     override fun getCoinsRemote(skip: Int): Flow<Resource<List<Coins>>> = flow {
         try {
             emit(Resource.Loading())
-            val coins = api.getCoins(skip = skip).coins.map { it.toCoins() }
+            val coins = api.getCoins(
+                page = skip,
+                ).result.map { it.toCoins() }
             emit(Resource.Success(coins))
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
@@ -51,7 +54,9 @@ class DashCoinRepositoryImpl @Inject constructor(
     override fun getCoinByIdRemoteFlow(coinId: String): Flow<Resource<CoinById>> = flow {
         try {
             emit(Resource.Loading())
-            val coin = api.getCoinById(coinId).coin.toCoinDetail()
+            val coin = api.getCoinById(
+                coinId = coinId,
+            ).toCoinDetail()
             emit(Resource.Success(coin))
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
@@ -61,14 +66,21 @@ class DashCoinRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCoinByIdRemote(coinId: String): CoinById {
-        return api.getCoinById(coinId).coin.toCoinDetail()
+        return api.getCoinById(
+            coinId = coinId,
+        ).toCoinDetail()
     }
 
     override fun getChartsDataRemote(coinId: String, period: ChartTimeSpan): Flow<Resource<Charts>> = flow {
 
         try {
             emit(Resource.Loading())
-            val coins = api.getChartsData(coinId, period.value).toChart()
+            val result = api.getChartsData(
+                coinId = coinId,
+                period = period.value,
+                ).map { it.map { it.toFloat() } }
+
+            val coins = ChartDto(chart = result).toChart()
             emit(Resource.Success(coins))
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
@@ -81,7 +93,9 @@ class DashCoinRepositoryImpl @Inject constructor(
         flow {
             try {
                 emit(Resource.Loading())
-                val coin = api.getNews(filter.value).news.map { it.toNewsDetail() }
+                val coin = api.getNews(
+                    filter = filter.value,
+                ).map { it.toNewsDetails() }
                 emit(Resource.Success(coin))
             } catch (e: HttpException) {
                 emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))

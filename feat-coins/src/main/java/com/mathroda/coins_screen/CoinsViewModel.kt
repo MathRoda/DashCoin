@@ -10,16 +10,13 @@ import com.mathroda.domain.model.Coins
 import com.mathroda.internetconnectivity.InternetConnectivityManger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,24 +38,25 @@ class CoinsViewModel @Inject constructor(
 
     init {
         if (_state.value.coins.isEmpty()) {
-            getCoins(0)
+            getCoins()
         }
     }
 
     internal fun getCoins(
-        skip: Int
+        skip: Int = 1
     ) {
-       dashCoinRepository.getCoinsRemote(skip = skip)
-           .distinctUntilChanged()
-           .onEach { result ->
-                when (result) {
-                    is Resource.Success -> result.data?.let { data -> onRequestSuccess(data) }
-                    is Resource.Error -> onRequestError(result.message)
-                    is Resource.Loading -> onRequestLoading()
-                    else -> Unit
+        viewModelScope.launch(Dispatchers.IO) {
+            dashCoinRepository.getCoinsRemote(skip = skip)
+                .distinctUntilChanged()
+                .collectLatest { result ->
+                    when (result) {
+                        is Resource.Success -> result.data?.let { data -> onRequestSuccess(data) }
+                        is Resource.Error -> onRequestError(result.message)
+                        is Resource.Loading -> onRequestLoading()
+                        else -> Unit
+                    }
                 }
-           }
-           .launchIn(viewModelScope + SupervisorJob())
+        }
     }
 
     fun getCoinsPaginated() {
@@ -87,7 +85,7 @@ class CoinsViewModel @Inject constructor(
         val listSize = _state.value.coins.size
         _paginationState.update {
             it.copy(
-                skip = listSize,
+                skip = it.skip + 1,
                 endReached = data.isEmpty() || listSize >= COINS_LIMIT,
                 isLoading = false
             )
@@ -127,7 +125,7 @@ class CoinsViewModel @Inject constructor(
             updateRefreshState(true)
             _paginationState.update { it.copy(skip = 0) }
             _state.update { it.copy(coins = emptyList()) }
-            getCoins(0)
+            getCoins()
             updateRefreshState(false)
         }
 

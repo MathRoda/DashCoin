@@ -17,11 +17,19 @@ import javax.inject.Singleton
 
 object NetworkModule {
 
+    private const val API_KEY: String = //get your API Key https://openapi.coinstats.app/login
+
     @Provides
     @Singleton
     fun providesOkhttpInterceptor(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(OkhttpInterceptor())
+            .addNetworkInterceptor { chain ->
+                val requestBuilder = chain.request().newBuilder()
+                requestBuilder.header("Content-Type", "application/json")
+                requestBuilder.header("X-API-KEY", API_KEY)
+                chain.proceed(requestBuilder.build())
+            }
             .build()
     }
 

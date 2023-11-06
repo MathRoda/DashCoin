@@ -25,11 +25,11 @@ import com.mathroda.domain.model.toFavoriteCoin
 import com.mathroda.internetconnectivity.InternetConnectivityManger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -65,6 +65,7 @@ class CoinDetailViewModel @Inject constructor(
 
     private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
 
+    private var job: Job? = null
 
     fun updateUiState() {
         savedStateHandle.get<String>(PARAM_COIN_ID)?.let { coinId ->
@@ -96,35 +97,41 @@ class CoinDetailViewModel @Inject constructor(
     }
 
     private fun getChart(coinId: String, period: TimeRange) {
-        dashCoinRepository.getChartsDataRemote(coinId, getTimeSpanByTimeRange(period)).onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    val chartsEntry = mutableListOf<Entry>()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            dashCoinRepository.getChartsDataRemote(coinId, getTimeSpanByTimeRange(period)).collectLatest { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        val chartsEntry = mutableListOf<Entry>()
 
-                    result.data?.let { charts ->
-                        charts.chart?.forEach { value ->
-                            chartsEntry.add(addEntry(value[0], value[1]))
+                        result.data?.let { charts ->
+                            charts.chart?.forEach { value ->
+                                chartsEntry.add(addEntry(value[0], value[1]))
+                            }
+
+                            _chartState.value = ChartState(chart = chartsEntry)
                         }
-
-                        _chartState.value = ChartState(chart = chartsEntry)
+                    }
+                    is Resource.Error -> {
+                        _chartState.value = ChartState(
+                            error = result.message ?: "Unexpected Error"
+                        )
+                    }
+                    is Resource.Loading -> {
+                        _chartState.value = ChartState(isLoading = true)
                     }
                 }
-                is Resource.Error -> {
-                    _chartState.value = ChartState(
-                        error = result.message ?: "Unexpected Error"
-                    )
-                }
-                is Resource.Loading -> {
-                    _chartState.value = ChartState(isLoading = true)
-                }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
     fun onTimeSpanChanged(
         timeRange: TimeRange
     ) {
        _coinState.value.coin?.id?.let { coinId ->
+           if (job != null) {
+               job?.cancel()
+           }
+
            getChart(
                coinId = coinId,
                period = timeRange

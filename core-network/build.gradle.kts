@@ -1,5 +1,6 @@
 import com.mathroda.buildsrc.Configuration
 import com.mathroda.buildsrc.Deps
+import java.util.Properties
 
 plugins {
     id("com.android.library")
@@ -17,6 +18,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         //consumerProguardFiles = "consumer-rules.pro"
+
+
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
     }
 
     buildTypes {
