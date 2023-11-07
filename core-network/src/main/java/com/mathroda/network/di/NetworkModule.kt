@@ -26,7 +26,7 @@ object NetworkModule {
             .addInterceptor(OkhttpInterceptor())
             .addNetworkInterceptor { chain ->
                 val requestBuilder = chain.request().newBuilder()
-                requestBuilder.header("Content-Type", "application/json")
+                requestBuilder.header("accept", "application/json")
                 requestBuilder.header("X-API-KEY", API_KEY)
                 chain.proceed(requestBuilder.build())
             }
