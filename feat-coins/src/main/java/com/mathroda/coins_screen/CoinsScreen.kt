@@ -50,10 +50,11 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @Composable
 fun CoinScreen(
-    viewModel: CoinsViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val state = viewModel.state.collectAsState()
+    val viewModel = hiltViewModel<CoinsViewModel>()
+
+    val state by viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefresh.collectAsState()
     val paginationState by viewModel.paginationState.collectAsState()
     val searchCoin = remember { mutableStateOf(TextFieldValue("")) }
@@ -70,6 +71,7 @@ fun CoinScreen(
                 onNavigationDrawerClick = {
                     scope.launch {
                         scaffoldState.drawerState.open()
+                        focusManger.clearFocus()
                     }
                 }
             )
@@ -121,7 +123,8 @@ fun CoinScreen(
                             },
                         state = lazyListState
                     ) {
-                        items(items = state.value.coins.filter {
+                        items(
+                            items = state.coins.filter {
                             it.name.contains(isBeingSearched, ignoreCase = true) ||
                                     it.id.contains(isBeingSearched, ignoreCase = true) ||
                                     it.symbol.contains(isBeingSearched, ignoreCase = true)

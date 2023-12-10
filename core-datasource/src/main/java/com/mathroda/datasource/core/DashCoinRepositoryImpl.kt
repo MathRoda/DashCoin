@@ -1,6 +1,5 @@
 package com.mathroda.datasource.core
 
-import coil.network.HttpException
 import com.example.cache.dbo.favoritecoins.FavoriteCoinsDao
 import com.example.cache.dbo.favoritecoins.toDomain
 import com.example.cache.dbo.favoritecoins.toEntity
@@ -27,6 +26,7 @@ import com.mathroda.network.dto.toNewsDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 

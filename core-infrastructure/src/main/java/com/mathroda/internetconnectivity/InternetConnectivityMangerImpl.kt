@@ -7,7 +7,6 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import androidx.lifecycle.LifecycleObserver
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -17,16 +16,13 @@ import javax.inject.Inject
 @SuppressLint("MissingPermission")
 class InternetConnectivityMangerImpl @Inject constructor(
     @ApplicationContext private val context: Application
-): InternetConnectivityManger, LifecycleObserver {
+): InternetConnectivityManger {
 
     private val connectivityManger = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val networkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
         .build()
 
-    init {
-        getState()
-    }
     override fun getState(): Flow<InternetState> {
         return callbackFlow {
             val callback = object : ConnectivityManager.NetworkCallback() {

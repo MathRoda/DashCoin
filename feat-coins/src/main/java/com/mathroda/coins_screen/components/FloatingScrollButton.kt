@@ -3,13 +3,19 @@ package com.mathroda.coins_screen.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +34,9 @@ fun ScrollButton(
 
     ) {
         val scope = rememberCoroutineScope()
-        val firstVisibleItem = lazyListState.firstVisibleItemIndex
+        val firstVisibleItem = remember {
+            derivedStateOf { lazyListState.firstVisibleItemIndex }
+        }
         val isScrollingUp = lazyListState.isScrollingUp()
 
         Column(
@@ -39,7 +47,7 @@ fun ScrollButton(
             FloatingScrollButton(
                 modifier = Modifier
                     .padding(bottom = 64.dp, end = 16.dp),
-                visibility = if (firstVisibleItem <= 4) false else isScrollingUp
+                visibility = if (firstVisibleItem.value <= 4) false else isScrollingUp
             ) {
                 scope.launch {
                     /**
@@ -58,8 +66,7 @@ fun FloatingScrollButton(
     modifier: Modifier = Modifier,
     visibility: Boolean,
     onClick: () -> Unit,
-
-    ) {
+) {
 
     AnimatedVisibility(
         visible = visibility,

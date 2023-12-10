@@ -108,6 +108,9 @@ dependencies {
     //SwipeToRefresh
     implementation(Deps.Google.Accompanist.swipeRefresh)
 
+    //kotlinx
+    implementation(Deps.Kotlinx.Collections.immuatble)
+
     //Local unit tests
     testImplementation(Deps.AndroidX.Test.core)
     testImplementation(Deps.Junit.junit4)

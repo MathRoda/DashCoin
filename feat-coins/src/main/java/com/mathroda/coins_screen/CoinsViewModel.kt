@@ -9,6 +9,8 @@ import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.domain.model.Coins
 import com.mathroda.internetconnectivity.InternetConnectivityManger
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -74,9 +76,10 @@ class CoinsViewModel @Inject constructor(
     internal fun onRequestSuccess(
         data: List<Coins>
     ) {
+        val coins = _state.value.coins + data
         _state.update {
             it.copy(
-                coins = it.coins + data,
+                coins = coins.toImmutableList(),
                 isLoading = false,
                 error = ""
             )
@@ -124,7 +127,7 @@ class CoinsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             updateRefreshState(true)
             _paginationState.update { it.copy(skip = 0) }
-            _state.update { it.copy(coins = emptyList()) }
+            _state.update { it.copy(coins = persistentListOf()) }
             getCoins()
             updateRefreshState(false)
         }
@@ -142,7 +145,7 @@ class CoinsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = isLoading,
-                coins = coins,
+                coins = coins.toImmutableList(),
                 error = error
             )
         }

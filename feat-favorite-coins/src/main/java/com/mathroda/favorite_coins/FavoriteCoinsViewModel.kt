@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.common.state.DialogState
 import com.mathroda.common.state.MarketState
+import com.mathroda.common.util.asyncMap
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Resource
 import com.mathroda.core.util.getCurrentDate
@@ -107,7 +108,7 @@ class FavoriteCoinsViewModel @Inject constructor(
                 return@launch
             }
 
-            coins.map { favoriteCoin ->
+            coins.asyncMap { favoriteCoin ->
                 val lastUpdated = favoriteCoin.lastUpdated
                 Log.d(TAG, "${favoriteCoin.coinId} was updated ${isCurrentBiggerThanLastUpdated(lastUpdated)} minutes")
                 if (isCurrentBiggerThanLastUpdated(lastUpdated) >= 5) {

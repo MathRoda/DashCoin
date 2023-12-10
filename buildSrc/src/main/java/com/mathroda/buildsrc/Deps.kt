@@ -143,4 +143,10 @@ object Deps {
             const val lottieCompose = "com.airbnb.android:lottie-compose:5.2.0"
         }
     }
+
+    object Kotlinx {
+        object Collections {
+            const val immuatble = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6"
+        }
+    }
 }

@@ -88,6 +88,9 @@ dependencies {
     //coil
     implementation(Deps.IO.Coil.compose)
 
+    //retrofit
+    implementation(Deps.SquareUp.Retrofit2.retrofit)
+
     //Local unit tests
     testImplementation(Deps.AndroidX.Test.core)
     testImplementation(Deps.Junit.junit4)

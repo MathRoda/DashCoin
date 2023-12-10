@@ -133,7 +133,7 @@ fun CoinDetailScreen(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         LinkButton(
-                            title = "Twitter",
+                            title = "x.com",
                             modifier = Modifier
                                 .padding(start = 20.dp, bottom = 20.dp, top = 20.dp)
                                 .clip(RoundedCornerShape(35.dp))
@@ -146,7 +146,7 @@ fun CoinDetailScreen(
                         )
 
                         LinkButton(
-                            title = "Website",
+                            title = "website",
                             modifier = Modifier
                                 .padding(start = 20.dp, bottom = 20.dp, top = 20.dp)
                                 .clip(RoundedCornerShape(35.dp))
