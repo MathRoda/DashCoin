@@ -12,6 +12,7 @@ import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
+import com.mathroda.internetconnectivity.InternetConnectivityManger
 import com.mathroda.workmanger.repository.WorkerProviderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,7 @@ class SplashViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val dashCoinRepository: DashCoinRepository,
     private val dashCoinUseCases: DashCoinUseCases,
+    private val internetConnectivityManger: InternetConnectivityManger,
     workerProviderRepository: WorkerProviderRepository
 ) : ViewModel() {
 
@@ -43,6 +45,9 @@ class SplashViewModel @Inject constructor(
     private val onSuccessWorker = workerProviderRepository.onWorkerSuccess().value
 
     private val userExist = MutableStateFlow(false)
+
+    val internetConnectivityState
+        get () = internetConnectivityManger.getState()
 
 
     init {

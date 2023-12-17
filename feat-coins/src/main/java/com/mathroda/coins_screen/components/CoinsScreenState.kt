@@ -11,7 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -23,11 +22,11 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mathroda.coins_screen.CoinsViewModel
 import com.mathroda.common.R
-import com.mathroda.internetconnectivity.InternetState
+import com.mathroda.core.state.InternetState
 
 @Composable
 fun BoxScope.CoinsScreenState(
-    viewModel: CoinsViewModel = hiltViewModel()
+    viewModel: CoinsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))
@@ -41,8 +40,7 @@ fun BoxScope.CoinsScreenState(
         state.isLoading -> {
 
             Column(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center
             ) {
                 LottieAnimation(
@@ -53,16 +51,19 @@ fun BoxScope.CoinsScreenState(
         }
 
         state.error.isNotEmpty() -> {
-
-            Text(
-                text = state.error,
-                color = MaterialTheme.colors.error,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .align(Alignment.Center)
-            )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = state.error,
+                    color = MaterialTheme.colors.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                )
+            }
 
             if(connectivityState is InternetState.Available) {
                 viewModel.refresh()

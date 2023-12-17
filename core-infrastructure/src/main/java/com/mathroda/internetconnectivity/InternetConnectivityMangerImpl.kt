@@ -7,6 +7,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import com.mathroda.core.state.InternetState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +19,7 @@ class InternetConnectivityMangerImpl @Inject constructor(
     @ApplicationContext private val context: Application
 ): InternetConnectivityManger {
 
+    private var isFirstLoad = true
     private val connectivityManger = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val networkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
@@ -28,7 +30,11 @@ class InternetConnectivityMangerImpl @Inject constructor(
             val callback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
-                    trySend(InternetState.Available)
+                    if (!isFirstLoad){
+                        trySend(InternetState.Available)
+                    } else {
+                        isFirstLoad = false
+                    }
                 }
 
                 override fun onUnavailable() {

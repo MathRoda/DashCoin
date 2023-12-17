@@ -20,7 +20,7 @@ import com.mathroda.dashcoin.navigation.onboarding.onBoardingNavGraph
 @Composable
 fun RootNavigationGraph(
     navHostController: NavHostController,
-    startDestination: String
+    startDestination: String,
 ) {
     NavHost(
         navController = navHostController,

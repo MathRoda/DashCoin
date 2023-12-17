@@ -137,7 +137,7 @@ fun CoinScreen(
                             )
                         }
                         item {
-                            if (paginationState.isLoading) {
+                            if (paginationState.isLoading && !isRefreshing) {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()

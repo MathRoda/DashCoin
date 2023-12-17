@@ -40,7 +40,9 @@ import kotlin.math.roundToInt
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen(navController: NavHostController = rememberAnimatedNavController()) {
+fun MainScreen(
+    navController: NavHostController = rememberAnimatedNavController()
+) {
 
     /**
      * bottom bar variables for nested scroll
@@ -64,7 +66,7 @@ fun MainScreen(navController: NavHostController = rememberAnimatedNavController(
                         IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt())
                     }
             )
-        }
+        },
     ) { paddingValues ->
         MainGraph(navController = navController, paddingValues = paddingValues)
     }

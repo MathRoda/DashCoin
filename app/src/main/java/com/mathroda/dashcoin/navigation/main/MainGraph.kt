@@ -34,7 +34,6 @@ import com.mathroda.signin_screen.SignInScreen
 @Composable
 
 fun MainGraph(navController: NavHostController, paddingValues: PaddingValues) {
-
     AnimatedNavHost(
         navController = navController,
         route = Graph.MAIN,

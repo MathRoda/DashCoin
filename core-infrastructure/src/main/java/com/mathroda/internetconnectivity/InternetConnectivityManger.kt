@@ -1,12 +1,8 @@
 package com.mathroda.internetconnectivity
 
+import com.mathroda.core.state.InternetState
 import kotlinx.coroutines.flow.Flow
 
-sealed class InternetState {
-    object Available: InternetState()
-    object NotAvailable: InternetState()
-    object IDLE: InternetState()
-}
 interface InternetConnectivityManger {
     fun getState(): Flow<InternetState>
 }

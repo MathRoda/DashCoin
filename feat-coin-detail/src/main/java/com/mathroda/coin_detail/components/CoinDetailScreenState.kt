@@ -25,7 +25,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mathroda.coin_detail.CoinDetailViewModel
 import com.mathroda.common.R
 import com.mathroda.common.components.LoadingDots
-import com.mathroda.internetconnectivity.InternetState
+import com.mathroda.core.state.InternetState
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @Composable
