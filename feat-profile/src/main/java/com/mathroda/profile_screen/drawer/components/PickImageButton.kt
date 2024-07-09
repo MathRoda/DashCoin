@@ -1,4 +1,4 @@
-package com.mathroda.profile_screen.drawer
+package com.mathroda.profile_screen.drawer.components
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder

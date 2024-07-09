@@ -1,6 +1,7 @@
 package com.mathroda.buildsrc
 
 import com.mathroda.buildsrc.Version.androidx_lifecycle
+import com.mathroda.buildsrc.Version.compose_navigation_version
 import com.mathroda.buildsrc.Version.compose_version
 import com.mathroda.buildsrc.Version.hilt_version
 import com.mathroda.buildsrc.Version.kotlinx_coroutines
@@ -17,9 +18,11 @@ object Deps {
         object Compose {
             const val ui = "androidx.compose.ui:ui:$compose_version"
             const val material = "androidx.compose.material:material:$compose_version"
+            const val material3 = "androidx.compose.material3:material3:1.2.1"
             const val toolingPreview = "androidx.compose.ui:ui-tooling-preview:$compose_version"
             const val materialIconsExtended = "androidx.compose.material:material-icons-extended:$compose_version"
             const val runtime = "androidx.compose.runtime:runtime-livedata:$compose_version"
+            const val composeNavigation = "androidx.navigation:navigation-compose:${compose_navigation_version}"
         }
         object Lifecycle {
             const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$androidx_lifecycle"
@@ -67,7 +70,6 @@ object Deps {
         object Accompanist {
             const val insetsUi = "com.google.accompanist:accompanist-insets-ui:0.23.1"
             const val flowLayout = "com.google.accompanist:accompanist-flowlayout:0.17.0"
-            const val navigationAnimation = "com.google.accompanist:accompanist-navigation-animation:0.30.0"
             const val swipeRefresh = "com.google.accompanist:accompanist-swiperefresh:0.23.1"
             const val pager = "com.google.accompanist:accompanist-pager:0.26.4-beta"
             const val pager_indicator = "com.google.accompanist:accompanist-pager-indicators:0.26.4-beta"

@@ -88,17 +88,17 @@ class ProfileViewModel @Inject constructor(
     fun updateProfilePicture(bitmap: Bitmap) {
         val imageName = userCredential.value.userUid ?: UUID.randomUUID().toString()
 
-        uploadProfilePicture(
+        /*uploadProfilePicture(
             imageName = imageName,
             bitmap = bitmap
-        )
+        )*/
     }
 
     fun clearUpdateProfilePictureState() {
         _updateProfilePictureState.value = UpdatePictureState()
     }
 
-    private fun uploadProfilePicture(imageName: String, bitmap: Bitmap) {
+    /*private fun uploadProfilePicture(imageName: String, bitmap: Bitmap) {
         viewModelScope.launch {
             firebaseRepository.uploadImageToCloud(
                 name = imageName,
@@ -126,9 +126,9 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         }
-    }
+    }*/
 
-    private fun updateProfilePicture(imageUrl: String) {
+    /*private fun updateProfilePicture(imageUrl: String) {
         viewModelScope.launch {
             firebaseRepository
                 .updateUserProfilePicture(imageUrl = imageUrl)
@@ -146,7 +146,7 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
         }
-    }
+    }*/
 
     private fun isUserPremium() {
         viewModelScope.launch(Dispatchers.IO) {

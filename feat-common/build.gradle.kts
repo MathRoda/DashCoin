@@ -4,6 +4,7 @@ import com.mathroda.buildsrc.Deps
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -12,7 +13,6 @@ android {
 
     defaultConfig {
         minSdk = Configuration.minSdk
-        targetSdk = Configuration.targetSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         //consumerProguardFiles "consumer-rules.pro"
@@ -38,7 +38,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = com.mathroda.buildsrc.Version.compose_version
+        kotlinCompilerExtensionVersion = com.mathroda.buildsrc.Version.kotlin_compiler_extension
     }
     packaging {
         resources.excludes.apply {

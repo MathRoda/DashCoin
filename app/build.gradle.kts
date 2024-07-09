@@ -5,6 +5,7 @@ import com.mathroda.buildsrc.Version
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     //id 'org.jetbrains.kotlin.plugin.serialization'
@@ -54,7 +55,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Version.compose_version
+        kotlinCompilerExtensionVersion = Version.kotlin_compiler_extension
     }
     packaging {
         resources.excludes.apply {
@@ -80,7 +81,6 @@ dependencies {
     implementation(project(":feat-auth-signin"))
     implementation(project(":feat-auth-signup"))
     implementation(project(":feat-auth-forgot-password"))
-
     with(Deps.AndroidX.Core){
         implementation(coreKtx)
         implementation(splashScreen)
@@ -91,6 +91,7 @@ dependencies {
         implementation(toolingPreview)
         implementation(materialIconsExtended)
         implementation(runtime)
+        implementation(composeNavigation)
     }
     // Coroutine Lifecycle Scopes
     with(Deps.AndroidX.Lifecycle) {
@@ -109,7 +110,6 @@ dependencies {
     with(Deps.Google.Accompanist) {
         implementation(insetsUi)
         implementation(flowLayout)
-        implementation(navigationAnimation)
     }
 
     // Coroutines

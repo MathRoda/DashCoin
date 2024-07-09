@@ -9,6 +9,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,7 +36,7 @@ fun OnBoardingTopSection(
             modifier = Modifier.align(Alignment.CenterStart)
         ) {
             Icon(
-                imageVector = Icons.Outlined.KeyboardArrowLeft,
+                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
                 contentDescription = null
             )
         }

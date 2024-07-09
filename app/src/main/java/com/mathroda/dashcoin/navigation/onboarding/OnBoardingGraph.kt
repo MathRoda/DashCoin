@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.mathroda.OnBoardingScreen
 import com.mathroda.dashcoin.navigation.root.Graph
 
 fun NavGraphBuilder.onBoardingNavGraph(navController: NavController) {
@@ -12,7 +13,7 @@ fun NavGraphBuilder.onBoardingNavGraph(navController: NavController) {
         startDestination = OnBoardingScreen.Welcome.route
     ) {
         composable(route = OnBoardingScreen.Welcome.route) {
-            com.mathroda.OnBoardingScreen(
+            OnBoardingScreen(
                 popBackStack = {
                     navController.popBackStack()
                 },
@@ -22,5 +23,5 @@ fun NavGraphBuilder.onBoardingNavGraph(navController: NavController) {
 }
 
 sealed class OnBoardingScreen(val route: String) {
-    object Welcome : OnBoardingScreen("welcome_screen")
+    data object Welcome : OnBoardingScreen("welcome_screen")
 }
