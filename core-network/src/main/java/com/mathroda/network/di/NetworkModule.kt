@@ -17,7 +17,7 @@ import javax.inject.Singleton
 
 object NetworkModule {
 
-    private const val API_KEY: String = //get your API Key https://openapi.coinstats.app/login
+    private const val API_KEY: String = "hfpSBkOVoQnqUY+SyPtKktiZ5OXR9N3vXWjZitIZUUw=" //get your API Key https://openapi.coinstats.app/login
 
     @Provides
     @Singleton

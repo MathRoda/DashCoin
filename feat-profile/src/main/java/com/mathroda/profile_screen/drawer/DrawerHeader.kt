@@ -24,6 +24,7 @@ import com.mathroda.common.theme.BackgroundBlue
 import com.mathroda.common.theme.DashCoinTheme
 import com.mathroda.common.theme.Gold
 import com.mathroda.profile_screen.R
+import com.mathroda.profile_screen.drawer.components.PickImageButton
 import com.mathroda.profile_screen.drawer.state.UpdatePictureState
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 

@@ -18,7 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.rememberNavController
 import com.mathroda.common.components.bottomBarAnimatedScroll
 import com.mathroda.common.components.bottomBarVisibility
 import com.mathroda.common.navigation.Destinations
@@ -40,13 +40,13 @@ import kotlin.math.roundToInt
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen(navController: NavHostController = rememberAnimatedNavController()) {
+fun MainScreen(navController: NavHostController = rememberNavController()) {
 
     /**
      * bottom bar variables for nested scroll
      */
     val bottomBarHeight = 56.dp
-    val bottomBarOffsetHeightPx = remember { mutableStateOf(0f) }
+    val bottomBarOffsetHeightPx = remember { mutableFloatStateOf(0f) }
 
 
     Scaffold(

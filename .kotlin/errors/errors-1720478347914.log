@@ -1,0 +1,664 @@
+kotlin version: 2.0.0
+error message: org.jetbrains.kotlin.backend.common.BackendException: Backend Internal error: Exception during IR lowering
+File being compiled: /Users/mathroda/StudioProjects/DashCoin/feat-profile/src/main/java/com/mathroda/profile_screen/ProfileViewModel.kt
+The root cause java.lang.RuntimeException was thrown at: org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:50)
+	at org.jetbrains.kotlin.backend.common.CodegenUtil.reportBackendException(CodegenUtil.kt:253)
+	at org.jetbrains.kotlin.backend.common.CodegenUtil.reportBackendException$default(CodegenUtil.kt:236)
+	at org.jetbrains.kotlin.backend.common.phaser.PerformByIrFilePhase.invokeSequential(performByIrFile.kt:65)
+	at org.jetbrains.kotlin.backend.common.phaser.PerformByIrFilePhase.invoke(performByIrFile.kt:52)
+	at org.jetbrains.kotlin.backend.common.phaser.PerformByIrFilePhase.invoke(performByIrFile.kt:38)
+	at org.jetbrains.kotlin.backend.common.phaser.NamedCompilerPhase.phaseBody(CompilerPhase.kt:166)
+	at org.jetbrains.kotlin.backend.common.phaser.AbstractNamedCompilerPhase.invoke(CompilerPhase.kt:113)
+	at org.jetbrains.kotlin.backend.common.phaser.CompositePhase.invoke(PhaseBuilders.kt:29)
+	at org.jetbrains.kotlin.backend.common.phaser.CompositePhase.invoke(PhaseBuilders.kt:16)
+	at org.jetbrains.kotlin.backend.common.phaser.NamedCompilerPhase.phaseBody(CompilerPhase.kt:166)
+	at org.jetbrains.kotlin.backend.common.phaser.AbstractNamedCompilerPhase.invoke(CompilerPhase.kt:113)
+	at org.jetbrains.kotlin.backend.common.phaser.CompilerPhaseKt.invokeToplevel(CompilerPhase.kt:62)
+	at org.jetbrains.kotlin.backend.jvm.JvmIrCodegenFactory.invokeCodegen(JvmIrCodegenFactory.kt:371)
+	at org.jetbrains.kotlin.codegen.CodegenFactory.generateModule(CodegenFactory.kt:47)
+	at org.jetbrains.kotlin.backend.jvm.JvmIrCodegenFactory.generateModuleInFrontendIRMode(JvmIrCodegenFactory.kt:433)
+	at org.jetbrains.kotlin.cli.jvm.compiler.pipeline.JvmCompilerPipelineKt.generateCodeFromIr(jvmCompilerPipeline.kt:241)
+	at org.jetbrains.kotlin.cli.jvm.compiler.pipeline.JvmCompilerPipelineKt.compileModulesUsingFrontendIrAndLightTree(jvmCompilerPipeline.kt:140)
+	at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.kt:155)
+	at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.kt:50)
+	at org.jetbrains.kotlin.cli.common.CLICompiler.execImpl(CLICompiler.kt:104)
+	at org.jetbrains.kotlin.cli.common.CLICompiler.execImpl(CLICompiler.kt:48)
+	at org.jetbrains.kotlin.cli.common.CLITool.exec(CLITool.kt:101)
+	at org.jetbrains.kotlin.incremental.IncrementalJvmCompilerRunner.runCompiler(IncrementalJvmCompilerRunner.kt:453)
+	at org.jetbrains.kotlin.incremental.IncrementalJvmCompilerRunner.runCompiler(IncrementalJvmCompilerRunner.kt:62)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.doCompile(IncrementalCompilerRunner.kt:506)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compileImpl(IncrementalCompilerRunner.kt:423)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compileNonIncrementally(IncrementalCompilerRunner.kt:301)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compile(IncrementalCompilerRunner.kt:129)
+	at org.jetbrains.kotlin.daemon.CompileServiceImplBase.execIncrementalCompiler(CompileServiceImpl.kt:676)
+	at org.jetbrains.kotlin.daemon.CompileServiceImplBase.access$execIncrementalCompiler(CompileServiceImpl.kt:92)
+	at org.jetbrains.kotlin.daemon.CompileServiceImpl.compile(CompileServiceImpl.kt:1661)
+	at jdk.internal.reflect.GeneratedMethodAccessor18.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.rmi/sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:360)
+	at java.rmi/sun.rmi.transport.Transport$1.run(Transport.java:200)
+	at java.rmi/sun.rmi.transport.Transport$1.run(Transport.java:197)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.rmi/sun.rmi.transport.Transport.serviceCall(Transport.java:196)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:587)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:828)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:705)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:704)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.lang.RuntimeException: Exception while generating code for:
+FUN name:updateProfilePicture visibility:private modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel, imageUrl:kotlin.String) returnType:kotlin.Unit
+  $this: VALUE_PARAMETER name:<this> type:com.mathroda.profile_screen.ProfileViewModel
+  VALUE_PARAMETER name:imageUrl index:0 type:kotlin.String
+  BLOCK_BODY
+    COMPOSITE type=kotlin.Unit origin=null
+      CALL 'public final fun launch$default (context: kotlin.coroutines.CoroutineContext?, start: kotlinx.coroutines.CoroutineStart?, block: @[ExtensionFunctionType] kotlin.coroutines.SuspendFunction1<kotlinx.coroutines.CoroutineScope, kotlin.Unit>, $mask0: kotlin.Int, $handler: kotlin.Any?): kotlinx.coroutines.Job declared in kotlinx.coroutines.BuildersKt' type=kotlinx.coroutines.Job origin=DEFAULT_DISPATCH_CALL
+        $receiver: CALL 'public final fun <get-viewModelScope> (): kotlinx.coroutines.CoroutineScope declared in androidx.lifecycle.ViewModelKt' type=kotlinx.coroutines.CoroutineScope origin=GET_PROPERTY
+          $receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+        context: COMPOSITE type=kotlin.coroutines.CoroutineContext? origin=DEFAULT_VALUE
+          CONST Null type=kotlin.coroutines.CoroutineContext? value=null
+        start: COMPOSITE type=kotlinx.coroutines.CoroutineStart? origin=DEFAULT_VALUE
+          CONST Null type=kotlinx.coroutines.CoroutineStart? value=null
+        block: BLOCK type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+          CLASS SUSPEND_LAMBDA CLASS name:<no name provided> modality:FINAL visibility:public/*package*/ superTypes:[kotlin.coroutines.jvm.internal.SuspendLambda; kotlin.jvm.functions.Function2<kotlinx.coroutines.CoroutineScope, kotlin.coroutines.Continuation<kotlin.Unit>?, kotlin.Any?>]
+            $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>
+            FIELD name:label type:kotlin.Int visibility:public/*package*/
+            CONSTRUCTOR SUSPEND_LAMBDA visibility:public/*package*/ <> (this$0:com.mathroda.profile_screen.ProfileViewModel, $imageUrl:kotlin.String, $completion:kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>>?) returnType:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> [primary]
+              VALUE_PARAMETER BOUND_RECEIVER_PARAMETER name:this$0 index:0 type:com.mathroda.profile_screen.ProfileViewModel
+              VALUE_PARAMETER BOUND_VALUE_PARAMETER name:$imageUrl index:1 type:kotlin.String
+              VALUE_PARAMETER name:$completion index:2 type:kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>>?
+              BLOCK_BODY
+                SET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=kotlin.Unit origin=INITIALIZER_OF_FIELD_FOR_CAPTURED_VALUE
+                  receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+                  value: GET_VAR 'this$0: com.mathroda.profile_screen.ProfileViewModel declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.<init>' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                SET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:$imageUrl type:kotlin.String visibility:public/*package*/ [final]' type=kotlin.Unit origin=INITIALIZER_OF_FIELD_FOR_CAPTURED_VALUE
+                  receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+                  value: GET_VAR '$imageUrl: kotlin.String declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.<init>' type=kotlin.String origin=null
+                DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> (arity: kotlin.Int, $completion: kotlin.coroutines.Continuation<kotlin.Any?>?) declared in kotlin.coroutines.jvm.internal.SuspendLambda'
+                  arity: CONST Int type=kotlin.Int value=2
+                  $completion: GET_VAR '$completion: kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>>? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.<init>' type=kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>>? origin=null
+                BLOCK type=kotlin.Unit origin=null
+            FUN name:invokeSuspend visibility:public modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>, $result:kotlin.Result<kotlin.Any?>) returnType:kotlin.Any?
+              overridden:
+                protected abstract fun invokeSuspend ($result: kotlin.Result<kotlin.Any?>): kotlin.Any? declared in kotlin.coroutines.jvm.internal.SuspendLambda
+              $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>
+              VALUE_PARAMETER name:$result index:0 type:kotlin.Result<kotlin.Any?>
+              BLOCK_BODY
+                CALL 'public abstract fun collect (collector: kotlinx.coroutines.flow.FlowCollector<T of kotlinx.coroutines.flow.Flow>, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in kotlinx.coroutines.flow.Flow' type=kotlin.Unit origin=null
+                  $this: CALL 'public abstract fun updateUserProfilePicture (imageUrl: kotlin.String): kotlinx.coroutines.flow.Flow<com.mathroda.core.util.Resource<out IrErrorType(null)>> declared in com.mathroda.datasource.firebase.FirebaseRepository' type=kotlinx.coroutines.flow.Flow<com.mathroda.core.util.Resource<out IrErrorType(null)>> origin=null
+                    $this: CALL 'public final fun access$getFirebaseRepository$p ($this: com.mathroda.profile_screen.ProfileViewModel): com.mathroda.datasource.firebase.FirebaseRepository declared in com.mathroda.profile_screen.ProfileViewModel' type=com.mathroda.datasource.firebase.FirebaseRepository origin=null
+                      $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                        receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+                    imageUrl: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:$imageUrl type:kotlin.String visibility:public/*package*/ [final]' type=kotlin.String origin=null
+                      receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+                  collector: BLOCK type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                    CLASS LAMBDA_IMPL CLASS name:<no name provided> modality:FINAL visibility:public/*package*/ superTypes:[@[RawType] kotlinx.coroutines.flow.FlowCollector<T of kotlinx.coroutines.flow.FlowCollector>]
+                      $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>
+                      TYPE_PARAMETER name:T index:0 variance:in superTypes:[kotlin.Any?] reified:false
+                      CONSTRUCTOR GENERATED_MEMBER_IN_CALLABLE_REFERENCE visibility:public/*package*/ <> (this$0:com.mathroda.profile_screen.ProfileViewModel) returnType:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> [primary]
+                        VALUE_PARAMETER BOUND_RECEIVER_PARAMETER name:this$0 index:0 type:com.mathroda.profile_screen.ProfileViewModel
+                        BLOCK_BODY
+                          SET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=kotlin.Unit origin=INITIALIZER_OF_FIELD_FOR_CAPTURED_VALUE
+                            receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                            value: GET_VAR 'this$0: com.mathroda.profile_screen.ProfileViewModel declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.<init>' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                          DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> () [primary] declared in kotlin.Any'
+                          BLOCK type=kotlin.Unit origin=null
+                      FUN name:emit visibility:public modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>, result:com.mathroda.core.util.Resource<out IrErrorType(null)>, $completion:kotlin.coroutines.Continuation<kotlin.Unit>) returnType:kotlin.Any? [suspend]
+                        overridden:
+                          public abstract fun emit (value: T of kotlinx.coroutines.flow.FlowCollector, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in kotlinx.coroutines.flow.FlowCollector
+                        $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>
+                        VALUE_PARAMETER name:result index:0 type:com.mathroda.core.util.Resource<out IrErrorType(null)>
+                        VALUE_PARAMETER CONTINUATION_CLASS name:$completion index:1 type:kotlin.coroutines.Continuation<kotlin.Unit>
+                        BLOCK_BODY
+                          CLASS CONTINUATION_CLASS CLASS name:<Continuation> modality:FINAL visibility:public/*package*/ superTypes:[kotlin.coroutines.jvm.internal.ContinuationImpl]
+                            $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>
+                            FIELD CONTINUATION_CLASS_RESULT_FIELD name:result type:kotlin.Result<kotlin.Any?> visibility:public/*package*/
+                            FIELD FIELD_FOR_OUTER_THIS name:this$0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> visibility:public/*package*/ [final]
+                            FIELD name:label type:kotlin.Int visibility:public/*package*/
+                            CONSTRUCTOR visibility:public/*package*/ <> (this$0:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>, $completion:kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>?) returnType:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> [primary]
+                              VALUE_PARAMETER name:this$0 index:0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>
+                              VALUE_PARAMETER name:$completion index:1 type:kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>?
+                              BLOCK_BODY
+                                SET_FIELD 'FIELD FIELD_FOR_OUTER_THIS name:this$0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> visibility:public/*package*/ [final]' type=kotlin.Unit origin=null
+                                  receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                                  value: GET_VAR 'this$0: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.<init>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                                DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> ($completion: kotlin.coroutines.Continuation<kotlin.Any?>?) declared in kotlin.coroutines.jvm.internal.ContinuationImpl'
+                                  $completion: GET_VAR '$completion: kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.<init>' type=kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>? origin=null
+                            FUN name:invokeSuspend visibility:public modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>, $result:kotlin.Result<kotlin.Any?>) returnType:kotlin.Any?
+                              overridden:
+                                public abstract fun invokeSuspend ($result: kotlin.Result<kotlin.Any?>): kotlin.Any? declared in kotlin.coroutines.jvm.internal.ContinuationImpl
+                              $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>
+                              VALUE_PARAMETER name:$result index:0 type:kotlin.Result<kotlin.Any?>
+                              BLOCK_BODY
+                                SET_FIELD 'FIELD CONTINUATION_CLASS_RESULT_FIELD name:result type:kotlin.Result<kotlin.Any?> visibility:public/*package*/' type=kotlin.Unit origin=null
+                                  receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                                  value: GET_VAR '$result: kotlin.Result<kotlin.Any?> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=kotlin.Result<kotlin.Any?> origin=null
+                                SET_FIELD 'FIELD name:label type:kotlin.Int visibility:public/*package*/' type=kotlin.Unit origin=null
+                                  receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                                  value: CALL 'public final fun or (other: kotlin.Int): kotlin.Int [infix] declared in kotlin.Int' type=kotlin.Int origin=null
+                                    $this: GET_FIELD 'FIELD name:label type:kotlin.Int visibility:public/*package*/' type=kotlin.Int origin=null
+                                      receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                                    other: CONST Int type=kotlin.Int value=-2147483648
+                                RETURN type=kotlin.Nothing from='public final fun invokeSuspend ($result: kotlin.Result<kotlin.Any?>): kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>'
+                                  CALL 'public final fun emit (result: com.mathroda.core.util.Resource<out IrErrorType(null)>, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>' type=kotlin.Any? origin=null
+                                    $this: GET_FIELD 'FIELD FIELD_FOR_OUTER_THIS name:this$0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                                      receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                                    result: CONST Null type=com.mathroda.core.util.Resource<out IrErrorType(null)>? value=null
+                                    $completion: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                          BLOCK type=kotlin.Unit origin=WHEN
+                            VAR IR_TEMPORARY_VARIABLE name:tmp2_subject type:com.mathroda.core.util.Resource<out IrErrorType(null)> [val]
+                              GET_VAR 'result: com.mathroda.core.util.Resource<out IrErrorType(null)> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+                            WHEN type=kotlin.Unit origin=WHEN
+                              BRANCH
+                                if: TYPE_OP type=kotlin.Boolean origin=INSTANCEOF typeOperand=com.mathroda.core.util.Resource.Loading<out IrErrorType(null)>
+                                  GET_VAR 'val tmp2_subject: com.mathroda.core.util.Resource<out IrErrorType(null)> [val] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+                                then: BLOCK type=kotlin.Unit origin=null
+                                  CALL 'public abstract fun <set-value> (value: T of kotlinx.coroutines.flow.MutableStateFlow): kotlin.Unit declared in kotlinx.coroutines.flow.MutableStateFlow' type=kotlin.Unit origin=EQ
+                                    $this: CALL 'public final fun access$get_updateProfilePictureState$p ($this: com.mathroda.profile_screen.ProfileViewModel): kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> declared in com.mathroda.profile_screen.ProfileViewModel' type=kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> origin=null
+                                      $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                                        receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                                    value: CONSTRUCTOR_CALL 'public constructor <init> (isLoading: kotlin.Boolean, isSuccess: kotlin.Boolean, isFailure: kotlin.Boolean, $mask0: kotlin.Int, $marker: kotlin.jvm.internal.DefaultConstructorMarker?) declared in com.mathroda.profile_screen.drawer.state.UpdatePictureState' type=com.mathroda.profile_screen.drawer.state.UpdatePictureState origin=DEFAULT_DISPATCH_CALL
+                                      isLoading: CALL 'public final fun Boolean$arg-0$call-$init$$arg-0$call-$set-value$$branch$when$fun-$anonymous$$arg-0$call-collect$fun-$anonymous$$arg-2$call-launch$fun-updateProfilePicture-1$class-ProfileViewModel (): kotlin.Boolean declared in com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt' type=kotlin.Boolean origin=null
+                                        $this: GET_FIELD 'FIELD FIELD_FOR_OBJECT_INSTANCE name:INSTANCE type:com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt visibility:public [final,static]' type=com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt origin=null
+                                      isSuccess: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                                        CONST Boolean type=kotlin.Boolean value=false
+                                      isFailure: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                                        CONST Boolean type=kotlin.Boolean value=false
+                                      $mask0: CONST Int type=kotlin.Int value=6
+                                      $marker: CONST Null type=kotlin.jvm.internal.DefaultConstructorMarker? value=null
+                              BRANCH
+                                if: TYPE_OP type=kotlin.Boolean origin=INSTANCEOF typeOperand=com.mathroda.core.util.Resource.Success<out IrErrorType(null)>
+                                  GET_VAR 'val tmp2_subject: com.mathroda.core.util.Resource<out IrErrorType(null)> [val] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+                                then: BLOCK type=kotlin.Unit origin=null
+                                  CALL 'public abstract fun <set-value> (value: T of kotlinx.coroutines.flow.MutableStateFlow): kotlin.Unit declared in kotlinx.coroutines.flow.MutableStateFlow' type=kotlin.Unit origin=EQ
+                                    $this: CALL 'public final fun access$get_updateProfilePictureState$p ($this: com.mathroda.profile_screen.ProfileViewModel): kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> declared in com.mathroda.profile_screen.ProfileViewModel' type=kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> origin=null
+                                      $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                                        receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                                    value: CONSTRUCTOR_CALL 'public constructor <init> (isLoading: kotlin.Boolean, isSuccess: kotlin.Boolean, isFailure: kotlin.Boolean, $mask0: kotlin.Int, $marker: kotlin.jvm.internal.DefaultConstructorMarker?) declared in com.mathroda.profile_screen.drawer.state.UpdatePictureState' type=com.mathroda.profile_screen.drawer.state.UpdatePictureState origin=DEFAULT_DISPATCH_CALL
+                                      isLoading: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                                        CONST Boolean type=kotlin.Boolean value=false
+                                      isSuccess: CALL 'public final fun Boolean$arg-1$call-$init$$arg-0$call-$set-value$$branch-1$when$fun-$anonymous$$arg-0$call-collect$fun-$anonymous$$arg-2$call-launch$fun-updateProfilePicture-1$class-ProfileViewModel (): kotlin.Boolean declared in com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt' type=kotlin.Boolean origin=null
+                                        $this: GET_FIELD 'FIELD FIELD_FOR_OBJECT_INSTANCE name:INSTANCE type:com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt visibility:public [final,static]' type=com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt origin=null
+                                      isFailure: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                                        CONST Boolean type=kotlin.Boolean value=false
+                                      $mask0: CONST Int type=kotlin.Int value=5
+                                      $marker: CONST Null type=kotlin.jvm.internal.DefaultConstructorMarker? value=null
+                              BRANCH
+                                if: TYPE_OP type=kotlin.Boolean origin=INSTANCEOF typeOperand=com.mathroda.core.util.Resource.Error<out IrErrorType(null)>
+                                  GET_VAR 'val tmp2_subject: com.mathroda.core.util.Resource<out IrErrorType(null)> [val] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+                                then: BLOCK type=kotlin.Unit origin=null
+                                  CALL 'public abstract fun <set-value> (value: T of kotlinx.coroutines.flow.MutableStateFlow): kotlin.Unit declared in kotlinx.coroutines.flow.MutableStateFlow' type=kotlin.Unit origin=EQ
+                                    $this: CALL 'public final fun access$get_updateProfilePictureState$p ($this: com.mathroda.profile_screen.ProfileViewModel): kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> declared in com.mathroda.profile_screen.ProfileViewModel' type=kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> origin=null
+                                      $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                                        receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                                    value: CONSTRUCTOR_CALL 'public constructor <init> (isLoading: kotlin.Boolean, isSuccess: kotlin.Boolean, isFailure: kotlin.Boolean, $mask0: kotlin.Int, $marker: kotlin.jvm.internal.DefaultConstructorMarker?) declared in com.mathroda.profile_screen.drawer.state.UpdatePictureState' type=com.mathroda.profile_screen.drawer.state.UpdatePictureState origin=DEFAULT_DISPATCH_CALL
+                                      isLoading: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                                        CONST Boolean type=kotlin.Boolean value=false
+                                      isSuccess: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                                        CONST Boolean type=kotlin.Boolean value=false
+                                      isFailure: CALL 'public final fun Boolean$arg-2$call-$init$$arg-0$call-$set-value$$branch-2$when$fun-$anonymous$$arg-0$call-collect$fun-$anonymous$$arg-2$call-launch$fun-updateProfilePicture-1$class-ProfileViewModel (): kotlin.Boolean declared in com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt' type=kotlin.Boolean origin=null
+                                        $this: GET_FIELD 'FIELD FIELD_FOR_OBJECT_INSTANCE name:INSTANCE type:com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt visibility:public [final,static]' type=com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt origin=null
+                                      $mask0: CONST Int type=kotlin.Int value=3
+                                      $marker: CONST Null type=kotlin.jvm.internal.DefaultConstructorMarker? value=null
+                              BRANCH
+                                if: CONST Boolean type=kotlin.Boolean value=true
+                                then: BLOCK type=kotlin.Nothing origin=null
+                                  CALL 'public final fun noWhenBranchMatchedException (): kotlin.Nothing declared in kotlin.internal.ir' type=kotlin.Nothing origin=null
+                                  CALL 'public final fun throwKotlinNothingValueException (): kotlin.Nothing declared in kotlin.jvm.internal.Intrinsics' type=kotlin.Nothing origin=null
+                      FUN FAKE_OVERRIDE name:equals visibility:public modality:OPEN <> ($this:kotlin.Any, other:kotlin.Any?) returnType:kotlin.Boolean [fake_override,operator]
+                        overridden:
+                          public open fun equals (other: kotlin.Any?): kotlin.Boolean [fake_override,operator] declared in kotlinx.coroutines.flow.FlowCollector
+                        $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+                        VALUE_PARAMETER name:other index:0 type:kotlin.Any?
+                      FUN FAKE_OVERRIDE name:hashCode visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.Int [fake_override]
+                        overridden:
+                          public open fun hashCode (): kotlin.Int [fake_override] declared in kotlinx.coroutines.flow.FlowCollector
+                        $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+                      FUN FAKE_OVERRIDE name:toString visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.String [fake_override]
+                        overridden:
+                          public open fun toString (): kotlin.String [fake_override] declared in kotlinx.coroutines.flow.FlowCollector
+                        $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+                      FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]
+                      FUN BRIDGE name:emit visibility:public modality:OPEN <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>, value:kotlin.Any?, $completion:kotlin.coroutines.Continuation<kotlin.Unit>) returnType:kotlin.Any? [suspend]
+                        $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>
+                        VALUE_PARAMETER BRIDGE name:value index:0 type:kotlin.Any?
+                        VALUE_PARAMETER BRIDGE name:$completion index:1 type:kotlin.coroutines.Continuation<kotlin.Unit>
+                        EXPRESSION_BODY
+                          RETURN type=kotlin.Nothing from='public open fun emit (value: kotlin.Any?, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>'
+                            CALL 'public final fun emit (result: com.mathroda.core.util.Resource<out IrErrorType(null)>, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>' type=kotlin.Any? origin=BRIDGE_DELEGATION
+                              $this: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                              result: TYPE_OP type=com.mathroda.core.util.Resource<*> origin=IMPLICIT_CAST typeOperand=com.mathroda.core.util.Resource<*>
+                                GET_VAR 'value: kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=kotlin.Any? origin=null
+                              $completion: TYPE_OP type=kotlin.coroutines.Continuation<*> origin=IMPLICIT_CAST typeOperand=kotlin.coroutines.Continuation<*>
+                                GET_VAR '$completion: kotlin.coroutines.Continuation<kotlin.Unit> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=kotlin.coroutines.Continuation<kotlin.Unit> origin=null
+                    CONSTRUCTOR_CALL 'public/*package*/ constructor <init> (this$0: com.mathroda.profile_screen.ProfileViewModel) [primary] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                      <class: T>: <none>
+                      this$0: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                        receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+                  $completion: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+            FUN name:create visibility:public modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>, value:kotlin.Any?, $completion:kotlin.coroutines.Continuation<kotlin.Nothing>) returnType:kotlin.coroutines.Continuation<kotlin.Unit>
+              overridden:
+                public open fun create (value: kotlin.Any?, $completion: kotlin.coroutines.Continuation<kotlin.Nothing>): kotlin.coroutines.Continuation<kotlin.Unit> declared in kotlin.coroutines.jvm.internal.SuspendLambda
+              $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>
+              VALUE_PARAMETER name:value index:0 type:kotlin.Any?
+              VALUE_PARAMETER name:$completion index:1 type:kotlin.coroutines.Continuation<kotlin.Nothing>
+              BLOCK_BODY
+                RETURN type=kotlin.Nothing from='public final fun create (value: kotlin.Any?, $completion: kotlin.coroutines.Continuation<kotlin.Nothing>): kotlin.coroutines.Continuation<kotlin.Unit> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>'
+                  CONSTRUCTOR_CALL 'public/*package*/ constructor <init> (this$0: com.mathroda.profile_screen.ProfileViewModel, $imageUrl: kotlin.String, $completion: kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>>?) [primary] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+                    this$0: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                      receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.create' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+                    $imageUrl: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:$imageUrl type:kotlin.String visibility:public/*package*/ [final]' type=kotlin.String origin=null
+                      receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.create' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+                    $completion: GET_VAR '$completion: kotlin.coroutines.Continuation<kotlin.Nothing> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.create' type=kotlin.coroutines.Continuation<kotlin.Nothing> origin=null
+            FUN name:invoke visibility:public modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>, p1:kotlinx.coroutines.CoroutineScope, p2:kotlin.coroutines.Continuation<kotlin.Unit>?) returnType:kotlin.Any?
+              overridden:
+                public abstract fun invoke (p1: P1 of kotlin.jvm.functions.Function2, p2: P2 of kotlin.jvm.functions.Function2): R of kotlin.jvm.functions.Function2 declared in kotlin.jvm.functions.Function2
+              $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>
+              VALUE_PARAMETER name:p1 index:0 type:kotlinx.coroutines.CoroutineScope
+              VALUE_PARAMETER name:p2 index:1 type:kotlin.coroutines.Continuation<kotlin.Unit>?
+              BLOCK_BODY
+                RETURN type=kotlin.Nothing from='public final fun invoke (p1: kotlinx.coroutines.CoroutineScope, p2: kotlin.coroutines.Continuation<kotlin.Unit>?): kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>'
+                  CALL 'public final fun invokeSuspend ($result: kotlin.Result<kotlin.Any?>): kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>' type=kotlin.Any? origin=null
+                    $this: TYPE_OP type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=IMPLICIT_CAST typeOperand=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>
+                      CALL 'public final fun create (value: kotlin.Any?, $completion: kotlin.coroutines.Continuation<kotlin.Nothing>): kotlin.coroutines.Continuation<kotlin.Unit> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>' type=kotlin.coroutines.Continuation<kotlin.Unit> origin=null
+                        $this: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invoke' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+                        value: GET_VAR 'p1: kotlinx.coroutines.CoroutineScope declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invoke' type=kotlinx.coroutines.CoroutineScope origin=null
+                        $completion: GET_VAR 'p2: kotlin.coroutines.Continuation<kotlin.Unit>? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invoke' type=kotlin.coroutines.Continuation<kotlin.Unit>? origin=null
+                    $result: CALL 'public final fun <unsafe-coerce> <T, R> (v: T of kotlin.jvm.internal.<unsafe-coerce>): R of kotlin.jvm.internal.<unsafe-coerce> declared in kotlin.jvm.internal' type=kotlin.Result<kotlin.Any?> origin=null
+                      <T>: kotlin.Any?
+                      <R>: kotlin.Result<kotlin.Any?>
+                      v: GET_FIELD 'FIELD FIELD_FOR_OBJECT_INSTANCE name:INSTANCE type:kotlin.Unit visibility:public [final,static]' type=kotlin.Unit origin=null
+            FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]
+            FIELD FIELD_FOR_CAPTURED_VALUE name:$imageUrl type:kotlin.String visibility:public/*package*/ [final]
+            FUN BRIDGE name:invoke visibility:public modality:OPEN <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>, p1:kotlin.Any?, p2:kotlin.Any?) returnType:kotlin.Any?
+              $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>
+              VALUE_PARAMETER BRIDGE name:p1 index:0 type:kotlin.Any?
+              VALUE_PARAMETER BRIDGE name:p2 index:1 type:kotlin.Any?
+              EXPRESSION_BODY
+                RETURN type=kotlin.Nothing from='public open fun invoke (p1: kotlin.Any?, p2: kotlin.Any?): kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>'
+                  CALL 'public final fun invoke (p1: kotlinx.coroutines.CoroutineScope, p2: kotlin.coroutines.Continuation<kotlin.Unit>?): kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>' type=kotlin.Any? origin=BRIDGE_DELEGATION
+                    $this: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invoke' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+                    p1: TYPE_OP type=kotlinx.coroutines.CoroutineScope origin=IMPLICIT_CAST typeOperand=kotlinx.coroutines.CoroutineScope
+                      GET_VAR 'p1: kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invoke' type=kotlin.Any? origin=null
+                    p2: TYPE_OP type=kotlin.coroutines.Continuation<*> origin=IMPLICIT_CAST typeOperand=kotlin.coroutines.Continuation<*>
+                      GET_VAR 'p2: kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invoke' type=kotlin.Any? origin=null
+          CONSTRUCTOR_CALL 'public/*package*/ constructor <init> (this$0: com.mathroda.profile_screen.ProfileViewModel, $imageUrl: kotlin.String, $completion: kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>>?) [primary] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+            this$0: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+            $imageUrl: GET_VAR 'imageUrl: kotlin.String declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture' type=kotlin.String origin=null
+            $completion: CONST Null type=kotlin.Nothing? value=null
+        $mask0: CONST Int type=kotlin.Int value=3
+        $handler: CONST Null type=kotlin.Any? value=null
+      COMPOSITE type=kotlin.Unit origin=null
+
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:50)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate$default(FunctionCodegen.kt:42)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generateMethodNode(ClassCodegen.kt:385)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generateMethod(ClassCodegen.kt:402)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generate(ClassCodegen.kt:169)
+	at org.jetbrains.kotlin.backend.jvm.FileCodegen.lower(JvmPhases.kt:41)
+	at org.jetbrains.kotlin.backend.common.phaser.PhaseBuildersKt.makeIrFilePhase$lambda$5(PhaseBuilders.kt:114)
+	at org.jetbrains.kotlin.backend.common.phaser.PhaseBuildersKt$createSimpleNamedCompilerPhase$1.phaseBody(PhaseBuilders.kt:71)
+	at org.jetbrains.kotlin.backend.common.phaser.SimpleNamedCompilerPhase.phaseBody(CompilerPhase.kt:226)
+	at org.jetbrains.kotlin.backend.common.phaser.AbstractNamedCompilerPhase.invoke(CompilerPhase.kt:113)
+	at org.jetbrains.kotlin.backend.common.phaser.PerformByIrFilePhase.invokeSequential(performByIrFile.kt:62)
+	... 44 more
+Caused by: java.lang.RuntimeException: Exception while generating code for:
+FUN name:invokeSuspend visibility:public modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>, $result:kotlin.Result<kotlin.Any?>) returnType:kotlin.Any?
+  overridden:
+    protected abstract fun invokeSuspend ($result: kotlin.Result<kotlin.Any?>): kotlin.Any? declared in kotlin.coroutines.jvm.internal.SuspendLambda
+  $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>
+  VALUE_PARAMETER name:$result index:0 type:kotlin.Result<kotlin.Any?>
+  BLOCK_BODY
+    CALL 'public abstract fun collect (collector: kotlinx.coroutines.flow.FlowCollector<T of kotlinx.coroutines.flow.Flow>, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in kotlinx.coroutines.flow.Flow' type=kotlin.Unit origin=null
+      $this: CALL 'public abstract fun updateUserProfilePicture (imageUrl: kotlin.String): kotlinx.coroutines.flow.Flow<com.mathroda.core.util.Resource<out IrErrorType(null)>> declared in com.mathroda.datasource.firebase.FirebaseRepository' type=kotlinx.coroutines.flow.Flow<com.mathroda.core.util.Resource<out IrErrorType(null)>> origin=null
+        $this: CALL 'public final fun access$getFirebaseRepository$p ($this: com.mathroda.profile_screen.ProfileViewModel): com.mathroda.datasource.firebase.FirebaseRepository declared in com.mathroda.profile_screen.ProfileViewModel' type=com.mathroda.datasource.firebase.FirebaseRepository origin=null
+          $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+            receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+        imageUrl: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:$imageUrl type:kotlin.String visibility:public/*package*/ [final]' type=kotlin.String origin=null
+          receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+      collector: BLOCK type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+        CLASS LAMBDA_IMPL CLASS name:<no name provided> modality:FINAL visibility:public/*package*/ superTypes:[@[RawType] kotlinx.coroutines.flow.FlowCollector<T of kotlinx.coroutines.flow.FlowCollector>]
+          $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>
+          TYPE_PARAMETER name:T index:0 variance:in superTypes:[kotlin.Any?] reified:false
+          CONSTRUCTOR GENERATED_MEMBER_IN_CALLABLE_REFERENCE visibility:public/*package*/ <> (this$0:com.mathroda.profile_screen.ProfileViewModel) returnType:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> [primary]
+            VALUE_PARAMETER BOUND_RECEIVER_PARAMETER name:this$0 index:0 type:com.mathroda.profile_screen.ProfileViewModel
+            BLOCK_BODY
+              SET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=kotlin.Unit origin=INITIALIZER_OF_FIELD_FOR_CAPTURED_VALUE
+                receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                value: GET_VAR 'this$0: com.mathroda.profile_screen.ProfileViewModel declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.<init>' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+              DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> () [primary] declared in kotlin.Any'
+              BLOCK type=kotlin.Unit origin=null
+          FUN name:emit visibility:public modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>, result:com.mathroda.core.util.Resource<out IrErrorType(null)>, $completion:kotlin.coroutines.Continuation<kotlin.Unit>) returnType:kotlin.Any? [suspend]
+            overridden:
+              public abstract fun emit (value: T of kotlinx.coroutines.flow.FlowCollector, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in kotlinx.coroutines.flow.FlowCollector
+            $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>
+            VALUE_PARAMETER name:result index:0 type:com.mathroda.core.util.Resource<out IrErrorType(null)>
+            VALUE_PARAMETER CONTINUATION_CLASS name:$completion index:1 type:kotlin.coroutines.Continuation<kotlin.Unit>
+            BLOCK_BODY
+              CLASS CONTINUATION_CLASS CLASS name:<Continuation> modality:FINAL visibility:public/*package*/ superTypes:[kotlin.coroutines.jvm.internal.ContinuationImpl]
+                $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>
+                FIELD CONTINUATION_CLASS_RESULT_FIELD name:result type:kotlin.Result<kotlin.Any?> visibility:public/*package*/
+                FIELD FIELD_FOR_OUTER_THIS name:this$0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> visibility:public/*package*/ [final]
+                FIELD name:label type:kotlin.Int visibility:public/*package*/
+                CONSTRUCTOR visibility:public/*package*/ <> (this$0:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>, $completion:kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>?) returnType:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> [primary]
+                  VALUE_PARAMETER name:this$0 index:0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>
+                  VALUE_PARAMETER name:$completion index:1 type:kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>?
+                  BLOCK_BODY
+                    SET_FIELD 'FIELD FIELD_FOR_OUTER_THIS name:this$0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> visibility:public/*package*/ [final]' type=kotlin.Unit origin=null
+                      receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                      value: GET_VAR 'this$0: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.<init>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                    DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> ($completion: kotlin.coroutines.Continuation<kotlin.Any?>?) declared in kotlin.coroutines.jvm.internal.ContinuationImpl'
+                      $completion: GET_VAR '$completion: kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.<init>' type=kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>? origin=null
+                FUN name:invokeSuspend visibility:public modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>, $result:kotlin.Result<kotlin.Any?>) returnType:kotlin.Any?
+                  overridden:
+                    public abstract fun invokeSuspend ($result: kotlin.Result<kotlin.Any?>): kotlin.Any? declared in kotlin.coroutines.jvm.internal.ContinuationImpl
+                  $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>
+                  VALUE_PARAMETER name:$result index:0 type:kotlin.Result<kotlin.Any?>
+                  BLOCK_BODY
+                    SET_FIELD 'FIELD CONTINUATION_CLASS_RESULT_FIELD name:result type:kotlin.Result<kotlin.Any?> visibility:public/*package*/' type=kotlin.Unit origin=null
+                      receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                      value: GET_VAR '$result: kotlin.Result<kotlin.Any?> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=kotlin.Result<kotlin.Any?> origin=null
+                    SET_FIELD 'FIELD name:label type:kotlin.Int visibility:public/*package*/' type=kotlin.Unit origin=null
+                      receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                      value: CALL 'public final fun or (other: kotlin.Int): kotlin.Int [infix] declared in kotlin.Int' type=kotlin.Int origin=null
+                        $this: GET_FIELD 'FIELD name:label type:kotlin.Int visibility:public/*package*/' type=kotlin.Int origin=null
+                          receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                        other: CONST Int type=kotlin.Int value=-2147483648
+                    RETURN type=kotlin.Nothing from='public final fun invokeSuspend ($result: kotlin.Result<kotlin.Any?>): kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>'
+                      CALL 'public final fun emit (result: com.mathroda.core.util.Resource<out IrErrorType(null)>, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>' type=kotlin.Any? origin=null
+                        $this: GET_FIELD 'FIELD FIELD_FOR_OUTER_THIS name:this$0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                          receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+                        result: CONST Null type=com.mathroda.core.util.Resource<out IrErrorType(null)>? value=null
+                        $completion: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+              BLOCK type=kotlin.Unit origin=WHEN
+                VAR IR_TEMPORARY_VARIABLE name:tmp2_subject type:com.mathroda.core.util.Resource<out IrErrorType(null)> [val]
+                  GET_VAR 'result: com.mathroda.core.util.Resource<out IrErrorType(null)> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+                WHEN type=kotlin.Unit origin=WHEN
+                  BRANCH
+                    if: TYPE_OP type=kotlin.Boolean origin=INSTANCEOF typeOperand=com.mathroda.core.util.Resource.Loading<out IrErrorType(null)>
+                      GET_VAR 'val tmp2_subject: com.mathroda.core.util.Resource<out IrErrorType(null)> [val] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+                    then: BLOCK type=kotlin.Unit origin=null
+                      CALL 'public abstract fun <set-value> (value: T of kotlinx.coroutines.flow.MutableStateFlow): kotlin.Unit declared in kotlinx.coroutines.flow.MutableStateFlow' type=kotlin.Unit origin=EQ
+                        $this: CALL 'public final fun access$get_updateProfilePictureState$p ($this: com.mathroda.profile_screen.ProfileViewModel): kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> declared in com.mathroda.profile_screen.ProfileViewModel' type=kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> origin=null
+                          $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                            receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                        value: CONSTRUCTOR_CALL 'public constructor <init> (isLoading: kotlin.Boolean, isSuccess: kotlin.Boolean, isFailure: kotlin.Boolean, $mask0: kotlin.Int, $marker: kotlin.jvm.internal.DefaultConstructorMarker?) declared in com.mathroda.profile_screen.drawer.state.UpdatePictureState' type=com.mathroda.profile_screen.drawer.state.UpdatePictureState origin=DEFAULT_DISPATCH_CALL
+                          isLoading: CALL 'public final fun Boolean$arg-0$call-$init$$arg-0$call-$set-value$$branch$when$fun-$anonymous$$arg-0$call-collect$fun-$anonymous$$arg-2$call-launch$fun-updateProfilePicture-1$class-ProfileViewModel (): kotlin.Boolean declared in com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt' type=kotlin.Boolean origin=null
+                            $this: GET_FIELD 'FIELD FIELD_FOR_OBJECT_INSTANCE name:INSTANCE type:com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt visibility:public [final,static]' type=com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt origin=null
+                          isSuccess: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                            CONST Boolean type=kotlin.Boolean value=false
+                          isFailure: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                            CONST Boolean type=kotlin.Boolean value=false
+                          $mask0: CONST Int type=kotlin.Int value=6
+                          $marker: CONST Null type=kotlin.jvm.internal.DefaultConstructorMarker? value=null
+                  BRANCH
+                    if: TYPE_OP type=kotlin.Boolean origin=INSTANCEOF typeOperand=com.mathroda.core.util.Resource.Success<out IrErrorType(null)>
+                      GET_VAR 'val tmp2_subject: com.mathroda.core.util.Resource<out IrErrorType(null)> [val] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+                    then: BLOCK type=kotlin.Unit origin=null
+                      CALL 'public abstract fun <set-value> (value: T of kotlinx.coroutines.flow.MutableStateFlow): kotlin.Unit declared in kotlinx.coroutines.flow.MutableStateFlow' type=kotlin.Unit origin=EQ
+                        $this: CALL 'public final fun access$get_updateProfilePictureState$p ($this: com.mathroda.profile_screen.ProfileViewModel): kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> declared in com.mathroda.profile_screen.ProfileViewModel' type=kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> origin=null
+                          $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                            receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                        value: CONSTRUCTOR_CALL 'public constructor <init> (isLoading: kotlin.Boolean, isSuccess: kotlin.Boolean, isFailure: kotlin.Boolean, $mask0: kotlin.Int, $marker: kotlin.jvm.internal.DefaultConstructorMarker?) declared in com.mathroda.profile_screen.drawer.state.UpdatePictureState' type=com.mathroda.profile_screen.drawer.state.UpdatePictureState origin=DEFAULT_DISPATCH_CALL
+                          isLoading: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                            CONST Boolean type=kotlin.Boolean value=false
+                          isSuccess: CALL 'public final fun Boolean$arg-1$call-$init$$arg-0$call-$set-value$$branch-1$when$fun-$anonymous$$arg-0$call-collect$fun-$anonymous$$arg-2$call-launch$fun-updateProfilePicture-1$class-ProfileViewModel (): kotlin.Boolean declared in com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt' type=kotlin.Boolean origin=null
+                            $this: GET_FIELD 'FIELD FIELD_FOR_OBJECT_INSTANCE name:INSTANCE type:com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt visibility:public [final,static]' type=com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt origin=null
+                          isFailure: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                            CONST Boolean type=kotlin.Boolean value=false
+                          $mask0: CONST Int type=kotlin.Int value=5
+                          $marker: CONST Null type=kotlin.jvm.internal.DefaultConstructorMarker? value=null
+                  BRANCH
+                    if: TYPE_OP type=kotlin.Boolean origin=INSTANCEOF typeOperand=com.mathroda.core.util.Resource.Error<out IrErrorType(null)>
+                      GET_VAR 'val tmp2_subject: com.mathroda.core.util.Resource<out IrErrorType(null)> [val] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+                    then: BLOCK type=kotlin.Unit origin=null
+                      CALL 'public abstract fun <set-value> (value: T of kotlinx.coroutines.flow.MutableStateFlow): kotlin.Unit declared in kotlinx.coroutines.flow.MutableStateFlow' type=kotlin.Unit origin=EQ
+                        $this: CALL 'public final fun access$get_updateProfilePictureState$p ($this: com.mathroda.profile_screen.ProfileViewModel): kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> declared in com.mathroda.profile_screen.ProfileViewModel' type=kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> origin=null
+                          $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                            receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                        value: CONSTRUCTOR_CALL 'public constructor <init> (isLoading: kotlin.Boolean, isSuccess: kotlin.Boolean, isFailure: kotlin.Boolean, $mask0: kotlin.Int, $marker: kotlin.jvm.internal.DefaultConstructorMarker?) declared in com.mathroda.profile_screen.drawer.state.UpdatePictureState' type=com.mathroda.profile_screen.drawer.state.UpdatePictureState origin=DEFAULT_DISPATCH_CALL
+                          isLoading: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                            CONST Boolean type=kotlin.Boolean value=false
+                          isSuccess: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                            CONST Boolean type=kotlin.Boolean value=false
+                          isFailure: CALL 'public final fun Boolean$arg-2$call-$init$$arg-0$call-$set-value$$branch-2$when$fun-$anonymous$$arg-0$call-collect$fun-$anonymous$$arg-2$call-launch$fun-updateProfilePicture-1$class-ProfileViewModel (): kotlin.Boolean declared in com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt' type=kotlin.Boolean origin=null
+                            $this: GET_FIELD 'FIELD FIELD_FOR_OBJECT_INSTANCE name:INSTANCE type:com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt visibility:public [final,static]' type=com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt origin=null
+                          $mask0: CONST Int type=kotlin.Int value=3
+                          $marker: CONST Null type=kotlin.jvm.internal.DefaultConstructorMarker? value=null
+                  BRANCH
+                    if: CONST Boolean type=kotlin.Boolean value=true
+                    then: BLOCK type=kotlin.Nothing origin=null
+                      CALL 'public final fun noWhenBranchMatchedException (): kotlin.Nothing declared in kotlin.internal.ir' type=kotlin.Nothing origin=null
+                      CALL 'public final fun throwKotlinNothingValueException (): kotlin.Nothing declared in kotlin.jvm.internal.Intrinsics' type=kotlin.Nothing origin=null
+          FUN FAKE_OVERRIDE name:equals visibility:public modality:OPEN <> ($this:kotlin.Any, other:kotlin.Any?) returnType:kotlin.Boolean [fake_override,operator]
+            overridden:
+              public open fun equals (other: kotlin.Any?): kotlin.Boolean [fake_override,operator] declared in kotlinx.coroutines.flow.FlowCollector
+            $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+            VALUE_PARAMETER name:other index:0 type:kotlin.Any?
+          FUN FAKE_OVERRIDE name:hashCode visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.Int [fake_override]
+            overridden:
+              public open fun hashCode (): kotlin.Int [fake_override] declared in kotlinx.coroutines.flow.FlowCollector
+            $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+          FUN FAKE_OVERRIDE name:toString visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.String [fake_override]
+            overridden:
+              public open fun toString (): kotlin.String [fake_override] declared in kotlinx.coroutines.flow.FlowCollector
+            $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+          FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]
+          FUN BRIDGE name:emit visibility:public modality:OPEN <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>, value:kotlin.Any?, $completion:kotlin.coroutines.Continuation<kotlin.Unit>) returnType:kotlin.Any? [suspend]
+            $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>
+            VALUE_PARAMETER BRIDGE name:value index:0 type:kotlin.Any?
+            VALUE_PARAMETER BRIDGE name:$completion index:1 type:kotlin.coroutines.Continuation<kotlin.Unit>
+            EXPRESSION_BODY
+              RETURN type=kotlin.Nothing from='public open fun emit (value: kotlin.Any?, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>'
+                CALL 'public final fun emit (result: com.mathroda.core.util.Resource<out IrErrorType(null)>, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>' type=kotlin.Any? origin=BRIDGE_DELEGATION
+                  $this: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                  result: TYPE_OP type=com.mathroda.core.util.Resource<*> origin=IMPLICIT_CAST typeOperand=com.mathroda.core.util.Resource<*>
+                    GET_VAR 'value: kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=kotlin.Any? origin=null
+                  $completion: TYPE_OP type=kotlin.coroutines.Continuation<*> origin=IMPLICIT_CAST typeOperand=kotlin.coroutines.Continuation<*>
+                    GET_VAR '$completion: kotlin.coroutines.Continuation<kotlin.Unit> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=kotlin.coroutines.Continuation<kotlin.Unit> origin=null
+        CONSTRUCTOR_CALL 'public/*package*/ constructor <init> (this$0: com.mathroda.profile_screen.ProfileViewModel) [primary] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+          <class: T>: <none>
+          this$0: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+            receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+      $completion: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided> origin=null
+
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:50)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate$default(FunctionCodegen.kt:42)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generateMethodNode(ClassCodegen.kt:385)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generateMethod(ClassCodegen.kt:402)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generate(ClassCodegen.kt:169)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitClass(ExpressionCodegen.kt:994)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitClass(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.declarations.IrClass.accept(IrClass.kt:72)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:573)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:587)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.visitors.IrElementVisitor$DefaultImpls.visitBlock(IrElementVisitor.kt:122)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:407)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrBlock.accept(IrBlock.kt:18)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.gen(ExpressionCodegen.kt:216)
+	at org.jetbrains.kotlin.backend.jvm.codegen.IrCallGenerator.genValueAndPut(IrCallGenerator.kt:48)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall$handleParameter(ExpressionCodegen.kt:610)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall(ExpressionCodegen.kt:638)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrCall.accept(IrCall.kt:24)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:573)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:587)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.visitors.IrElementVisitor$DefaultImpls.visitComposite(IrElementVisitor.kt:125)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitComposite(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitComposite(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrComposite.accept(IrComposite.kt:18)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:573)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:578)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrBlockBody.accept(IrBlockBody.kt:20)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.generate(ExpressionCodegen.kt:239)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.doGenerate(FunctionCodegen.kt:121)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:46)
+	... 54 more
+Caused by: java.lang.RuntimeException: Exception while generating code for:
+FUN name:emit visibility:public modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>, result:com.mathroda.core.util.Resource<out IrErrorType(null)>, $completion:kotlin.coroutines.Continuation<kotlin.Unit>) returnType:kotlin.Any? [suspend]
+  overridden:
+    public abstract fun emit (value: T of kotlinx.coroutines.flow.FlowCollector, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in kotlinx.coroutines.flow.FlowCollector
+  $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>
+  VALUE_PARAMETER name:result index:0 type:com.mathroda.core.util.Resource<out IrErrorType(null)>
+  VALUE_PARAMETER CONTINUATION_CLASS name:$completion index:1 type:kotlin.coroutines.Continuation<kotlin.Unit>
+  BLOCK_BODY
+    CLASS CONTINUATION_CLASS CLASS name:<Continuation> modality:FINAL visibility:public/*package*/ superTypes:[kotlin.coroutines.jvm.internal.ContinuationImpl]
+      $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>
+      FIELD CONTINUATION_CLASS_RESULT_FIELD name:result type:kotlin.Result<kotlin.Any?> visibility:public/*package*/
+      FIELD FIELD_FOR_OUTER_THIS name:this$0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> visibility:public/*package*/ [final]
+      FIELD name:label type:kotlin.Int visibility:public/*package*/
+      CONSTRUCTOR visibility:public/*package*/ <> (this$0:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>, $completion:kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>?) returnType:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> [primary]
+        VALUE_PARAMETER name:this$0 index:0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>>
+        VALUE_PARAMETER name:$completion index:1 type:kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>?
+        BLOCK_BODY
+          SET_FIELD 'FIELD FIELD_FOR_OUTER_THIS name:this$0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> visibility:public/*package*/ [final]' type=kotlin.Unit origin=null
+            receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+            value: GET_VAR 'this$0: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.<init>' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+          DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> ($completion: kotlin.coroutines.Continuation<kotlin.Any?>?) declared in kotlin.coroutines.jvm.internal.ContinuationImpl'
+            $completion: GET_VAR '$completion: kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.<init>' type=kotlin.coroutines.Continuation<com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>>? origin=null
+      FUN name:invokeSuspend visibility:public modality:FINAL <> ($this:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>, $result:kotlin.Result<kotlin.Any?>) returnType:kotlin.Any?
+        overridden:
+          public abstract fun invokeSuspend ($result: kotlin.Result<kotlin.Any?>): kotlin.Any? declared in kotlin.coroutines.jvm.internal.ContinuationImpl
+        $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>
+        VALUE_PARAMETER name:$result index:0 type:kotlin.Result<kotlin.Any?>
+        BLOCK_BODY
+          SET_FIELD 'FIELD CONTINUATION_CLASS_RESULT_FIELD name:result type:kotlin.Result<kotlin.Any?> visibility:public/*package*/' type=kotlin.Unit origin=null
+            receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+            value: GET_VAR '$result: kotlin.Result<kotlin.Any?> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=kotlin.Result<kotlin.Any?> origin=null
+          SET_FIELD 'FIELD name:label type:kotlin.Int visibility:public/*package*/' type=kotlin.Unit origin=null
+            receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+            value: CALL 'public final fun or (other: kotlin.Int): kotlin.Int [infix] declared in kotlin.Int' type=kotlin.Int origin=null
+              $this: GET_FIELD 'FIELD name:label type:kotlin.Int visibility:public/*package*/' type=kotlin.Int origin=null
+                receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+              other: CONST Int type=kotlin.Int value=-2147483648
+          RETURN type=kotlin.Nothing from='public final fun invokeSuspend ($result: kotlin.Result<kotlin.Any?>): kotlin.Any? declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>'
+            CALL 'public final fun emit (result: com.mathroda.core.util.Resource<out IrErrorType(null)>, $completion: kotlin.coroutines.Continuation<kotlin.Unit>): kotlin.Any? [suspend] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>' type=kotlin.Any? origin=null
+              $this: GET_FIELD 'FIELD FIELD_FOR_OUTER_THIS name:this$0 type:com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+                receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+              result: CONST Null type=com.mathroda.core.util.Resource<out IrErrorType(null)>? value=null
+              $completion: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation>.invokeSuspend' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit.<Continuation> origin=null
+    BLOCK type=kotlin.Unit origin=WHEN
+      VAR IR_TEMPORARY_VARIABLE name:tmp2_subject type:com.mathroda.core.util.Resource<out IrErrorType(null)> [val]
+        GET_VAR 'result: com.mathroda.core.util.Resource<out IrErrorType(null)> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+      WHEN type=kotlin.Unit origin=WHEN
+        BRANCH
+          if: TYPE_OP type=kotlin.Boolean origin=INSTANCEOF typeOperand=com.mathroda.core.util.Resource.Loading<out IrErrorType(null)>
+            GET_VAR 'val tmp2_subject: com.mathroda.core.util.Resource<out IrErrorType(null)> [val] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+          then: BLOCK type=kotlin.Unit origin=null
+            CALL 'public abstract fun <set-value> (value: T of kotlinx.coroutines.flow.MutableStateFlow): kotlin.Unit declared in kotlinx.coroutines.flow.MutableStateFlow' type=kotlin.Unit origin=EQ
+              $this: CALL 'public final fun access$get_updateProfilePictureState$p ($this: com.mathroda.profile_screen.ProfileViewModel): kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> declared in com.mathroda.profile_screen.ProfileViewModel' type=kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> origin=null
+                $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                  receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+              value: CONSTRUCTOR_CALL 'public constructor <init> (isLoading: kotlin.Boolean, isSuccess: kotlin.Boolean, isFailure: kotlin.Boolean, $mask0: kotlin.Int, $marker: kotlin.jvm.internal.DefaultConstructorMarker?) declared in com.mathroda.profile_screen.drawer.state.UpdatePictureState' type=com.mathroda.profile_screen.drawer.state.UpdatePictureState origin=DEFAULT_DISPATCH_CALL
+                isLoading: CALL 'public final fun Boolean$arg-0$call-$init$$arg-0$call-$set-value$$branch$when$fun-$anonymous$$arg-0$call-collect$fun-$anonymous$$arg-2$call-launch$fun-updateProfilePicture-1$class-ProfileViewModel (): kotlin.Boolean declared in com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt' type=kotlin.Boolean origin=null
+                  $this: GET_FIELD 'FIELD FIELD_FOR_OBJECT_INSTANCE name:INSTANCE type:com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt visibility:public [final,static]' type=com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt origin=null
+                isSuccess: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                  CONST Boolean type=kotlin.Boolean value=false
+                isFailure: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                  CONST Boolean type=kotlin.Boolean value=false
+                $mask0: CONST Int type=kotlin.Int value=6
+                $marker: CONST Null type=kotlin.jvm.internal.DefaultConstructorMarker? value=null
+        BRANCH
+          if: TYPE_OP type=kotlin.Boolean origin=INSTANCEOF typeOperand=com.mathroda.core.util.Resource.Success<out IrErrorType(null)>
+            GET_VAR 'val tmp2_subject: com.mathroda.core.util.Resource<out IrErrorType(null)> [val] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+          then: BLOCK type=kotlin.Unit origin=null
+            CALL 'public abstract fun <set-value> (value: T of kotlinx.coroutines.flow.MutableStateFlow): kotlin.Unit declared in kotlinx.coroutines.flow.MutableStateFlow' type=kotlin.Unit origin=EQ
+              $this: CALL 'public final fun access$get_updateProfilePictureState$p ($this: com.mathroda.profile_screen.ProfileViewModel): kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> declared in com.mathroda.profile_screen.ProfileViewModel' type=kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> origin=null
+                $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                  receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+              value: CONSTRUCTOR_CALL 'public constructor <init> (isLoading: kotlin.Boolean, isSuccess: kotlin.Boolean, isFailure: kotlin.Boolean, $mask0: kotlin.Int, $marker: kotlin.jvm.internal.DefaultConstructorMarker?) declared in com.mathroda.profile_screen.drawer.state.UpdatePictureState' type=com.mathroda.profile_screen.drawer.state.UpdatePictureState origin=DEFAULT_DISPATCH_CALL
+                isLoading: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                  CONST Boolean type=kotlin.Boolean value=false
+                isSuccess: CALL 'public final fun Boolean$arg-1$call-$init$$arg-0$call-$set-value$$branch-1$when$fun-$anonymous$$arg-0$call-collect$fun-$anonymous$$arg-2$call-launch$fun-updateProfilePicture-1$class-ProfileViewModel (): kotlin.Boolean declared in com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt' type=kotlin.Boolean origin=null
+                  $this: GET_FIELD 'FIELD FIELD_FOR_OBJECT_INSTANCE name:INSTANCE type:com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt visibility:public [final,static]' type=com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt origin=null
+                isFailure: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                  CONST Boolean type=kotlin.Boolean value=false
+                $mask0: CONST Int type=kotlin.Int value=5
+                $marker: CONST Null type=kotlin.jvm.internal.DefaultConstructorMarker? value=null
+        BRANCH
+          if: TYPE_OP type=kotlin.Boolean origin=INSTANCEOF typeOperand=com.mathroda.core.util.Resource.Error<out IrErrorType(null)>
+            GET_VAR 'val tmp2_subject: com.mathroda.core.util.Resource<out IrErrorType(null)> [val] declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.core.util.Resource<out IrErrorType(null)> origin=null
+          then: BLOCK type=kotlin.Unit origin=null
+            CALL 'public abstract fun <set-value> (value: T of kotlinx.coroutines.flow.MutableStateFlow): kotlin.Unit declared in kotlinx.coroutines.flow.MutableStateFlow' type=kotlin.Unit origin=EQ
+              $this: CALL 'public final fun access$get_updateProfilePictureState$p ($this: com.mathroda.profile_screen.ProfileViewModel): kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> declared in com.mathroda.profile_screen.ProfileViewModel' type=kotlinx.coroutines.flow.MutableStateFlow<com.mathroda.profile_screen.drawer.state.UpdatePictureState> origin=null
+                $this: GET_FIELD 'FIELD FIELD_FOR_CAPTURED_VALUE name:this$0 type:com.mathroda.profile_screen.ProfileViewModel visibility:public/*package*/ [final]' type=com.mathroda.profile_screen.ProfileViewModel origin=null
+                  receiver: GET_VAR '<this>: com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> declared in com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>.emit' type=com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided><T of com.mathroda.profile_screen.ProfileViewModel.updateProfilePicture.<no name provided>.invokeSuspend.<no name provided>> origin=null
+              value: CONSTRUCTOR_CALL 'public constructor <init> (isLoading: kotlin.Boolean, isSuccess: kotlin.Boolean, isFailure: kotlin.Boolean, $mask0: kotlin.Int, $marker: kotlin.jvm.internal.DefaultConstructorMarker?) declared in com.mathroda.profile_screen.drawer.state.UpdatePictureState' type=com.mathroda.profile_screen.drawer.state.UpdatePictureState origin=DEFAULT_DISPATCH_CALL
+                isLoading: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                  CONST Boolean type=kotlin.Boolean value=false
+                isSuccess: COMPOSITE type=kotlin.Boolean origin=DEFAULT_VALUE
+                  CONST Boolean type=kotlin.Boolean value=false
+                isFailure: CALL 'public final fun Boolean$arg-2$call-$init$$arg-0$call-$set-value$$branch-2$when$fun-$anonymous$$arg-0$call-collect$fun-$anonymous$$arg-2$call-launch$fun-updateProfilePicture-1$class-ProfileViewModel (): kotlin.Boolean declared in com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt' type=kotlin.Boolean origin=null
+                  $this: GET_FIELD 'FIELD FIELD_FOR_OBJECT_INSTANCE name:INSTANCE type:com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt visibility:public [final,static]' type=com.mathroda.profile_screen.LiveLiterals$ProfileViewModelKt origin=null
+                $mask0: CONST Int type=kotlin.Int value=3
+                $marker: CONST Null type=kotlin.jvm.internal.DefaultConstructorMarker? value=null
+        BRANCH
+          if: CONST Boolean type=kotlin.Boolean value=true
+          then: BLOCK type=kotlin.Nothing origin=null
+            CALL 'public final fun noWhenBranchMatchedException (): kotlin.Nothing declared in kotlin.internal.ir' type=kotlin.Nothing origin=null
+            CALL 'public final fun throwKotlinNothingValueException (): kotlin.Nothing declared in kotlin.jvm.internal.Intrinsics' type=kotlin.Nothing origin=null
+
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:50)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate$default(FunctionCodegen.kt:42)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generateMethodNode(ClassCodegen.kt:385)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generateMethod(ClassCodegen.kt:402)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generate(ClassCodegen.kt:169)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitClass(ExpressionCodegen.kt:994)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitClass(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.declarations.IrClass.accept(IrClass.kt:72)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:573)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:587)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.visitors.IrElementVisitor$DefaultImpls.visitBlock(IrElementVisitor.kt:122)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:407)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrBlock.accept(IrBlock.kt:18)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.gen(ExpressionCodegen.kt:216)
+	at org.jetbrains.kotlin.backend.jvm.codegen.IrCallGenerator.genValueAndPut(IrCallGenerator.kt:48)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall$handleParameter(ExpressionCodegen.kt:610)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall(ExpressionCodegen.kt:638)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrCall.accept(IrCall.kt:24)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:573)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:578)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrBlockBody.accept(IrBlockBody.kt:20)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.generate(ExpressionCodegen.kt:239)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.doGenerate(FunctionCodegen.kt:121)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:46)
+	... 88 more
+Caused by: java.lang.IllegalStateException: Can't find KotlinType in IrErrorType: IrErrorType(null)
+	at org.jetbrains.kotlin.ir.descriptors.IrBasedDescriptorsKt.toIrBasedKotlinType(IrBasedDescriptors.kt:1155)
+	at org.jetbrains.kotlin.ir.descriptors.IrBasedDescriptorsKt.makeKotlinType(IrBasedDescriptors.kt:1173)
+	at org.jetbrains.kotlin.ir.descriptors.IrBasedDescriptorsKt.toIrBasedKotlinType(IrBasedDescriptors.kt:1145)
+	at org.jetbrains.kotlin.ir.descriptors.IrBasedDescriptorsKt.toIrBasedKotlinType$default(IrBasedDescriptors.kt:1143)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitTypeOperator(ExpressionCodegen.kt:1118)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitTypeOperator(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrTypeOperatorCall.accept(IrTypeOperatorCall.kt:26)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitWhen(ExpressionCodegen.kt:1092)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitWhen(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrWhen.accept(IrWhen.kt:24)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:573)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:587)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.visitors.IrElementVisitor$DefaultImpls.visitBlock(IrElementVisitor.kt:122)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:407)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrBlock.accept(IrBlock.kt:18)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:573)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:578)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:137)
+	at org.jetbrains.kotlin.ir.expressions.IrBlockBody.accept(IrBlockBody.kt:20)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.generate(ExpressionCodegen.kt:239)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.doGenerate(FunctionCodegen.kt:121)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:46)
+	... 115 more
+
+
