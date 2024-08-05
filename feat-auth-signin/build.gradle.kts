@@ -74,16 +74,6 @@ dependencies {
     implementation(Deps.AndroidX.Navigation.compose)
     //implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
-
-    // Dagger hilt
-    with(Deps.Google.DaggerHilt) {
-        implementation(android)
-        kapt(compiler)
-    }
-    kapt(Deps.AndroidX.Hilt.compiler)
-    implementation(Deps.AndroidX.Hilt.navigationCompose)
-
-
     // Coroutine Lifecycle Scopes
     with(Deps.AndroidX.Lifecycle) {
         implementation(viewModelKtx)
@@ -102,4 +92,7 @@ dependencies {
     //Play Services Auth
     implementation(Deps.Google.AndroidGms.playServicesAuth)
 
+    //Koin
+    implementation(platform(Deps.Koin.bom))
+    implementation(Deps.Koin.compose)
 }

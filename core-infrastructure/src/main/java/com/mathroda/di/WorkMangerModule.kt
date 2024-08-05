@@ -1,9 +1,6 @@
 package com.mathroda.di
 
-import android.app.Application
 import androidx.work.WorkManager
-import com.mathroda.datasource.datastore.DataStoreRepository
-import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.internetconnectivity.InternetConnectivityManger
 import com.mathroda.internetconnectivity.InternetConnectivityMangerImpl
 import com.mathroda.notifications.coins.CoinsNotification
@@ -14,81 +11,32 @@ import com.mathroda.phoneshaking.PhoneShakingManger
 import com.mathroda.phoneshaking.PhoneShakingMangerImpl
 import com.mathroda.workmanger.repository.WorkerProviderRepository
 import com.mathroda.workmanger.repository.WorkerProviderRepositoryImpl
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import com.mathroda.workmanger.worker.DashCoinWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.workmanager.dsl.worker
+import org.koin.dsl.module
 
-@InstallIn(SingletonComponent::class)
-@Module
-object WorkMangerModule {
-
-    @Singleton
-    @Provides
-    fun providesCoroutineScope(): CoroutineScope {
-        return CoroutineScope(SupervisorJob() + Dispatchers.IO)
+val infrastructureModule = module {
+    single { CoroutineScope(SupervisorJob() + Dispatchers.IO) }
+    single { CoinsNotificationChannel(androidContext()) }
+    single { SyncNotificationChannel(androidContext()) }
+    single { CoinsNotification(androidApplication(), channel = get()) }
+    single { SyncNotification(androidApplication(), get()) }
+    single { WorkManager.getInstance(androidApplication()) }
+    worker { DashCoinWorker(androidApplication(), get(), get(), get(), get()) }
+    single<WorkerProviderRepository> {
+        WorkerProviderRepositoryImpl(
+            get(), get(), get(), get()
+        )
     }
 
-    @Singleton
-    @Provides
-    fun providesCoinsNotificationChannel(context: Application): CoinsNotificationChannel {
-        return CoinsNotificationChannel(context)
-    }
+    single<PhoneShakingManger> { PhoneShakingMangerImpl(androidApplication()) }
 
-    @Singleton
-    @Provides
-    fun providesSyncNotificationChannel(context: Application): SyncNotificationChannel {
-        return SyncNotificationChannel(context)
-    }
-
-    @Provides
-    @Singleton
-    fun providesCoinsNotification(
-        context: Application,
-        channel: CoinsNotificationChannel
-    ) = CoinsNotification(context, channel)
-
-    @Provides
-    @Singleton
-    fun providesSyncNotification(
-        context: Application,
-        channel: SyncNotificationChannel
-    ) = SyncNotification(context, channel)
-
-    @Provides
-    @Singleton
-    fun providesWorkManger(application: Application) =
-        WorkManager.getInstance(application)
-
-    @Provides
-    @Singleton
-    fun providesWorkerProviderRepository(
-        workManager: WorkManager,
-        scope: CoroutineScope,
-        dashCoinUseCases: DashCoinUseCases,
-        dataStoreRepository: DataStoreRepository
-    ): WorkerProviderRepository {
-        return WorkerProviderRepositoryImpl(workManager, scope, dashCoinUseCases, dataStoreRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun getPhoneShakingManger(
-        context: Application
-    ): PhoneShakingManger {
-        return PhoneShakingMangerImpl(context)
-    }
-
-
-    @Provides
-    @Singleton
-    fun getInternetConnectivityManger(
-        context: Application
-    ): InternetConnectivityManger {
-        return InternetConnectivityMangerImpl(context)
+    single<InternetConnectivityManger> {
+        InternetConnectivityMangerImpl(androidApplication())
     }
 }

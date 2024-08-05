@@ -23,7 +23,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mathroda.coin_detail.components.Chart
 import com.mathroda.coin_detail.components.CoinDetailScreenState
@@ -40,13 +39,13 @@ import com.mathroda.common.theme.DarkGray
 import com.mathroda.core.util.numbersToCurrency
 import com.mathroda.core.util.numbersToFormat
 import com.mathroda.domain.model.toFavoriteCoin
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CoinDetailScreen(
-    viewModel: CoinDetailViewModel = hiltViewModel(),
     navController: NavController
 ) {
-
+    val viewModel: CoinDetailViewModel = koinViewModel()
     val coinState = viewModel.coinState.collectAsState().value
     val chartsState = viewModel.chartState.value
     val uriHandler = LocalUriHandler.current

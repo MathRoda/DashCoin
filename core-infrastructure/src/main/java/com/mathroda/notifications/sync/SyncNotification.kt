@@ -4,11 +4,9 @@ import android.app.Application
 import androidx.core.app.NotificationCompat
 import com.mathroda.infrastructure.R
 import com.mathroda.notifications.util.getNotificationManager
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 
-class SyncNotification @Inject constructor(
-    @ApplicationContext private val context: Application,
+class SyncNotification (
+    private val context: Application,
     private val channel: SyncNotificationChannel
 ) {
 

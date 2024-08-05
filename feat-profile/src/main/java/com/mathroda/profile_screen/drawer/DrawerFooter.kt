@@ -28,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mathroda.common.components.CustomDialogSignOut
 import com.mathroda.common.components.CustomLoginButton
@@ -40,6 +39,7 @@ import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
 import com.mathroda.profile_screen.ProfileViewModel
 import com.mathroda.profile_screen.R
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
@@ -135,9 +135,9 @@ fun Login(navController: NavController) {
 @ExperimentalMaterialApi
 @Composable
 fun LogOut(
-    navController: NavController,
-    viewModel: ProfileViewModel = hiltViewModel()
+    navController: NavController
 ) {
+    val viewModel: ProfileViewModel = koinViewModel()
     val openDialogCustom = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier

@@ -83,13 +83,6 @@ dependencies {
     //coil
     implementation(Deps.IO.Coil.compose)
 
-    // Dagger hilt
-    with(Deps.Google.DaggerHilt) {
-        implementation(android)
-        kapt(compiler)
-    }
-    kapt(Deps.AndroidX.Hilt.compiler)
-    implementation(Deps.AndroidX.Hilt.navigationCompose)
 
     //lottie
     implementation(Deps.Airbnb.Android.lottieCompose)
@@ -104,4 +97,7 @@ dependencies {
     //SweetToast
     implementation(Deps.Github.Tfaki.composableSweetToast)
 
+    //Koin
+    implementation(platform(Deps.Koin.bom))
+    implementation(Deps.Koin.compose)
 }

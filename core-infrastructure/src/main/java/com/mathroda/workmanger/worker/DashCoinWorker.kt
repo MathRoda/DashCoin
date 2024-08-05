@@ -1,7 +1,6 @@
 package com.mathroda.workmanger.worker
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.mathroda.core.state.UserState
@@ -15,15 +14,12 @@ import com.mathroda.notifications.coins.showNegative
 import com.mathroda.notifications.coins.showPositive
 import com.mathroda.workmanger.util.is5PercentDown
 import com.mathroda.workmanger.util.is5PercentUp
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-@HiltWorker
-class DashCoinWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted workerParameters: WorkerParameters,
+class DashCoinWorker (
+    context: Context,
+    workerParameters: WorkerParameters,
     private val dashCoinRepository: DashCoinRepository,
     private val dashCoinUseCases: DashCoinUseCases,
     private val notification: CoinsNotification

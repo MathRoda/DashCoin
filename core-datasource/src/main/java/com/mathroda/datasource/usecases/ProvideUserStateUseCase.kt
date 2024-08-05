@@ -5,9 +5,8 @@ import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import kotlinx.coroutines.flow.firstOrNull
-import javax.inject.Inject
 
-class ProvideUserStateUseCase @Inject constructor(
+class ProvideUserStateUseCase (
     private val firebaseRepository: FirebaseRepository,
     private val dataStoreRepository: DataStoreRepository,
     private val dashCoinRepository: DashCoinRepository

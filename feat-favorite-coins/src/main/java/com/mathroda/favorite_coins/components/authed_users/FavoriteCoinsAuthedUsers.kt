@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -31,6 +30,7 @@ import com.mathroda.common.theme.LighterGray
 import com.mathroda.favorite_coins.FavoriteCoinsViewModel
 import com.mathroda.favorite_coins.components.common.MarketStatusBar
 import com.mathroda.favorite_coins.components.common.WatchlistItem
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
@@ -38,7 +38,7 @@ import com.mathroda.favorite_coins.components.common.WatchlistItem
 fun WatchListAuthedUsers(
     navController: NavController
 ) {
-    val viewModel = hiltViewModel<FavoriteCoinsViewModel>()
+    val viewModel = koinViewModel<FavoriteCoinsViewModel>()
     val watchListState by viewModel.state.collectAsState()
     val isRefresh by viewModel.isRefresh.collectAsState()
     val marketState by viewModel.marketStatus

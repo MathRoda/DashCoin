@@ -16,20 +16,17 @@ import com.mathroda.datasource.google_service.SignInWithGoogleResponse
 import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.signin_screen.state.SignInScreenState
 import com.mathroda.signin_screen.state.SignInState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class SignInViewModel @Inject constructor(
+class SignInViewModel(
     private val firebaseRepository: FirebaseRepository,
     private val googleServices: GoogleServicesRepository,
-    val onTapClient: SignInClient,
+    //val onTapClient: SignInClient,
     private val dashCoinUseCases: DashCoinUseCases,
     private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {

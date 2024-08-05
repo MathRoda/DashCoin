@@ -7,16 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.domain.model.NewsType
 import com.mathroda.internetconnectivity.InternetConnectivityManger
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class NewsViewModel @Inject constructor(
+class NewsViewModel(
     private val dashCoinRepository: DashCoinRepository,
     val connectivityManger: InternetConnectivityManger
 ) : ViewModel() {

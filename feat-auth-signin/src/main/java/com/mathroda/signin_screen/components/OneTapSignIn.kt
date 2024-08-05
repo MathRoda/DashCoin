@@ -4,16 +4,16 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.mathroda.core.util.Response
 import com.mathroda.signin_screen.SignInViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun OneTapSignIn(
-    viewModel: SignInViewModel = hiltViewModel(),
     launch: (result: BeginSignInResult) -> Unit,
 ) {
+    val viewModel: SignInViewModel = koinViewModel()
     when (val oneTapResponse = viewModel.oneTapSignInResponse.collectAsState().value) {
         is Response.Loading -> {}
         is Response.Success -> {

@@ -13,15 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.mathroda.common.theme.CustomGreen
 import com.mathroda.internetconnectivity.InternetState
 import com.mathroda.news_screen.NewsViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun BoxScope.NewsScreenState(
-    viewModel: NewsViewModel = hiltViewModel()
-) {
+fun BoxScope.NewsScreenState() {
+    val  viewModel: NewsViewModel = koinViewModel()
     val state = viewModel.newsState.value
     val connectivityState by viewModel.connectivityManger.getState().collectAsState(initial = InternetState.IDLE)
 

@@ -49,14 +49,6 @@ dependencies {
     implementation(Deps.AndroidX.Core.coreKtx)
     implementation(Deps.AndroidX.AppCompat.appcompat)
 
-    // Dagger hilt
-    with(Deps.Google.DaggerHilt){
-        implementation(android)
-        implementation(compiler)
-    }
-    kapt(Deps.AndroidX.Hilt.compiler)
-    implementation(Deps.AndroidX.Hilt.work)
-
 
     // Coroutines
     with(Deps.Org.Jetbrains.Kotlinx) {
@@ -67,5 +59,11 @@ dependencies {
 
     //Work Manger
     implementation(Deps.AndroidX.Work.runtime)
+
+    //Koin
+    implementation(platform(Deps.Koin.bom))
+    implementation(Deps.Koin.core)
+    implementation(Deps.Koin.android)
+    implementation(Deps.Koin.workManger)
 
 }

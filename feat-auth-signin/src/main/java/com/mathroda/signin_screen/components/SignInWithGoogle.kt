@@ -4,16 +4,16 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.mathroda.core.util.Response
 import com.mathroda.signin_screen.SignInViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignInWithGoogle(
-    viewModel: SignInViewModel = hiltViewModel(),
     navigateToCoinsScreen: (signedIn: Boolean) -> Unit,
     updateScreenState: (isVisible: Boolean, isLoading: Boolean) -> Unit
 ) {
+    val viewModel: SignInViewModel = koinViewModel()
     when (val signInWithGoogleResponse =
         viewModel.signInWithGoogleResponse.collectAsState().value) {
         is Response.Loading -> {

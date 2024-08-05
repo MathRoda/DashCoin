@@ -65,10 +65,10 @@ dependencies {
     implementation(Deps.SquareUp.Retrofit2.convertorGson)
     implementation(Deps.SquareUp.Okhhtp3.okhttp)
 
-    // Dagger hilt
-    implementation(Deps.Google.DaggerHilt.android)
-    kapt(Deps.Google.DaggerHilt.compiler)
-    kapt(Deps.AndroidX.Hilt.compiler)
+
+    //Koin
+    implementation(platform(Deps.Koin.bom))
+    implementation(Deps.Koin.core)
 
 
 }

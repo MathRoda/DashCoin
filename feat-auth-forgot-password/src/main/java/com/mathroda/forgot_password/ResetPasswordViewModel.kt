@@ -7,16 +7,14 @@ import com.mathroda.core.util.isValidEmail
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.forgot_password.state.ForgotPasswordScreenState
 import com.mathroda.forgot_password.state.ResetPasswordState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
-@HiltViewModel
-class ResetPasswordViewModel @Inject constructor(
+
+class ResetPasswordViewModel(
     private val firebaseRepository: FirebaseRepository
 ) : ViewModel() {
 

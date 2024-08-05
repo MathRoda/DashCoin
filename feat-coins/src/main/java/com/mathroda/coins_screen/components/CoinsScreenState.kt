@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -24,10 +23,11 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mathroda.coins_screen.CoinsViewModel
 import com.mathroda.common.R
 import com.mathroda.internetconnectivity.InternetState
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BoxScope.CoinsScreenState(
-    viewModel: CoinsViewModel = hiltViewModel()
+    viewModel: CoinsViewModel = koinViewModel()
 ) {
     val state = viewModel.state.collectAsState().value
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))

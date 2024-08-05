@@ -6,16 +6,14 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.util.Objects
-import javax.inject.Inject
 import kotlin.math.sqrt
 
-class PhoneShakingMangerImpl @Inject constructor(
-    @ApplicationContext private val context: Application
+class PhoneShakingMangerImpl (
+    context: Application
 ): PhoneShakingManger {
 
     private val sensorManger = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager

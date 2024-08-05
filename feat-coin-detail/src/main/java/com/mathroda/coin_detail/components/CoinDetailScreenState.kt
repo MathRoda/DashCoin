@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -27,11 +26,11 @@ import com.mathroda.common.R
 import com.mathroda.common.components.LoadingDots
 import com.mathroda.internetconnectivity.InternetState
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun BoxScope.CoinDetailScreenState(
-    viewModel: CoinDetailViewModel = hiltViewModel()
-) {
+fun BoxScope.CoinDetailScreenState() {
+    val  viewModel: CoinDetailViewModel = koinViewModel()
     val coinState by viewModel.coinState.collectAsState()
     val favoriteMsg = viewModel.favoriteMsg.value
     val sideEffect = viewModel.sideEffect.value
@@ -121,9 +120,8 @@ fun BoxScope.CoinDetailScreenState(
  * isLoading
  */
 @Composable
-fun LoadingChartState(
-    viewModel: CoinDetailViewModel = hiltViewModel()
-) {
+fun LoadingChartState() {
+    val viewModel: CoinDetailViewModel = koinViewModel()
 
     val chartsState = viewModel.chartState.value
     Column(

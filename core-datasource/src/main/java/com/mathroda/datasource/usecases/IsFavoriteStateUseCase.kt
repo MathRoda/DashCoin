@@ -3,9 +3,8 @@ package com.mathroda.datasource.usecases
 import com.mathroda.core.state.IsFavoriteState
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.domain.model.FavoriteCoin
-import javax.inject.Inject
 
-class IsFavoriteStateUseCase @Inject constructor(
+class IsFavoriteStateUseCase(
     private val dashCoinRepository: DashCoinRepository
 ) {
     operator fun invoke(
