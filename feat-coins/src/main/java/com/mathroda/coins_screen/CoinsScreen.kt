@@ -29,7 +29,6 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -44,6 +43,7 @@ import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.LightGray
 import com.mathroda.profile_screen.drawer.DrawerNavigation
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
@@ -52,7 +52,7 @@ import kotlinx.coroutines.launch
 fun CoinScreen(
     navController: NavController
 ) {
-    val viewModel = hiltViewModel<CoinsViewModel>()
+    val viewModel = koinViewModel<CoinsViewModel>()
 
     val state by viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefresh.collectAsState()

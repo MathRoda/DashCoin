@@ -1,14 +1,20 @@
+@file:OptIn(ExperimentalPagerApi::class)
+
 package com.mathroda
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -17,14 +23,14 @@ import com.mathroda.components.CustomOnBoardingButton
 import com.mathroda.components.OnBoardingTopSection
 import com.mathroda.components.PagerScreen
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 
-@ExperimentalPagerApi
 @Composable
 fun OnBoardingScreen(
-    viewModel: OnBoardingViewModel = hiltViewModel(),
     popBackStack: () -> Unit,
 ) {
+    val viewModel: OnBoardingViewModel = koinViewModel()
     val pager = viewModel.pager
     val state = rememberPagerState()
     val scope = rememberCoroutineScope()

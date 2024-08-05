@@ -6,24 +6,16 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.mathroda.core.util.Constants.SIGN_IN_REQUEST
-import com.mathroda.core.util.Constants.SIGN_UP_REQUEST
 import com.mathroda.core.util.Constants.USER_COLLECTION
 import com.mathroda.core.util.Response
 import com.mathroda.domain.model.DashCoinUser
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Singleton
 
-@Singleton
-class GoogleServicesRepositoryImpl @Inject constructor(
+class GoogleServicesRepositoryImpl (
     private val auth: FirebaseAuth,
     private var oneTapClient: SignInClient,
-    @Named(SIGN_IN_REQUEST)
     private var signInRequest: BeginSignInRequest,
-    @Named(SIGN_UP_REQUEST)
     private var signUpRequest: BeginSignInRequest,
     private val db: FirebaseFirestore
 

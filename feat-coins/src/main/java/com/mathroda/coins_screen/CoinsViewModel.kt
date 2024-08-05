@@ -8,7 +8,6 @@ import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.domain.model.Coins
 import com.mathroda.internetconnectivity.InternetConnectivityManger
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -19,10 +18,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class CoinsViewModel @Inject constructor(
+class CoinsViewModel(
     private val dashCoinRepository: DashCoinRepository,
     val connectivityManger: InternetConnectivityManger
 ) : ViewModel() {

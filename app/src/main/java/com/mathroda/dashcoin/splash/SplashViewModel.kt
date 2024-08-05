@@ -5,15 +5,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.WorkInfo
-import com.mathroda.core.util.Constants.BITCOIN_ID
 import com.mathroda.dashcoin.navigation.root.Graph
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.workmanger.repository.WorkerProviderRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,10 +18,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class SplashViewModel @Inject constructor(
+class SplashViewModel(
     firebaseRepository: FirebaseRepository,
     private val dataStoreRepository: DataStoreRepository,
     private val dashCoinRepository: DashCoinRepository,
@@ -49,7 +44,7 @@ class SplashViewModel @Inject constructor(
         getOnBoardingState()
         updateIsUserExistPref()
         cacheDashCoinUser()
-        notificationWorker()
+       // notificationWorker()
     }
 
     private fun getOnBoardingState() {
@@ -67,7 +62,7 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private fun notificationWorker() {
+    /*private fun notificationWorker() {
         viewModelScope.launch(Dispatchers.IO) {
             onSuccessWorker?.let { listOfWorkInfo ->
 
@@ -86,7 +81,7 @@ class SplashViewModel @Inject constructor(
                 }
             }
         }
-    }
+    }*/
 
     private fun updateIsUserExistPref() {
         viewModelScope.launch(Dispatchers.IO) {

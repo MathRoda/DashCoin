@@ -12,11 +12,9 @@ import com.mathroda.core.util.Constants
 import com.mathroda.infrastructure.R
 import com.mathroda.notifications.coins.CoinsNotification.Companion.marketStatusId
 import com.mathroda.notifications.util.getNotificationManager
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 
-class CoinsNotification @Inject constructor(
-    @ApplicationContext private val context: Application,
+class CoinsNotification (
+    private val context: Application,
     private val channel: CoinsNotificationChannel
 ) {
 

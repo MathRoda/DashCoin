@@ -37,7 +37,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider.getCredential
@@ -53,6 +52,7 @@ import com.mathroda.signin_screen.components.OneTapSignIn
 import com.mathroda.signin_screen.components.SignInWithGoogle
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalMaterialApi
 @Composable
@@ -62,7 +62,7 @@ fun SignInScreen(
     navigateToForgotPassword: () -> Unit,
     popBackStack: () -> Unit,
 ) {
-    val viewModel = hiltViewModel<SignInViewModel>()
+    val viewModel = koinViewModel<SignInViewModel>()
 
     val screenState by viewModel.screenState.collectAsState()
     val sigInState = viewModel.signIn.collectAsState()
@@ -245,14 +245,14 @@ fun SignInScreen(
 
     val launcher = rememberLauncherForActivityResult(StartIntentSenderForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
-            try {
+            /*try {
                 val credentials = viewModel.onTapClient.getSignInCredentialFromIntent(result.data)
                 val googleIdToken = credentials.googleIdToken
                 val googleCred = getCredential(googleIdToken, null)
                 viewModel.signInWithGoogle(googleCred)
             } catch (it: ApiException) {
                 Log.e("TAG", it.message.toString())
-            }
+            }*/
         }
     }
 

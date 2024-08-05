@@ -39,11 +39,6 @@ object Deps {
         object ConstraintLayout {
             const val compose = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
         }
-        object Hilt {
-            const val navigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
-            const val work = "androidx.hilt:hilt-work:1.0.0"
-            const val compiler = "androidx.hilt:hilt-compiler:1.0.0"
-        }
         object AppCompat {
             const val appcompat = "androidx.appcompat:appcompat:1.6.1"
         }
@@ -75,10 +70,6 @@ object Deps {
             const val pager_indicator = "com.google.accompanist:accompanist-pager-indicators:0.26.4-beta"
         }
 
-        object DaggerHilt {
-            const val android = "com.google.dagger:hilt-android:$hilt_version"
-            const val compiler = "com.google.dagger:hilt-compiler:$hilt_version"
-        }
         object AndroidMaterial {
             const val material = "com.google.android.material:material:1.8.0"
         }
@@ -86,7 +77,7 @@ object Deps {
             const val playServicesAuth = "com.google.android.gms:play-services-auth:$play_services_auth_version"
         }
         object Firebase {
-            const val bom = "com.google.firebase:firebase-bom:30.3.1"
+            const val bom = "com.google.firebase:firebase-bom:32.2.3"
             const val authKtx = "com.google.firebase:firebase-auth-ktx"
             const val fireStoreKtx = "com.google.firebase:firebase-firestore-ktx"
             const val storage = "com.google.firebase:firebase-storage"
@@ -150,5 +141,13 @@ object Deps {
         object Collections {
             const val immuatble = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6"
         }
+    }
+
+    object Koin {
+        const val bom = "io.insert-koin:koin-bom:${Version.koin_version}"
+        const val core = "io.insert-koin:koin-core"
+        const val android = "io.insert-koin:koin-android"
+        const val compose = "io.insert-koin:koin-androidx-compose"
+        const val workManger = "io.insert-koin:koin-androidx-workmanager"
     }
 }

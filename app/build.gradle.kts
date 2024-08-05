@@ -7,7 +7,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
     //id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
@@ -69,6 +68,8 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":core-domain"))
+    implementation(project(":core-cache"))
+    implementation(project(":core-network"))
     implementation(project(":core-datasource"))
     implementation(project(":core-infrastructure"))
     implementation(project(":feat-common"))
@@ -119,15 +120,9 @@ dependencies {
         implementation(coroutinePlayServices)
     }
 
-    // Dagger hilt
-    with(Deps.Google.DaggerHilt) {
-        implementation(android)
-        kapt(compiler)
-    }
-
-    with(Deps.AndroidX.Hilt) {
-        implementation(navigationCompose)
-        implementation(work)
-        kapt(compiler)
-    }
+    //Koin
+    implementation(platform(Deps.Koin.bom))
+    implementation(Deps.Koin.core)
+    implementation(Deps.Koin.android)
+    implementation(Deps.Koin.workManger)
 }

@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mathroda.common.components.BackStackButton
 import com.mathroda.common.components.CustomClickableText
@@ -38,13 +37,13 @@ import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ForgotPasswordScreen(
-    navController: NavController,
-    viewModel: ResetPasswordViewModel = hiltViewModel()
+    navController: NavController
 ) {
-
+    val viewModel: ResetPasswordViewModel = koinViewModel()
     val screenState by viewModel.screenState.collectAsState()
     val state = viewModel.resetPassword.collectAsState().value
 

@@ -7,17 +7,14 @@ import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.domain.model.DashCoinUser
 import com.mathroda.signup_screen.state.SignUpState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class SignUpViewModel @Inject constructor(
+class SignUpViewModel(
     private val firebaseRepository: FirebaseRepository,
     private val dashCoinRepository: DashCoinRepository
 ) : ViewModel() {

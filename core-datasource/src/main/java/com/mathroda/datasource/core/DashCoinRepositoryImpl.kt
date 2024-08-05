@@ -28,9 +28,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
-import javax.inject.Inject
 
-class DashCoinRepositoryImpl @Inject constructor(
+class DashCoinRepositoryImpl (
     private val api: DashCoinApi,
     private val favoriteCoinsDao: FavoriteCoinsDao,
     private val userDao: UserDao

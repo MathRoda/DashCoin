@@ -10,22 +10,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mathroda.common.navigation.Destinations
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
 import com.mathroda.profile_screen.ProfileViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigation(
-    navController: NavController,
-    viewModel: ProfileViewModel = hiltViewModel()
+    navController: NavController
 ) {
+    val viewModel: ProfileViewModel = koinViewModel()
     val uriHandler = LocalUriHandler.current
     val userCredential = viewModel.userCredential.collectAsState()
     val isPremium by viewModel.isUserPremium.collectAsState()

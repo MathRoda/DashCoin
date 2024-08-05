@@ -50,17 +50,17 @@ dependencies {
     implementation("androidx.test.ext:junit-ktx:1.1.5")
     testImplementation(Deps.Junit.junit4)
 
-    // Dagger hilt
-    with(Deps.Google.DaggerHilt){
-        implementation(android)
-        kapt(compiler)
-    }
-    kapt(Deps.AndroidX.Hilt.compiler)
 
     //Room Database
     implementation(Deps.AndroidX.Room.runtime)
     annotationProcessor(Deps.AndroidX.Room.compiler)
     kapt(Deps.AndroidX.Room.compiler)
     implementation(Deps.AndroidX.Room.ktx)
+
+    //Koin
+    implementation(platform(Deps.Koin.bom))
+    implementation(Deps.Koin.core)
+    implementation(Deps.Koin.android)
+
 
 }

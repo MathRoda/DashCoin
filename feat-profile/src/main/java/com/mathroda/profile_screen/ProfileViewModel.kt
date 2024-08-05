@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.core.state.UserState
-import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
@@ -20,7 +19,6 @@ import com.mathroda.notifications.sync.SyncNotification
 import com.mathroda.profile_screen.drawer.state.SyncState
 import com.mathroda.profile_screen.drawer.state.UpdatePictureState
 import com.mathroda.profile_screen.menuitem.MenuItems
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,10 +28,8 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
-import javax.inject.Inject
 
-@HiltViewModel
-class ProfileViewModel @Inject constructor(
+class ProfileViewModel(
     private val firebaseRepository: FirebaseRepository,
     private val dashCoinUseCases: DashCoinUseCases,
     private val dashCoinRepository: DashCoinRepository,

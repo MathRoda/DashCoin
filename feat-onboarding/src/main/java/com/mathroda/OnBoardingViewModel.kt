@@ -4,13 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.utils.OnBoardingPage
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class OnBoardingViewModel @Inject constructor(
+class OnBoardingViewModel(
     private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 

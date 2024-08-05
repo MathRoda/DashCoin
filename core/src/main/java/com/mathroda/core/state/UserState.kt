@@ -1,7 +1,7 @@
 package com.mathroda.core.state
 
 sealed class UserState {
-    object AuthedUser: UserState()
-    object UnauthedUser: UserState()
-    object PremiumUser: UserState()
+    data object AuthedUser: UserState()
+    data object UnauthedUser: UserState()
+    data object PremiumUser: UserState()
 }

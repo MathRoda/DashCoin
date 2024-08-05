@@ -20,7 +20,7 @@ import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
-class FirebaseRepositoryImpl constructor(
+class FirebaseRepositoryImpl (
     private val firebaseAuth: FirebaseAuth,
     private val fireStore: FirebaseFirestore,
     private val firebaseStorage: FirebaseStorage

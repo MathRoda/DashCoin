@@ -7,15 +7,13 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import javax.inject.Inject
 
 @SuppressLint("MissingPermission")
-class InternetConnectivityMangerImpl @Inject constructor(
-    @ApplicationContext private val context: Application
+class InternetConnectivityMangerImpl (
+    context: Application
 ): InternetConnectivityManger {
 
     private val connectivityManger = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

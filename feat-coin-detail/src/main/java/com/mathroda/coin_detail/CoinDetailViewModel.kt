@@ -23,7 +23,6 @@ import com.mathroda.domain.model.CoinById
 import com.mathroda.domain.model.FavoriteCoin
 import com.mathroda.domain.model.toFavoriteCoin
 import com.mathroda.internetconnectivity.InternetConnectivityManger
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -32,10 +31,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class CoinDetailViewModel @Inject constructor(
+class CoinDetailViewModel(
     private val dashCoinRepository: DashCoinRepository,
     private val dashCoinUseCases: DashCoinUseCases,
     val connectivityManger: InternetConnectivityManger,

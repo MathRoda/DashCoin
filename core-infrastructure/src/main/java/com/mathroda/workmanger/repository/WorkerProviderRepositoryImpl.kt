@@ -16,9 +16,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-class WorkerProviderRepositoryImpl @Inject constructor(
+class WorkerProviderRepositoryImpl (
     private val workManager: WorkManager,
     private val scope: CoroutineScope,
     private val dashCoinUseCases: DashCoinUseCases,

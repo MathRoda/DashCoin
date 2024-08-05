@@ -6,9 +6,8 @@ import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.domain.model.FavoriteCoin
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class GetFavoriteCoinsUseCase @Inject constructor(
+class GetFavoriteCoinsUseCase (
     private val dashCoinRepository: DashCoinRepository,
     private val firebaseRepository: FirebaseRepository
 ) {

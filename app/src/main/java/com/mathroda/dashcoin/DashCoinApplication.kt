@@ -1,27 +1,36 @@
 package com.mathroda.dashcoin
 
 import android.app.Application
-import androidx.hilt.work.HiltWorkerFactory
-import androidx.work.Configuration
+import com.example.cache.di.cacheModule
+import com.mathroda.dashcoin.di.viewModelsModule
+import com.mathroda.datasource.di.dataSourceModule
+import com.mathroda.di.infrastructureModule
+import com.mathroda.network.di.networkModule
 import com.mathroda.workmanger.repository.WorkerProviderRepository
-import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.context.startKoin
 
-@HiltAndroidApp
-class DashCoinApplication : Application(), Configuration.Provider {
-
-    @Inject
-    lateinit var workerFactory: HiltWorkerFactory
-
-    @Inject
-    lateinit var workerProviderRepository: WorkerProviderRepository
-
+class DashCoinApplication : Application() {
+    private val workerProviderRepository: WorkerProviderRepository by inject()
     override fun onCreate() {
         super.onCreate()
+        startKoin {
+            androidLogger()
+            androidContext(this@DashCoinApplication)
+            workManagerFactory()
+            modules(
+                cacheModule,
+                networkModule,
+                dataSourceModule,
+                infrastructureModule,
+                viewModelsModule
+            )
+        }
+
         workerProviderRepository.createWork()
     }
 
-    override fun getWorkManagerConfiguration() = Configuration.Builder()
-        .setWorkerFactory(workerFactory)
-        .build()
 }

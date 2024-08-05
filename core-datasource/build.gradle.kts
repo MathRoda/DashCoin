@@ -53,13 +53,11 @@ dependencies {
     //data store
     implementation(Deps.AndroidX.DataStore.preferences)
 
-    // Dagger hilt
-    with(Deps.Google.DaggerHilt){
-        implementation(android)
-        implementation(compiler)
-    }
-    kapt(Deps.AndroidX.Hilt.compiler)
-    kapt(Deps.Google.DaggerHilt.compiler)
+
+    //Koin
+    implementation(platform(Deps.Koin.bom))
+    implementation(Deps.Koin.core)
+    implementation(Deps.Koin.android)
 
     //Firebase
     with(Deps.Google.Firebase) {
