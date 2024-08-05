@@ -8,7 +8,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-private const val API_KEY: String = "hfpSBkOVoQnqUY+SyPtKktiZ5OXR9N3vXWjZitIZUUw=" //get your API Key https://openapi.coinstats.app/login
+private const val API_KEY: String = "" //TODO: get your API Key https://openapi.coinstats.app/login
 val networkModule = module {
     single<OkHttpClient> {
         OkHttpClient.Builder()
