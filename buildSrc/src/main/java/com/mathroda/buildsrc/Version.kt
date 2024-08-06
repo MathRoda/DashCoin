@@ -12,4 +12,5 @@ object Version {
     const val room_version = "2.6.1"
     const val androidx_core = "1.10.0"
     const val koin_version = "3.5.6"
+    const val ktor = "2.3.12"
 }

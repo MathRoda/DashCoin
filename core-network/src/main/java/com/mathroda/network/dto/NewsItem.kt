@@ -1,37 +1,38 @@
 package com.mathroda.network.dto
 
 import com.mathroda.domain.model.NewsDetail
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class NewsItem(
-    val bigImg: Boolean,
-    val coins: List<CoinX>,
-    val content: Boolean,
-    val description: String,
-    val feedDate: Long,
     val id: String,
-    val imgUrl: String,
-    val isFeatured: Boolean,
-    val link: String,
-    val reactions: List<Any>,
-    val reactionsCount: ReactionsCount,
-    val relatedCoins: List<String>,
-    val searchKeyWords: List<String>,
-    val shareURL: String,
-    val source: String,
-    val sourceLink: String,
-    val title: String
+    val searchKeyWords: List<String>?,
+    val feedDate: Long?,
+    val source: String?,
+    val title: String?,
+    val sourceLink: String?,
+    val isFeatured: Boolean?,
+    val imgUrl: String?,
+    val reactionsCount: Map<String, Int> = emptyMap(),
+    val reactions: List<String> = emptyList(),
+    val shareURL: String?,
+    val relatedCoins: List<String>?,
+    val content: Boolean?,
+    val link: String?,
+    val bigImg: Boolean?,
+    val description: String?
 )
 
 fun NewsItem.toNewsDetails() =
     NewsDetail(
-        description = description,
+        description = description ?: "",
         id = id,
-        feedDate = feedDate,
-        imgURL = imgUrl,
-        link = link,
-        relatedCoins = relatedCoins,
-        shareURL = shareURL,
-        source = source,
-        sourceLink = sourceLink,
-        title = title
+        feedDate = feedDate ?: 0,
+        imgURL = imgUrl ?: "",
+        link = link ?: "",
+        relatedCoins = relatedCoins ?: emptyList(),
+        shareURL = shareURL ?: "",
+        source = source ?: "",
+        sourceLink = sourceLink ?: "",
+        title = title ?: ""
     )

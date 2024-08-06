@@ -26,7 +26,6 @@ import com.mathroda.network.dto.toNewsDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import retrofit2.HttpException
 import java.io.IOException
 
 class DashCoinRepositoryImpl (
@@ -43,7 +42,7 @@ class DashCoinRepositoryImpl (
                 page = skip,
                 ).result.map { it.toCoins() }
             emit(Resource.Success(coins))
-        } catch (e: HttpException) {
+        } catch (e: Exception) {
             emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
         } catch (e: IOException) {
             emit(Resource.Error("Couldn't reach server. Check your internet connection"))
@@ -57,7 +56,7 @@ class DashCoinRepositoryImpl (
                 coinId = coinId,
             ).toCoinDetail()
             emit(Resource.Success(coin))
-        } catch (e: HttpException) {
+        } catch (e: Exception) {
             emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
         } catch (e: IOException) {
             emit(Resource.Error("Couldn't reach server. Check your internet connection"))
@@ -81,7 +80,7 @@ class DashCoinRepositoryImpl (
 
             val coins = ChartDto(chart = result).toChart()
             emit(Resource.Success(coins))
-        } catch (e: HttpException) {
+        } catch (e: Exception) {
             emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
         } catch (e: IOException) {
             emit(Resource.Error("Couldn't reach server. Check your internet connection"))
@@ -96,7 +95,7 @@ class DashCoinRepositoryImpl (
                     filter = filter.value,
                 ).map { it.toNewsDetails() }
                 emit(Resource.Success(coin))
-            } catch (e: HttpException) {
+            } catch (e: Exception) {
                 emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
             } catch (e: IOException) {
                 emit(Resource.Error("Couldn't reach server. Check your internet connection"))

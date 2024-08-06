@@ -85,8 +85,10 @@ dependencies {
     //coil
     implementation(Deps.IO.Coil.compose)
 
-    //retrofit
-    implementation(Deps.SquareUp.Retrofit2.retrofit)
+    //Ktor
+    with(Deps.Ktor) {
+        implementation(ktorClientCore)
+    }
 
     //Local unit tests
     testImplementation(Deps.AndroidX.Test.core)
