@@ -94,6 +94,7 @@ object Deps {
                 const val coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines"
                 const val coroutinePlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinx_coroutines"
                 const val coroutineTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+                const val kotlinxSerializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
             }
         }
     }
@@ -149,5 +150,13 @@ object Deps {
         const val android = "io.insert-koin:koin-android"
         const val compose = "io.insert-koin:koin-androidx-compose"
         const val workManger = "io.insert-koin:koin-androidx-workmanager"
+    }
+
+    object Ktor {
+        const val ktorClientCore = "io.ktor:ktor-client-core:${Version.ktor}"
+        const val ktorSerializationKotlinxJson = "io.ktor:ktor-serialization-kotlinx-json:${Version.ktor}"
+        const val ktorClientContentNegotiation = "io.ktor:ktor-client-content-negotiation:${Version.ktor}"
+        const val ktorClientLogging = "io.ktor:ktor-client-logging:${Version.ktor}"
+        const val ktorOkhttp = "io.ktor:ktor-client-okhttp:${Version.ktor}"
     }
 }

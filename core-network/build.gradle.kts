@@ -6,6 +6,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -60,15 +61,20 @@ dependencies {
     implementation(Deps.Google.AndroidMaterial.material)
     testImplementation(Deps.Junit.junit4)
 
-    //retrofit
-    implementation(Deps.SquareUp.Retrofit2.retrofit)
-    implementation(Deps.SquareUp.Retrofit2.convertorGson)
-    implementation(Deps.SquareUp.Okhhtp3.okhttp)
-
 
     //Koin
     implementation(platform(Deps.Koin.bom))
     implementation(Deps.Koin.core)
 
+    //Ktor
+    with(Deps.Ktor) {
+        implementation(ktorClientCore)
+        implementation(ktorSerializationKotlinxJson)
+        implementation(ktorClientContentNegotiation)
+        implementation(ktorClientLogging)
+        implementation(ktorOkhttp)
+    }
+
+    implementation(Deps.Org.Jetbrains.Kotlinx.kotlinxSerializationJson)
 
 }

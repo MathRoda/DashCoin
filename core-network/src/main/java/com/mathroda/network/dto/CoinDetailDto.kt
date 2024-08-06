@@ -1,7 +1,9 @@
 package com.mathroda.network.dto
 
 import com.mathroda.domain.model.CoinById
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CoinDetailDto(
     val availableSupply: Double? = null,
     val contractAddress: String ? = null,

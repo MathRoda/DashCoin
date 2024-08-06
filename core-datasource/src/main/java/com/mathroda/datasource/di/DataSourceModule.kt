@@ -1,6 +1,5 @@
 package com.mathroda.datasource.di
 
-import android.content.Context
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -26,9 +25,7 @@ import com.mathroda.datasource.usecases.GetFavoriteCoinsUseCase
 import com.mathroda.datasource.usecases.IsFavoriteStateUseCase
 import com.mathroda.datasource.usecases.ProvideUserStateUseCase
 import com.mathroda.datasource.usecases.SignOutUseCase
-import com.mathroda.domain.model.DashCoinUser
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
