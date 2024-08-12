@@ -1,9 +1,9 @@
 package com.mathroda.coin_detail.state
 
-import com.github.mikephil.charting.data.Entry
+import com.mathroda.coin_detail.Point
 
 data class ChartState(
     val isLoading: Boolean = false,
-    val chart: List<Entry> = emptyList(),
+    val chart: List<Point> = emptyList(),
     val error: String = ""
 )

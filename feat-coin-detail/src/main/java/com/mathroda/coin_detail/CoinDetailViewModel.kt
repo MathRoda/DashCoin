@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.mikephil.charting.data.Entry
 import com.mathroda.coin_detail.components.TimeRange
 import com.mathroda.coin_detail.state.ChartState
 import com.mathroda.coin_detail.state.CoinState
@@ -98,11 +97,13 @@ class CoinDetailViewModel(
             dashCoinRepository.getChartsDataRemote(coinId, getTimeSpanByTimeRange(period)).collectLatest { result ->
                 when (result) {
                     is Resource.Success -> {
-                        val chartsEntry = mutableListOf<Entry>()
+                        val chartsEntry = mutableListOf<Point>()
 
                         result.data?.let { charts ->
-                            charts.chart?.forEach { value ->
-                                chartsEntry.add(addEntry(value[0], value[1]))
+                            charts.chart.forEach { value ->
+                                val x = value.timeStamp.toFloat()
+                                val y = value.price.toFloat()
+                                chartsEntry.add(Point(x, y))
                             }
 
                             _chartState.value = ChartState(chart = chartsEntry)
@@ -231,6 +232,6 @@ class CoinDetailViewModel(
             }
         }
     }
-
-    private fun addEntry(x: Float, y: Float) = Entry(x, y)
 }
+
+data class Point(val x: Float, val y: Float)

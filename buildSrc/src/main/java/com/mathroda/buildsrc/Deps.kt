@@ -95,6 +95,7 @@ object Deps {
                 const val coroutinePlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinx_coroutines"
                 const val coroutineTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
                 const val kotlinxSerializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
+                const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
             }
         }
     }
@@ -158,5 +159,9 @@ object Deps {
         const val ktorClientContentNegotiation = "io.ktor:ktor-client-content-negotiation:${Version.ktor}"
         const val ktorClientLogging = "io.ktor:ktor-client-logging:${Version.ktor}"
         const val ktorOkhttp = "io.ktor:ktor-client-okhttp:${Version.ktor}"
+    }
+
+    object Charts {
+        const val lib = "io.github.dautovicharis:charts:1.2.0"
     }
 }
