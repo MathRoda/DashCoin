@@ -6,6 +6,6 @@ object Configuration {
 
     const val compileSdk = 34
     const val targetSdk = 34
-    const val minSdk = 23
+    const val minSdk = 26
     const val applicationId = "com.mathroda.dashcoin"
 }

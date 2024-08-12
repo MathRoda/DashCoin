@@ -83,8 +83,8 @@ dependencies {
     //coil
     implementation(Deps.IO.Coil.compose)
 
-    //MPAndroidCharts
-    implementation(Deps.Github.PhilJay.MPAndroidChart)
+    //Charts
+    implementation(Deps.Charts.lib)
 
     //lottie
     implementation(Deps.Airbnb.Android.lottieCompose)
@@ -102,4 +102,7 @@ dependencies {
     //Koin
     implementation(platform(Deps.Koin.bom))
     implementation(Deps.Koin.compose)
+
+    //KotlinDateTime
+    implementation(Deps.Org.Jetbrains.Kotlinx.dateTime)
 }

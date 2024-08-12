@@ -106,7 +106,6 @@ fun CoinDetailScreen(
                     if (!chartsState.isLoading){
                         Chart(
                             oneDayChange = coin.priceChange1d,
-                            context = LocalContext.current,
                             charts = chartsState
                         )
                     }

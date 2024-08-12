@@ -76,7 +76,7 @@ class DashCoinRepositoryImpl (
             val result = api.getChartsData(
                 coinId = coinId,
                 period = period.value,
-                ).map { it.map { it.toFloat() } }
+            )
 
             val coins = ChartDto(chart = result).toChart()
             emit(Resource.Success(coins))
