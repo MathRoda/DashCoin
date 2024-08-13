@@ -10,15 +10,13 @@ import com.mathroda.notifications.util.getNotificationManager
 class SyncNotificationChannel(context: Context) {
 
     init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = Constants.SYNC_CHANNEL_NAME
-            val description = Constants.SYNC_CHANNEL_DESCRIPTION
-            val importance = NotificationManager.IMPORTANCE_HIGH
+        val name = Constants.SYNC_CHANNEL_NAME
+        val description = Constants.SYNC_CHANNEL_DESCRIPTION
+        val importance = NotificationManager.IMPORTANCE_HIGH
 
-            NotificationChannel(CHANNEL_ID, name, importance).apply {
-                this.description = description
-                context.getNotificationManager()?.createNotificationChannel(this)
-            }
+        NotificationChannel(CHANNEL_ID, name, importance).apply {
+            this.description = description
+            context.getNotificationManager()?.createNotificationChannel(this)
         }
     }
 

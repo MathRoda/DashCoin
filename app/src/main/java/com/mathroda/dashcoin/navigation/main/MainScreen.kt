@@ -61,7 +61,7 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
                 modifier = Modifier
                     .height(bottomBarHeight)
                     .offset {
-                        IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt())
+                        IntOffset(x = 0, y = -bottomBarOffsetHeightPx.floatValue.roundToInt())
                     }
             )
         }

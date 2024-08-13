@@ -19,7 +19,7 @@ import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
 //TODO: get your API Key https://openapi.coinstats.app/login
-private const val API_KEY: String = ""
+private const val API_KEY: String = API_KEY_COIN_STATS
 val networkModule = module {
     single<HttpClient> {
         val engine = OkHttp.create {

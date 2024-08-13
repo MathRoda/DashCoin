@@ -16,11 +16,15 @@
           </compositeBuild>
         </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="17" />
+        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/auth" />
+            <option value="$PROJECT_DIR$/auth/forgot-password" />
+            <option value="$PROJECT_DIR$/auth/signin" />
+            <option value="$PROJECT_DIR$/auth/signup" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core-cache" />
@@ -28,16 +32,14 @@
             <option value="$PROJECT_DIR$/core-domain" />
             <option value="$PROJECT_DIR$/core-infrastructure" />
             <option value="$PROJECT_DIR$/core-network" />
-            <option value="$PROJECT_DIR$/feat-auth-forgot-password" />
-            <option value="$PROJECT_DIR$/feat-auth-signin" />
-            <option value="$PROJECT_DIR$/feat-auth-signup" />
-            <option value="$PROJECT_DIR$/feat-coin-detail" />
-            <option value="$PROJECT_DIR$/feat-coins" />
-            <option value="$PROJECT_DIR$/feat-common" />
-            <option value="$PROJECT_DIR$/feat-favorite-coins" />
-            <option value="$PROJECT_DIR$/feat-news" />
-            <option value="$PROJECT_DIR$/feat-onboarding" />
-            <option value="$PROJECT_DIR$/feat-profile" />
+            <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/coin-details" />
+            <option value="$PROJECT_DIR$/features/coins" />
+            <option value="$PROJECT_DIR$/features/common" />
+            <option value="$PROJECT_DIR$/features/favorite-coins" />
+            <option value="$PROJECT_DIR$/features/news" />
+            <option value="$PROJECT_DIR$/features/onboarding" />
+            <option value="$PROJECT_DIR$/features/profile" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

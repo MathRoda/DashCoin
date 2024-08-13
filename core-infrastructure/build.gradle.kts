@@ -42,7 +42,7 @@ android {
 dependencies {
 
     implementation(project(":core"))
-    implementation(project(":feat-common"))
+    implementation(project(":features:common"))
     implementation(project(":core-datasource"))
     implementation(project(":core-domain"))
 

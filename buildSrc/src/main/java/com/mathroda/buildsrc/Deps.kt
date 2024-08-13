@@ -3,7 +3,6 @@ package com.mathroda.buildsrc
 import com.mathroda.buildsrc.Version.androidx_lifecycle
 import com.mathroda.buildsrc.Version.compose_navigation_version
 import com.mathroda.buildsrc.Version.compose_version
-import com.mathroda.buildsrc.Version.hilt_version
 import com.mathroda.buildsrc.Version.kotlinx_coroutines
 import com.mathroda.buildsrc.Version.play_services_auth_version
 import com.mathroda.buildsrc.Version.room_version
