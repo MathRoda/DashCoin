@@ -28,10 +28,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.mathroda.common.components.CustomDialogSignOut
 import com.mathroda.common.components.CustomLoginButton
-import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.CustomRed
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.Gold
@@ -47,7 +45,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun DrawerFooter(
     userState: UserState,
-    navController: NavController
+    closeDrawer: () -> Unit,
+    navigateToSignIn: () -> Unit
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -60,9 +59,9 @@ fun DrawerFooter(
     ) {
 
         when(userState) {
-            is UserState.AuthedUser -> LogOut(navController)
-            is UserState.UnauthedUser -> Login(navController)
-            is UserState.PremiumUser -> LogOut(navController)
+            is UserState.AuthedUser -> LogOut(closeDrawer)
+            is UserState.UnauthedUser -> Login(navigateToSignIn)
+            is UserState.PremiumUser -> LogOut(closeDrawer)
         }
 
         Spacer(modifier = Modifier.height(48.dp) )
@@ -109,7 +108,9 @@ fun DrawerFooter(
 
 
 @Composable
-fun Login(navController: NavController) {
+fun Login(
+    navigateToSignIn: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,7 +126,7 @@ fun Login(navController: NavController) {
                 .background(DarkGray)
                 .padding(top = 24.dp),
         ) {
-            navController.navigate(Destinations.SignIn.route)
+            navigateToSignIn()
         }
     }
 }
@@ -135,7 +136,7 @@ fun Login(navController: NavController) {
 @ExperimentalMaterialApi
 @Composable
 fun LogOut(
-    navController: NavController
+    closeDrawer: () -> Unit,
 ) {
     val viewModel: ProfileViewModel = koinViewModel()
     val openDialogCustom = remember { mutableStateOf(false) }
@@ -162,8 +163,7 @@ fun LogOut(
     if (openDialogCustom.value) {
         CustomDialogSignOut(openDialogCustom = openDialogCustom) {
             viewModel.signOut()
-            navController.popBackStack()
-            navController.navigate(Destinations.CoinsScreen.route)
+            closeDrawer()
         }
     }
 }

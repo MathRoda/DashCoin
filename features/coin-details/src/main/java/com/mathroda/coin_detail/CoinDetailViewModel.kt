@@ -34,8 +34,7 @@ import kotlinx.coroutines.launch
 class CoinDetailViewModel(
     private val dashCoinRepository: DashCoinRepository,
     private val dashCoinUseCases: DashCoinUseCases,
-    val connectivityManger: InternetConnectivityManger,
-    private val savedStateHandle: SavedStateHandle
+    val connectivityManger: InternetConnectivityManger
 ) : ViewModel() {
 
     private val _coinState = MutableStateFlow(CoinState())
@@ -63,11 +62,9 @@ class CoinDetailViewModel(
 
     private var job: Job? = null
 
-    fun updateUiState() {
-        savedStateHandle.get<String>(PARAM_COIN_ID)?.let { coinId ->
-            getCoin(coinId)
-            getChart(coinId, TimeRange.ONE_DAY)
-        }
+    fun updateUiState(coinId: String) {
+        getCoin(coinId)
+        getChart(coinId, TimeRange.ONE_DAY)
     }
 
     private fun getCoin(coinId: String) {

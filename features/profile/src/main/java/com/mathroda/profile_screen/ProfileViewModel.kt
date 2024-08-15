@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 class ProfileViewModel(
@@ -39,8 +40,8 @@ class ProfileViewModel(
     private val _userCredential = MutableStateFlow(DashCoinUser())
     val userCredential = _userCredential.asStateFlow()
 
-    private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
-    val authState: State<UserState> = _authState
+    private val _authState = MutableStateFlow<UserState>(UserState.UnauthedUser)
+    val authState = _authState.asStateFlow()
 
     private val _updateProfilePictureState = MutableStateFlow(UpdatePictureState())
     val updateProfilePictureState = _updateProfilePictureState.asStateFlow()
@@ -51,10 +52,9 @@ class ProfileViewModel(
     private val _isUserPremium = MutableStateFlow(false)
     val isUserPremium = _isUserPremium.asStateFlow()
 
-    private val syncState = mutableStateOf<SyncState>(SyncState.UpToDate)
+    private val syncState = MutableStateFlow<SyncState>(SyncState.UpToDate)
 
     fun init() {
-        getUserCredential()
         updateUiState()
         isUserPremium()
         getIfSyncNeeded()
@@ -68,16 +68,14 @@ class ProfileViewModel(
         }
     }
 
-    private fun getUserCredential() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val user = dashCoinRepository.getDashCoinUser()
-            _userCredential.value = user ?: DashCoinUser()
-        }
-    }
-
     private fun updateUiState() {
         viewModelScope.launch(Dispatchers.IO) {
-            _authState.value = dashCoinUseCases.userStateProvider()
+            val user = dashCoinRepository.getDashCoinUser()
+            val authState = dashCoinUseCases.userStateProvider()
+            withContext(Dispatchers.Main.immediate) {
+                _userCredential.update { user ?: DashCoinUser() }
+                _authState.update { authState  }
+            }
         }
     }
 
@@ -91,7 +89,7 @@ class ProfileViewModel(
     }
 
     fun clearUpdateProfilePictureState() {
-        _updateProfilePictureState.value = UpdatePictureState()
+        _updateProfilePictureState.update {  UpdatePictureState() }
     }
 
     /*private fun uploadProfilePicture(imageName: String, bitmap: Bitmap) {
@@ -224,7 +222,7 @@ class ProfileViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             firebaseRepository.getFlowFavoriteCoins().collectLatest { cloudCoins ->
                 if (cloudCoins.data.isNullOrEmpty()) {
-                    syncState.value = SyncState.NeedSync(emptyList())
+                    syncState.update { SyncState.NeedSync(emptyList()) }
                 }
 
                 dashCoinRepository.getFlowFavoriteCoins().firstOrNull()?.let { localCoins ->
@@ -233,7 +231,7 @@ class ProfileViewModel(
                     if (cloud?.containsAll(local) == true) {
                         syncState.value = SyncState.UpToDate
                     } else {
-                        syncState.value = SyncState.NeedSync(localCoins)
+                        syncState.update {  SyncState.NeedSync(localCoins) }
                     }
                 }
             }

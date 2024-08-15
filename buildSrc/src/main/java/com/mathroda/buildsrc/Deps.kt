@@ -163,4 +163,11 @@ object Deps {
     object Charts {
         const val lib = "io.github.dautovicharis:charts:1.2.0"
     }
+
+    object Voyager {
+        const val navigator = "cafe.adriel.voyager:voyager-navigator:${Version.voyagerVersion}"
+        const val screenModel = "cafe.adriel.voyager:voyager-screenmodel:${Version.voyagerVersion}"
+        const val koin = "cafe.adriel.voyager:voyager-koin:${Version.voyagerVersion}"
+        const val tabNavigator = "cafe.adriel.voyager:voyager-tab-navigator:${Version.voyagerVersion}"
+    }
 }

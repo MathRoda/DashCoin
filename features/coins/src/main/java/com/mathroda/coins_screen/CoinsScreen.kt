@@ -29,7 +29,6 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.coins_screen.components.CoinsItem
@@ -38,7 +37,6 @@ import com.mathroda.coins_screen.components.CoinsScreenTopBar
 import com.mathroda.coins_screen.components.ScrollButton
 import com.mathroda.coins_screen.components.SearchBar
 import com.mathroda.common.components.InfiniteListHandler
-import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.LightGray
 import com.mathroda.profile_screen.drawer.DrawerNavigation
@@ -49,8 +47,10 @@ import org.koin.androidx.compose.koinViewModel
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun CoinScreen(
-    navController: NavController
+fun BasicCoinScreen(
+    navigateToSettings: () -> Unit,
+    navigateToSignIn: () -> Unit,
+    navigateToCoinDetails: (String) -> Unit
 ) {
     val viewModel = koinViewModel<CoinsViewModel>()
 
@@ -78,7 +78,14 @@ fun CoinScreen(
         },
         drawerContent = {
             DrawerNavigation(
-                navController = navController
+                navigateToSettings = navigateToSettings,
+                closeDrawer = {
+                    scope.launch { scaffoldState.drawerState.close() }
+                },
+                navigateToSignIn = {
+                    navigateToSignIn()
+                    scope.launch { scaffoldState.drawerState.close() }
+                }
             )
         },
         drawerBackgroundColor = DarkGray,
@@ -132,7 +139,7 @@ fun CoinScreen(
                             CoinsItem(
                                 coins = coins,
                                 onItemClick = {
-                                    navController.navigate(Destinations.CoinDetailScreen.route + "/${coins.id}")
+                                    navigateToCoinDetails(coins.id)
                                 }
                             )
                         }

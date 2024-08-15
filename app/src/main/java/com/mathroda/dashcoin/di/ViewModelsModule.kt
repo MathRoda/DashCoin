@@ -18,7 +18,7 @@ val viewModelsModule = module {
     viewModel { ResetPasswordViewModel(get()) }
     viewModel { SignInViewModel(get(),get(),get(),get()) }
     viewModel { SignUpViewModel(get(),get()) }
-    viewModel { CoinDetailViewModel(get(),get(), get(), get()) }
+    viewModel { CoinDetailViewModel(get(),get(), get()) }
     viewModel { CoinsViewModel(get(), get()) }
     viewModel { FavoriteCoinsViewModel(get(), get(), get()) }
     viewModel { NewsViewModel(get(), get()) }

@@ -1,17 +1,18 @@
 package com.mathroda.profile_screen.drawer
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.mathroda.common.navigation.Destinations
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
 import com.mathroda.profile_screen.ProfileViewModel
@@ -23,13 +24,16 @@ import org.koin.androidx.compose.koinViewModel
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigation(
-    navController: NavController
+    navigateToSettings: () -> Unit,
+    navigateToSignIn: () -> Unit,
+    closeDrawer: () -> Unit,
 ) {
     val viewModel: ProfileViewModel = koinViewModel()
     val uriHandler = LocalUriHandler.current
     val userCredential = viewModel.userCredential.collectAsState()
     val isPremium by viewModel.isUserPremium.collectAsState()
-    val isAuthedUser = viewModel.authState.value !is UserState.UnauthedUser
+    val authState by viewModel.authState.collectAsState()
+    val isAuthedUser = authState !is UserState.UnauthedUser
     val updateProfilePictureState = viewModel.updateProfilePictureState.collectAsState()
     val menuItems = viewModel.getMenuListItems()
     val toast = viewModel.toastState.value
@@ -42,7 +46,7 @@ fun DrawerNavigation(
         viewModel.updateToastState(false, "")
     }
 
-    LaunchedEffect(true) {
+    LaunchedEffect(Unit) {
         viewModel.init()
     }
 
@@ -64,15 +68,18 @@ fun DrawerNavigation(
         onItemClick = {
             when (it.id) {
                 "about" -> uriHandler.openUri(Constants.DASHCOIN_REPOSITORY)
-                "settings" -> navController.navigate(Destinations.Settings.route)
+                "settings" -> navigateToSettings()
                 "syncData" -> viewModel.onSyncClicked()
             }
         }
     )
 
     DrawerFooter(
-        userState = viewModel.authState.value,
-        navController = navController
+        userState = authState,
+        navigateToSignIn = navigateToSignIn,
+        closeDrawer = {
+            closeDrawer()
+        }
     )
 
 }

@@ -125,4 +125,12 @@ dependencies {
     implementation(Deps.Koin.core)
     implementation(Deps.Koin.android)
     implementation(Deps.Koin.workManger)
+
+    //Voyager
+    with(Deps.Voyager) {
+        implementation(navigator)
+        implementation(screenModel)
+        implementation(koin)
+        implementation(tabNavigator)
+    }
 }

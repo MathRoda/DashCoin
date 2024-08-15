@@ -27,7 +27,7 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun OnBoardingScreen(
+fun BasicOnboarding(
     popBackStack: () -> Unit,
 ) {
     val viewModel: OnBoardingViewModel = koinViewModel()

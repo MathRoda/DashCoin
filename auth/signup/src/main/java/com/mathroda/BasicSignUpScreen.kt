@@ -48,9 +48,8 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SignUpScreen(
-    navigateToSignInScreen: () -> Unit,
-    popBackStack: () -> Unit
+fun BasicSignUpScreen(
+    navigateBack: () -> Unit
 ) {
     val viewModel: SignUpViewModel = koinViewModel()
     var userName by remember { mutableStateOf("") }
@@ -85,7 +84,7 @@ fun SignUpScreen(
                     .requiredHeight(40.dp)
             ) {
                 BackStackButton {
-                    popBackStack()
+                   navigateBack()
                 }
             }
             Row(
@@ -208,8 +207,7 @@ fun SignUpScreen(
                     fontSize = 17.sp,
                     fontWeight = FontWeight.W500
                 ) {
-                    popBackStack()
-                    navigateToSignInScreen()
+                    navigateBack()
                 }
             }
         }
@@ -235,8 +233,7 @@ fun SignUpScreen(
                 userUid = signUpState.value.signUp?.user?.uid
             )
             viewModel.addUserCredential(dashCoinUser)
-            popBackStack()
-            navigateToSignInScreen()
+            navigateBack()
         }
     }
 

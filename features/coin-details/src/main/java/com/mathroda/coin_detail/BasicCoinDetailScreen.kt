@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.mathroda.coin_detail.components.Chart
 import com.mathroda.coin_detail.components.CoinDetailScreenState
 import com.mathroda.coin_detail.components.CoinDetailSection
@@ -41,8 +40,9 @@ import com.mathroda.domain.model.toFavoriteCoin
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CoinDetailScreen(
-    navController: NavController
+fun BasicCoinDetailScreen(
+    coinId: String,
+   popBackStack: () -> Unit
 ) {
     val viewModel: CoinDetailViewModel = koinViewModel()
     val coinState = viewModel.coinState.collectAsState().value
@@ -53,7 +53,7 @@ fun CoinDetailScreen(
 
     LaunchedEffect(true) {
         viewModel.updateUserState()
-        viewModel.updateUiState()
+        viewModel.updateUiState(coinId)
     }
 
     Box(
@@ -66,11 +66,11 @@ fun CoinDetailScreen(
             Scaffold(
                 topBar = {
                     TopBarCoinDetail(
-                        navController = navController,
                         coinSymbol = coin.symbol,
                         icon = coin.icon,
                         isFavorite = viewModel.isFavoriteState.value,
-                        onCLick = { viewModel.onFavoriteClick(coin) }
+                        onCLick = { viewModel.onFavoriteClick(coin) },
+                        popBackStack = popBackStack
                     )
                 }
             ) { paddingValues ->
@@ -161,7 +161,7 @@ fun CoinDetailScreen(
 
         NotPremiumDialog(dialogState = viewModel.notPremiumDialog)
 
-        CoinDetailScreenState()
+        CoinDetailScreenState(coinId)
     }
 }
 

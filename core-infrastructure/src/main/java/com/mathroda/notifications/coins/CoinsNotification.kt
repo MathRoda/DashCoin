@@ -48,7 +48,7 @@ class CoinsNotification (
     private fun buildPendingIntent(state: UserState): PendingIntent {
         val openCoinIntent = Intent(
             Intent.ACTION_VIEW,
-            userStateUri(state)
+            //userStateUri(state)
         )
 
         return TaskStackBuilder.create(context).run {
@@ -60,13 +60,13 @@ class CoinsNotification (
         }
     }
 
-    private fun userStateUri(state: UserState): Uri {
+   /* private fun userStateUri(state: UserState): Uri {
         return when(state) {
             is UserState.UnauthedUser -> DestinationsDeepLink.getHomeUri()
             is UserState.AuthedUser -> DestinationsDeepLink.getHomeUri()
             is UserState.PremiumUser -> DestinationsDeepLink.getHomeUri()
         }
-    }
+    }*/
 
     companion object {
         private const val REQUEST_CODE_OPEN_TASK = 1_121_111

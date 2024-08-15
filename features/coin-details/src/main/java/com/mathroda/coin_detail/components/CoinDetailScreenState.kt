@@ -29,7 +29,9 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun BoxScope.CoinDetailScreenState() {
+fun BoxScope.CoinDetailScreenState(
+    coinId: String
+) {
     val  viewModel: CoinDetailViewModel = koinViewModel()
     val coinState by viewModel.coinState.collectAsState()
     val favoriteMsg = viewModel.favoriteMsg.value
@@ -73,7 +75,7 @@ fun BoxScope.CoinDetailScreenState() {
             )
 
             if(connectivityState is InternetState.Available) {
-                viewModel.updateUiState()
+                viewModel.updateUiState(coinId)
             }
         }
     }

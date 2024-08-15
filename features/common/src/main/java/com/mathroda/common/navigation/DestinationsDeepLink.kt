@@ -5,7 +5,7 @@ import androidx.core.net.toUri
 
 object DestinationsDeepLink {
 
-    private val BaseUri = "app://com.mathroda.dashcoin".toUri()
+    /*private val BaseUri = "app://com.mathroda.dashcoin".toUri()
 
     val HomePattern = "$BaseUri/${Destinations.CoinsScreen.route}"
     val FavoriteCoinsPattern = "$BaseUri/${Destinations.FavoriteCoinsScreen.route}"
@@ -15,5 +15,5 @@ object DestinationsDeepLink {
 
 
     fun getHomeUri(): Uri =
-        HomePattern.toUri()
+        HomePattern.toUri()*/
 }

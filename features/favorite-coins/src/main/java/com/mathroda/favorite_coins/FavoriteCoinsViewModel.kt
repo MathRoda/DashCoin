@@ -50,9 +50,6 @@ class FavoriteCoinsViewModel(
     private var firstLoad = true
 
     fun init() {
-        if (!firstLoad) {
-            return
-        }
 
         viewModelScope.launch(Dispatchers.IO) {
             val userState = dashCoinUseCases.userStateProvider()
