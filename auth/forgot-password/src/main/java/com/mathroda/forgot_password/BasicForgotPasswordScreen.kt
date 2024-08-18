@@ -26,24 +26,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.mathroda.common.components.BackStackButton
 import com.mathroda.common.components.CustomClickableText
 import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.components.DashCoinTextField
 import com.mathroda.common.components.LoadingDots
-import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import kotlinx.coroutines.delay
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ForgotPasswordScreen(
-    navController: NavController
+fun BasicForgotPasswordScreen(
+    viewModel: ResetPasswordViewModel,
+    navigateBack: () -> Unit,
 ) {
-    val viewModel: ResetPasswordViewModel = koinViewModel()
     val screenState by viewModel.screenState.collectAsState()
     val state = viewModel.resetPassword.collectAsState().value
 
@@ -64,8 +61,7 @@ fun ForgotPasswordScreen(
                     .requiredHeight(40.dp)
             ) {
                 BackStackButton {
-                    navController.popBackStack()
-                    navController.navigate(Destinations.SignIn.route)
+                    navigateBack()
                 }
             }
 
@@ -136,7 +132,7 @@ fun ForgotPasswordScreen(
 
                 LaunchedEffect(Unit) {
                     delay(800)
-                    navController.popBackStack()
+                    navigateBack()
                 }
             }
 

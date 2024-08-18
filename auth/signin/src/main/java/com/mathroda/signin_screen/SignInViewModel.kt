@@ -2,6 +2,8 @@ package com.mathroda.signin_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.google.firebase.auth.AuthCredential
 import com.mathroda.core.util.Resource
 import com.mathroda.core.util.Response
@@ -28,7 +30,7 @@ class SignInViewModel(
     //val onTapClient: SignInClient,
     private val dashCoinUseCases: DashCoinUseCases,
     private val dataStoreRepository: DataStoreRepository
-) : ViewModel() {
+) : ScreenModel {
 
     private val _signIn = MutableStateFlow(SignInState())
     val signIn = _signIn.asStateFlow()
@@ -63,7 +65,7 @@ class SignInViewModel(
         }
     }
 
-    private fun signIn(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun signIn(email: String, password: String) = screenModelScope.launch(Dispatchers.IO) {
         firebaseRepository.signInWithEmailAndPassword(email, password).collectLatest { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -96,7 +98,7 @@ class SignInViewModel(
         dashCoinUseCases.cacheDashCoinUser()
     }
 
-    fun oneTapSignIn() = viewModelScope.launch(Dispatchers.IO) {
+    fun oneTapSignIn() = screenModelScope.launch(Dispatchers.IO) {
         googleServices.oneTapSignInWithGoogle().collect { result ->
             when (result) {
                 is Response.Loading -> {
@@ -113,7 +115,7 @@ class SignInViewModel(
     }
 
 
-    fun signInWithGoogle(googleCred: AuthCredential) = viewModelScope.launch {
+    fun signInWithGoogle(googleCred: AuthCredential) = screenModelScope.launch {
         googleServices.firebaseSignInWithGoogle(googleCred).collect { result ->
             when (result) {
                 is Response.Loading -> {

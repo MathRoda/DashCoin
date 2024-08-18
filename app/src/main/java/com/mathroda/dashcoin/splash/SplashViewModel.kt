@@ -5,7 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathroda.dashcoin.navigation.root.Graph
+import com.mathroda.core.destination.DashCoinDestinations
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
@@ -30,8 +30,8 @@ class SplashViewModel(
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
 
-    private val _startDestination: MutableState<String> = mutableStateOf(Graph.ON_BOARDING)
-    val startDestination: MutableState<String> = _startDestination
+    private val _startDestination: MutableState<DashCoinDestinations> = mutableStateOf(DashCoinDestinations.Onboarding)
+    val startDestination: MutableState<DashCoinDestinations> = _startDestination
 
     private val isUserExist = firebaseRepository.isCurrentUserExist()
 
@@ -51,10 +51,10 @@ class SplashViewModel(
         viewModelScope.launch {
             dataStoreRepository.readOnBoardingState.collect { completed ->
                 if (completed) {
-                    _startDestination.value = Graph.MAIN
+                    _startDestination.value = DashCoinDestinations.Coins
 
                 } else {
-                    _startDestination.value = Graph.ON_BOARDING
+                    _startDestination.value = DashCoinDestinations.Onboarding
                 }
                 delay(500)
                 _isLoading.emit(false)

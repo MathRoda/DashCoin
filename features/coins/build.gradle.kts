@@ -107,6 +107,11 @@ dependencies {
     //kotlinx
     implementation(Deps.Kotlinx.Collections.immuatble)
 
+    //Voyager
+    with(Deps.Voyager) {
+        implementation(screenModel)
+    }
+
     //Local unit tests
     testImplementation(Deps.AndroidX.Test.core)
     testImplementation(Deps.Junit.junit4)

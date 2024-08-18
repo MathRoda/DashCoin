@@ -53,14 +53,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalMaterialApi
 @Composable
-fun SignInScreen(
-    navigateToCoinsScreen: () -> Unit,
+fun BasicSignIn(
+    viewModel: SignInViewModel,
     navigateToSignUpScreen: () -> Unit,
     navigateToForgotPassword: () -> Unit,
     popBackStack: () -> Unit,
 ) {
-    val viewModel = koinViewModel<SignInViewModel>()
-
     val screenState by viewModel.screenState.collectAsState()
     val sigInState = viewModel.signIn.collectAsState()
 
@@ -80,7 +78,6 @@ fun SignInScreen(
                 IconButton(
                     onClick = {
                         popBackStack()
-                        navigateToCoinsScreen()
                     }
                 ) {
                     Icon(
@@ -224,8 +221,8 @@ fun SignInScreen(
             padding = PaddingValues(bottom = 24.dp)
         )
         LaunchedEffect(Unit) {
-            delay(800)
-            navigateToCoinsScreen()
+            delay(1000)
+            popBackStack()
         }
     }
 
@@ -237,7 +234,6 @@ fun SignInScreen(
             message = errorMsg,
             padding = PaddingValues(bottom = 24.dp)
         )
-        popBackStack()
     }
 
     val launcher = rememberLauncherForActivityResult(StartIntentSenderForResult()) { result ->
@@ -259,15 +255,17 @@ fun SignInScreen(
     }
 
     OneTapSignIn(
+        viewModel = viewModel,
         launch = {
             launch(it)
         }
     )
 
     SignInWithGoogle(
+        viewModel = viewModel,
         navigateToCoinsScreen = { signedIn ->
             if (signedIn) {
-                navigateToCoinsScreen()
+                popBackStack()
             }
         },
         updateScreenState = viewModel::updateIsVisibleIsLoadingState

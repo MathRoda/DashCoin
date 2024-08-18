@@ -82,5 +82,10 @@ dependencies {
     //lottie
     implementation(Deps.Airbnb.Android.lottieCompose)
 
+    //Voyager
+    with(Deps.Voyager) {
+        implementation(screenModel)
+    }
+
 
 }

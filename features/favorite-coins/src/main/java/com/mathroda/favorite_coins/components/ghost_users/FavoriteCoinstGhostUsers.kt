@@ -1,5 +1,6 @@
 package com.mathroda.favorite_coins.components.ghost_users
 
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,11 +13,11 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -24,13 +25,14 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mathroda.common.components.CommonTopBar
 import com.mathroda.common.components.CustomLoginButton
-import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.favorite_coins.R
 
 @ExperimentalLayoutApi
 @Composable
-fun WatchListGhostUsers(navController: NavController) {
+fun WatchListGhostUsers(
+    navigateToSignIn: () -> Unit
+) {
 
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.watch_list_anim))
     val lottieProgress by animateLottieCompositionAsState(
@@ -50,6 +52,7 @@ fun WatchListGhostUsers(navController: NavController) {
             //verticalArrangement = Arrangement.Center,
             horizontalAlignment = CenterHorizontally
         ) {
+            if (lottieComp != null) {
             LottieAnimation(
                 modifier = Modifier
                     .padding(top = 16.dp, end = 24.dp)
@@ -78,9 +81,10 @@ fun WatchListGhostUsers(navController: NavController) {
                         .background(DarkGray)
                         .padding(bottom = 24.dp),
                 ) {
-                    navController.navigate(Destinations.SignIn.route)
+                    navigateToSignIn()
                 }
             }
+                }
         }
     }
 }

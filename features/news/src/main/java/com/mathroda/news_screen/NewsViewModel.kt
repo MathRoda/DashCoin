@@ -4,9 +4,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.domain.model.NewsType
 import com.mathroda.internetconnectivity.InternetConnectivityManger
+import com.mathroda.news_screen.state.NewsState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -16,11 +19,10 @@ import kotlinx.coroutines.launch
 class NewsViewModel(
     private val dashCoinRepository: DashCoinRepository,
     val connectivityManger: InternetConnectivityManger
-) : ViewModel() {
+) : ScreenModel {
 
-
-    private val _newsState = mutableStateOf(com.mathroda.news_screen.state.NewsState())
-    val newsState: State<com.mathroda.news_screen.state.NewsState> = _newsState
+    private val _newsState = mutableStateOf(NewsState())
+    val newsState: State<NewsState> = _newsState
 
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh
@@ -36,18 +38,18 @@ class NewsViewModel(
             when (result) {
                 is com.mathroda.core.util.Resource.Success -> {
                     _newsState.value =
-                        com.mathroda.news_screen.state.NewsState(news = result.data ?: emptyList())
+                        NewsState(news = result.data ?: emptyList())
                 }
                 is com.mathroda.core.util.Resource.Error -> {
-                    _newsState.value = com.mathroda.news_screen.state.NewsState(
+                    _newsState.value = NewsState(
                         error = result.message ?: "Unexpected Error"
                     )
                 }
                 is com.mathroda.core.util.Resource.Loading -> {
-                    _newsState.value = com.mathroda.news_screen.state.NewsState(isLoading = true)
+                    _newsState.value = NewsState(isLoading = true)
                 }
             }
-        }.launchIn(viewModelScope)
+        }.launchIn(screenModelScope)
 
     }
 
@@ -61,7 +63,7 @@ class NewsViewModel(
         }
 
     fun refresh() {
-        viewModelScope.launch {
+        screenModelScope.launch {
             _isRefresh.emit(true)
             getNews(defaultFilter)
             _isRefresh.emit(false)

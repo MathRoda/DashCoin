@@ -10,10 +10,10 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignInWithGoogle(
+    viewModel: SignInViewModel,
     navigateToCoinsScreen: (signedIn: Boolean) -> Unit,
     updateScreenState: (isVisible: Boolean, isLoading: Boolean) -> Unit
 ) {
-    val viewModel: SignInViewModel = koinViewModel()
     when (val signInWithGoogleResponse =
         viewModel.signInWithGoogleResponse.collectAsState().value) {
         is Response.Loading -> {

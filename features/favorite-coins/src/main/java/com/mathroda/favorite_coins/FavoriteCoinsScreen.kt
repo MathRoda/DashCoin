@@ -22,28 +22,34 @@ import org.koin.androidx.compose.koinViewModel
 @ExperimentalFoundationApi
 @Composable
 fun WatchListScreen(
-    navController: NavController
+    viewModel: FavoriteCoinsViewModel,
+    navigateToCoinDetails: (String) -> Unit,
+    navigateToSignIn: () -> Unit
 ) {
-    val viewModel = koinViewModel<FavoriteCoinsViewModel>()
     val dialogState by viewModel.dialogState.collectAsState()
     val phoneShakingState by viewModel.phoneShakingManger.getState().collectAsState(initial = PhoneShakingState.IDLE)
     val userState by viewModel.authState.collectAsState()
 
     when(userState) {
-
         is UserState.AuthedUser -> {
-            WatchListAuthedUsers(navController = navController)
+            WatchListAuthedUsers(
+                viewModel = viewModel,
+                navigateToCoinDetails = navigateToCoinDetails
+            )
             if (phoneShakingState is PhoneShakingState.IsShaking) {
                 viewModel.updateDeleteAllDialog(DialogState.Open)
             }
         }
 
         is UserState.UnauthedUser -> {
-            WatchListGhostUsers(navController)
+            WatchListGhostUsers(navigateToSignIn)
         }
 
         is UserState.PremiumUser -> {
-            WatchListPremiumUsers(navController = navController)
+            WatchListPremiumUsers(
+                viewModel = viewModel,
+                navigateToCoinDetails = navigateToCoinDetails
+            )
             if (phoneShakingState is PhoneShakingState.IsShaking) {
                 viewModel.updateDeleteAllDialog(DialogState.Open)
             }

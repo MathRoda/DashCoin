@@ -20,11 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mathroda.common.components.CommonTopBar
-import com.mathroda.common.navigation.Destinations
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.LighterGray
 import com.mathroda.favorite_coins.FavoriteCoinsViewModel
@@ -36,12 +34,12 @@ import org.koin.androidx.compose.koinViewModel
 @ExperimentalMaterialApi
 @Composable
 fun WatchListPremiumUsers(
-    navController: NavController
+    viewModel: FavoriteCoinsViewModel,
+    navigateToCoinDetails: (String) -> Unit
 ) {
-    val viewModel = koinViewModel<FavoriteCoinsViewModel>()
     val watchListState by viewModel.state.collectAsState()
     val isRefresh by viewModel.isRefresh.collectAsState()
-    val marketState by viewModel.marketStatus
+    val marketState by viewModel.marketStatus.collectAsState()
 
     Box(
         modifier = Modifier
@@ -81,7 +79,7 @@ fun WatchListPremiumUsers(
                             symbol = coin.symbol,
                             rank = coin.rank.toString(),
                             marketStatus = coin.priceChanged1d,
-                            onItemClick = { navController.navigate(Destinations.CoinDetailScreen.route + "/${coin.coinId}") }
+                            onItemClick = { navigateToCoinDetails(coin.coinId) }
                         )
                     }
                 }

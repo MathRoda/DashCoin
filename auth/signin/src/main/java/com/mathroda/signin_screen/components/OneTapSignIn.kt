@@ -12,8 +12,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun OneTapSignIn(
     launch: (result: BeginSignInResult) -> Unit,
+    viewModel: SignInViewModel
 ) {
-    val viewModel: SignInViewModel = koinViewModel()
     when (val oneTapResponse = viewModel.oneTapSignInResponse.collectAsState().value) {
         is Response.Loading -> {}
         is Response.Success -> {

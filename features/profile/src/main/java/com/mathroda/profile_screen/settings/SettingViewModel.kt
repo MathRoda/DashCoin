@@ -2,6 +2,8 @@ package com.mathroda.profile_screen.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.profile_screen.settings.components.EnableNotificationsState
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class SettingViewModel (
     private val dataStoreRepository: DataStoreRepository
-): ViewModel() {
+): ScreenModel {
 
     private val _enableNotificationsState = MutableStateFlow(EnableNotificationsState())
     val enableNotificationsState = _enableNotificationsState.asStateFlow()
@@ -23,7 +25,7 @@ class SettingViewModel (
     }
 
     private fun updateInitNotificationState() {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             val result = dataStoreRepository.readNotificationPreference.first()
             if (result) {
                 _enableNotificationsState.update {
@@ -48,7 +50,7 @@ class SettingViewModel (
     fun updateNotificationState(
         value: Boolean
     ) {
-        viewModelScope.launch(Dispatchers.IO){
+        screenModelScope.launch(Dispatchers.IO){
             dataStoreRepository.saveNotificationPreference(value)
         }
 

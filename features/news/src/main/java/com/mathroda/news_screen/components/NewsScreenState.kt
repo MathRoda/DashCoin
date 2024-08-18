@@ -19,8 +19,9 @@ import com.mathroda.news_screen.NewsViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun BoxScope.NewsScreenState() {
-    val  viewModel: NewsViewModel = koinViewModel()
+fun BoxScope.NewsScreenState(
+    viewModel: NewsViewModel
+) {
     val state = viewModel.newsState.value
     val connectivityState by viewModel.connectivityManger.getState().collectAsState(initial = InternetState.IDLE)
 

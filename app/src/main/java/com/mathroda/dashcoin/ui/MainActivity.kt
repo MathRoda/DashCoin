@@ -15,10 +15,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.compose.rememberNavController
+import cafe.adriel.voyager.core.registry.ScreenRegistry
 import com.mathroda.common.theme.DashCoinTheme
-import com.mathroda.dashcoin.navigation.root.RootNavigationGraph
+import com.mathroda.dashcoin.navigation.main.MainScreen
 import com.mathroda.dashcoin.splash.SplashViewModel
+import com.mathroda.dashcoin.ui.screens.coinDetailsScreen
+import com.mathroda.dashcoin.ui.screens.coinsScreen
+import com.mathroda.dashcoin.ui.screens.favoriteCoinsScreen
+import com.mathroda.dashcoin.ui.screens.forgotPasswordScreen
+import com.mathroda.dashcoin.ui.screens.newsScreen
+import com.mathroda.dashcoin.ui.screens.onboardingScreen
+import com.mathroda.dashcoin.ui.screens.settingsScreen
+import com.mathroda.dashcoin.ui.screens.signInScreen
+import com.mathroda.dashcoin.ui.screens.signUpScreen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalLayoutApi
@@ -44,11 +53,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val startDestination by viewModel.startDestination
-                    Log.d("mainActivity", startDestination)
-                    RootNavigationGraph(
-                        navHostController = rememberNavController(),
-                        startDestination = startDestination
-                    )
+                    Log.d("mainActivity", startDestination.toString())
+                    MainScreen(startDestinations = startDestination)
                 }
             }
         }

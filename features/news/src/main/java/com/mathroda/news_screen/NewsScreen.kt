@@ -34,8 +34,9 @@ enum class NewsFilter {
 
 @ExperimentalMaterialApi
 @Composable
-fun NewsScreen() {
-    val viewModel: NewsViewModel = koinViewModel()
+fun NewsScreen(
+    viewModel: NewsViewModel
+) {
     val state = viewModel.newsState.value
     val uriHandler = LocalUriHandler.current
     val isRefreshing by viewModel.isRefresh.collectAsState()
@@ -87,6 +88,6 @@ fun NewsScreen() {
 
         }
 
-        NewsScreenState()
+        NewsScreenState(viewModel = viewModel)
     }
 }

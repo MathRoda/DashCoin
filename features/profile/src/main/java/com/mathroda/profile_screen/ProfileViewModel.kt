@@ -9,6 +9,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.mathroda.core.state.UserState
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
@@ -27,6 +29,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 class ProfileViewModel(
@@ -34,13 +37,13 @@ class ProfileViewModel(
     private val dashCoinUseCases: DashCoinUseCases,
     private val dashCoinRepository: DashCoinRepository,
     private val syncNotification: SyncNotification
-) : ViewModel() {
+) : ScreenModel {
 
     private val _userCredential = MutableStateFlow(DashCoinUser())
     val userCredential = _userCredential.asStateFlow()
 
-    private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
-    val authState: State<UserState> = _authState
+    private val _authState = MutableStateFlow<UserState>(UserState.UnauthedUser)
+    val authState = _authState.asStateFlow()
 
     private val _updateProfilePictureState = MutableStateFlow(UpdatePictureState())
     val updateProfilePictureState = _updateProfilePictureState.asStateFlow()
@@ -51,33 +54,30 @@ class ProfileViewModel(
     private val _isUserPremium = MutableStateFlow(false)
     val isUserPremium = _isUserPremium.asStateFlow()
 
-    private val syncState = mutableStateOf<SyncState>(SyncState.UpToDate)
+    private val syncState = MutableStateFlow<SyncState>(SyncState.UpToDate)
 
     fun init() {
-        getUserCredential()
         updateUiState()
         isUserPremium()
         getIfSyncNeeded()
     }
 
     fun signOut() {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             dashCoinUseCases.signOut()
             clearUpdateProfilePictureState()
             updateUiState()
         }
     }
 
-    private fun getUserCredential() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val user = dashCoinRepository.getDashCoinUser()
-            _userCredential.value = user ?: DashCoinUser()
-        }
-    }
-
     private fun updateUiState() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _authState.value = dashCoinUseCases.userStateProvider()
+        screenModelScope.launch(Dispatchers.IO) {
+            val user = dashCoinRepository.getDashCoinUser()
+            val authState = dashCoinUseCases.userStateProvider()
+            withContext(Dispatchers.Main.immediate) {
+                _userCredential.update { user ?: DashCoinUser() }
+                _authState.update { authState  }
+            }
         }
     }
 
@@ -91,11 +91,11 @@ class ProfileViewModel(
     }
 
     fun clearUpdateProfilePictureState() {
-        _updateProfilePictureState.value = UpdatePictureState()
+        _updateProfilePictureState.update {  UpdatePictureState() }
     }
 
     /*private fun uploadProfilePicture(imageName: String, bitmap: Bitmap) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             firebaseRepository.uploadImageToCloud(
                 name = imageName,
                 bitmap = bitmap
@@ -125,7 +125,7 @@ class ProfileViewModel(
     }*/
 
     /*private fun updateProfilePicture(imageUrl: String) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             firebaseRepository
                 .updateUserProfilePicture(imageUrl = imageUrl)
                 .collect { result ->
@@ -145,7 +145,7 @@ class ProfileViewModel(
     }*/
 
     private fun isUserPremium() {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             val isUserPremium = dashCoinRepository.isUserPremiumLocal()
             _isUserPremium.update { isUserPremium }
         }
@@ -190,7 +190,7 @@ class ProfileViewModel(
     }
 
     fun onSyncClicked() {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             when(val result = syncState.value){
                 is SyncState.NeedSync -> syncCoinsToCloud(result.coins)
                 is SyncState.UpToDate -> updateToastState(
@@ -221,10 +221,10 @@ class ProfileViewModel(
     }
 
     private fun getIfSyncNeeded() {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             firebaseRepository.getFlowFavoriteCoins().collectLatest { cloudCoins ->
                 if (cloudCoins.data.isNullOrEmpty()) {
-                    syncState.value = SyncState.NeedSync(emptyList())
+                    syncState.update { SyncState.NeedSync(emptyList()) }
                 }
 
                 dashCoinRepository.getFlowFavoriteCoins().firstOrNull()?.let { localCoins ->
@@ -233,7 +233,7 @@ class ProfileViewModel(
                     if (cloud?.containsAll(local) == true) {
                         syncState.value = SyncState.UpToDate
                     } else {
-                        syncState.value = SyncState.NeedSync(localCoins)
+                        syncState.update {  SyncState.NeedSync(localCoins) }
                     }
                 }
             }

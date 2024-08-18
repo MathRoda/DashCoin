@@ -105,4 +105,9 @@ dependencies {
 
     //KotlinDateTime
     implementation(Deps.Org.Jetbrains.Kotlinx.dateTime)
+
+    //Voyager
+    with(Deps.Voyager) {
+        implementation(screenModel)
+    }
 }
