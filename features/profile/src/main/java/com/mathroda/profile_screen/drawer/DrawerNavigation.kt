@@ -24,11 +24,11 @@ import org.koin.androidx.compose.koinViewModel
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigation(
+    viewModel: ProfileViewModel,
     navigateToSettings: () -> Unit,
     navigateToSignIn: () -> Unit,
     closeDrawer: () -> Unit,
 ) {
-    val viewModel: ProfileViewModel = koinViewModel()
     val uriHandler = LocalUriHandler.current
     val userCredential = viewModel.userCredential.collectAsState()
     val isPremium by viewModel.isUserPremium.collectAsState()
@@ -75,6 +75,7 @@ fun DrawerNavigation(
     )
 
     DrawerFooter(
+        signOut = viewModel::signOut,
         userState = authState,
         navigateToSignIn = navigateToSignIn,
         closeDrawer = {

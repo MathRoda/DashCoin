@@ -30,9 +30,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BoxScope.CoinDetailScreenState(
+    viewModel: CoinDetailViewModel,
     coinId: String
 ) {
-    val  viewModel: CoinDetailViewModel = koinViewModel()
     val coinState by viewModel.coinState.collectAsState()
     val favoriteMsg = viewModel.favoriteMsg.value
     val sideEffect = viewModel.sideEffect.value
@@ -122,14 +122,13 @@ fun BoxScope.CoinDetailScreenState(
  * isLoading
  */
 @Composable
-fun LoadingChartState() {
-    val viewModel: CoinDetailViewModel = koinViewModel()
-
-    val chartsState = viewModel.chartState.value
+fun LoadingChartState(
+    isLoading: Boolean
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LoadingDots(isLoading = chartsState.isLoading)
+        LoadingDots(isLoading = isLoading)
     }
 }

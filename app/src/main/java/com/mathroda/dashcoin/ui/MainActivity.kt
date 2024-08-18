@@ -47,17 +47,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DashCoinTheme {
-                ScreenRegistry {
-                    onboardingScreen()
-                    coinsScreen()
-                    favoriteCoinsScreen()
-                    newsScreen()
-                    signInScreen()
-                    signUpScreen()
-                    forgotPasswordScreen()
-                    coinDetailsScreen()
-                    settingsScreen()
-                }
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),

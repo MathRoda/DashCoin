@@ -34,12 +34,12 @@ import org.koin.androidx.compose.koinViewModel
 @ExperimentalMaterialApi
 @Composable
 fun WatchListPremiumUsers(
+    viewModel: FavoriteCoinsViewModel,
     navigateToCoinDetails: (String) -> Unit
 ) {
-    val viewModel = koinViewModel<FavoriteCoinsViewModel>()
     val watchListState by viewModel.state.collectAsState()
     val isRefresh by viewModel.isRefresh.collectAsState()
-    val marketState by viewModel.marketStatus
+    val marketState by viewModel.marketStatus.collectAsState()
 
     Box(
         modifier = Modifier

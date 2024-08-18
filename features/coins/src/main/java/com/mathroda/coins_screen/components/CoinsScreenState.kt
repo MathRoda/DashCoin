@@ -27,7 +27,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BoxScope.CoinsScreenState(
-    viewModel: CoinsViewModel = koinViewModel()
+    viewModel: CoinsViewModel
 ) {
     val state = viewModel.state.collectAsState().value
     val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))

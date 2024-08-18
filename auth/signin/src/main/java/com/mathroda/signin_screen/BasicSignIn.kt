@@ -54,12 +54,11 @@ import org.koin.androidx.compose.koinViewModel
 @ExperimentalMaterialApi
 @Composable
 fun BasicSignIn(
+    viewModel: SignInViewModel,
     navigateToSignUpScreen: () -> Unit,
     navigateToForgotPassword: () -> Unit,
     popBackStack: () -> Unit,
 ) {
-    val viewModel = koinViewModel<SignInViewModel>()
-
     val screenState by viewModel.screenState.collectAsState()
     val sigInState = viewModel.signIn.collectAsState()
 
@@ -256,12 +255,14 @@ fun BasicSignIn(
     }
 
     OneTapSignIn(
+        viewModel = viewModel,
         launch = {
             launch(it)
         }
     )
 
     SignInWithGoogle(
+        viewModel = viewModel,
         navigateToCoinsScreen = { signedIn ->
             if (signedIn) {
                 popBackStack()

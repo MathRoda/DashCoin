@@ -46,7 +46,8 @@ import org.koin.androidx.compose.koinViewModel
 fun DrawerFooter(
     userState: UserState,
     closeDrawer: () -> Unit,
-    navigateToSignIn: () -> Unit
+    navigateToSignIn: () -> Unit,
+    signOut: () -> Unit
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -59,9 +60,11 @@ fun DrawerFooter(
     ) {
 
         when(userState) {
-            is UserState.AuthedUser -> LogOut(closeDrawer)
             is UserState.UnauthedUser -> Login(navigateToSignIn)
-            is UserState.PremiumUser -> LogOut(closeDrawer)
+            else-> LogOut(
+                closeDrawer = closeDrawer,
+                signOut = signOut
+            )
         }
 
         Spacer(modifier = Modifier.height(48.dp) )
@@ -136,9 +139,9 @@ fun Login(
 @ExperimentalMaterialApi
 @Composable
 fun LogOut(
+    signOut: () -> Unit,
     closeDrawer: () -> Unit,
 ) {
-    val viewModel: ProfileViewModel = koinViewModel()
     val openDialogCustom = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -162,7 +165,7 @@ fun LogOut(
 
     if (openDialogCustom.value) {
         CustomDialogSignOut(openDialogCustom = openDialogCustom) {
-            viewModel.signOut()
+            signOut()
             closeDrawer()
         }
     }

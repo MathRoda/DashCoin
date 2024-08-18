@@ -95,4 +95,9 @@ dependencies {
     //Koin
     implementation(platform(Deps.Koin.bom))
     implementation(Deps.Koin.compose)
+
+    //Voyager
+    with(Deps.Voyager) {
+        implementation(screenModel)
+    }
 }

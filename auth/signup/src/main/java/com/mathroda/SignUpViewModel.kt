@@ -2,6 +2,8 @@ package com.mathroda
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
@@ -17,14 +19,14 @@ import kotlinx.coroutines.launch
 class SignUpViewModel(
     private val firebaseRepository: FirebaseRepository,
     private val dashCoinRepository: DashCoinRepository
-) : ViewModel() {
+) : ScreenModel {
 
     private val _signUp = MutableStateFlow(SignUpState())
     val signUp: StateFlow<SignUpState> = _signUp
 
 
     fun signUp(dashCoinUser: DashCoinUser, password: String) =
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             firebaseRepository.signUpWithEmailAndPassword(dashCoinUser.email!!, password).onEach { result ->
                 when (result) {
                     is Resource.Success -> {
@@ -51,7 +53,7 @@ class SignUpViewModel(
                 else -> {}
             }
 
-        }.launchIn(viewModelScope)
+        }.launchIn(screenModelScope)
 
 
 }

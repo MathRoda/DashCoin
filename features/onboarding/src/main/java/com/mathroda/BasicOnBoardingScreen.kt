@@ -28,9 +28,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BasicOnboarding(
+    viewModel: OnBoardingViewModel,
     popBackStack: () -> Unit,
 ) {
-    val viewModel: OnBoardingViewModel = koinViewModel()
     val pager = viewModel.pager
     val state = rememberPagerState()
     val scope = rememberCoroutineScope()

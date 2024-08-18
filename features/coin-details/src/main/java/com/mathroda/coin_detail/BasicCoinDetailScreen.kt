@@ -41,10 +41,10 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BasicCoinDetailScreen(
+    viewModel: CoinDetailViewModel,
     coinId: String,
    popBackStack: () -> Unit
 ) {
-    val viewModel: CoinDetailViewModel = koinViewModel()
     val coinState = viewModel.coinState.collectAsState().value
     val chartsState = viewModel.chartState.value
     val uriHandler = LocalUriHandler.current
@@ -109,7 +109,9 @@ fun BasicCoinDetailScreen(
                         )
                     }
 
-                    LoadingChartState()
+                    LoadingChartState(
+                        isLoading = chartsState.isLoading
+                    )
 
                     CoinInformation(
                         modifier = Modifier
@@ -161,7 +163,10 @@ fun BasicCoinDetailScreen(
 
         NotPremiumDialog(dialogState = viewModel.notPremiumDialog)
 
-        CoinDetailScreenState(coinId)
+        CoinDetailScreenState(
+            viewModel = viewModel,
+            coinId = coinId
+        )
     }
 }
 

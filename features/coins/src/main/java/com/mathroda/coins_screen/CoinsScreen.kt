@@ -39,6 +39,7 @@ import com.mathroda.coins_screen.components.SearchBar
 import com.mathroda.common.components.InfiniteListHandler
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.LightGray
+import com.mathroda.profile_screen.ProfileViewModel
 import com.mathroda.profile_screen.drawer.DrawerNavigation
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -48,12 +49,12 @@ import org.koin.androidx.compose.koinViewModel
 @ExperimentalMaterialApi
 @Composable
 fun BasicCoinScreen(
+    viewModel: CoinsViewModel,
+    profileViewModel: ProfileViewModel,
     navigateToSettings: () -> Unit,
     navigateToSignIn: () -> Unit,
     navigateToCoinDetails: (String) -> Unit
 ) {
-    val viewModel = koinViewModel<CoinsViewModel>()
-
     val state by viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefresh.collectAsState()
     val paginationState by viewModel.paginationState.collectAsState()
@@ -78,6 +79,7 @@ fun BasicCoinScreen(
         },
         drawerContent = {
             DrawerNavigation(
+                viewModel = profileViewModel,
                 navigateToSettings = navigateToSettings,
                 closeDrawer = {
                     scope.launch { scaffoldState.drawerState.close() }
@@ -164,7 +166,7 @@ fun BasicCoinScreen(
 
             }
 
-            CoinsScreenState()
+            CoinsScreenState(viewModel = viewModel)
         }
 
         ScrollButton(lazyListState = lazyListState)

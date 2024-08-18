@@ -49,9 +49,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BasicSignUpScreen(
+    viewModel: SignUpViewModel,
     navigateBack: () -> Unit
 ) {
-    val viewModel: SignUpViewModel = koinViewModel()
     var userName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }

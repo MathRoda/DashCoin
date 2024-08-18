@@ -35,13 +35,12 @@ import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import kotlinx.coroutines.delay
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BasicForgotPasswordScreen(
-    navigateBack: () -> Unit
+    viewModel: ResetPasswordViewModel,
+    navigateBack: () -> Unit,
 ) {
-    val viewModel: ResetPasswordViewModel = koinViewModel()
     val screenState by viewModel.screenState.collectAsState()
     val state = viewModel.resetPassword.collectAsState().value
 

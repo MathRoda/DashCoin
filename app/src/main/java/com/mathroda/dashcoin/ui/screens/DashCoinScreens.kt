@@ -23,33 +23,47 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.koinNavigatorScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.CurrentTab
-import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.mathroda.BasicOnboarding
 import com.mathroda.BasicSignUpScreen
+import com.mathroda.OnBoardingViewModel
+import com.mathroda.SignUpViewModel
 import com.mathroda.coin_detail.BasicCoinDetailScreen
+import com.mathroda.coin_detail.CoinDetailViewModel
 import com.mathroda.coins_screen.BasicCoinScreen
+import com.mathroda.coins_screen.CoinsViewModel
 import com.mathroda.common.R
 import com.mathroda.core.destination.DashCoinDestinations
 import com.mathroda.dashcoin.navigation.main.BottomBar
 import com.mathroda.dashcoin.navigation.main.bottomBarAnimatedScroll
+import com.mathroda.favorite_coins.FavoriteCoinsViewModel
 import com.mathroda.favorite_coins.WatchListScreen
 import com.mathroda.forgot_password.BasicForgotPasswordScreen
+import com.mathroda.forgot_password.ResetPasswordViewModel
 import com.mathroda.news_screen.NewsScreen
+import com.mathroda.news_screen.NewsViewModel
+import com.mathroda.profile_screen.ProfileViewModel
+import com.mathroda.profile_screen.settings.SettingViewModel
 import com.mathroda.profile_screen.settings.SettingsScreen
 import com.mathroda.signin_screen.BasicSignIn
+import com.mathroda.signin_screen.SignInViewModel
 import kotlin.math.roundToInt
 
 class OnboardingScreen: Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val viewModel: OnBoardingViewModel = navigator.koinNavigatorScreenModel()
         val coinsScreen = rememberScreen(DashCoinDestinations.Coins)
-        BasicOnboarding {
+        BasicOnboarding(
+            viewModel = viewModel
+        ) {
             navigator.replaceAll(coinsScreen)
         }
     }
@@ -62,7 +76,10 @@ class SignInScreen: Screen {
         val navigator = LocalNavigator.currentOrThrow
         val signUpScreen = rememberScreen(DashCoinDestinations.SignUp)
         val forgotPasswordScreen = rememberScreen(DashCoinDestinations.ForgotPassword)
+        val viewModel: SignInViewModel = navigator.koinNavigatorScreenModel()
+
         BasicSignIn(
+            viewModel = viewModel,
             navigateToSignUpScreen = { navigator.push(signUpScreen) },
             navigateToForgotPassword = { navigator.push(forgotPasswordScreen) },
             popBackStack = { navigator.pop() }
@@ -74,7 +91,9 @@ class SignUpScreen: Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val viewModel: SignUpViewModel = navigator.koinNavigatorScreenModel()
         BasicSignUpScreen(
+            viewModel = viewModel,
             navigateBack = { navigator.pop() }
         )
     }
@@ -84,7 +103,9 @@ class ForgotPasswordScreen: Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val viewModel = navigator.koinNavigatorScreenModel<ResetPasswordViewModel>()
         BasicForgotPasswordScreen(
+            viewModel = viewModel,
             navigateBack = { navigator.pop() }
         )
     }
@@ -109,8 +130,11 @@ data object CoinsScreen: Tab {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-
+        val viewModel: CoinsViewModel = navigator.koinNavigatorScreenModel()
+        val profileViewModel: ProfileViewModel = koinScreenModel()
         BasicCoinScreen(
+            viewModel = viewModel,
+            profileViewModel = profileViewModel,
             navigateToSignIn = { navigator.push(SignInScreen()) },
             navigateToSettings = { navigator.push(SettingsScreen()) },
             navigateToCoinDetails = { navigator.push(CoinDetailsScreen(it)) }
@@ -123,7 +147,9 @@ data class CoinDetailsScreen(val id: String): Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val viewModel: CoinDetailViewModel = navigator.koinNavigatorScreenModel()
         BasicCoinDetailScreen(
+            viewModel = viewModel,
             coinId = id,
             popBackStack = navigator::pop
         )
@@ -149,8 +175,9 @@ data object FavoriteCoinsScreen: Tab {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-
+        val viewModel: FavoriteCoinsViewModel = navigator.koinNavigatorScreenModel()
         WatchListScreen(
+            viewModel = viewModel,
             navigateToSignIn = { navigator.push(SignInScreen())},
             navigateToCoinDetails = { navigator.push(CoinDetailsScreen(it)) }
         )
@@ -175,7 +202,10 @@ data object NewsScreen: Tab {
         }
     @Composable
     override fun Content() {
-        NewsScreen()
+        val viewModel: NewsViewModel = koinScreenModel()
+        NewsScreen(
+            viewModel = viewModel
+        )
     }
 }
 
@@ -183,8 +213,10 @@ class SettingsScreen: Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-
-        SettingsScreen {
+        val viewModel: SettingViewModel = navigator.koinNavigatorScreenModel()
+        SettingsScreen(
+            viewModel = viewModel
+        ) {
             navigator.pop()
         }
     }

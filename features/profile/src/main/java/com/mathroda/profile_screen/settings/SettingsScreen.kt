@@ -17,11 +17,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SettingsScreen(
+    viewModel: SettingViewModel,
     navigateBack: () -> Unit
 ) {
-
-    val viewModel = koinViewModel<SettingViewModel>()
-
     val notificationsState by viewModel.enableNotificationsState.collectAsState()
 
     Scaffold(

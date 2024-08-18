@@ -1,10 +1,8 @@
 package com.mathroda.favorite_coins
 
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.mathroda.common.state.DialogState
 import com.mathroda.common.state.MarketState
 import com.mathroda.common.util.asyncMap
@@ -30,7 +28,7 @@ class FavoriteCoinsViewModel(
     private val dashCoinRepository: DashCoinRepository,
     private val dashCoinUseCases: DashCoinUseCases,
     val phoneShakingManger: PhoneShakingManger
-) : ViewModel() {
+) : ScreenModel {
 
     private val _state = MutableStateFlow(FavoriteCoinsState())
     val state: StateFlow<FavoriteCoinsState> = _state.asStateFlow()
@@ -38,8 +36,8 @@ class FavoriteCoinsViewModel(
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh: StateFlow<Boolean> = _isRefresh.asStateFlow()
 
-    private val _marketStatus = mutableStateOf(MarketState())
-    val marketStatus: State<MarketState> = _marketStatus
+    private val _marketStatus = MutableStateFlow(MarketState())
+    val marketStatus = _marketStatus.asStateFlow()
 
     private val _authState = MutableStateFlow<UserState>(UserState.UnauthedUser)
     val authState = _authState.asStateFlow()
@@ -47,24 +45,21 @@ class FavoriteCoinsViewModel(
     private val _dialogState = MutableStateFlow<DialogState>(DialogState.Close)
     val dialogState = _dialogState.asStateFlow()
 
-    private var firstLoad = true
-
     fun init() {
 
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             val userState = dashCoinUseCases.userStateProvider()
             _authState.update { userState }
             getMarketStatus(userState)
             getAllCoins(userState)
             updateFavoriteCoins(userState)
-            firstLoad = false
         }
     }
 
     private fun getAllCoins(
         user: UserState
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             when(user) {
                 is UserState.UnauthedUser -> Unit
                 is UserState.AuthedUser -> getAllFavoriteCoinsAuthed()
@@ -96,7 +91,7 @@ class FavoriteCoinsViewModel(
     private fun updateFavoriteCoins(
         user: UserState
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             val coins = _state.value.coin
             if (coins.isEmpty()) {
                 return@launch
@@ -132,20 +127,30 @@ class FavoriteCoinsViewModel(
             return
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             dashCoinRepository.getCoinByIdRemoteFlow("bitcoin").collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         delay(300)
-                        _marketStatus.value = MarketState(coin = result.data)
+                        _marketStatus.update {
+                            it.copy(
+                                coin = result.data,
+                                loading = false,
+                                error = ""
+                            )
+                        }
                     }
                     is Resource.Error -> {
-                        _marketStatus.value = MarketState(
-                            error = result.message ?: "Unexpected Error"
-                        )
+                        _marketStatus.update {
+                            MarketState(
+                                error = result.message ?: "Unexpected Error",
+                            )
+                        }
                     }
                     is Resource.Loading -> {
-                         _marketStatus.value = MarketState(isLoading = true)
+                         _marketStatus.update {
+                             MarketState(loading = true)
+                         }
                     }
                 }
             }
@@ -184,7 +189,7 @@ class FavoriteCoinsViewModel(
     }
 
     fun deleteAllFavoriteCoins() {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             dashCoinRepository.removeAllFavoriteCoins()
         }
     }
