@@ -55,8 +55,8 @@ dependencies {
 
     implementation(project(":core-datasource"))
     implementation(project(":features:common"))
-
     implementation(project(":core"))
+
     implementation(project(":core-domain"))
     implementation(project(":core-datasource"))
     implementation(project(":features:common"))

@@ -38,7 +38,7 @@ class ProvideUserStateUseCaseTest {
         every { dataStore.readIsUserExistState } returns flowOf(false)
         every { firebase.isUserExist() } returns false
 
-        val actual = useCase.invoke {  }.first()
+        val actual = useCase.invoke()
         val expected = UserState.UnauthedUser
 
         assertThat(actual).isEqualTo(expected)
@@ -48,9 +48,11 @@ class ProvideUserStateUseCaseTest {
     fun `when user does exist but is not premium return AuthedUser`() = runTest {
         every { dataStore.readIsUserExistState } returns flowOf(true)
         every { firebase.isUserExist() } returns true
-        every { dashCoin.isUserPremiumLocal() } returns flowOf(false)
+        dashCoin.isUserPremiumLocal().let {
+            every { it } returns false
+        }
 
-        val actual = useCase.invoke {  }.first()
+        val actual = useCase.invoke()
         val expected = UserState.AuthedUser
 
         assertThat(actual).isEqualTo(expected)
@@ -60,9 +62,11 @@ class ProvideUserStateUseCaseTest {
     fun `when user does exist and he is premium return PremiumUser`() = runTest {
         every { dataStore.readIsUserExistState } returns flowOf(true)
         every { firebase.isUserExist() } returns true
-        every { dashCoin.isUserPremiumLocal() } returns flowOf(true)
+        dashCoin.isUserPremiumLocal().let {
+            every { it } returns false
+        }
 
-        val actual = useCase.invoke {  }.first()
+        val actual = useCase.invoke()
         val expected = UserState.PremiumUser
 
         assertThat(actual).isEqualTo(expected)

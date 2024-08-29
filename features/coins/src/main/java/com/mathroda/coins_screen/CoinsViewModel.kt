@@ -1,14 +1,12 @@
 package com.mathroda.coins_screen
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.mathroda.coins_screen.state.CoinsState
 import com.mathroda.coins_screen.state.PaginationState
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
-import com.mathroda.domain.model.Coins
+import com.example.shared.Coins
 import com.mathroda.internetconnectivity.InternetConnectivityManger
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -73,7 +71,7 @@ class CoinsViewModel(
     }
 
     internal fun onRequestSuccess(
-        data: List<Coins>
+        data: List<com.example.shared.Coins>
     ) {
         val coins = _state.value.coins + data
         _state.update {
@@ -138,7 +136,7 @@ class CoinsViewModel(
 
     fun updateState(
         isLoading: Boolean = false,
-        coins: List<Coins> = emptyList(),
+        coins: List<com.example.shared.Coins> = emptyList(),
         error: String = ""
     ) {
         _state.update {

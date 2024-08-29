@@ -9,9 +9,11 @@ object Version {
     const val hilt_version = "2.51.1"
     const val androidx_lifecycle = "2.6.1"
     const val kotlinx_coroutines = "1.6.4"
-    const val room_version = "2.6.1"
+    const val room_version = "2.7.0-alpha01"
+    const val sqlite_bundeled = "2.5.0-SNAPSHOT"
     const val androidx_core = "1.10.0"
     const val koin_version = "3.5.6"
     const val ktor = "2.3.12"
     const val voyagerVersion = "1.1.0-beta02"
+    const val firebase = "2.0.0"
 }

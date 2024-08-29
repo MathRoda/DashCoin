@@ -36,8 +36,7 @@ import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.core.util.numbersToCurrency
 import com.mathroda.core.util.numbersToFormat
-import com.mathroda.domain.model.toFavoriteCoin
-import org.koin.androidx.compose.koinViewModel
+import com.example.shared.toFavoriteCoin
 
 @Composable
 fun BasicCoinDetailScreen(

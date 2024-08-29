@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -19,12 +18,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mathroda.common.theme.*
-import com.mathroda.domain.model.NewsDetail
+import com.example.shared.NewsDetail
 import com.mathroda.news_screen.R
 
 @Composable
 fun NewsCard(
-    news: NewsDetail,
+    news: com.example.shared.NewsDetail,
     onClick: () -> Unit
 ) {
 

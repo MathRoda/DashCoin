@@ -11,8 +11,8 @@ import com.mathroda.core.util.Resource
 import com.mathroda.core.util.getCurrentDate
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
-import com.mathroda.domain.model.FavoriteCoin
-import com.mathroda.domain.model.toFavoriteCoin
+import com.example.shared.FavoriteCoin
+import com.example.shared.toFavoriteCoin
 import com.mathroda.favorite_coins.state.FavoriteCoinsState
 import com.mathroda.phoneshaking.PhoneShakingManger
 import kotlinx.coroutines.Dispatchers
@@ -164,7 +164,7 @@ class FavoriteCoinsViewModel(
 
     private fun updateFavoriteCoinsState(
         isLoading: Boolean? = null,
-        coins: List<FavoriteCoin>? = null,
+        coins: List<com.example.shared.FavoriteCoin>? = null,
         isEmpty: Boolean? = null,
         error: String? = null
     ) {

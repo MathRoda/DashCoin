@@ -25,12 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.mathroda.common.components.singleClick
-import com.mathroda.domain.model.Coins
+import com.example.shared.Coins
 
 @Composable
 fun CoinsItem(
-    coins: Coins,
-    onItemClick: (Coins) -> Unit
+    coins: com.example.shared.Coins,
+    onItemClick: (com.example.shared.Coins) -> Unit
 ) {
 
     Column(

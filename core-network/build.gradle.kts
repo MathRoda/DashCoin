@@ -3,10 +3,70 @@ import com.mathroda.buildsrc.Deps
 import java.util.Properties
 
 plugins {
+    kotlin("multiplatform")
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     kotlin("plugin.serialization")
+}
+
+kotlin {
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "shared"
+            isStatic = true
+        }
+    }
+
+
+    sourceSets {
+        androidMain.dependencies {
+            implementation(Deps.Ktor.ktorOkhttp)
+        }
+
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(Deps.Junit.junit4)
+                implementation("androidx.test.ext:junit-ktx:1.1.5")
+            }
+        }
+
+        commonMain.dependencies {
+            implementation(project(":core"))
+            implementation(project(":core-domain"))
+
+            //Koin
+            implementation(platform(Deps.Koin.bom))
+            implementation(Deps.Koin.core)
+
+            //Ktor
+            with(Deps.Ktor) {
+                implementation(ktorClientCore)
+                implementation(ktorSerializationKotlinxJson)
+                implementation(ktorClientContentNegotiation)
+                implementation(ktorClientLogging)
+            }
+
+            implementation(Deps.Org.Jetbrains.Kotlinx.kotlinxSerializationJson)
+
+        }
+
+        iosMain.dependencies {
+            implementation(Deps.Ktor.ktorDarwin)
+        }
+    }
+
 }
 
 android {
@@ -45,36 +105,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-}
-
-dependencies {
-
-    implementation(project(":core"))
-    implementation(project(":core-domain"))
-
-
-    implementation(Deps.AndroidX.Core.coreKtx)
-    implementation(Deps.AndroidX.AppCompat.appcompat)
-    implementation(Deps.Google.AndroidMaterial.material)
-    testImplementation(Deps.Junit.junit4)
-
-
-    //Koin
-    implementation(platform(Deps.Koin.bom))
-    implementation(Deps.Koin.core)
-
-    //Ktor
-    with(Deps.Ktor) {
-        implementation(ktorClientCore)
-        implementation(ktorSerializationKotlinxJson)
-        implementation(ktorClientContentNegotiation)
-        implementation(ktorClientLogging)
-        implementation(ktorOkhttp)
-    }
-
-    implementation(Deps.Org.Jetbrains.Kotlinx.kotlinxSerializationJson)
-
 }

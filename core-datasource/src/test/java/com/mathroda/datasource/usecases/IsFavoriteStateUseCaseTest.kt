@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.mathroda.core.state.IsFavoriteState
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.fake.DashCoinRepositoryFake
-import com.mathroda.domain.model.FavoriteCoin
+import com.mathroda.domain.FavoriteCoin
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before

@@ -1,8 +1,8 @@
 package com.mathroda.profile_screen.drawer.state
 
-import com.mathroda.domain.model.FavoriteCoin
+import com.example.shared.FavoriteCoin
 
 internal sealed class SyncState {
-    data class NeedSync(val coins: List<FavoriteCoin>): SyncState()
+    data class NeedSync(val coins: List<com.example.shared.FavoriteCoin>): SyncState()
     data object UpToDate: SyncState()
 }

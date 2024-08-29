@@ -18,7 +18,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Dash Coin"
 
-include(":app")
+include(":androidApp")
 include(":core")
 include(":core-datasource")
 include(":core-domain")
@@ -39,3 +39,4 @@ include(":auth")
 include(":auth:signin")
 include(":auth:signup")
 include(":auth:forgot-password")
+include(":shared")

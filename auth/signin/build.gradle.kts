@@ -85,8 +85,6 @@ dependencies {
     //SweetToast
     implementation(Deps.Github.Tfaki.composableSweetToast)
 
-    //firebase
-    implementation(Deps.Google.Firebase.authKtx)
     //Play Services
     implementation(Deps.Org.Jetbrains.Kotlinx.coroutinePlayServices)
     //Play Services Auth

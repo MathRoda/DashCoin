@@ -89,9 +89,6 @@ dependencies {
     //SweetToast
     implementation(Deps.Github.Tfaki.composableSweetToast)
 
-    //firebase
-    implementation(Deps.Google.Firebase.authKtx)
-
     //Koin
     implementation(platform(Deps.Koin.bom))
     implementation(Deps.Koin.compose)

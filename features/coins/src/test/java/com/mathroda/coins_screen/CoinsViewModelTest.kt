@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.dispatcher.MainDispatcherRule
-import com.mathroda.domain.model.Coins
+import com.example.shared.Coins
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -206,7 +206,7 @@ class CoinsViewModelTest {
     }
 
     companion object {
-        private val coins = Coins(
+        private val coins = com.example.shared.Coins(
             id = "bitcoin",
             icon = "Icon",
             marketCap = 100000.0,

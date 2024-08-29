@@ -3,9 +3,6 @@ package com.mathroda.coin_detail
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.mathroda.coin_detail.components.TimeRange
@@ -15,14 +12,13 @@ import com.mathroda.common.events.FavoriteCoinEvents
 import com.mathroda.common.state.DialogState
 import com.mathroda.core.state.IsFavoriteState
 import com.mathroda.core.state.UserState
-import com.mathroda.core.util.Constants.PARAM_COIN_ID
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
-import com.mathroda.domain.model.ChartTimeSpan
-import com.mathroda.domain.model.CoinById
-import com.mathroda.domain.model.FavoriteCoin
-import com.mathroda.domain.model.toFavoriteCoin
+import com.example.shared.ChartTimeSpan
+import com.example.shared.CoinById
+import com.example.shared.FavoriteCoin
+import com.example.shared.toFavoriteCoin
 import com.mathroda.internetconnectivity.InternetConnectivityManger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -142,13 +138,13 @@ class CoinDetailViewModel(
         _dialogState.value = state
     }
 
-    private fun getTimeSpanByTimeRange(timeRange: TimeRange): ChartTimeSpan =
+    private fun getTimeSpanByTimeRange(timeRange: TimeRange): com.example.shared.ChartTimeSpan =
         when (timeRange) {
-            TimeRange.ONE_DAY -> ChartTimeSpan.TIMESPAN_1DAY
-            TimeRange.ONE_WEEK -> ChartTimeSpan.TIMESPAN_1WEK
-            TimeRange.ONE_MONTH -> ChartTimeSpan.TIMESPAN_1MONTH
-            TimeRange.ONE_YEAR -> ChartTimeSpan.TIMESPAN_1YEAR
-            TimeRange.ALL -> ChartTimeSpan.TIMESPAN_ALL
+            TimeRange.ONE_DAY -> com.example.shared.ChartTimeSpan.TIMESPAN_1DAY
+            TimeRange.ONE_WEEK -> com.example.shared.ChartTimeSpan.TIMESPAN_1WEK
+            TimeRange.ONE_MONTH -> com.example.shared.ChartTimeSpan.TIMESPAN_1MONTH
+            TimeRange.ONE_YEAR -> com.example.shared.ChartTimeSpan.TIMESPAN_1YEAR
+            TimeRange.ALL -> com.example.shared.ChartTimeSpan.TIMESPAN_ALL
         }
 
     fun onEvent(events: FavoriteCoinEvents) {
@@ -160,7 +156,7 @@ class CoinDetailViewModel(
         }
     }
 
-    private suspend fun addFavoriteCoin(coin: FavoriteCoin) {
+    private suspend fun addFavoriteCoin(coin: com.example.shared.FavoriteCoin) {
         dashCoinRepository.upsertFavoriteCoin(coin)
         updateFavoriteCoinsCount()
 
@@ -170,7 +166,7 @@ class CoinDetailViewModel(
         )
     }
 
-    private suspend fun deleteFavoriteCoin(coin: FavoriteCoin) {
+    private suspend fun deleteFavoriteCoin(coin: com.example.shared.FavoriteCoin) {
         dashCoinRepository.removeFavoriteCoin(coin)
         updateFavoriteCoinsCount()
 
@@ -190,7 +186,7 @@ class CoinDetailViewModel(
         }
     }
 
-    private fun isFavorite(coin: FavoriteCoin) {
+    private fun isFavorite(coin: com.example.shared.FavoriteCoin) {
         screenModelScope.launch(Dispatchers.IO) {
             dashCoinUseCases.isFavoriteState(coin).let { result ->
                 _isFavoriteState.value = result
@@ -204,7 +200,7 @@ class CoinDetailViewModel(
         }
     }
 
-    private fun premiumLimit(coin: CoinById) {
+    private fun premiumLimit(coin: com.example.shared.CoinById) {
         screenModelScope.launch(Dispatchers.IO) {
             val user = dashCoinRepository.getDashCoinUser() ?: return@launch
             if (user.isPremiumLimit()) {
@@ -216,7 +212,7 @@ class CoinDetailViewModel(
     }
 
     fun onFavoriteClick(
-        coin: CoinById
+        coin: com.example.shared.CoinById
     ) {
         when (_isFavoriteState.value) {
             is IsFavoriteState.Favorite -> {

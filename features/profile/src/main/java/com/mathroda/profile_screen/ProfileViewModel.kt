@@ -5,18 +5,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Sync
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.mathroda.core.state.UserState
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
-import com.mathroda.domain.model.DashCoinUser
-import com.mathroda.domain.model.FavoriteCoin
+import com.example.shared.DashCoinUser
+import com.example.shared.FavoriteCoin
 import com.mathroda.notifications.sync.SyncNotification
 import com.mathroda.profile_screen.drawer.state.SyncState
 import com.mathroda.profile_screen.drawer.state.UpdatePictureState
@@ -39,7 +36,7 @@ class ProfileViewModel(
     private val syncNotification: SyncNotification
 ) : ScreenModel {
 
-    private val _userCredential = MutableStateFlow(DashCoinUser())
+    private val _userCredential = MutableStateFlow(com.example.shared.DashCoinUser())
     val userCredential = _userCredential.asStateFlow()
 
     private val _authState = MutableStateFlow<UserState>(UserState.UnauthedUser)
@@ -75,7 +72,7 @@ class ProfileViewModel(
             val user = dashCoinRepository.getDashCoinUser()
             val authState = dashCoinUseCases.userStateProvider()
             withContext(Dispatchers.Main.immediate) {
-                _userCredential.update { user ?: DashCoinUser() }
+                _userCredential.update { user ?: com.example.shared.DashCoinUser() }
                 _authState.update { authState  }
             }
         }
@@ -203,7 +200,7 @@ class ProfileViewModel(
     }
 
     private suspend fun syncCoinsToCloud(
-        coins: List<FavoriteCoin>
+        coins: List<com.example.shared.FavoriteCoin>
     ) {
         if (coins.isEmpty()) {
             updateToastState(
@@ -241,7 +238,6 @@ class ProfileViewModel(
     }
 
     private fun showSyncNotification() = syncNotification.show(
-        id = SYNC_NOTIFY_ID,
         title = "Up to date 🚀",
         description = "All coins has been synced"
     )

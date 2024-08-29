@@ -1,22 +1,22 @@
 package com.mathroda.datasource.fake
 
-import com.example.cache.dbo.favoritecoins.FavoriteCoinEntity
-import com.example.cache.dbo.favoritecoins.toDomain
-import com.example.cache.dbo.favoritecoins.toEntity
-import com.example.cache.dbo.user.UserEntity
-import com.example.cache.dbo.user.toDashCoinUser
-import com.example.cache.dbo.user.toUserEntity
-import com.example.cache.mapper.toEntity
+import com.mathroda.cache.dbo.favoritecoins.FavoriteCoinEntity
+import com.mathroda.cache.dbo.favoritecoins.toDomain
+import com.mathroda.cache.dbo.favoritecoins.toEntity
+import com.mathroda.cache.dbo.user.UserEntity
+import com.mathroda.cache.dbo.user.toDashCoinUser
+import com.mathroda.cache.dbo.user.toUserEntity
+import com.mathroda.cache.mapper.toEntity
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
-import com.mathroda.domain.model.ChartTimeSpan
-import com.mathroda.domain.model.Charts
-import com.mathroda.domain.model.CoinById
-import com.mathroda.domain.model.Coins
-import com.mathroda.domain.model.DashCoinUser
-import com.mathroda.domain.model.FavoriteCoin
-import com.mathroda.domain.model.NewsDetail
-import com.mathroda.domain.model.NewsType
+import com.mathroda.domain.ChartTimeSpan
+import com.mathroda.domain.Charts
+import com.mathroda.domain.CoinById
+import com.mathroda.domain.Coins
+import com.mathroda.domain.DashCoinUser
+import com.mathroda.domain.FavoriteCoin
+import com.mathroda.domain.NewsDetail
+import com.mathroda.domain.NewsType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -75,7 +75,7 @@ class DashCoinRepositoryFake: DashCoinRepository {
         favoriteCoinDB.addAll(coins.toEntity())
     }
 
-    override fun getDashCoinUser(): DashCoinUser? {
+    override suspend fun getDashCoinUser(): DashCoinUser? {
             return userDB.first()?.toDashCoinUser()
     }
 
@@ -91,7 +91,7 @@ class DashCoinRepositoryFake: DashCoinRepository {
         TODO("Not yet implemented")
     }
 
-    override fun isUserPremiumLocal(): Boolean {
+    override suspend fun isUserPremiumLocal(): Boolean {
         TODO("Not yet implemented")
     }
 

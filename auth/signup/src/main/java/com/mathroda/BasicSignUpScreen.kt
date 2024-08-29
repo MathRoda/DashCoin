@@ -43,9 +43,8 @@ import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.util.Constants
 import com.mathroda.core.util.isValidEmail
 import com.mathroda.core.util.isValidPassword
-import com.mathroda.domain.model.DashCoinUser
+import com.example.shared.DashCoinUser
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BasicSignUpScreen(
@@ -180,7 +179,7 @@ fun BasicSignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 if (isValidEmail(email) && isValidPassword(password)) {
-                    val dashCoinUser = DashCoinUser(
+                    val dashCoinUser = com.example.shared.DashCoinUser(
                         userName = userName,
                         email = email
                     )
@@ -227,8 +226,8 @@ fun BasicSignUpScreen(
             padding = PaddingValues(bottom = 24.dp)
         )
         LaunchedEffect(Unit) {
-            val dashCoinUser = DashCoinUser(
-                userName = userName ,
+            val dashCoinUser = com.example.shared.DashCoinUser(
+                userName = userName,
                 email = email,
                 userUid = signUpState.value.signUp?.user?.uid
             )

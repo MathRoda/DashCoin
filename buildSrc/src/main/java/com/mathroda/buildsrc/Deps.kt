@@ -6,6 +6,7 @@ import com.mathroda.buildsrc.Version.compose_version
 import com.mathroda.buildsrc.Version.kotlinx_coroutines
 import com.mathroda.buildsrc.Version.play_services_auth_version
 import com.mathroda.buildsrc.Version.room_version
+import com.mathroda.buildsrc.Version.sqlite_bundeled
 
 object Deps {
 
@@ -45,6 +46,7 @@ object Deps {
             const val runtime = "androidx.room:room-runtime:$room_version"
             const val compiler = "androidx.room:room-compiler:$room_version"
             const val ktx = "androidx.room:room-ktx:$room_version"
+            const val sqlLite = "androidx.sqlite:sqlite-bundled:$sqlite_bundeled"
         }
         object Work {
             const val runtime = "androidx.work:work-runtime-ktx:2.8.1"
@@ -56,7 +58,8 @@ object Deps {
             const val core = "androidx.test:core:1.5.0"
         }
         object DataStore {
-            const val preferences = "androidx.datastore:datastore-preferences:1.0.0"
+            const val preferences = "androidx.datastore:datastore-preferences:1.1.0"
+            const val dataStore = "androidx.datastore:datastore:1.1.0"
         }
     }
 
@@ -76,10 +79,9 @@ object Deps {
             const val playServicesAuth = "com.google.android.gms:play-services-auth:$play_services_auth_version"
         }
         object Firebase {
-            const val bom = "com.google.firebase:firebase-bom:32.2.3"
-            const val authKtx = "com.google.firebase:firebase-auth-ktx"
-            const val fireStoreKtx = "com.google.firebase:firebase-firestore-ktx"
-            const val storage = "com.google.firebase:firebase-storage"
+            const val authKtx = "dev.gitlive:firebase-auth:2.0.0"
+            const val fireStoreKtx = "dev.gitlive:firebase-firestore:2.0.0"
+            const val storage = "dev.gitlive:firebase-storage:2.0.0"
         }
         object Truth {
             const val truth = "com.google.truth:truth:1.1.3"
@@ -94,9 +96,15 @@ object Deps {
                 const val coroutinePlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinx_coroutines"
                 const val coroutineTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
                 const val kotlinxSerializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
-                const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
+                const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
             }
         }
+    }
+
+    object GoogleServices {
+        const val credential = "androidx.credentials:credentials:1.3.0-rc01"
+        const val credPlayServices = "androidx.credentials:credentials-play-services-auth:1.3.0-rc01"
+        const val identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
     }
 
     object Junit {
@@ -158,6 +166,7 @@ object Deps {
         const val ktorClientContentNegotiation = "io.ktor:ktor-client-content-negotiation:${Version.ktor}"
         const val ktorClientLogging = "io.ktor:ktor-client-logging:${Version.ktor}"
         const val ktorOkhttp = "io.ktor:ktor-client-okhttp:${Version.ktor}"
+        const val ktorDarwin = "io.ktor:ktor-client-darwin:${Version.ktor}"
     }
 
     object Charts {
@@ -169,5 +178,9 @@ object Deps {
         const val screenModel = "cafe.adriel.voyager:voyager-screenmodel:${Version.voyagerVersion}"
         const val koin = "cafe.adriel.voyager:voyager-koin:${Version.voyagerVersion}"
         const val tabNavigator = "cafe.adriel.voyager:voyager-tab-navigator:${Version.voyagerVersion}"
+    }
+
+    object KMPNotifier {
+        const val notifications = "io.github.mirzemehdi:kmpnotifier:1.2.1"
     }
 }
