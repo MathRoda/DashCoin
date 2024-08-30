@@ -7,6 +7,5 @@ import com.mathroda.phoneshaking.PhoneShakingManger
 import org.koin.dsl.module
 
 actual fun platformModule() = module {
-    single<InternetConnectivityManger> { InternetConnectivityMangerImpl() }
     single<PhoneShakingManger> { PhoneShakingManagerImpl() }
 }

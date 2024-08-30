@@ -36,7 +36,8 @@ class SplashViewModel(
 
     private val isUserExist = firebaseRepository.isCurrentUserExist()
 
-    private val onSuccessWorker = workerProviderRepository.onWorkerSuccess().value
+    //TODO: Remove Later
+    //private val onSuccessWorker = workerProviderRepository.onWorkerSuccess().value
 
     private val userExist = MutableStateFlow(false)
 

@@ -183,4 +183,8 @@ object Deps {
     object KMPNotifier {
         const val notifications = "io.github.mirzemehdi:kmpnotifier:1.2.1"
     }
+
+    object Konnectivity {
+        const val dep = "com.plusmobileapps:konnectivity:0.1-alpha01"
+    }
 }

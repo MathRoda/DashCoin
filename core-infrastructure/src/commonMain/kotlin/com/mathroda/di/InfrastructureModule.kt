@@ -1,8 +1,11 @@
 package com.mathroda.di
 
+import com.mathroda.internetconnectivity.InternetConnectivityManger
+import com.mathroda.internetconnectivity.InternetConnectivityMangerImpl
 import com.mathroda.notifications.coins.CoinsNotification
 import com.mathroda.notifications.sync.SyncNotification
 import com.mmk.kmpnotifier.notification.NotifierManager
+import com.plusmobileapps.konnectivity.Konnectivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -18,4 +21,7 @@ val infrastructureModule = module {
     single { CoinsNotification(get()) }
     single { SyncNotification(get()) }
     single { CoroutineScope(SupervisorJob() + Dispatchers.IO) }
+
+    single { Konnectivity() }
+    single<InternetConnectivityManger> { InternetConnectivityMangerImpl(get()) }
 }

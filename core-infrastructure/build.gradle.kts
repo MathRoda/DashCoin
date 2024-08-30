@@ -59,6 +59,9 @@ kotlin {
             //KMPNotifier
             api(Deps.KMPNotifier.notifications)
 
+            //Konnectivity
+            implementation(Deps.Konnectivity.dep)
+
         }
     }
 
