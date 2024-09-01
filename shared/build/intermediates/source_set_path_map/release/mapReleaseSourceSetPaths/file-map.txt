@@ -1,0 +1,8 @@
+com.mathroda.shared-pngs-0 /Users/mathroda/StudioProjects/DashCoin/shared/build/generated/res/pngs/release
+com.mathroda.shared-resValues-1 /Users/mathroda/StudioProjects/DashCoin/shared/build/generated/res/resValues/release
+com.mathroda.shared-mergeReleaseResources-2 /Users/mathroda/StudioProjects/DashCoin/shared/build/intermediates/incremental/release/mergeReleaseResources/merged.dir
+com.mathroda.shared-mergeReleaseResources-3 /Users/mathroda/StudioProjects/DashCoin/shared/build/intermediates/incremental/release/mergeReleaseResources/stripped.dir
+com.mathroda.shared-release-4 /Users/mathroda/StudioProjects/DashCoin/shared/build/intermediates/merged_res/release/mergeReleaseResources
+com.mathroda.shared-androidMain-5 /Users/mathroda/StudioProjects/DashCoin/shared/src/androidMain/res
+com.mathroda.shared-main-6 /Users/mathroda/StudioProjects/DashCoin/shared/src/main/res
+com.mathroda.shared-release-7 /Users/mathroda/StudioProjects/DashCoin/shared/src/release/res

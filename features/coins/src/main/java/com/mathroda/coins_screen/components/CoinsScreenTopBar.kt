@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.mathroda.common.theme.TextWhite
 
 @Composable
 fun CoinsScreenTopBar(
@@ -41,7 +42,7 @@ fun CoinsScreenTopBar(
                 text = title,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.h2,
-                color = com.mathroda.common.theme.TextWhite,
+                color = TextWhite,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .padding(end = 32.dp)

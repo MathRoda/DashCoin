@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mathroda.common.theme.TextWhite
 
 @Composable
 fun OnBoardingTopSection(
@@ -50,7 +51,7 @@ fun OnBoardingTopSection(
                 modifier = Modifier.align(Alignment.CenterEnd),
                 contentPadding = PaddingValues(0.dp)
             ) {
-                Text(text = "Skip", color = com.mathroda.common.theme.TextWhite)
+                Text(text = "Skip", color = TextWhite)
             }
         }
     }

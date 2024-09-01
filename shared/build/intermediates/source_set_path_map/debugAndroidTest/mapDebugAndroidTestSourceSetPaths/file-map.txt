@@ -1,0 +1,5 @@
+com.mathroda.shared.test.shared-androidTest-0 /Users/mathroda/StudioProjects/DashCoin/shared/build/generated/res/resValues/androidTest/debug
+com.mathroda.shared.test.shared-mergeDebugAndroidTestResources-1 /Users/mathroda/StudioProjects/DashCoin/shared/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
+com.mathroda.shared.test.shared-mergeDebugAndroidTestResources-2 /Users/mathroda/StudioProjects/DashCoin/shared/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
+com.mathroda.shared.test.shared-debugAndroidTest-3 /Users/mathroda/StudioProjects/DashCoin/shared/build/intermediates/merged_res/debugAndroidTest/mergeDebugAndroidTestResources
+com.mathroda.shared.test.shared-debug-4 /Users/mathroda/StudioProjects/DashCoin/shared/build/intermediates/packaged_res/debug/packageDebugResources

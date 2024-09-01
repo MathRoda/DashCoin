@@ -26,6 +26,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mathroda.common.components.CommonTopBar
 import com.mathroda.common.components.CustomLoginButton
 import com.mathroda.common.theme.DarkGray
+import com.mathroda.common.theme.TextWhite
+import com.mathroda.common.theme.Typography
 import com.mathroda.favorite_coins.R
 
 @ExperimentalLayoutApi
@@ -65,8 +67,8 @@ fun WatchListGhostUsers(
                 modifier = Modifier
                     .align(CenterHorizontally),
                 text = "Feature limited for registered users",
-                style = com.mathroda.common.theme.Typography.body1,
-                color = com.mathroda.common.theme.TextWhite.copy(alpha = 0.6f)
+                style = Typography.body1,
+                color = TextWhite.copy(alpha = 0.6f)
             )
             Row(
                 Modifier

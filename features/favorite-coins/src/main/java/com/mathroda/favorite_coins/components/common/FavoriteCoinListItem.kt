@@ -17,6 +17,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mathroda.common.theme.Gold
+import com.mathroda.common.theme.LightGray
+import com.mathroda.common.theme.LighterGray
+import com.mathroda.common.theme.TextWhite
 import com.mathroda.common.util.getColorStatus
 
 @ExperimentalFoundationApi
@@ -37,7 +41,7 @@ fun WatchlistItem(
         modifier = modifier
             .padding(10.dp, 5.dp, 10.dp, 10.dp),
         elevation = 12.dp,
-        backgroundColor = com.mathroda.common.theme.LighterGray,
+        backgroundColor = LighterGray,
         onClick = onItemClick
 
     ) {
@@ -82,12 +86,12 @@ fun WatchlistItem(
                     ) {
                         Text(
                             text = "Statics",
-                            color = com.mathroda.common.theme.TextWhite,
+                            color = TextWhite,
                             fontWeight = FontWeight.Bold
                         )
 
                         Icon(
-                            tint = com.mathroda.common.theme.TextWhite,
+                            tint = TextWhite,
                             modifier = Modifier
                                 .graphicsLayer {
                                     scaleX = 0.8f
@@ -133,7 +137,7 @@ fun WatchlistItem(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(5.dp))
-                                .background(com.mathroda.common.theme.LightGray)
+                                .background(LightGray)
                                 .padding(horizontal = 8.dp, vertical = 4.dp),
                             contentAlignment = Alignment.Center
 
@@ -142,14 +146,14 @@ fun WatchlistItem(
                                 text = rank,
                                 style = MaterialTheme.typography.body2,
                                 fontWeight = FontWeight.SemiBold,
-                                color = com.mathroda.common.theme.Gold,
+                                color = Gold,
                             )
                         }
                         Text(
                             text = symbol,
                             style = MaterialTheme.typography.body1,
                             fontWeight = FontWeight.Bold,
-                            color = com.mathroda.common.theme.TextWhite,
+                            color = TextWhite,
                             modifier = Modifier
                                 .padding(start = 8.dp)
                                 .align(Alignment.Bottom)

@@ -19,7 +19,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mathroda.common.components.shimmerEffect
+import com.mathroda.common.theme.CustomGreen
+import com.mathroda.common.theme.CustomRed
 import com.mathroda.common.theme.LighterGray
+import com.mathroda.common.theme.TextWhite
 
 @Composable
 fun MarketStatusBar(
@@ -100,7 +103,7 @@ fun MarketStatusItem(
                 text = title,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.h4,
-                color = com.mathroda.common.theme.TextWhite,
+                color = TextWhite,
             )
         }
 
@@ -129,7 +132,7 @@ fun MarketStatusItem(
                 Text(
                     text = "$marketStatus%",
                     style = MaterialTheme.typography.body2,
-                    color = if (marketStatus < 0) com.mathroda.common.theme.CustomRed else com.mathroda.common.theme.CustomGreen,
+                    color = if (marketStatus < 0) CustomRed else CustomGreen,
                     modifier = Modifier
                 )
             }

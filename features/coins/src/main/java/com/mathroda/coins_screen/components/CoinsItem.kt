@@ -26,6 +26,12 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.mathroda.common.components.singleClick
 import com.example.shared.Coins
+import com.mathroda.common.theme.CustomGreen
+import com.mathroda.common.theme.CustomRed
+import com.mathroda.common.theme.Gold
+import com.mathroda.common.theme.LightGray
+import com.mathroda.common.theme.LighterGray
+import com.mathroda.common.theme.TextWhite
 
 @Composable
 fun CoinsItem(
@@ -51,7 +57,7 @@ fun CoinsItem(
                 Box(
                     modifier = Modifier
                         .clip(CircleShape)
-                        .background(com.mathroda.common.theme.LighterGray)
+                        .background(LighterGray)
                         .size(50.dp)
                 ) {
 
@@ -76,7 +82,7 @@ fun CoinsItem(
                     text = coins.name,
                     style = MaterialTheme.typography.body1,
                     fontWeight = FontWeight.Bold,
-                    color = com.mathroda.common.theme.TextWhite,
+                    color = TextWhite,
                     textAlign = TextAlign.Start
                 )
 
@@ -85,7 +91,7 @@ fun CoinsItem(
                         modifier = Modifier
                             .clip(RoundedCornerShape(2.dp))
                             .padding(0.dp)
-                            .background(com.mathroda.common.theme.LighterGray)
+                            .background(LighterGray)
                             .align(CenterVertically)
                             .padding(2.dp)
                     ) {
@@ -93,7 +99,7 @@ fun CoinsItem(
                             text = coins.rank.toString(),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = com.mathroda.common.theme.Gold,
+                            color = Gold,
                             modifier = Modifier
                                 .align(Center)
                         )
@@ -120,19 +126,19 @@ fun CoinsItem(
                     text = "$" + coins.price.toFloat().toString(),
                     style = MaterialTheme.typography.body2,
                     fontWeight = FontWeight.Bold,
-                    color = com.mathroda.common.theme.TextWhite
+                    color = TextWhite
                 )
 
                 Text(
                     text = coins.priceChange1d.toString() + "%",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (coins.priceChange1d < 0) com.mathroda.common.theme.CustomRed else com.mathroda.common.theme.CustomGreen
+                    color = if (coins.priceChange1d < 0) CustomRed else CustomGreen
                 )
             }
         }
 
     }
 
-    Divider(color = com.mathroda.common.theme.LightGray)
+    Divider(color = LightGray)
 }

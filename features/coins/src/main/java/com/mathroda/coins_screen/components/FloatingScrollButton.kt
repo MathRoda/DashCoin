@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mathroda.common.theme.LighterGray
 import kotlinx.coroutines.launch
 
 
@@ -77,7 +78,7 @@ fun FloatingScrollButton(
         FloatingActionButton(
             onClick = { onClick() },
             modifier = modifier,
-            backgroundColor = com.mathroda.common.theme.LighterGray,
+            backgroundColor = LighterGray,
             contentColor = Color.White
         ) {
             Icon(

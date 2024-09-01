@@ -36,6 +36,7 @@ kotlin {
 
 android {
     namespace = "com.mathroda.shared"
+    compileSdk = Configuration.compileSdk
     defaultConfig {
         minSdk = Configuration.minSdk
     }

@@ -3,8 +3,8 @@ package com.mathroda.favorite_coins
 import android.util.Log
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.mathroda.common.state.DialogState
-import com.mathroda.common.state.MarketState
+import com.mathroda.core.state.DialogState
+import com.mathroda.core.state.MarketState
 import com.mathroda.common.util.asyncMap
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Resource

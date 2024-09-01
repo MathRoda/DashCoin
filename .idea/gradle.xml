@@ -26,6 +26,7 @@
             <option value="$PROJECT_DIR$/auth/signin" />
             <option value="$PROJECT_DIR$/auth/signup" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/charts" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core-cache" />
             <option value="$PROJECT_DIR$/core-datasource" />

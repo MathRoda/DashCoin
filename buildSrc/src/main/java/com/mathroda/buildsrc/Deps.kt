@@ -125,24 +125,18 @@ object Deps {
             const val mockwebserver = "com.squareup.okhttp3:mockwebserver:4.10.0"
             const val okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
         }
-        object Retrofit2 {
-            const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
-            const val convertorGson = "com.squareup.retrofit2:converter-gson:2.9.0"
-        }
     }
 
     object Github {
         object Tfaki {
             const val composableSweetToast = "com.github.tfaki:ComposableSweetToast:1.0.1"
         }
-        object PhilJay {
-            const val MPAndroidChart = "com.github.PhilJay:MPAndroidChart:3.1.0"
-        }
     }
 
     object Airbnb {
         object Android {
             const val lottieCompose = "com.airbnb.android:lottie-compose:5.2.0"
+            const val kottie = "io.github.ismai117:kottie:1.9.6"
         }
     }
 

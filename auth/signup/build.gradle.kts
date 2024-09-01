@@ -4,98 +4,63 @@ import com.mathroda.buildsrc.Version
 
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    kotlin("multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.compose")
     id("kotlin-kapt")
+}
+
+kotlin {
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "signup_screen"
+            isStatic = true
+            linkerOpts.add("-lsqlite3") // add sqlite
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core"))
+            implementation(project(":core-domain"))
+            implementation(project(":core-datasource"))
+            implementation(project(":features:common"))
+
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.materialIconsExtended)
+
+            //Koin
+            implementation(platform(Deps.Koin.bom))
+            implementation(Deps.Koin.compose)
+
+            //Voyager
+            with(Deps.Voyager) {
+                implementation(screenModel)
+            }
+        }
+    }
 }
 
 android {
     compileSdk = Configuration.compileSdk
     namespace = "com.mathroda.signup_screen"
 
-    defaultConfig {
-        minSdk = Configuration.minSdk
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        //consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = Version.kotlin_compiler_extension
-    }
-    packaging {
-        resources.excludes.apply {
-            add("META-INF/AL2.0")
-            add("META-INF/LGPL2.1")
-            add("META-INF/gradle/incremental.annotation.processors")
-        }
-    }
-}
-
-
-dependencies {
-
-    implementation(project(":core"))
-    implementation(project(":core-domain"))
-    implementation(project(":core-datasource"))
-    implementation(project(":features:common"))
-
-    with(Deps.AndroidX.Compose) {
-        implementation(ui)
-        implementation(material)
-        implementation(toolingPreview)
-        implementation(materialIconsExtended)
-        implementation(runtime)
-    }
-
-    //implementation androidx.activity:activity-compose:1.7.0
-    implementation(Deps.AndroidX.Core.coreKtx)
-    implementation(Deps.AndroidX.Lifecycle.runtime)
-
-
-
-    // Compose dependencies
-    implementation(Deps.Google.Accompanist.flowLayout)
-    implementation(Deps.AndroidX.Navigation.compose)
-    //implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-
-
-    // Coroutine Lifecycle Scopes
-    with(Deps.AndroidX.Lifecycle) {
-        implementation(viewModelKtx)
-        implementation(runtimeKtx)
-        implementation(viewModelCompose)
-    }
-
-    //SweetToast
-    implementation(Deps.Github.Tfaki.composableSweetToast)
-
-    //Koin
-    implementation(platform(Deps.Koin.bom))
-    implementation(Deps.Koin.compose)
-
-    //Voyager
-    with(Deps.Voyager) {
-        implementation(screenModel)
-    }
-
+    defaultConfig { minSdk = Configuration.minSdk }
 }

@@ -13,7 +13,7 @@ interface FirebaseRepository {
     fun signUpWithEmailAndPassword(
         email: String,
         password: String
-    ): Flow<Resource<AuthResult>>
+    ): Flow<Resource<DashCoinUser?>>
 
     fun signInWithEmailAndPassword(
         email: String,

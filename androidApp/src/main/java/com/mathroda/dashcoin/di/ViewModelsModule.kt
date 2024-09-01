@@ -1,17 +1,16 @@
 package com.mathroda.dashcoin.di
 
 import com.mathroda.OnBoardingViewModel
-import com.mathroda.SignUpViewModel
-import com.mathroda.coin_detail.CoinDetailViewModel
+import com.mathroda.signup.SignUpViewModel
+import com.mathroda.coin_details.CoinDetailViewModel
 import com.mathroda.coins_screen.CoinsViewModel
 import com.mathroda.dashcoin.splash.SplashViewModel
 import com.mathroda.favorite_coins.FavoriteCoinsViewModel
-import com.mathroda.forgot_password.ResetPasswordViewModel
+import com.mathroda.ResetPasswordViewModel
 import com.mathroda.news_screen.NewsViewModel
 import com.mathroda.profile_screen.ProfileViewModel
 import com.mathroda.profile_screen.settings.SettingViewModel
 import com.mathroda.signin_screen.SignInViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelsModule = module {

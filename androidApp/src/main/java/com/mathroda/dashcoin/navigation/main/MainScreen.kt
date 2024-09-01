@@ -44,7 +44,6 @@ import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.mathroda.common.R
 import com.mathroda.common.theme.LighterGray
 import com.mathroda.common.theme.TextWhite
-import com.mathroda.common.toastmessage.ToastMessage
 import com.mathroda.core.destination.DashCoinDestinations
 import com.mathroda.dashcoin.ui.screens.CoinsScreen
 import com.mathroda.dashcoin.ui.screens.FavoriteCoinsScreen

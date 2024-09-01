@@ -7,15 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.navigation.NavController
 import com.mathroda.common.components.DeleteAllCoinsDialog
-import com.mathroda.common.state.DialogState
+import com.mathroda.core.state.DialogState
 import com.mathroda.core.state.UserState
 import com.mathroda.favorite_coins.components.authed_users.WatchListAuthedUsers
 import com.mathroda.favorite_coins.components.ghost_users.WatchListGhostUsers
 import com.mathroda.favorite_coins.components.premium_users.WatchListPremiumUsers
 import com.mathroda.phoneshaking.PhoneShakingState
-import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalLayoutApi
 @ExperimentalMaterialApi

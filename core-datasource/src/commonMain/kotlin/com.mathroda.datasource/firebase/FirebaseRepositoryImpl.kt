@@ -7,6 +7,7 @@ import com.mathroda.domain.FavoriteCoin
 import dev.gitlive.firebase.FirebaseNetworkException
 import dev.gitlive.firebase.auth.AuthResult
 import dev.gitlive.firebase.auth.FirebaseAuth
+import dev.gitlive.firebase.auth.FirebaseUser
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
@@ -33,12 +34,12 @@ class FirebaseRepositoryImpl (
     override fun signUpWithEmailAndPassword(
         email: String,
         password: String
-    ): Flow<Resource<AuthResult>> {
+    ): Flow<Resource<DashCoinUser?>> {
         return flow {
             emit(Resource.Loading())
             emit(
                 Resource.Success(
-                    firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    firebaseAuth.createUserWithEmailAndPassword(email, password)?.user?.toDashCoinUser()
                 )
             )
         }.catch {
@@ -313,4 +314,13 @@ class FirebaseRepositoryImpl (
             .delete()
     }
 
+}
+
+internal fun FirebaseUser.toDashCoinUser(): DashCoinUser {
+    return DashCoinUser(
+        userUid = this.uid,
+        userName = this.displayName,
+        email = this.email,
+        image = this.photoURL
+    )
 }

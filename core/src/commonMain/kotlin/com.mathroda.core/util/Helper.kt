@@ -27,3 +27,5 @@ fun getCurrentDate(): LocalDate = Clock.System.todayIn(TimeZone.currentSystemDef
 fun getCurrentDateTime(): LocalDateTime {
     return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 }
+
+fun currentTimeMillis() = Clock.System.now().toEpochMilliseconds()

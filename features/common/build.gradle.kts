@@ -3,9 +3,54 @@ import com.mathroda.buildsrc.Deps
 
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    kotlin("multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.compose")
 }
+
+kotlin {
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "shared"
+            isStatic = true
+            linkerOpts.add("-lsqlite3") // add sqlite
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core"))
+            implementation(project(":core-domain"))
+
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+
+            //Voyager
+            with(Deps.Voyager) {
+                implementation(screenModel)
+            }
+
+            implementation(Deps.Airbnb.Android.kottie)
+        }
+    }
+}
+
 
 android {
     compileSdk = Configuration.compileSdk
@@ -31,9 +76,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     buildFeatures {
         compose = true
     }
@@ -49,6 +91,7 @@ android {
     }
 }
 
+/*
 dependencies {
 
     implementation(project(":core"))
@@ -88,4 +131,4 @@ dependencies {
     }
 
 
-}
+}*/

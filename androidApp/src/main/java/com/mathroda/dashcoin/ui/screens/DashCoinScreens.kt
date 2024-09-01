@@ -31,11 +31,11 @@ import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.mathroda.BasicOnboarding
-import com.mathroda.BasicSignUpScreen
+import com.mathroda.signup.BasicSignUpScreen
 import com.mathroda.OnBoardingViewModel
-import com.mathroda.SignUpViewModel
-import com.mathroda.coin_detail.BasicCoinDetailScreen
-import com.mathroda.coin_detail.CoinDetailViewModel
+import com.mathroda.signup.SignUpViewModel
+import com.mathroda.coin_details.BasicCoinDetailScreen
+import com.mathroda.coin_details.CoinDetailViewModel
 import com.mathroda.coins_screen.BasicCoinScreen
 import com.mathroda.coins_screen.CoinsViewModel
 import com.mathroda.common.R
@@ -44,8 +44,8 @@ import com.mathroda.dashcoin.navigation.main.BottomBar
 import com.mathroda.dashcoin.navigation.main.bottomBarAnimatedScroll
 import com.mathroda.favorite_coins.FavoriteCoinsViewModel
 import com.mathroda.favorite_coins.WatchListScreen
-import com.mathroda.forgot_password.BasicForgotPasswordScreen
-import com.mathroda.forgot_password.ResetPasswordViewModel
+import com.mathroda.BasicForgotPasswordScreen
+import com.mathroda.ResetPasswordViewModel
 import com.mathroda.news_screen.NewsScreen
 import com.mathroda.news_screen.NewsViewModel
 import com.mathroda.profile_screen.ProfileViewModel

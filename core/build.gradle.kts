@@ -28,6 +28,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(project(":core-domain"))
             //Voyager
             with(Deps.Voyager) {
                 implementation(screenModel)
