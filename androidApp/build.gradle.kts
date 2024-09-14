@@ -25,7 +25,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-       // signingConfig signingConfigs.debug
     }
 
     buildTypes {
@@ -43,13 +42,15 @@ android {
             isDebuggable = true
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
+
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "11"
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
     buildFeatures {
         compose = true
     }
@@ -66,22 +67,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":core-domain"))
-    implementation(project(":core-cache"))
-    implementation(project(":core-network"))
-    implementation(project(":core-datasource"))
     implementation(project(":core-infrastructure"))
-    implementation(project(":features:common"))
-    implementation(project(":features:coin-details"))
-    implementation(project(":features:coins"))
-    implementation(project(":features:favorite-coins"))
-    implementation(project(":features:news"))
-    implementation(project(":features:profile"))
-    implementation(project(":features:onboarding"))
-    implementation(project(":auth:signin"))
-    implementation(project(":auth:signup"))
-    implementation(project(":auth:forgot-password"))
+    implementation(project(":shared"))
+
     with(Deps.AndroidX.Core){
         implementation(coreKtx)
         implementation(splashScreen)
@@ -120,17 +108,7 @@ dependencies {
         implementation(coroutinePlayServices)
     }
 
-    //Koin
-    implementation(platform(Deps.Koin.bom))
-    implementation(Deps.Koin.core)
     implementation(Deps.Koin.android)
     implementation(Deps.Koin.workManger)
 
-    //Voyager
-    with(Deps.Voyager) {
-        implementation(navigator)
-        implementation(screenModel)
-        implementation(koin)
-        implementation(tabNavigator)
-    }
 }

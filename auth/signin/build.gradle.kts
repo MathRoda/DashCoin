@@ -1,21 +1,22 @@
 import com.mathroda.buildsrc.Configuration
 import com.mathroda.buildsrc.Deps
 import com.mathroda.buildsrc.Version
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
-    id("kotlin-kapt")
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        androidTarget {
+            // compilerOptions DSL: https://kotl.in/u1r8ln
+            compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
@@ -27,7 +28,6 @@ kotlin {
         it.binaries.framework {
             baseName = "signin_screen"
             isStatic = true
-            linkerOpts.add("-lsqlite3") // add sqlite
         }
     }
 
@@ -35,6 +35,7 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":core"))
             implementation(project(":core-datasource"))
+            implementation(project(":core-domain"))
             implementation(project(":features:common"))
 
             implementation(compose.runtime)
@@ -46,21 +47,36 @@ kotlin {
             implementation(compose.materialIconsExtended)
 
             //Koin
-            implementation(platform(Deps.Koin.bom))
-            implementation(Deps.Koin.compose)
+            implementation(Deps.Koin.core)
 
             //Voyager
             with(Deps.Voyager) {
                 implementation(screenModel)
             }
+
+            //Firebase
+            with(Deps.Google.Firebase) {
+                implementation(authKtx)
+                implementation(fireStoreKtx)
+                implementation(storage)
+            }
         }
     }
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.mathroda.signin_screen.resources"
+    generateResClass = always
+}
 
 android {
     compileSdk = Configuration.compileSdk
     namespace = "com.mathroda.signin_screen"
 
     defaultConfig { minSdk = Configuration.minSdk }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
 }

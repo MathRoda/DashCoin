@@ -1,5 +1,7 @@
 import com.mathroda.buildsrc.Configuration
 import com.mathroda.buildsrc.Deps
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.library")
@@ -9,23 +11,22 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        androidTarget {
+            // compilerOptions DSL: https://kotl.in/u1r8ln
+            compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
-    listOf(
+            listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "shared"
+            baseName = "common"
             isStatic = true
-            linkerOpts.add("-lsqlite3") // add sqlite
         }
     }
 
@@ -47,8 +48,22 @@ kotlin {
             }
 
             implementation(Deps.Airbnb.Android.kottie)
+            implementation("io.coil-kt.coil3:coil-compose:3.0.0-alpha10")
+            implementation("io.coil-kt.coil3:coil-network-ktor2:3.0.0-alpha10")
+        }
+        androidMain.dependencies {
+            implementation(Deps.Ktor.ktorOkhttp)
+        }
+        iosMain.dependencies {
+            implementation(Deps.Ktor.ktorDarwin)
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.mathroda.common.resources"
+    generateResClass = always
 }
 
 
@@ -56,79 +71,9 @@ android {
     compileSdk = Configuration.compileSdk
     namespace = "com.mathroda.common"
 
-    defaultConfig {
-        minSdk = Configuration.minSdk
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        //consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
+    defaultConfig { minSdk = Configuration.minSdk }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = com.mathroda.buildsrc.Version.kotlin_compiler_extension
-    }
-    packaging {
-        resources.excludes.apply {
-            add("META-INF/AL2.0")
-            add("META-INF/LGPL2.1")
-            add("META-INF/gradle/incremental.annotation.processors")
-        }
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
-
-/*
-dependencies {
-
-    implementation(project(":core"))
-    implementation(project(":core-domain"))
-
-    with(Deps.AndroidX.Compose) {
-        implementation(ui)
-        implementation(material)
-        implementation(toolingPreview)
-        implementation(materialIconsExtended)
-        implementation(runtime)
-    }
-
-    //implementation androidx.activity:activity-compose:1.7.0
-    implementation(Deps.AndroidX.Core.coreKtx)
-
-
-    // Compose dependencies
-    implementation(Deps.Google.Accompanist.flowLayout)
-    implementation(Deps.AndroidX.Navigation.compose)
-    //implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-
-    // Coroutine Lifecycle Scopes
-    with(Deps.AndroidX.Lifecycle) {
-        implementation(viewModelKtx)
-        implementation(runtimeKtx)
-        implementation(viewModelCompose)
-    }
-
-
-    //lottie
-    implementation(Deps.Airbnb.Android.lottieCompose)
-
-    //Voyager
-    with(Deps.Voyager) {
-        implementation(screenModel)
-    }
-
-
-}*/

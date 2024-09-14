@@ -1,27 +1,19 @@
 package com.mathroda.cache.di
 
-import androidx.room.RoomDatabase
-import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.mathroda.cache.DashCoinDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import com.mathroda.cache.datastore.DashCoinDataStore
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 expect fun platformModule(): Module
 
-val cacheModule = module {
-    platformModule()
-    single { getRoomDatabase(get()) }
-    single { get<DashCoinDatabase>().favoriteCoinsDao }
-    single { get<DashCoinDatabase>().userDao }
+expect class Factory {
+    fun createRoomDatabase(): DashCoinDatabase
+    fun createDataStore(): DashCoinDataStore
 }
 
-private fun getRoomDatabase(
-    builder: RoomDatabase.Builder<DashCoinDatabase>
-): DashCoinDatabase {
-    return builder
-        .setDriver(BundledSQLiteDriver())
-        .setQueryCoroutineContext(Dispatchers.IO)
-        .build()
+val cacheModule = module {
+    includes(platformModule())
+    single { get<DashCoinDatabase>().favoriteCoinsDao }
+    single { get<DashCoinDatabase>().userDao }
 }

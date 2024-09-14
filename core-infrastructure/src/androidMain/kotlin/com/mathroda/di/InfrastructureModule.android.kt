@@ -1,6 +1,8 @@
 package com.mathroda.di
 
 import androidx.work.WorkManager
+import com.mathroda.internetconnectivity.InternetConnectivityManagerImpl
+import com.mathroda.internetconnectivity.InternetConnectivityManger
 import com.mathroda.phoneshaking.PhoneShakingManger
 import com.mathroda.phoneshaking.PhoneShakingMangerImpl
 import com.mathroda.workmanger.WorkerProviderRepository
@@ -10,23 +12,17 @@ import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfig
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
+import kotlin.math.sin
 
 actual fun platformModule() = module {
     single<PhoneShakingManger> { PhoneShakingMangerImpl(androidApplication()) }
-
-    single {
-        NotifierManager.initialize(
-            configuration = NotificationPlatformConfiguration.Android(
-                notificationIconResId = com.mathroda.common.R.drawable.ic_crypto
-            )
-        )
-    }
     single { WorkManager.getInstance(androidApplication()) }
     worker { DashCoinWorker(androidApplication(), get(), get(), get(), get()) }
-
     single<WorkerProviderRepository> {
         WorkerProviderRepository(
             get(), get(), get(), get()
         )
     }
+
+    single<InternetConnectivityManger> { InternetConnectivityManagerImpl(androidApplication()) }
 }

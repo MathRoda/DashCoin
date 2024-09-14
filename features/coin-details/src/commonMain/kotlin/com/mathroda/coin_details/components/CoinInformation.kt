@@ -21,13 +21,11 @@ fun CoinInformation(
     rank: String
 ) {
     Column(modifier = modifier) {
-
         CoinInfoRow(value = rank, title = "Rank")
         CoinInfoRow(value = marketCap, title = "Market cap")
         CoinInfoRow(value = volume, title = "Volume")
         CoinInfoRow(value = availableSupply, title = "Available supply")
         CoinInfoRow(value = totalSupply, title = "Total supply")
-
     }
 }
 

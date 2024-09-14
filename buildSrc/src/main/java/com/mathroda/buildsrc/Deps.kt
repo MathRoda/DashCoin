@@ -3,6 +3,8 @@ package com.mathroda.buildsrc
 import com.mathroda.buildsrc.Version.androidx_lifecycle
 import com.mathroda.buildsrc.Version.compose_navigation_version
 import com.mathroda.buildsrc.Version.compose_version
+import com.mathroda.buildsrc.Version.koin_compose_multiplatform
+import com.mathroda.buildsrc.Version.koin_version
 import com.mathroda.buildsrc.Version.kotlinx_coroutines
 import com.mathroda.buildsrc.Version.play_services_auth_version
 import com.mathroda.buildsrc.Version.room_version
@@ -113,7 +115,8 @@ object Deps {
 
     object IO {
         object Coil {
-            const val compose = "io.coil-kt:coil-compose:2.1.0"
+            const val network = "io.coil-kt.coil3:coil-network-ktor:3.0.0-alpha10"
+            const val compose = "io.coil-kt.coil3:coil-compose:3.0.0-alpha10"
         }
         object Mockk {
             const val mockk = "io.mockk:mockk:1.13.4"
@@ -147,11 +150,10 @@ object Deps {
     }
 
     object Koin {
-        const val bom = "io.insert-koin:koin-bom:${Version.koin_version}"
-        const val core = "io.insert-koin:koin-core"
-        const val android = "io.insert-koin:koin-android"
-        const val compose = "io.insert-koin:koin-androidx-compose"
-        const val workManger = "io.insert-koin:koin-androidx-workmanager"
+        const val core = "io.insert-koin:koin-core:$koin_version"
+        const val android = "io.insert-koin:koin-android:$koin_version"
+        const val compose = "io.insert-koin:koin-compose:$koin_version"
+        const val workManger = "io.insert-koin:koin-androidx-workmanager:$koin_version"
     }
 
     object Ktor {
@@ -165,6 +167,7 @@ object Deps {
 
     object Charts {
         const val lib = "io.github.dautovicharis:charts:1.2.0"
+        const val snapshots = "io.github.dautovicharis:charts:2.0.0-SNAPSHOT"
     }
 
     object Voyager {
@@ -180,5 +183,9 @@ object Deps {
 
     object Konnectivity {
         const val dep = "com.plusmobileapps:konnectivity:0.1-alpha01"
+    }
+
+    object Peekaboo {
+        const val imagePicker = "io.github.onseok:peekaboo-image-picker:0.5.2"
     }
 }

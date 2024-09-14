@@ -1,21 +1,22 @@
 import com.mathroda.buildsrc.Configuration
 import com.mathroda.buildsrc.Deps
 import com.mathroda.buildsrc.Version
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
-    id("kotlin-kapt")
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        androidTarget {
+            // compilerOptions DSL: https://kotl.in/u1r8ln
+            compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
@@ -27,18 +28,17 @@ kotlin {
         it.binaries.framework {
             baseName = "coin_detail"
             isStatic = true
-            linkerOpts.add("-lsqlite3") // add sqlite
         }
     }
 
     sourceSets {
         commonMain.dependencies {
             implementation(project(":core"))
+            implementation(project(":features:chart"))
             implementation(project(":core-domain"))
             implementation(project(":core-datasource"))
             implementation(project(":features:common"))
             implementation(project(":core-infrastructure"))
-            implementation(project(":charts"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -49,8 +49,7 @@ kotlin {
             implementation(compose.materialIconsExtended)
 
             //Koin
-            implementation(platform(Deps.Koin.bom))
-            implementation(Deps.Koin.compose)
+            implementation(Deps.Koin.core)
 
             //Voyager
             with(Deps.Voyager) {
@@ -59,11 +58,14 @@ kotlin {
 
             //KotlinDateTime
             implementation(Deps.Org.Jetbrains.Kotlinx.dateTime)
-
-            //coil
-            implementation(Deps.IO.Coil.compose)
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.mathroda.coin_detail.resources"
+    generateResClass = always
 }
 
 android {
@@ -71,4 +73,9 @@ android {
     namespace = "com.mathroda.coin_detail"
 
     defaultConfig { minSdk = Configuration.minSdk }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
 }

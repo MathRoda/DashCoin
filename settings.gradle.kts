@@ -1,7 +1,13 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
     }
 }
@@ -19,6 +25,7 @@ dependencyResolutionManagement {
 rootProject.name = "Dash Coin"
 
 include(":androidApp")
+
 include(":core")
 include(":core-datasource")
 include(":core-domain")
@@ -34,10 +41,11 @@ include(":features:profile")
 include(":features:favorite-coins")
 include(":features:news")
 include(":features:onboarding")
+include(":features:chart")
 
 include(":auth")
 include(":auth:signin")
 include(":auth:signup")
 include(":auth:forgot-password")
+
 include(":shared")
-include(":charts")

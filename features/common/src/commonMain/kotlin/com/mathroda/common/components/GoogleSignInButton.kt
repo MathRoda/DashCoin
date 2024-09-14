@@ -10,8 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mathroda.common.resources.Res
+import com.mathroda.common.resources.ic_google_logo
 import com.mathroda.common.theme.LighterGray
-import `dash coin`.features.common.generated.resources.Res
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
@@ -30,7 +31,7 @@ fun GoogleSignInButton(
         onClick = onClick
     ) {
         Image(
-            imageVector = vectorResource(resource = Res.drawable.ic_google),
+            imageVector = vectorResource(resource = Res.drawable.ic_google_logo),
             contentDescription = null
         )
         Text(

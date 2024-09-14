@@ -12,7 +12,7 @@ interface FavoriteCoinsDao {
     @Query("SELECT * FROM FavoriteCoin " +
             "Where CoinId = :coinId " +
             "Limit 1" )
-    fun getFavoriteCoinById(coinId: String): FavoriteCoinEntity?
+    suspend fun getFavoriteCoinById(coinId: String): FavoriteCoinEntity?
 
     @Upsert
     suspend fun upsertFavoriteCoin(coin: FavoriteCoinEntity)

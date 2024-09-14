@@ -2,7 +2,13 @@ package com.mathroda.coin_details.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -10,14 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mathroda.common.resources.Res
+import com.mathroda.common.resources.ic_arrow_negative
+import com.mathroda.common.resources.ic_arrow_positive
 import com.mathroda.common.theme.CustomGreen
 import com.mathroda.common.theme.CustomRed
 import com.mathroda.common.theme.LighterGray
 import com.mathroda.common.theme.TextWhite
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun CoinDetailSection(
@@ -66,8 +75,11 @@ fun CoinDetailSection(
                 )
 
                 Image(
-                    painter = if (priceChange < 0) painterResource(id = com.mathroda.common.R.drawable.ic_arrow_negative)
-                    else painterResource(id = com.mathroda.common.R.drawable.ic_arrow_positive),
+                    painter = if (priceChange < 0) {
+                        painterResource(Res.drawable.ic_arrow_negative)
+                    } else {
+                        painterResource(Res.drawable.ic_arrow_positive)
+                    },
                     contentDescription = "arrow",
                     modifier = Modifier
                         .padding(4.dp)

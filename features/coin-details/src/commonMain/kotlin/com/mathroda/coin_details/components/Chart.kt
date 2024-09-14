@@ -18,17 +18,16 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
+import com.mathroda.chart.common.LineChartView
+import com.mathroda.chart.common.model.ChartDataSet
+import com.mathroda.chart.common.style.ChartViewDefaults
+import com.mathroda.chart.common.style.LineChartDefaults
+import com.mathroda.coin_details.Point
 import com.mathroda.coin_details.state.ChartState
-import com.mathroda.coin_details.utils.getLowerValue
-import com.mathroda.coin_details.utils.getUpperValue
 import com.mathroda.coin_details.utils.yAxisDrawing
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.common.util.getColorStatus
-import io.github.dautovicharis.charts.LineChartView
-import io.github.dautovicharis.charts.common.model.ChartDataSet
-import io.github.dautovicharis.charts.style.ChartViewDefaults
-import io.github.dautovicharis.charts.style.LineChartDefaults
 
 enum class TimeRange {
     ONE_DAY, ONE_WEEK, ONE_MONTH, ONE_YEAR, ALL
@@ -111,4 +110,12 @@ fun Chart(
         }
     }
 
+}
+
+private fun List<Point>.getUpperValue(): Double {
+    return this.maxOfOrNull { item -> item.y }?.plus(1.0) ?: 0.0
+}
+
+private fun List<Point>.getLowerValue(): Double {
+    return this.minOfOrNull { item -> item.y }?.toDouble() ?: 0.0
 }

@@ -8,7 +8,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.mathroda.coin_details.components.TimeRange
 import com.mathroda.coin_details.state.ChartState
 import com.mathroda.coin_details.state.CoinState
-import com.mathroda.core.events.FavoriteCoinEvents
+import com.mathroda.domain.events.FavoriteCoinEvents
 import com.mathroda.core.state.DialogState
 import com.mathroda.core.state.IsFavoriteState
 import com.mathroda.core.state.UserState

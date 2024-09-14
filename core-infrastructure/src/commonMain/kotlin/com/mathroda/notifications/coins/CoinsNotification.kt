@@ -1,17 +1,16 @@
 package com.mathroda.notifications.coins
 
 import com.mathroda.core.util.Constants
-import com.mmk.kmpnotifier.notification.Notifier
 
 class CoinsNotification (
-    private val notifier: Notifier
+    //private val notifier: Notifier
 ) {
 
     fun show(
         title: String,
         description: String
     ) {
-      notifier.notify(title, description)
+     // notifier.notify(title, description)
     }
 }
 

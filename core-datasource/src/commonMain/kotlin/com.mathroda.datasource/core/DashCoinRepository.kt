@@ -26,7 +26,7 @@ interface DashCoinRepository {
 
     fun getFlowFavoriteCoins(): Flow<List<FavoriteCoin>>
 
-    fun getFavoriteCoinByIdLocal(
+    suspend fun getFavoriteCoinByIdLocal(
         coinId: String
     ): FavoriteCoin?
 

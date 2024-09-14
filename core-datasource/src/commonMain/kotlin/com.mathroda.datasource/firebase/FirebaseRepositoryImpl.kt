@@ -259,9 +259,10 @@ class FirebaseRepositoryImpl (
         name: String,
         bitmap: ByteArray
     ): Flow<Resource<String>> {
-        return flow {
+        return flow {  }
+        /*return flow {
             emit(Resource.Loading())
-            /* val storage = Firebase.storage
+            *//* val storage = Firebase.storage
             val storageRef = storage.reference
             val imageRef = storageRef.child("images/$name.jpeg")
 
@@ -286,7 +287,6 @@ class FirebaseRepositoryImpl (
         }.catch {
             emit(Resource.Error(it.message ?: "An error occurred"))
         }*/
-        }
     }
 
     override fun updateUserProfilePicture(

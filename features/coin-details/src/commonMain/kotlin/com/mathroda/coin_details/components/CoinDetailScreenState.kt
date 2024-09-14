@@ -1,9 +1,7 @@
 package com.mathroda.coin_details.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,18 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
-import com.mathroda.coin_detail.CoinDetailViewModel
 import com.mathroda.coin_details.CoinDetailViewModel
-import com.mathroda.common.R
+import com.mathroda.common.components.LoadingCrypto
 import com.mathroda.common.components.LoadingDots
+import com.mathroda.common.toastmessage.components.LocalMessageBar
 import com.mathroda.internetconnectivity.InternetState
-import com.talhafaki.composablesweettoast.util.SweetToastUtil
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BoxScope.CoinDetailScreenState(
@@ -37,12 +28,8 @@ fun BoxScope.CoinDetailScreenState(
     val coinState by viewModel.coinState.collectAsState()
     val favoriteMsg = viewModel.favoriteMsg.value
     val sideEffect = viewModel.sideEffect.value
-    val lottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_main))
-    val lottieProgress by animateLottieCompositionAsState(
-        composition = lottieComp,
-        iterations = LottieConstants.IterateForever,
-    )
     val connectivityState by viewModel.connectivityMangerState.collectAsState()
+    val messageBarState = LocalMessageBar.current
 
     /**
      * Coin detail state:
@@ -50,17 +37,7 @@ fun BoxScope.CoinDetailScreenState(
      */
     when {
         coinState.isLoading -> {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center
-            ) {
-                LottieAnimation(
-                    composition = lottieComp,
-                    progress = { lottieProgress },
-                )
-            }
+            LoadingCrypto()
         }
 
         coinState.error.isNotBlank() -> {
@@ -87,8 +64,7 @@ fun BoxScope.CoinDetailScreenState(
      */
 
     if (favoriteMsg.favoriteMessage.isNotEmpty()) {
-        SweetToastUtil.SweetSuccess(
-            padding = PaddingValues(24.dp),
+       messageBarState.showSuccess(
             message = favoriteMsg.favoriteMessage
         )
     }
@@ -98,8 +74,7 @@ fun BoxScope.CoinDetailScreenState(
      */
 
     if (favoriteMsg.notFavoriteMessage.isNotEmpty()) {
-        SweetToastUtil.SweetError(
-            padding = PaddingValues(24.dp),
+        messageBarState.showError(
             message = favoriteMsg.notFavoriteMessage
         )
     }
@@ -110,8 +85,7 @@ fun BoxScope.CoinDetailScreenState(
      */
 
     if (sideEffect) {
-        SweetToastUtil.SweetWarning(
-            padding = PaddingValues(24.dp),
+        messageBarState.showError(
             message = "Please Login First"
         )
     }

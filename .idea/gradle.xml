@@ -26,7 +26,6 @@
             <option value="$PROJECT_DIR$/auth/signin" />
             <option value="$PROJECT_DIR$/auth/signup" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/charts" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core-cache" />
             <option value="$PROJECT_DIR$/core-datasource" />
@@ -34,6 +33,7 @@
             <option value="$PROJECT_DIR$/core-infrastructure" />
             <option value="$PROJECT_DIR$/core-network" />
             <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/chart" />
             <option value="$PROJECT_DIR$/features/coin-details" />
             <option value="$PROJECT_DIR$/features/coins" />
             <option value="$PROJECT_DIR$/features/common" />

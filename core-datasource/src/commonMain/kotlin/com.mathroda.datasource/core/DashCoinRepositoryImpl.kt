@@ -23,7 +23,7 @@ import com.mathroda.network.dto.toChart
 import com.mathroda.network.dto.toCoinDetail
 import com.mathroda.network.dto.toCoins
 import com.mathroda.network.dto.toNewsDetails
-import com.mathroda.network.utils.IOException
+import com.mathroda.network.utils.DashCoinException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -44,7 +44,7 @@ class DashCoinRepositoryImpl (
             emit(Resource.Success(coins))
         } catch (e: Exception) {
             emit(Resource.Error(e.message ?: "Unexpected Error"))
-        } catch (e: IOException) {
+        } catch (e: DashCoinException) {
             emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
@@ -58,7 +58,7 @@ class DashCoinRepositoryImpl (
             emit(Resource.Success(coin))
         } catch (e: Exception) {
             emit(Resource.Error(e.message ?: "An unexpected error"))
-        } catch (e: IOException) {
+        } catch (e: DashCoinException) {
             emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
@@ -82,7 +82,7 @@ class DashCoinRepositoryImpl (
             emit(Resource.Success(coins))
         } catch (e: Exception) {
             emit(Resource.Error(e.message ?: "Unexpected Error"))
-        } catch (e: IOException) {
+        } catch (e: DashCoinException) {
             emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
@@ -97,7 +97,7 @@ class DashCoinRepositoryImpl (
                 emit(Resource.Success(coin))
             } catch (e: Exception) {
                 emit(Resource.Error(e.message ?: "An unexpected error"))
-            } catch (e: IOException) {
+            } catch (e: DashCoinException) {
                 emit(Resource.Error("Couldn't reach server. Check your internet connection"))
             }
         }
@@ -106,7 +106,7 @@ class DashCoinRepositoryImpl (
         return favoriteCoinsDao.getAllFavoriteCoins().map { it.toDomain() }
     }
 
-    override fun getFavoriteCoinByIdLocal(coinId: String): FavoriteCoin? {
+    override suspend fun getFavoriteCoinByIdLocal(coinId: String): FavoriteCoin? {
         return favoriteCoinsDao.getFavoriteCoinById(coinId)?.toDomain()
     }
 

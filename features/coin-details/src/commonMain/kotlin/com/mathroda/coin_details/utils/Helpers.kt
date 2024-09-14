@@ -9,7 +9,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.times
-import com.mathroda.coin_detail.Point
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -45,14 +44,6 @@ internal fun DrawScope.yAxisDrawing(
             )
         }
     }
-}
-
-internal fun List<Point>.getUpperValue(): Double {
-    return this.maxOfOrNull { item -> item.y }?.plus(1.0) ?: 0.0
-}
-
-internal fun List<Point>.getLowerValue(): Double {
-    return this.minOfOrNull { item -> item.y }?.toDouble() ?: 0.0
 }
 
 private fun Float.formatToThousandsMillionsBillions(): String {

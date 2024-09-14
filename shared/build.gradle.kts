@@ -1,16 +1,23 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import com.mathroda.buildsrc.Configuration
+import com.mathroda.buildsrc.Deps
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("multiplatform")
     id("com.android.library")
+    kotlin("multiplatform")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.compose")
+    id("com.codingfeline.buildkonfig")
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        androidTarget {
+            // compilerOptions DSL: https://kotl.in/u1r8ln
+            compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
         }
     }
     
@@ -22,15 +29,73 @@ kotlin {
         it.binaries.framework {
             baseName = "shared"
             isStatic = true
-            linkerOpts.add("-lsqlite3") // add sqlite
         }
     }
 
     sourceSets {
+       /* all {
+            languageSettings.optIn("androidx.compose.material.ExperimentalMaterialApi")
+            languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
+            languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            languageSettings.optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
+            languageSettings.optIn("androidx.compose.foundation.ExperimentalFoundationApi")
+        }*/
+
         commonMain.dependencies {
             implementation(project(":core"))
+            implementation(project(":core-domain"))
+            implementation(project(":core-cache"))
+            implementation(project(":core-network"))
+            implementation(project(":core-datasource"))
+            implementation(project(":core-infrastructure"))
+            implementation(project(":features:common"))
+            implementation(project(":features:coin-details"))
+            implementation(project(":features:coins"))
+            implementation(project(":features:favorite-coins"))
+            implementation(project(":features:news"))
+            implementation(project(":features:profile"))
+            implementation(project(":features:onboarding"))
+            implementation(project(":auth:signin"))
+            implementation(project(":auth:signup"))
+            implementation(project(":auth:forgot-password"))
             //put your multiplatform dependencies here
+
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.materialIconsExtended)
+
+            //Koin
+            implementation(Deps.Koin.core)
+
+            //Voyager
+            with(Deps.Voyager) {
+                implementation(navigator)
+                implementation(screenModel)
+                implementation(koin)
+                implementation(tabNavigator)
+            }
         }
+    }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.mathroda.shared.resources"
+    generateResClass = always
+}
+
+
+buildkonfig {
+    packageName = "com.mathroda.shared"
+
+    // default config is required
+    defaultConfigs {
+        buildConfigField(FieldSpec.Type.INT, "VERSION_CODE", Configuration.versionCode.toString())
+        buildConfigField(FieldSpec.Type.STRING, "VERSION_NAME", Configuration.versionName)
     }
 }
 
@@ -40,8 +105,9 @@ android {
     defaultConfig {
         minSdk = Configuration.minSdk
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }

@@ -36,12 +36,12 @@ fun TimeRangePicker(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        timeOptions.map { timeRange ->
+        timeOptions.map { (timeRange, title) ->
             TimeRangeChip(
-                time = timeRange.value,
-                timeRange = timeRange.key,
+                time = title,
+                timeRange = timeRange,
                 state = selectedTime,
-                onTimeRangeSelected = { onTimeSelected(timeRange.key) }
+                onTimeRangeSelected = { onTimeSelected(timeRange) }
             )
         }
 

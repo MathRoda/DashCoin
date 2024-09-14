@@ -1,106 +1,84 @@
 import com.mathroda.buildsrc.Configuration
 import com.mathroda.buildsrc.Deps
 import com.mathroda.buildsrc.Version
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    kotlin("multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
-    id("kotlin-kapt")
+    id("org.jetbrains.compose")
+}
+
+kotlin {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        androidTarget {
+            // compilerOptions DSL: https://kotl.in/u1r8ln
+            compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "favorite_coins"
+            isStatic = true
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core"))
+            implementation(project(":core-domain"))
+            implementation(project(":core-datasource"))
+            implementation(project(":core-infrastructure"))
+            implementation(project(":features:common"))
+
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.materialIconsExtended)
+
+            //Koin
+            implementation(Deps.Koin.core)
+
+            //Voyager
+            with(Deps.Voyager) {
+                implementation(screenModel)
+            }
+
+            //Kottie
+            implementation(Deps.Airbnb.Android.kottie)
+
+            //KotlinDateTime
+            implementation(Deps.Org.Jetbrains.Kotlinx.dateTime)
+
+        }
+    }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.mathroda.favorite_coins.resources"
+    generateResClass = always
 }
 
 android {
     compileSdk = Configuration.compileSdk
     namespace = "com.mathroda.favorite_coins"
 
-    defaultConfig {
-        minSdk = Configuration.minSdk
+    defaultConfig { minSdk = Configuration.minSdk }
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        //consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = Version.kotlin_compiler_extension
-    }
-    packaging {
-        resources.excludes.apply {
-            add("META-INF/AL2.0")
-            add("META-INF/LGPL2.1")
-            add("META-INF/gradle/incremental.annotation.processors")
-        }
-    }
-}
-
-dependencies {
-
-    implementation(project(":core"))
-    implementation(project(":core-domain"))
-    implementation(project(":core-datasource"))
-    implementation(project(":core-infrastructure"))
-    implementation(project(":features:common"))
-
-    with(Deps.AndroidX.Compose) {
-        implementation(ui)
-        implementation(material)
-        implementation(toolingPreview)
-        implementation(materialIconsExtended)
-        implementation(runtime)
-    }
-
-    //implementation androidx.activity:activity-compose:1.7.0
-    implementation(Deps.AndroidX.Core.coreKtx)
-    implementation(Deps.AndroidX.Lifecycle.runtime)
-
-
-
-    // Compose dependencies
-    implementation(Deps.Google.Accompanist.flowLayout)
-    implementation(Deps.AndroidX.Navigation.compose)
-    //implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-
-
-    //coil
-    implementation(Deps.IO.Coil.compose)
-
-    //lottie
-    implementation(Deps.Airbnb.Android.lottieCompose)
-
-    // Coroutine Lifecycle Scopes
-    with(Deps.AndroidX.Lifecycle) {
-        implementation(viewModelKtx)
-        implementation(runtimeKtx)
-        implementation(viewModelCompose)
-    }
-
-    // Swipe to refresh
-    implementation(Deps.Google.Accompanist.swipeRefresh)
-
-    //Koin
-    implementation(platform(Deps.Koin.bom))
-    implementation(Deps.Koin.compose)
-
-    //Voyager
-    with(Deps.Voyager) {
-        implementation(screenModel)
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }

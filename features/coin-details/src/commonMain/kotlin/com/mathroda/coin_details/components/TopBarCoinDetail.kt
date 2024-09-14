@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.mathroda.common.components.BackStackButton
+import com.mathroda.common.components.CommonAsyncImage
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.state.IsFavoriteState
@@ -63,7 +63,7 @@ fun TopBarCoinDetail(
             contentAlignment = Alignment.Center
         ) {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
-                AsyncImage(
+                CommonAsyncImage(
                     model = icon,
                     contentDescription = "Icon",
                     modifier = Modifier
