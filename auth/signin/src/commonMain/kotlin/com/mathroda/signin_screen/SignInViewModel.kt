@@ -1,7 +1,7 @@
 package com.mathroda.signin_screen
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mathroda.core.util.Resource
 import com.mathroda.core.util.isValidEmail
 import com.mathroda.core.util.isValidPassword
@@ -24,7 +24,7 @@ class SignInViewModel(
     private val googleServices: GoogleAuthProvider,
     private val dashCoinUseCases: DashCoinUseCases,
     private val dataStoreRepository: DataStoreRepository
-) : ScreenModel {
+) : ViewModel() {
 
     private val _signIn = MutableStateFlow(SignInState())
     val signIn = _signIn.asStateFlow()
@@ -54,7 +54,7 @@ class SignInViewModel(
         }
     }
 
-    private fun signIn(email: String, password: String) = screenModelScope.launch(Dispatchers.IO) {
+    private fun signIn(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
         firebaseRepository.signInWithEmailAndPassword(email, password).collectLatest { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -88,7 +88,7 @@ class SignInViewModel(
     }
 
     fun oneTapSignIn() {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val user = googleServices.getUiProvider().signIn()
             if (user == null) {
                 _oneTapSignInResponse.update { false }

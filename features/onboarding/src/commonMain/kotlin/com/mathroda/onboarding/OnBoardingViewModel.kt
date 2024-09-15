@@ -1,7 +1,7 @@
 package com.mathroda.onboarding
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.onboarding.utils.OnBoardingPage
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class OnBoardingViewModel(
     private val dataStoreRepository: DataStoreRepository
-) : ScreenModel {
+) : ViewModel() {
 
     val pager = listOf(
         OnBoardingPage.FirstScreen,
@@ -19,8 +19,11 @@ class OnBoardingViewModel(
     )
 
     fun saveOnBoardingState(completed: Boolean) {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             dataStoreRepository.saveOnBoardingState(completed)
         }
     }
+
 }
+
+

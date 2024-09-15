@@ -35,9 +35,9 @@ import com.mathroda.common.components.CustomDialog
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.LighterGray
 import com.mathroda.common.theme.Twitter
-import com.mathroda.domain.events.FavoriteCoinEvents
 import com.mathroda.core.util.numbersToCurrency
 import com.mathroda.core.util.numbersToFormat
+import com.mathroda.domain.events.FavoriteCoinEvents
 import com.mathroda.domain.toFavoriteCoin
 
 @Composable

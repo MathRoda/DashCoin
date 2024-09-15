@@ -1,6 +1,8 @@
 package com.mathroda.cache.dbo.user
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao

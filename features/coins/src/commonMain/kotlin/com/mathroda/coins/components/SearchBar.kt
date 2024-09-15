@@ -30,12 +30,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.mathroda.common.resources.Res
 import com.mathroda.common.resources.ic_filter
-import com.mathroda.common.resources.ic_search
 import com.mathroda.common.theme.LighterGray
 import com.mathroda.common.theme.TextWhite
-import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun SearchBar(

@@ -1,9 +1,6 @@
 package com.mathroda.internetconnectivity
 
-import com.plusmobileapps.konnectivity.Konnectivity
-import com.plusmobileapps.konnectivity.NetworkConnection
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 sealed class InternetState {
     data object Available: InternetState()

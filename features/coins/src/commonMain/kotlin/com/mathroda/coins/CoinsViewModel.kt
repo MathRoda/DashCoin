@@ -1,7 +1,7 @@
 package com.mathroda.coins
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mathroda.coins.state.CoinsState
 import com.mathroda.coins.state.PaginationState
 import com.mathroda.core.util.Resource
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class CoinsViewModel(
     private val dashCoinRepository: DashCoinRepository,
     val connectivityManger: InternetConnectivityManger
-) : ScreenModel {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(CoinsState())
     val state = _state.asStateFlow()
@@ -45,7 +45,7 @@ class CoinsViewModel(
     private fun getCoins(
         skip: Int = 1
     ) {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             dashCoinRepository.getCoinsRemote(skip = skip)
                 .distinctUntilChanged()
                 .collectLatest { result ->
@@ -122,7 +122,7 @@ class CoinsViewModel(
     }
 
     fun refresh() {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             updateRefreshState(true)
             _paginationState.update { it.copy(skip = 0) }
             _state.update { it.copy(coins = persistentListOf()) }

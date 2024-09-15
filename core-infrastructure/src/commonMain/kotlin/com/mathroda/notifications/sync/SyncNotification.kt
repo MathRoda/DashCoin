@@ -1,7 +1,5 @@
 package com.mathroda.notifications.sync
 
-import com.mmk.kmpnotifier.notification.Notifier
-
 class SyncNotification (
     //private val notifier: Notifier
 ) {

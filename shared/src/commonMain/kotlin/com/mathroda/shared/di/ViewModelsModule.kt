@@ -11,18 +11,19 @@ import com.mathroda.profile.settings.SettingViewModel
 import com.mathroda.shared.SharedScreenModel
 import com.mathroda.signin_screen.SignInViewModel
 import com.mathroda.signup.SignUpViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelsModule = module {
-    factory { ResetPasswordViewModel(get()) }
-    factory { SignInViewModel(get(),get(),get(),get()) }
-    factory { SignUpViewModel(get(),get()) }
-    factory { CoinDetailViewModel(get(),get(), get()) }
-    factory { CoinsViewModel(get(), get()) }
-    factory { FavoriteCoinsViewModel(get(), get(), get()) }
-    factory { NewsViewModel(get(), get()) }
-    factory { OnBoardingViewModel(get()) }
-    factory { ProfileViewModel(get(), get(), get(), get()) }
-    single { SharedScreenModel(get(), get(), get(), get(), get()) }
-    factory { SettingViewModel(get(), get()) }
+    viewModel { ResetPasswordViewModel(get()) }
+    viewModel { SignInViewModel(get(),get(),get(),get()) }
+    viewModel { SignUpViewModel(get(),get()) }
+    viewModel { CoinDetailViewModel(get(),get(), get()) }
+    viewModel { CoinsViewModel(get(), get()) }
+    viewModel { FavoriteCoinsViewModel(get(), get(), get()) }
+    viewModel { NewsViewModel(get(), get()) }
+    viewModel { OnBoardingViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get(), get(), get()) }
+    viewModel { SharedScreenModel(get(), get(), get(), get(), get()) }
+    viewModel { SettingViewModel(get(), get()) }
 }

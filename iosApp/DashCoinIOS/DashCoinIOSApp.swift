@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import shared
 
 @main
 struct DashCoinIOSApp: App {
+    
+    init() {
+        KoinKt.doInitKoin()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().edgesIgnoringSafeArea(.all)
         }
     }
 }

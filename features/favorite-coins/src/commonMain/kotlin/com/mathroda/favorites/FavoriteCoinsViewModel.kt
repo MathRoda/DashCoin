@@ -1,10 +1,9 @@
 package com.mathroda.favorites
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mathroda.common.util.asyncMap
 import com.mathroda.core.state.DialogState
-import com.mathroda.favorites.state.MarketState
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Resource
 import com.mathroda.core.util.getCurrentDateTime
@@ -13,6 +12,7 @@ import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.domain.FavoriteCoin
 import com.mathroda.domain.toFavoriteCoin
 import com.mathroda.favorites.state.FavoriteCoinsState
+import com.mathroda.favorites.state.MarketState
 import com.mathroda.phoneshaking.PhoneShakingManger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -28,7 +28,7 @@ class FavoriteCoinsViewModel(
     private val dashCoinRepository: DashCoinRepository,
     private val dashCoinUseCases: DashCoinUseCases,
     val phoneShakingManger: PhoneShakingManger
-) : ScreenModel {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(FavoriteCoinsState())
     val state: StateFlow<FavoriteCoinsState> = _state.asStateFlow()
@@ -46,7 +46,7 @@ class FavoriteCoinsViewModel(
     val dialogState = _dialogState.asStateFlow()
 
     fun init() {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val userState = dashCoinUseCases.userStateProvider()
             _authState.update { userState }
             getMarketStatus(userState)
@@ -58,7 +58,7 @@ class FavoriteCoinsViewModel(
     private fun getAllCoins(
         user: UserState
     ) {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             when(user) {
                 is UserState.UnauthedUser -> Unit
                 is UserState.AuthedUser -> getAllFavoriteCoinsAuthed()
@@ -90,7 +90,7 @@ class FavoriteCoinsViewModel(
     private fun updateFavoriteCoins(
         user: UserState
     ) {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val coins = _state.value.coin
             if (coins.isEmpty()) {
                 return@launch
@@ -125,7 +125,7 @@ class FavoriteCoinsViewModel(
             return
         }
 
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             dashCoinRepository.getCoinByIdRemoteFlow("bitcoin").collect { result ->
                 when (result) {
                     is Resource.Success -> {
@@ -187,7 +187,7 @@ class FavoriteCoinsViewModel(
     }
 
     fun deleteAllFavoriteCoins() {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             dashCoinRepository.removeAllFavoriteCoins()
         }
     }

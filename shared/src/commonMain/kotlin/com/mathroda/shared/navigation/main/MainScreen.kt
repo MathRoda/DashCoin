@@ -6,16 +6,20 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.ContentAlpha
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -25,20 +29,17 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
-import cafe.adriel.voyager.navigator.tab.Tab
-import cafe.adriel.voyager.navigator.tab.TabNavigator
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mathroda.common.theme.LighterGray
 import com.mathroda.common.theme.TextWhite
-import com.mathroda.core.destination.DashCoinDestinations
-import com.mathroda.shared.SharedScreenModel
-import com.mathroda.shared.ui.screens.CoinsScreen
-import com.mathroda.shared.ui.screens.FavoriteCoinsScreen
-import com.mathroda.shared.ui.screens.NewsScreen
-import com.mathroda.shared.ui.screens.OnboardingScreen
-import com.mathroda.shared.ui.screens.TabsScreen
+import com.mathroda.shared.destination.Destinations
+import org.jetbrains.compose.resources.painterResource
+import kotlin.math.roundToInt
 
 @ExperimentalLayoutApi
 @ExperimentalFoundationApi
@@ -47,39 +48,89 @@ import com.mathroda.shared.ui.screens.TabsScreen
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(
-    startDestinations: DashCoinDestinations
+    navController: NavHostController,
+    startDestinations: Destinations
 ) {
-    TabNavigator(CoinsScreen) {
-        if (startDestinations == DashCoinDestinations.Onboarding) {
-            Navigator(screen = OnboardingScreen())
-        } else {
-            Navigator(TabsScreen())
+    /**
+     * bottom bar variables for nested scroll
+     */
+    val bottomBarHeight = 56.dp
+    val bottomBarOffsetHeightPx = remember { mutableStateOf(0f) }
+
+
+    Scaffold(
+        modifier = Modifier.bottomBarAnimatedScroll(
+            height = bottomBarHeight,
+            offsetHeightPx = bottomBarOffsetHeightPx
+        ),
+        bottomBar = {
+            BottomBar(
+                navController = navController,
+                state = bottomBarVisibility(navController),
+                modifier = Modifier
+                    .height(bottomBarHeight)
+                    .offset {
+                        IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt())
+                    }
+            )
         }
+    ) { paddingValues ->
+        MainGraph(navController = navController, startDestinations = startDestinations)
     }
 }
 
 @Composable
 fun BottomBar(
-    isVisible: Boolean,
-    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    state: MutableState<Boolean>,
+    modifier: Modifier = Modifier
 ) {
     val screens = listOf(
-        CoinsScreen,
-        FavoriteCoinsScreen,
-        NewsScreen,
+        Destinations.CoinsScreen,
+        Destinations.FavoriteCoinsScreen,
+        Destinations.CoinsNews
     )
+
     AnimatedVisibility(
-        visible = isVisible,
+        visible = state.value,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
     ) {
         BottomNavigation(
             modifier = modifier,
-            backgroundColor = LighterGray,
+            backgroundColor =LighterGray,
         ) {
-            screens.forEach { tab ->
-                TabNavigationItem(
-                    tab = tab
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
+
+            screens.forEach { screen ->
+
+                BottomNavigationItem(
+                    label = {
+                        Text(text = screen.title!!)
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(resource = screen.icon!!),
+                            contentDescription = null
+                        )
+                    },
+
+                    selected = currentRoute == screen.route,
+
+                    onClick = {
+                        navController.navigate(screen.route) {
+                            popUpTo(navController.graph.findStartDestination().route ?: Destinations.CoinsNews.route) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+
+                    alwaysShowLabel = false,
+                    selectedContentColor = TextWhite,
+                    unselectedContentColor = TextWhite
                 )
             }
         }
@@ -88,28 +139,24 @@ fun BottomBar(
 }
 
 
+
 @Composable
-private fun RowScope.TabNavigationItem(
-    tab: Tab
-) {
-    val tabNavigator = LocalTabNavigator.current
-    BottomNavigationItem(
-        label = { tab.options.title.let { Text(text = it) } },
-        icon = {
-            tab.options.icon?.let {
-                Icon(
-                    painter = it,
-                    contentDescription = null
-                )
-            }
-        },
-        selected = tabNavigator.current == tab,
-        onClick = { tabNavigator.current = tab  },
-        alwaysShowLabel = false,
-        selectedContentColor = TextWhite,
-        unselectedContentColor = TextWhite.copy(alpha = ContentAlpha.disabled)
-    )
+fun bottomBarVisibility(
+    navController: NavController,
+): MutableState<Boolean> {
+
+    val bottomBarState = rememberSaveable { (mutableStateOf(false)) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    when (navBackStackEntry?.destination?.route) {
+        Destinations.CoinsScreen.route -> bottomBarState.value = true
+        Destinations.FavoriteCoinsScreen.route -> bottomBarState.value = true
+        Destinations.CoinsNews.route -> bottomBarState.value = true
+        else -> bottomBarState.value = false
+    }
+
+    return bottomBarState
 }
+
 
 
 /**

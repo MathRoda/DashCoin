@@ -1,6 +1,5 @@
 import com.mathroda.buildsrc.Configuration
 import com.mathroda.buildsrc.Deps
-import com.mathroda.buildsrc.Version
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -51,13 +50,12 @@ kotlin {
             //Koin
             implementation(Deps.Koin.core)
 
-            //Voyager
-            with(Deps.Voyager) {
-                implementation(screenModel)
-            }
-
             //KotlinDateTime
             implementation(Deps.Org.Jetbrains.Kotlinx.dateTime)
+
+            with(Deps.AndroidX.Compose) {
+                implementation(viewModelCompose)
+            }
         }
     }
 }

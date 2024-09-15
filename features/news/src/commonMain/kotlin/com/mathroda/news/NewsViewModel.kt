@@ -2,8 +2,8 @@ package com.mathroda.news
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.domain.NewsType
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class NewsViewModel(
     private val dashCoinRepository: DashCoinRepository,
     val connectivityManger: InternetConnectivityManger
-) : ScreenModel {
+) : ViewModel() {
 
     private val _newsState = mutableStateOf(NewsState())
     val newsState: State<NewsState> = _newsState
@@ -48,7 +48,7 @@ class NewsViewModel(
                     _newsState.value = NewsState(isLoading = true)
                 }
             }
-        }.launchIn(screenModelScope)
+        }.launchIn(viewModelScope)
 
     }
 
@@ -62,7 +62,7 @@ class NewsViewModel(
         }
 
     fun refresh() {
-        screenModelScope.launch {
+        viewModelScope.launch {
             _isRefresh.emit(true)
             getNews(defaultFilter)
             _isRefresh.emit(false)

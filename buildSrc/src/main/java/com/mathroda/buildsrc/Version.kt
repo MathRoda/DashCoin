@@ -2,7 +2,7 @@ package com.mathroda.buildsrc
 
 object Version {
     const val compose_version = "1.6.7"
-    const val compose_navigation_version = "2.7.7"
+    const val compose_navigation_version = "2.7.0-alpha07"
     const val kotlin_compiler_extension = "1.5.14"
     const val play_services_version = "1.6.4"
     const val play_services_auth_version = "20.6.0"
@@ -15,6 +15,7 @@ object Version {
     const val koin_version = "4.0.0-RC2"
     const val koin_compose_multiplatform = "1.2.0-Beta4"
     const val ktor = "2.3.12"
-    const val voyagerVersion = "1.1.0-beta02"
+    const val voyagerVersion = "1.1.0-beta01"
     const val firebase = "2.0.0"
+    const val viewModelCompose = "2.8.0"
 }

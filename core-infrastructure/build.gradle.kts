@@ -26,7 +26,6 @@ kotlin {
         it.binaries.framework {
             baseName = "infrastructure"
             isStatic = true
-            export(Deps.KMPNotifier.notifications)
         }
     }
     sourceSets {
@@ -54,9 +53,6 @@ kotlin {
             implementation(Deps.Koin.core)
 
             implementation(coroutineCore)
-
-            //KMPNotifier
-            api(Deps.KMPNotifier.notifications)
 
             //Konnectivity
             implementation(Deps.Konnectivity.dep)

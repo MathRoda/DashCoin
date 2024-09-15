@@ -7,16 +7,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.testTag
+import com.mathroda.chart.common.internal.NO_SELECTION
+import com.mathroda.chart.common.internal.TestTags
 import com.mathroda.chart.common.internal.barstackedchart.LegendItem
 import com.mathroda.chart.common.internal.barstackedchart.generateColorShades
 import com.mathroda.chart.common.internal.common.composable.ChartErrors
 import com.mathroda.chart.common.internal.common.composable.ChartView
 import com.mathroda.chart.common.internal.common.model.MultiChartData
+import com.mathroda.chart.common.internal.validateLineData
 import com.mathroda.chart.common.style.LineChartDefaults
 import com.mathroda.chart.common.style.LineChartStyle
-import com.mathroda.chart.common.internal.NO_SELECTION
-import com.mathroda.chart.common.internal.TestTags
-import com.mathroda.chart.common.internal.validateLineData
 
 @Composable
 internal fun LineChartViewImpl(

@@ -33,14 +33,6 @@ kotlin {
     }
 
     sourceSets {
-       /* all {
-            languageSettings.optIn("androidx.compose.material.ExperimentalMaterialApi")
-            languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
-            languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
-            languageSettings.optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
-            languageSettings.optIn("androidx.compose.foundation.ExperimentalFoundationApi")
-        }*/
-
         commonMain.dependencies {
             implementation(project(":core"))
             implementation(project(":core-domain"))
@@ -70,14 +62,17 @@ kotlin {
 
             //Koin
             implementation(Deps.Koin.core)
+            implementation(Deps.Koin.viewModel)
 
-            //Voyager
-            with(Deps.Voyager) {
-                implementation(navigator)
-                implementation(screenModel)
-                implementation(koin)
-                implementation(tabNavigator)
+
+            //Compose Navigation
+            with(Deps.AndroidX.Compose) {
+                implementation(composeNavigation)
             }
+        }
+
+        iosMain {
+            dependsOn(commonMain.get())
         }
     }
 }

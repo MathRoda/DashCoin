@@ -1,7 +1,6 @@
 package com.mathroda.datasource.di
 
 import androidx.credentials.CredentialManager
-import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.google_service.GoogleAuthProviderImpl
 import com.mathroda.domain.GoogleAuthCredentials
 import org.koin.android.ext.koin.androidContext

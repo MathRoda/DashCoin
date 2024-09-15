@@ -2,7 +2,6 @@ import com.mathroda.buildsrc.Configuration
 import com.mathroda.buildsrc.Deps
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.util.Properties
 
 plugins {
     kotlin("multiplatform")

@@ -2,10 +2,7 @@ package com.mathroda.dashcoin
 
 import android.app.Application
 import com.mathroda.shared.di.initKoin
-import com.mathroda.shared.di.registerScreens
 import com.mathroda.workmanger.WorkerProviderRepository
-import com.mmk.kmpnotifier.notification.NotifierManager
-import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -15,7 +12,6 @@ class DashCoinApplication : Application() {
     private val workerProviderRepository: WorkerProviderRepository by inject()
     override fun onCreate() {
         super.onCreate()
-        registerScreens()
         initKoin {
             androidLogger()
             androidContext(this@DashCoinApplication)

@@ -42,14 +42,10 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
-            //Voyager
-            with(Deps.Voyager) {
-                implementation(screenModel)
-            }
-
             implementation(Deps.Airbnb.Android.kottie)
             implementation("io.coil-kt.coil3:coil-compose:3.0.0-alpha10")
             implementation("io.coil-kt.coil3:coil-network-ktor2:3.0.0-alpha10")
+
         }
         androidMain.dependencies {
             implementation(Deps.Ktor.ktorOkhttp)

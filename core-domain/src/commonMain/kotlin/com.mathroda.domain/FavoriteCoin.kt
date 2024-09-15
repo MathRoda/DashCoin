@@ -1,8 +1,6 @@
 package com.mathroda.domain
 
-import com.mathroda.core.util.getCurrentDate
 import com.mathroda.core.util.getCurrentDateTime
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 

@@ -13,8 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mathroda.chart.common.style.ChartViewStyle
 import com.mathroda.chart.common.internal.TestTags
+import com.mathroda.chart.common.style.ChartViewStyle
 
 @Composable
 internal fun ChartErrors(chartViewStyle: ChartViewStyle, errors: List<String>) {

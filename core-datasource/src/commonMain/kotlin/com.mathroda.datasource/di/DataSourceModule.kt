@@ -12,8 +12,11 @@ import com.mathroda.datasource.usecases.IsFavoriteStateUseCase
 import com.mathroda.datasource.usecases.ProvideUserStateUseCase
 import com.mathroda.datasource.usecases.SignOutUseCase
 import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.FirebaseApp
+import dev.gitlive.firebase.app
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
+import dev.gitlive.firebase.initialize
 import dev.gitlive.firebase.storage.storage
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -29,7 +32,7 @@ val dataSourceModule = module {
             userDao = get(),
         )
     }
-
+    single { Firebase.initialize() }
     single { Firebase.auth }
     single { Firebase.firestore }
     single { Firebase.storage }

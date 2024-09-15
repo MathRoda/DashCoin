@@ -7,13 +7,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.testTag
-import com.mathroda.chart.common.model.ChartDataSet
 import com.mathroda.chart.common.internal.NO_SELECTION
 import com.mathroda.chart.common.internal.TestTags
 import com.mathroda.chart.common.internal.barchart.BarChart
 import com.mathroda.chart.common.internal.common.composable.ChartErrors
 import com.mathroda.chart.common.internal.common.composable.ChartView
 import com.mathroda.chart.common.internal.validateBarData
+import com.mathroda.chart.common.model.ChartDataSet
 import com.mathroda.chart.common.style.BarChartDefaults
 import com.mathroda.chart.common.style.BarChartStyle
 

@@ -6,8 +6,8 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.generateUUID
 import com.mathroda.datasource.core.DashCoinRepository
@@ -35,7 +35,7 @@ class ProfileViewModel(
     private val dashCoinUseCases: DashCoinUseCases,
     private val dashCoinRepository: DashCoinRepository,
     private val syncNotification: SyncNotification
-) : ScreenModel {
+) : ViewModel() {
 
     private val _userCredential = MutableStateFlow(DashCoinUser())
     val userCredential = _userCredential.asStateFlow()
@@ -61,7 +61,7 @@ class ProfileViewModel(
     }
 
     fun signOut() {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             dashCoinUseCases.signOut()
             clearUpdateProfilePictureState()
             updateUiState()
@@ -69,7 +69,7 @@ class ProfileViewModel(
     }
 
     private fun updateUiState() {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val user = dashCoinRepository.getDashCoinUser()
             val authState = dashCoinUseCases.userStateProvider()
             withContext(Dispatchers.Main.immediate) {
@@ -93,7 +93,7 @@ class ProfileViewModel(
     }
 
     /*private fun uploadProfilePicture(imageName: String, bitmap: Bitmap) {
-        screenModelScope.launch {
+        viewModelScope.launch {
             firebaseRepository.uploadImageToCloud(
                 name = imageName,
                 bitmap = bitmap
@@ -123,7 +123,7 @@ class ProfileViewModel(
     }*/
 
     /*private fun updateProfilePicture(imageUrl: String) {
-        screenModelScope.launch {
+        viewModelScope.launch {
             firebaseRepository
                 .updateUserProfilePicture(imageUrl = imageUrl)
                 .collect { result ->
@@ -143,7 +143,7 @@ class ProfileViewModel(
     }*/
 
     private fun isUserPremium() {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val isUserPremium = dashCoinRepository.isUserPremiumLocal()
             _isUserPremium.update { isUserPremium }
         }
@@ -188,7 +188,7 @@ class ProfileViewModel(
     }
 
     fun onSyncClicked() {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             when(val result = syncState.value){
                 is SyncState.NeedSync -> syncCoinsToCloud(result.coins)
                 is SyncState.UpToDate -> updateToastState(
@@ -219,7 +219,7 @@ class ProfileViewModel(
     }
 
     private fun getIfSyncNeeded() {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             firebaseRepository.getFlowFavoriteCoins().collectLatest { cloudCoins ->
                 if (cloudCoins.data.isNullOrEmpty()) {
                     syncState.update { SyncState.NeedSync(emptyList()) }

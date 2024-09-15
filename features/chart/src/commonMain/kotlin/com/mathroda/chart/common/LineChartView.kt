@@ -1,10 +1,10 @@
 package com.mathroda.chart.common
 
 import androidx.compose.runtime.Composable
-import com.mathroda.chart.common.model.ChartDataSet
-import com.mathroda.chart.common.model.MultiChartDataSet
 import com.mathroda.chart.common.internal.common.model.MultiChartData
 import com.mathroda.chart.common.internal.linechart.LineChartViewImpl
+import com.mathroda.chart.common.model.ChartDataSet
+import com.mathroda.chart.common.model.MultiChartDataSet
 import com.mathroda.chart.common.style.LineChartDefaults
 import com.mathroda.chart.common.style.LineChartStyle
 

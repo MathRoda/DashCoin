@@ -3,7 +3,6 @@ package com.mathroda.buildsrc
 import com.mathroda.buildsrc.Version.androidx_lifecycle
 import com.mathroda.buildsrc.Version.compose_navigation_version
 import com.mathroda.buildsrc.Version.compose_version
-import com.mathroda.buildsrc.Version.koin_compose_multiplatform
 import com.mathroda.buildsrc.Version.koin_version
 import com.mathroda.buildsrc.Version.kotlinx_coroutines
 import com.mathroda.buildsrc.Version.play_services_auth_version
@@ -24,7 +23,8 @@ object Deps {
             const val toolingPreview = "androidx.compose.ui:ui-tooling-preview:$compose_version"
             const val materialIconsExtended = "androidx.compose.material:material-icons-extended:$compose_version"
             const val runtime = "androidx.compose.runtime:runtime-livedata:$compose_version"
-            const val composeNavigation = "androidx.navigation:navigation-compose:${compose_navigation_version}"
+            const val composeNavigation = "org.jetbrains.androidx.navigation:navigation-compose:${compose_navigation_version}"
+            const val viewModelCompose = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:${Version.viewModelCompose}"
         }
         object Lifecycle {
             const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$androidx_lifecycle"
@@ -154,6 +154,7 @@ object Deps {
         const val android = "io.insert-koin:koin-android:$koin_version"
         const val compose = "io.insert-koin:koin-compose:$koin_version"
         const val workManger = "io.insert-koin:koin-androidx-workmanager:$koin_version"
+        const val viewModel = "io.insert-koin:koin-compose-viewmodel:$koin_version"
     }
 
     object Ktor {
@@ -170,13 +171,6 @@ object Deps {
         const val snapshots = "io.github.dautovicharis:charts:2.0.0-SNAPSHOT"
     }
 
-    object Voyager {
-        const val navigator = "cafe.adriel.voyager:voyager-navigator:${Version.voyagerVersion}"
-        const val screenModel = "cafe.adriel.voyager:voyager-screenmodel:${Version.voyagerVersion}"
-        const val koin = "cafe.adriel.voyager:voyager-koin:${Version.voyagerVersion}"
-        const val tabNavigator = "cafe.adriel.voyager:voyager-tab-navigator:${Version.voyagerVersion}"
-    }
-
     object KMPNotifier {
         const val notifications = "io.github.mirzemehdi:kmpnotifier:1.2.1"
     }
@@ -188,4 +182,5 @@ object Deps {
     object Peekaboo {
         const val imagePicker = "io.github.onseok:peekaboo-image-picker:0.5.2"
     }
+
 }

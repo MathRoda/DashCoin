@@ -15,30 +15,43 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.mathroda.common.theme.DashCoinTheme
 import com.mathroda.common.toastmessage.components.ContentWithMessageBar
 import com.mathroda.common.toastmessage.components.LocalMessageBar
 import com.mathroda.common.toastmessage.components.rememberMessageBarState
-import com.mathroda.core.destination.DashCoinDestinations
+import com.mathroda.shared.destination.Destinations
+import com.mathroda.shared.navigation.main.MainGraph
 import com.mathroda.shared.navigation.main.MainScreen
 
 @Composable
 fun DashCoinApp() {
     DashCoinTheme {
-        val messageBarState = rememberMessageBarState()
-        CompositionLocalProvider(
-            LocalMessageBar provides messageBarState
-        ) {
-            ContentWithMessageBar(messageBarState = messageBarState) {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    MainScreen(
-                        startDestinations = DashCoinDestinations.Onboarding
-                    )
-                }
+        val navController = rememberNavController()
+        ProvideMessageBar {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colors.background
+            ) {
+                MainScreen(
+                    navController = navController,
+                    startDestinations = Destinations.CoinsScreen //TODO: Implement conditional navigation in viewModel
+                )
             }
+        }
+    }
+}
+
+@Composable
+fun ProvideMessageBar(
+    content: @Composable () -> Unit
+) {
+    val messageBarState = rememberMessageBarState()
+    CompositionLocalProvider(
+        LocalMessageBar provides messageBarState
+    ) {
+        ContentWithMessageBar(messageBarState = messageBarState) {
+            content()
         }
     }
 }

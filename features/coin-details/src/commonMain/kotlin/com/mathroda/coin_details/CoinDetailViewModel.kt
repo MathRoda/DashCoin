@@ -3,12 +3,11 @@ package com.mathroda.coin_details
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mathroda.coin_details.components.TimeRange
 import com.mathroda.coin_details.state.ChartState
 import com.mathroda.coin_details.state.CoinState
-import com.mathroda.domain.events.FavoriteCoinEvents
 import com.mathroda.core.state.DialogState
 import com.mathroda.core.state.IsFavoriteState
 import com.mathroda.core.state.UserState
@@ -18,6 +17,7 @@ import com.mathroda.datasource.usecases.DashCoinUseCases
 import com.mathroda.domain.ChartTimeSpan
 import com.mathroda.domain.CoinById
 import com.mathroda.domain.FavoriteCoin
+import com.mathroda.domain.events.FavoriteCoinEvents
 import com.mathroda.domain.toFavoriteCoin
 import com.mathroda.internetconnectivity.InternetConnectivityManger
 import com.mathroda.internetconnectivity.InternetState
@@ -38,7 +38,7 @@ class CoinDetailViewModel(
     private val dashCoinRepository: DashCoinRepository,
     private val dashCoinUseCases: DashCoinUseCases,
     private val connectivityManger: InternetConnectivityManger
-) : ScreenModel {
+) : ViewModel() {
 
     private val _coinState = MutableStateFlow(CoinState())
     val coinState = _coinState.asStateFlow()
@@ -66,7 +66,7 @@ class CoinDetailViewModel(
     val connectivityMangerState: StateFlow<InternetState>
         get() = connectivityManger.getState()
             .stateIn(
-                scope = screenModelScope,
+                scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000L),
                 initialValue = InternetState.IDLE
             )
@@ -79,7 +79,7 @@ class CoinDetailViewModel(
     }
 
     private fun getCoin(coinId: String) {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             dashCoinRepository.getCoinByIdRemoteFlow(coinId).collect { result ->
                 when (result) {
                     is Resource.Success -> {
@@ -101,7 +101,7 @@ class CoinDetailViewModel(
     }
 
     private fun getChart(coinId: String, period: TimeRange) {
-        job = screenModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch(Dispatchers.IO) {
             dashCoinRepository.getChartsDataRemote(coinId, getTimeSpanByTimeRange(period)).collectLatest { result ->
                 when (result) {
                     is Resource.Success -> {
@@ -161,7 +161,7 @@ class CoinDetailViewModel(
         }
 
     fun onEvent(events: FavoriteCoinEvents) {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             when (events) {
                 is FavoriteCoinEvents.AddCoin -> addFavoriteCoin(events.coin)
                 is FavoriteCoinEvents.DeleteCoin -> deleteFavoriteCoin(events.coin)
@@ -190,7 +190,7 @@ class CoinDetailViewModel(
     }
 
     private fun updateFavoriteCoinsCount() {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val user = dashCoinRepository.getDashCoinUser() ?: return@launch
             dashCoinRepository.getFlowFavoriteCoins().collect {
                 val dashCoinUser = user.copy(favoriteCoinsCount = it.size )
@@ -200,7 +200,7 @@ class CoinDetailViewModel(
     }
 
     private fun isFavorite(coin: FavoriteCoin) {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             dashCoinUseCases.isFavoriteState(coin).let { result ->
                 _isFavoriteState.value = result
             }
@@ -208,13 +208,13 @@ class CoinDetailViewModel(
     }
 
     fun updateUserState() {
-        screenModelScope.launch (Dispatchers.IO){
+        viewModelScope.launch (Dispatchers.IO){
             _authState.value =  dashCoinUseCases.userStateProvider()
         }
     }
 
     private fun premiumLimit(coin: CoinById) {
-        screenModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val user = dashCoinRepository.getDashCoinUser() ?: return@launch
             if (user.isPremiumLimit()) {
                 _notPremiumDialog.value = DialogState.Open

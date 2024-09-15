@@ -1,10 +1,11 @@
 package com.mathroda.shared
 
-import com.mathroda.core.destination.DashCoinDestinations
+import androidx.lifecycle.ViewModel
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.datastore.DataStoreRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
 import com.mathroda.datasource.usecases.DashCoinUseCases
+import com.mathroda.shared.destination.Destinations
 import com.mathroda.workmanger.WorkerProviderRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,7 @@ class SharedScreenModel(
     private val dashCoinRepository: DashCoinRepository,
     private val dashCoinUseCases: DashCoinUseCases,
     workerProviderRepository: WorkerProviderRepository
-) {
+): ViewModel() {
     private val screenModelScope =  CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private var job: Job? = null
 
@@ -47,16 +48,15 @@ class SharedScreenModel(
         dataStoreRepository.readOnBoardingState
             .map { completed ->
                 if (completed) {
-                    DashCoinDestinations.Coins
-
+                    Destinations.CoinsScreen.route
                 } else {
-                    DashCoinDestinations.Onboarding
+                    ""
                 }
             }
             .stateIn(
                 scope = screenModelScope,
                 started = SharingStarted.WhileSubscribed(5_000L),
-                initialValue = DashCoinDestinations.Onboarding
+                initialValue = Destinations.CoinsScreen.route
             )
 
     /*private fun notificationWorker() {

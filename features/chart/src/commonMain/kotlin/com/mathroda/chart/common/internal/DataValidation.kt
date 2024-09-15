@@ -1,12 +1,12 @@
 package com.mathroda.chart.common.internal
 
-import com.mathroda.chart.common.model.ChartDataSet
 import com.mathroda.chart.common.internal.ValidationErrors.MIN_REQUIRED_BAR
 import com.mathroda.chart.common.internal.ValidationErrors.MIN_REQUIRED_LINE
 import com.mathroda.chart.common.internal.ValidationErrors.MIN_REQUIRED_PIE
 import com.mathroda.chart.common.internal.ValidationErrors.MIN_REQUIRED_STACKED_BAR
 import com.mathroda.chart.common.internal.common.model.ChartData
 import com.mathroda.chart.common.internal.common.model.MultiChartData
+import com.mathroda.chart.common.model.ChartDataSet
 import com.mathroda.chart.common.style.LineChartStyle
 import com.mathroda.chart.common.style.PieChartStyle
 import com.mathroda.chart.common.style.StackedBarChartStyle

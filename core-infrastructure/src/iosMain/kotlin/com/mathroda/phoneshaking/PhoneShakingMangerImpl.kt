@@ -2,9 +2,7 @@
 
 package com.mathroda.phoneshaking
 
-import dev.gitlive.firebase.firestore.toException
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.copy
 import kotlinx.cinterop.useContents
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +11,6 @@ import platform.CoreMotion.CMAccelerometerData
 import platform.CoreMotion.CMMotionManager
 import platform.Foundation.NSError
 import platform.Foundation.NSOperationQueue
-import platform.darwin.dispatch_get_main_queue
 import kotlin.math.sqrt
 
 class PhoneShakingManagerImpl : PhoneShakingManger {

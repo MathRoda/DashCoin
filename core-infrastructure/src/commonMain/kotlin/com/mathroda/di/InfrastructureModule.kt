@@ -2,9 +2,6 @@ package com.mathroda.di
 
 import com.mathroda.notifications.coins.CoinsNotification
 import com.mathroda.notifications.sync.SyncNotification
-import com.mmk.kmpnotifier.notification.Notifier
-import com.mmk.kmpnotifier.notification.NotifierManager
-import com.plusmobileapps.konnectivity.Konnectivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

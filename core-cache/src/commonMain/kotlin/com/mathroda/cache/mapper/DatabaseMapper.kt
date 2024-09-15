@@ -2,7 +2,6 @@ package com.mathroda.cache.mapper
 
 
 import com.mathroda.cache.dbo.favoritecoins.FavoriteCoinEntity
-import com.mathroda.core.util.getCurrentDate
 import com.mathroda.core.util.getCurrentDateTime
 import com.mathroda.domain.FavoriteCoin
 

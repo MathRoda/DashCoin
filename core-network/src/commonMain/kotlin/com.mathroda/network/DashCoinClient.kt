@@ -6,7 +6,6 @@ import com.mathroda.network.dto.NewsItem
 import com.mathroda.network.utils.handleErrors
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 

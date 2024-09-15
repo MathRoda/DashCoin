@@ -1,7 +1,7 @@
 package com.mathroda
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mathroda.core.util.Resource
 import com.mathroda.core.util.isValidEmail
 import com.mathroda.datasource.firebase.FirebaseRepository
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
 
 class ResetPasswordViewModel(
     private val firebaseRepository: FirebaseRepository
-) : ScreenModel {
+) : ViewModel() {
 
     private val _resetPassword =
         MutableStateFlow(ResetPasswordState())
@@ -68,7 +68,7 @@ class ResetPasswordViewModel(
                     )
                 }
             }
-        }.launchIn(screenModelScope)
+        }.launchIn(viewModelScope)
 
     fun updateEmailState(
         value: String

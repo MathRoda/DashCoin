@@ -32,10 +32,6 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            //Voyager
-            with(Deps.Voyager) {
-                implementation(screenModel)
-            }
 
             with(Deps.Org.Jetbrains.Kotlinx) {
                 implementation(dateTime)
