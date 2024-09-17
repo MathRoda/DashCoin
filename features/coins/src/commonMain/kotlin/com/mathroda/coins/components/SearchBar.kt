@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.mathroda.common.resources.Res
 import com.mathroda.common.resources.ic_filter
+import com.mathroda.common.resources.ic_search
 import com.mathroda.common.theme.LighterGray
 import com.mathroda.common.theme.TextWhite
 import org.jetbrains.compose.resources.painterResource
@@ -57,7 +58,7 @@ fun SearchBar(
             .padding(5.dp)
     ) {
         Icon(
-            painter = painterResource(Res.drawable.ic_filter),
+            painter = painterResource(Res.drawable.ic_search),
             contentDescription = "Search",
             tint = Color.White,
             modifier = Modifier

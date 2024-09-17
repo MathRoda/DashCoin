@@ -3,6 +3,7 @@ import com.mathroda.buildsrc.Configuration
 import com.mathroda.buildsrc.Deps
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 
 plugins {
     id("com.android.library")
@@ -69,10 +70,13 @@ kotlin {
             with(Deps.AndroidX.Compose) {
                 implementation(composeNavigation)
             }
-        }
 
-        iosMain {
-            dependsOn(commonMain.get())
+            //Firebase
+            with(Deps.Google.Firebase) {
+                implementation(authKtx)
+                implementation(fireStoreKtx)
+                implementation(storage)
+            }
         }
     }
 }
@@ -105,4 +109,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+}
+
+tasks.withType<KotlinNativeLink> {
+    kotlinOptions.freeCompilerArgs += "-Xoverride-konan-properties=osVersionMin.ios_simulator_arm64=15.0"
 }

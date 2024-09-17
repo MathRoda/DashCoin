@@ -8,21 +8,28 @@ import com.mathroda.core.util.Resource
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.domain.Coins
 import com.mathroda.internetconnectivity.InternetConnectivityManger
+import com.mathroda.internetconnectivity.InternetState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+
 
 class CoinsViewModel(
     private val dashCoinRepository: DashCoinRepository,
-    val connectivityManger: InternetConnectivityManger
+    connectivityManger: InternetConnectivityManger
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CoinsState())
@@ -30,6 +37,13 @@ class CoinsViewModel(
 
     private val _paginationState = MutableStateFlow(PaginationState())
     val paginationState = _paginationState.asStateFlow()
+
+    val connectivityMangerState = connectivityManger.getState()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = InternetState.IDLE
+        )
 
 
     private val _isRefresh = MutableStateFlow(false)

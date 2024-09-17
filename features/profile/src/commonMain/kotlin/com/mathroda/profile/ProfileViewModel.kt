@@ -29,13 +29,14 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class ProfileViewModel(
-    private val firebaseRepository: FirebaseRepository,
-    private val dashCoinUseCases: DashCoinUseCases,
-    private val dashCoinRepository: DashCoinRepository,
-    private val syncNotification: SyncNotification
-) : ViewModel() {
+class ProfileViewModel : ViewModel(), KoinComponent {
+    private val firebaseRepository: FirebaseRepository by inject()
+    private val dashCoinUseCases: DashCoinUseCases by inject()
+    private val dashCoinRepository: DashCoinRepository by inject()
+    private val syncNotification: SyncNotification by inject()
 
     private val _userCredential = MutableStateFlow(DashCoinUser())
     val userCredential = _userCredential.asStateFlow()

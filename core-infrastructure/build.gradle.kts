@@ -38,11 +38,6 @@ kotlin {
             implementation(Deps.Koin.workManger)
         }
 
-        val androidUnitTest by getting {
-            dependencies {
-            }
-        }
-
         commonMain.dependencies {
             implementation(project(":core"))
             implementation(project(":features:common"))

@@ -6,6 +6,7 @@ import com.mathroda.di.infrastructureModule
 import com.mathroda.network.di.networkModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
+import org.koin.dsl.koinApplication
 
 
 fun initKoin(

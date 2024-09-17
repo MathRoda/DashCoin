@@ -74,6 +74,9 @@ class CoinDetailViewModel(
     private var job: Job? = null
 
     fun updateUiState(coinId: String) {
+        if (coinId.isEmpty()) {
+            return
+        }
         getCoin(coinId)
         getChart(coinId, TimeRange.ONE_DAY)
     }

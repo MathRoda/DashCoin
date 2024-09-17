@@ -32,7 +32,6 @@ val dataSourceModule = module {
             userDao = get(),
         )
     }
-    single { Firebase.initialize() }
     single { Firebase.auth }
     single { Firebase.firestore }
     single { Firebase.storage }

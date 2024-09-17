@@ -21,7 +21,7 @@ fun BoxScope.CoinsScreenState(
     viewModel: CoinsViewModel
 ) {
     val state = viewModel.state.collectAsState().value
-    val connectivityState by viewModel.connectivityManger.getState().collectAsState(initial = InternetState.IDLE)
+    val connectivityState by viewModel.connectivityMangerState.collectAsState()
 
     when {
         state.isLoading -> {

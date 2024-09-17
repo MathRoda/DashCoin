@@ -21,6 +21,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +42,7 @@ import com.mathroda.coins.components.SearchBar
 import com.mathroda.common.components.InfiniteListHandler
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.LightGray
+import com.mathroda.common.toastmessage.components.LocalMessageBar
 import com.mathroda.profile.ProfileViewModel
 import com.mathroda.profile.drawer.DrawerNavigation
 import kotlinx.coroutines.launch

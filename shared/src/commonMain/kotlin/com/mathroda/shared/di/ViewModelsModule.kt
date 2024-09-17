@@ -12,6 +12,7 @@ import com.mathroda.shared.SharedScreenModel
 import com.mathroda.signin_screen.SignInViewModel
 import com.mathroda.signup.SignUpViewModel
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelsModule = module {
@@ -19,11 +20,11 @@ val viewModelsModule = module {
     viewModel { SignInViewModel(get(),get(),get(),get()) }
     viewModel { SignUpViewModel(get(),get()) }
     viewModel { CoinDetailViewModel(get(),get(), get()) }
-    viewModel { CoinsViewModel(get(), get()) }
+    viewModelOf(::CoinsViewModel)
     viewModel { FavoriteCoinsViewModel(get(), get(), get()) }
     viewModel { NewsViewModel(get(), get()) }
     viewModel { OnBoardingViewModel(get()) }
-    viewModel { ProfileViewModel(get(), get(), get(), get()) }
+    viewModelOf(::ProfileViewModel)
     viewModel { SharedScreenModel(get(), get(), get(), get(), get()) }
     viewModel { SettingViewModel(get(), get()) }
 }
