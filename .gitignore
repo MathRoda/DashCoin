@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+/core-network/src/main/java/com/mathroda/network/API.kt

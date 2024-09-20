@@ -1,8 +1,16 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
     }
 }
 
@@ -18,20 +26,28 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Dash Coin"
 
-include(":app")
+include(":androidApp")
+
 include(":core")
 include(":core-datasource")
 include(":core-domain")
 include(":core-network")
 include(":core-infrastructure")
-include(":feat-coin-detail")
-include(":feat-common")
-include(":feat-coins")
-include(":feat-profile")
-include(":feat-favorite-coins")
-include(":feat-news")
-include(":feat-onboarding")
-include(":feat-auth-signin")
-include(":feat-auth-signup")
-include(":feat-auth-forgot-password")
 include(":core-cache")
+
+include(":features")
+include(":features:coin-details")
+include(":features:common")
+include(":features:coins")
+include(":features:profile")
+include(":features:favorite-coins")
+include(":features:news")
+include(":features:onboarding")
+include(":features:chart")
+
+include(":auth")
+include(":auth:signin")
+include(":auth:signup")
+include(":auth:forgot-password")
+
+include(":shared")

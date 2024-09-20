@@ -1,11 +1,13 @@
 package com.mathroda.buildsrc
 
 import com.mathroda.buildsrc.Version.androidx_lifecycle
+import com.mathroda.buildsrc.Version.compose_navigation_version
 import com.mathroda.buildsrc.Version.compose_version
-import com.mathroda.buildsrc.Version.hilt_version
+import com.mathroda.buildsrc.Version.koin_version
 import com.mathroda.buildsrc.Version.kotlinx_coroutines
 import com.mathroda.buildsrc.Version.play_services_auth_version
 import com.mathroda.buildsrc.Version.room_version
+import com.mathroda.buildsrc.Version.sqlite_bundeled
 
 object Deps {
 
@@ -17,9 +19,12 @@ object Deps {
         object Compose {
             const val ui = "androidx.compose.ui:ui:$compose_version"
             const val material = "androidx.compose.material:material:$compose_version"
+            const val material3 = "androidx.compose.material3:material3:1.2.1"
             const val toolingPreview = "androidx.compose.ui:ui-tooling-preview:$compose_version"
             const val materialIconsExtended = "androidx.compose.material:material-icons-extended:$compose_version"
             const val runtime = "androidx.compose.runtime:runtime-livedata:$compose_version"
+            const val composeNavigation = "org.jetbrains.androidx.navigation:navigation-compose:${compose_navigation_version}"
+            const val viewModelCompose = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:${Version.viewModelCompose}"
         }
         object Lifecycle {
             const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$androidx_lifecycle"
@@ -36,11 +41,6 @@ object Deps {
         object ConstraintLayout {
             const val compose = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
         }
-        object Hilt {
-            const val navigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
-            const val work = "androidx.hilt:hilt-work:1.0.0"
-            const val compiler = "androidx.hilt:hilt-compiler:1.0.0"
-        }
         object AppCompat {
             const val appcompat = "androidx.appcompat:appcompat:1.6.1"
         }
@@ -48,6 +48,7 @@ object Deps {
             const val runtime = "androidx.room:room-runtime:$room_version"
             const val compiler = "androidx.room:room-compiler:$room_version"
             const val ktx = "androidx.room:room-ktx:$room_version"
+            const val sqlLite = "androidx.sqlite:sqlite-bundled:$sqlite_bundeled"
         }
         object Work {
             const val runtime = "androidx.work:work-runtime-ktx:2.8.1"
@@ -59,7 +60,8 @@ object Deps {
             const val core = "androidx.test:core:1.5.0"
         }
         object DataStore {
-            const val preferences = "androidx.datastore:datastore-preferences:1.0.0"
+            const val preferences = "androidx.datastore:datastore-preferences:1.1.0"
+            const val dataStore = "androidx.datastore:datastore:1.1.0"
         }
     }
 
@@ -67,16 +69,11 @@ object Deps {
         object Accompanist {
             const val insetsUi = "com.google.accompanist:accompanist-insets-ui:0.23.1"
             const val flowLayout = "com.google.accompanist:accompanist-flowlayout:0.17.0"
-            const val navigationAnimation = "com.google.accompanist:accompanist-navigation-animation:0.30.0"
             const val swipeRefresh = "com.google.accompanist:accompanist-swiperefresh:0.23.1"
             const val pager = "com.google.accompanist:accompanist-pager:0.26.4-beta"
             const val pager_indicator = "com.google.accompanist:accompanist-pager-indicators:0.26.4-beta"
         }
 
-        object DaggerHilt {
-            const val android = "com.google.dagger:hilt-android:$hilt_version"
-            const val compiler = "com.google.dagger:hilt-compiler:$hilt_version"
-        }
         object AndroidMaterial {
             const val material = "com.google.android.material:material:1.8.0"
         }
@@ -84,10 +81,9 @@ object Deps {
             const val playServicesAuth = "com.google.android.gms:play-services-auth:$play_services_auth_version"
         }
         object Firebase {
-            const val bom = "com.google.firebase:firebase-bom:30.3.1"
-            const val authKtx = "com.google.firebase:firebase-auth-ktx"
-            const val fireStoreKtx = "com.google.firebase:firebase-firestore-ktx"
-            const val storage = "com.google.firebase:firebase-storage"
+            const val authKtx = "dev.gitlive:firebase-auth:2.0.0"
+            const val fireStoreKtx = "dev.gitlive:firebase-firestore:2.0.0"
+            const val storage = "dev.gitlive:firebase-storage:2.0.0"
         }
         object Truth {
             const val truth = "com.google.truth:truth:1.1.3"
@@ -101,8 +97,16 @@ object Deps {
                 const val coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines"
                 const val coroutinePlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinx_coroutines"
                 const val coroutineTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+                const val kotlinxSerializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
+                const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
             }
         }
+    }
+
+    object GoogleServices {
+        const val credential = "androidx.credentials:credentials:1.3.0-rc01"
+        const val credPlayServices = "androidx.credentials:credentials-play-services-auth:1.3.0-rc01"
+        const val identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
     }
 
     object Junit {
@@ -111,7 +115,8 @@ object Deps {
 
     object IO {
         object Coil {
-            const val compose = "io.coil-kt:coil-compose:2.1.0"
+            const val network = "io.coil-kt.coil3:coil-network-ktor:3.0.0-alpha10"
+            const val compose = "io.coil-kt.coil3:coil-compose:3.0.0-alpha10"
         }
         object Mockk {
             const val mockk = "io.mockk:mockk:1.13.4"
@@ -123,24 +128,17 @@ object Deps {
             const val mockwebserver = "com.squareup.okhttp3:mockwebserver:4.10.0"
             const val okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
         }
-        object Retrofit2 {
-            const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
-            const val convertorGson = "com.squareup.retrofit2:converter-gson:2.9.0"
-        }
     }
 
     object Github {
         object Tfaki {
             const val composableSweetToast = "com.github.tfaki:ComposableSweetToast:1.0.1"
         }
-        object PhilJay {
-            const val MPAndroidChart = "com.github.PhilJay:MPAndroidChart:3.1.0"
-        }
     }
 
     object Airbnb {
         object Android {
-            const val lottieCompose = "com.airbnb.android:lottie-compose:5.2.0"
+            const val cottie = "io.github.alexzhirkevich:compottie:2.0.0-rc01"
         }
     }
 
@@ -149,4 +147,39 @@ object Deps {
             const val immuatble = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6"
         }
     }
+
+    object Koin {
+        const val core = "io.insert-koin:koin-core:$koin_version"
+        const val android = "io.insert-koin:koin-android:$koin_version"
+        const val compose = "io.insert-koin:koin-compose:$koin_version"
+        const val workManger = "io.insert-koin:koin-androidx-workmanager:$koin_version"
+        const val viewModel = "io.insert-koin:koin-compose-viewmodel:$koin_version"
+    }
+
+    object Ktor {
+        const val ktorClientCore = "io.ktor:ktor-client-core:${Version.ktor}"
+        const val ktorSerializationKotlinxJson = "io.ktor:ktor-serialization-kotlinx-json:${Version.ktor}"
+        const val ktorClientContentNegotiation = "io.ktor:ktor-client-content-negotiation:${Version.ktor}"
+        const val ktorClientLogging = "io.ktor:ktor-client-logging:${Version.ktor}"
+        const val ktorOkhttp = "io.ktor:ktor-client-okhttp:${Version.ktor}"
+        const val ktorDarwin = "io.ktor:ktor-client-darwin:${Version.ktor}"
+    }
+
+    object Charts {
+        const val lib = "io.github.dautovicharis:charts:1.2.0"
+        const val snapshots = "io.github.dautovicharis:charts:2.0.0-SNAPSHOT"
+    }
+
+    object KMPNotifier {
+        const val notifications = "io.github.mirzemehdi:kmpnotifier:1.2.1"
+    }
+
+    object Konnectivity {
+        const val dep = "com.plusmobileapps:konnectivity:0.1-alpha01"
+    }
+
+    object Peekaboo {
+        const val imagePicker = "io.github.onseok:peekaboo-image-picker:0.5.2"
+    }
+
 }

@@ -1,67 +1,97 @@
 import com.mathroda.buildsrc.Configuration
 import com.mathroda.buildsrc.Deps
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
+    kotlin("multiplatform")
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
+}
+
+kotlin {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        androidTarget {
+            // compilerOptions DSL: https://kotl.in/u1r8ln
+            compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "core_cache"
+            isStatic = true
+            linkerOpts.add("-lsqlite3") // add sqlite
+        }
+    }
+
+    sourceSets.iosMain {
+        kotlin.srcDirs("build/generated/ksp/metadata")
+    }
+
+    sourceSets {
+        androidMain.dependencies {
+            //Koin
+            implementation(Deps.Koin.android)
+
+        }
+
+        commonMain.dependencies {
+            implementation(project(":core"))
+            implementation(project(":core-domain"))
+
+            //Room Database
+            implementation(Deps.AndroidX.Room.runtime)
+            implementation(Deps.AndroidX.Room.sqlLite)
+
+            //Koin
+            implementation(Deps.Koin.core)
+
+            with(Deps.Org.Jetbrains.Kotlinx) {
+                implementation(dateTime)
+            }
+
+            //data store
+            implementation(Deps.AndroidX.DataStore.preferences)
+            implementation(Deps.AndroidX.DataStore.dataStore)
+        }
+
+    }
+
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        // Common compiler options applied to all Kotlin source sets
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
 }
 
 android {
     namespace = "com.mathroda.cache"
     compileSdk = Configuration.compileSdk
 
-    defaultConfig {
-        minSdk = Configuration.minSdk
-        targetSdk = Configuration.targetSdk
+    defaultConfig { minSdk = Configuration.minSdk }
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        //consumerProguardFiles = "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            getByName("release") {
-                isMinifyEnabled = false
-                proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
-                )
-            }
-        }
-    }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 
 dependencies {
+    add("kspAndroid", Deps.AndroidX.Room.compiler)
+    add("kspIosSimulatorArm64", Deps.AndroidX.Room.compiler)
+    add("kspIosX64", Deps.AndroidX.Room.compiler)
+    add("kspIosArm64", Deps.AndroidX.Room.compiler)
+}
 
-    implementation(project(":core"))
-    implementation(project(":core-domain"))
 
-    implementation(Deps.AndroidX.Core.coreKtx)
-    implementation(Deps.AndroidX.AppCompat.appcompat)
-    implementation(Deps.Google.AndroidMaterial.material)
-    implementation("androidx.test.ext:junit-ktx:1.1.5")
-    testImplementation(Deps.Junit.junit4)
 
-    // Dagger hilt
-    with(Deps.Google.DaggerHilt){
-        implementation(android)
-        kapt(compiler)
-    }
-    kapt(Deps.AndroidX.Hilt.compiler)
-
-    //Room Database
-    implementation(Deps.AndroidX.Room.runtime)
-    annotationProcessor(Deps.AndroidX.Room.compiler)
-    kapt(Deps.AndroidX.Room.compiler)
-    implementation(Deps.AndroidX.Room.ktx)
-
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }

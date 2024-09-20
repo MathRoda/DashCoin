@@ -1,0 +1,13 @@
+//
+//  Config.xcconfig
+//  iosApp
+//
+//  Created by Mouawia Hammo on 16/9/2024.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+TEAM_ID=
+BUNDLE_ID=com.mathroda.dashcoin
+APP_NAME=DashCoinIOS
