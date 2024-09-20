@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,7 +29,7 @@ fun BoxScope.CoinDetailScreenState(
     val coinState by viewModel.coinState.collectAsState()
     val favoriteMsg = viewModel.favoriteMsg.value
     val sideEffect = viewModel.sideEffect.value
-    val connectivityState by viewModel.connectivityMangerState.collectAsState()
+    val connectivityState by viewModel.connectivityManger.getState().collectAsState(InternetState.IDLE)
     val messageBarState = LocalMessageBar.current
 
     /**
@@ -63,20 +64,24 @@ fun BoxScope.CoinDetailScreenState(
      * when add favorite a coin state
      */
 
-    if (favoriteMsg.favoriteMessage.isNotEmpty()) {
-       messageBarState.showSuccess(
-            message = favoriteMsg.favoriteMessage
-        )
+    LaunchedEffect(favoriteMsg.favoriteMessage) {
+        if (favoriteMsg.favoriteMessage.isNotEmpty()) {
+            messageBarState.showSuccess(
+                message = favoriteMsg.favoriteMessage
+            )
+        }
     }
 
     /**
      * when remove favorite a coin state
      */
 
-    if (favoriteMsg.notFavoriteMessage.isNotEmpty()) {
-        messageBarState.showError(
-            message = favoriteMsg.notFavoriteMessage
-        )
+    LaunchedEffect(favoriteMsg.notFavoriteMessage) {
+        if (favoriteMsg.notFavoriteMessage.isNotEmpty()) {
+            messageBarState.showError(
+                message = favoriteMsg.notFavoriteMessage
+            )
+        }
     }
 
     /**
@@ -84,10 +89,12 @@ fun BoxScope.CoinDetailScreenState(
      * when user not authenticated yet
      */
 
-    if (sideEffect) {
-        messageBarState.showError(
-            message = "Please Login First"
-        )
+    LaunchedEffect(sideEffect) {
+        if (sideEffect) {
+            messageBarState.showError(
+                message = "Please Login First"
+            )
+        }
     }
 
 }

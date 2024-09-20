@@ -126,6 +126,11 @@ class DashCoinRepositoryImpl (
         return userDao.getUser()?.toDashCoinUser()
     }
 
+    override  fun getDashCoinUserFlow(): Flow<DashCoinUser?> {
+        return userDao.getUserFlow()
+            .map { it?.toDashCoinUser() }
+    }
+
     override suspend fun cacheDashCoinUser(user: DashCoinUser) {
         userDao.insertUser(user.toUserEntity())
     }

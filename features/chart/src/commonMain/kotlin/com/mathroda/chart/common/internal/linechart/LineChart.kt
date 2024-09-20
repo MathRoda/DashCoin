@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
@@ -105,7 +106,7 @@ private fun DrawScope.drawChartPath(
 
     val path = Path().apply {
         val initX = 0f
-        val initY = size.height - values.first()
+        val initY = canvasHeight - values.first()
         moveTo(initX, initY)
 
         for (i in 1 until valuesSize) {
@@ -122,11 +123,32 @@ private fun DrawScope.drawChartPath(
                     currentX = x,
                     currentY = y
                 )
-
                 else -> lineTo(x, y)
             }
         }
     }
+
+    val shadowPath = Path().apply {
+        addPath(path)
+        lineTo(canvasWidth, canvasHeight)
+        lineTo(0f, canvasHeight)
+        close()
+    }
+
+    val gradient = Brush.verticalGradient(
+        colors = listOf(
+            lineColor.copy(alpha = 0.3f),
+            Color.Transparent
+        ),
+        startY = 0f,
+        endY = canvasHeight
+    )
+
+    drawPath(
+        path = shadowPath,
+        brush = gradient
+    )
+
 
     if (lineAnimationProgress == ANIMATION_TARGET) {
         drawPath(
@@ -150,6 +172,7 @@ private fun DrawScope.drawChartPath(
         )
     }
 
+
     tryDrawPoints(
         touchX = touchX.floatValue,
         values = values,
@@ -160,6 +183,7 @@ private fun DrawScope.drawChartPath(
         onValueChanged = onValueChanged
     )
 }
+
 
 private fun Path.drawBezier(
     prevX: Float,

@@ -138,8 +138,7 @@ object Deps {
 
     object Airbnb {
         object Android {
-            const val lottieCompose = "com.airbnb.android:lottie-compose:5.2.0"
-            const val kottie = "io.github.ismai117:kottie:2.0.0"
+            const val cottie = "io.github.alexzhirkevich:compottie:2.0.0-rc01"
         }
     }
 

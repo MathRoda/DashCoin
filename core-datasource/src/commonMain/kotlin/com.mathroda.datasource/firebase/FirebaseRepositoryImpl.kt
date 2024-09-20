@@ -2,14 +2,17 @@ package com.mathroda.datasource.firebase
 
 import com.mathroda.core.util.Constants
 import com.mathroda.core.util.Resource
+import com.mathroda.datasource.platform.putByteArray
 import com.mathroda.domain.DashCoinUser
 import com.mathroda.domain.FavoriteCoin
+import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.FirebaseNetworkException
 import dev.gitlive.firebase.auth.AuthResult
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.auth.FirebaseUser
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.storage.FirebaseStorage
+import dev.gitlive.firebase.storage.storage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
@@ -259,34 +262,27 @@ class FirebaseRepositoryImpl (
         name: String,
         bitmap: ByteArray
     ): Flow<Resource<String>> {
-        return flow {  }
-        /*return flow {
+        return flow {
             emit(Resource.Loading())
-            *//* val storage = Firebase.storage
+            val storage = Firebase.storage
             val storageRef = storage.reference
             val imageRef = storageRef.child("images/$name.jpeg")
 
-            try {
-                // Upload the image bytes
-                val uploadTask = imageRef.putData(Data())
+            // Upload the image bytes
+            imageRef.putByteArray(bitmap)
 
-                // Get the download URL after upload is complete
-                val downloadUrl = imageRef.downloadURL.await()
+            // Get the download URL after upload is complete
+            val downloadUrl = imageRef.getDownloadUrl()
 
-                // Check if the download URL is valid
-                if (downloadUrl == null) {
-                    emit(Resource.Error("Invalid image URL"))
-                } else {
-                    emit(Resource.Success(downloadUrl.toString()))
-                }
-            } catch (e: Exception) {
-                // Handle exceptions during upload and emit error
-                emit(Resource.Error(e.message ?: "Unknown error occurred"))
+            // Check if the download URL is valid
+            if (downloadUrl.isEmpty()) {
+                emit(Resource.Error("Invalid image URL"))
+            } else {
+                emit(Resource.Success(downloadUrl))
             }
-
-        }.catch {
-            emit(Resource.Error(it.message ?: "An error occurred"))
-        }*/
+        }.catch { e ->
+            emit(Resource.Error(e.message ?: "Unknown error occurred"))
+        }
     }
 
     override fun updateUserProfilePicture(

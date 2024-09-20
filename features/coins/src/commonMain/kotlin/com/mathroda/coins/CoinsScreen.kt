@@ -2,7 +2,6 @@ package com.mathroda.coins
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +29,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -42,7 +40,6 @@ import com.mathroda.coins.components.SearchBar
 import com.mathroda.common.components.InfiniteListHandler
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.LightGray
-import com.mathroda.common.toastmessage.components.LocalMessageBar
 import com.mathroda.profile.ProfileViewModel
 import com.mathroda.profile.drawer.DrawerNavigation
 import kotlinx.coroutines.launch
@@ -70,6 +67,12 @@ fun BasicCoinScreen(
         refreshing = isRefreshing,
         onRefresh = viewModel::refresh
     )
+
+    LaunchedEffect(lazyListState.isScrollInProgress) {
+        if (lazyListState.isScrollInProgress) {
+            focusManger.clearFocus()
+        }
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -121,14 +124,7 @@ fun BasicCoinScreen(
                        .pullRefresh(pullRefreshState)
                 ) {
                     LazyColumn(
-                        modifier = Modifier
-                            .pointerInput(Unit){
-                                detectTapGestures(
-                                    onPress = {
-                                        focusManger.clearFocus()
-                                    }
-                                )
-                            },
+                        modifier = Modifier,
                         state = lazyListState
                     ) {
                         items(

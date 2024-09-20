@@ -3,13 +3,13 @@
 package com.mathroda.common.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.mathroda.common.resources.Res
+import io.github.alexzhirkevich.compottie.Compottie
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
@@ -17,32 +17,32 @@ import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
-fun LoadingCrypto(
+fun FavoriteCoinsAnimation(
     modifier: Modifier = Modifier
 ) {
-
-    val composition by rememberLottieComposition {
+    val lottieComp by rememberLottieComposition {
         LottieCompositionSpec.JsonString(
-            Res.readBytes("files/loading_main.json").decodeToString()
+            Res.readBytes("files/watch_list_anim.json").decodeToString()
         )
     }
 
-    val progress by animateLottieCompositionAsState(
-       composition
+    val lottieProgress by animateLottieCompositionAsState(
+        composition = lottieComp,
+        iterations = Compottie.IterateForever
     )
 
-
-    Box(
-        modifier = modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
+    BoxWithConstraints {
+        val screenWidth = maxWidth
         Image(
+            modifier = modifier
+                .size(
+                    screenWidth * 0.75f
+                ),
             painter = rememberLottiePainter(
-                composition = composition,
-                progress = { progress }
+                composition = lottieComp,
+                progress = { lottieProgress }
             ),
-            contentDescription = "Crypto Loading"
+            contentDescription = null
         )
     }
 }

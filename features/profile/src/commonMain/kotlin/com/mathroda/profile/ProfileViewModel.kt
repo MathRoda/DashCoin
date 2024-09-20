@@ -5,10 +5,10 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathroda.core.state.UserState
+import com.mathroda.core.util.Resource
 import com.mathroda.core.util.generateUUID
 import com.mathroda.datasource.core.DashCoinRepository
 import com.mathroda.datasource.firebase.FirebaseRepository
@@ -22,10 +22,14 @@ import com.mathroda.profile.menuitem.MenuItems
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -38,8 +42,15 @@ class ProfileViewModel : ViewModel(), KoinComponent {
     private val dashCoinRepository: DashCoinRepository by inject()
     private val syncNotification: SyncNotification by inject()
 
-    private val _userCredential = MutableStateFlow(DashCoinUser())
-    val userCredential = _userCredential.asStateFlow()
+    val userCredential: StateFlow<DashCoinUser?>
+        get() = dashCoinRepository.getDashCoinUserFlow()
+            .distinctUntilChanged()
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000L),
+                null
+            )
+
 
     private val _authState = MutableStateFlow<UserState>(UserState.UnauthedUser)
     val authState = _authState.asStateFlow()
@@ -56,7 +67,6 @@ class ProfileViewModel : ViewModel(), KoinComponent {
     private val syncState = MutableStateFlow<SyncState>(SyncState.UpToDate)
 
     fun init() {
-        updateUiState()
         isUserPremium()
         getIfSyncNeeded()
     }
@@ -69,31 +79,29 @@ class ProfileViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    private fun updateUiState() {
+    fun updateUiState() {
         viewModelScope.launch(Dispatchers.IO) {
-            val user = dashCoinRepository.getDashCoinUser()
             val authState = dashCoinUseCases.userStateProvider()
             withContext(Dispatchers.Main.immediate) {
-                _userCredential.update { user ?: DashCoinUser() }
                 _authState.update { authState  }
             }
         }
     }
 
-    fun updateProfilePicture(bitmap: ImageBitmap) {
-        val imageName = userCredential.value.userUid ?: generateUUID()
+    fun updateProfilePicture(bitmap: ByteArray) {
+        val imageName = userCredential.value?.userUid ?: generateUUID()
 
-        /*uploadProfilePicture(
+        uploadProfilePicture(
             imageName = imageName,
             bitmap = bitmap
-        )*/
+        )
     }
 
     fun clearUpdateProfilePictureState() {
         _updateProfilePictureState.update {  UpdatePictureState() }
     }
 
-    /*private fun uploadProfilePicture(imageName: String, bitmap: Bitmap) {
+    private fun uploadProfilePicture(imageName: String, bitmap: ByteArray) {
         viewModelScope.launch {
             firebaseRepository.uploadImageToCloud(
                 name = imageName,
@@ -111,7 +119,7 @@ class ProfileViewModel : ViewModel(), KoinComponent {
                                 result.data?.let {
                                     dashCoinRepository.cacheDashCoinUser(it)
                                 }
-                                getUserCredential()
+
                             }
                         }
                     }
@@ -121,9 +129,9 @@ class ProfileViewModel : ViewModel(), KoinComponent {
                 }
             }
         }
-    }*/
+    }
 
-    /*private fun updateProfilePicture(imageUrl: String) {
+    private fun updateProfilePicture(imageUrl: String) {
         viewModelScope.launch {
             firebaseRepository
                 .updateUserProfilePicture(imageUrl = imageUrl)
@@ -141,7 +149,7 @@ class ProfileViewModel : ViewModel(), KoinComponent {
                     }
                 }
         }
-    }*/
+    }
 
     private fun isUserPremium() {
         viewModelScope.launch(Dispatchers.IO) {

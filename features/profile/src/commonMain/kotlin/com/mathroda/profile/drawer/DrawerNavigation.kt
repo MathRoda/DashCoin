@@ -33,6 +33,10 @@ fun DrawerNavigation(
     val toast = viewModel.toastState.value
     val messageBarState = LocalMessageBar.current
 
+    LaunchedEffect(true) {
+        viewModel.updateUiState()
+    }
+
     if (toast.first) {
         messageBarState.showSuccess(
             message = toast.second
@@ -45,9 +49,9 @@ fun DrawerNavigation(
     }
 
     DrawerHeader(
-        welcomeUser = userCredential.value.userName ?: "Hi DashCoiner",
-        userEmail = userCredential.value.email,
-        userImage = userCredential.value.image,
+        welcomeUser = userCredential.value?.userName ?: "Hi DashCoiner",
+        userEmail = userCredential.value?.email,
+        userImage = userCredential.value?.image,
         iconVisibility = isPremium,
         isUserAuthed = isAuthedUser,
         updateProfilePictureState = updateProfilePictureState.value,

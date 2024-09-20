@@ -13,16 +13,14 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
 import com.preat.peekaboo.image.picker.SelectionMode
 import com.preat.peekaboo.image.picker.rememberImagePickerLauncher
-import com.preat.peekaboo.image.picker.toImageBitmap
 
 @Composable
 fun PickImageButton(
     modifier: Modifier = Modifier,
-    onPickImage: (bitmap: ImageBitmap) -> Unit,
+    onPickImage: (bitmap: ByteArray) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val imagerPicker = rememberImagePickerLauncher(
@@ -31,7 +29,6 @@ fun PickImageButton(
         onResult = { byteArrays ->
             byteArrays
                 .firstOrNull()
-                ?.toImageBitmap()
                 ?.let(onPickImage)
         }
     )

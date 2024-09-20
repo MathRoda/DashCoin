@@ -37,6 +37,7 @@ interface DashCoinRepository {
     suspend fun addAllFavoriteCoins(coins: List<FavoriteCoin>)
 
     suspend fun getDashCoinUser(): DashCoinUser?
+    fun getDashCoinUserFlow(): Flow<DashCoinUser?>
 
     suspend fun cacheDashCoinUser(user: DashCoinUser)
 

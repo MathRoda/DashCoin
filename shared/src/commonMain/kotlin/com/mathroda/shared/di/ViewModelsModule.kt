@@ -8,7 +8,7 @@ import com.mathroda.news.NewsViewModel
 import com.mathroda.onboarding.OnBoardingViewModel
 import com.mathroda.profile.ProfileViewModel
 import com.mathroda.profile.settings.SettingViewModel
-import com.mathroda.shared.SharedScreenModel
+import com.mathroda.shared.SharedViewModel
 import com.mathroda.signin_screen.SignInViewModel
 import com.mathroda.signup.SignUpViewModel
 import org.koin.core.module.dsl.viewModel
@@ -25,6 +25,6 @@ val viewModelsModule = module {
     viewModel { NewsViewModel(get(), get()) }
     viewModel { OnBoardingViewModel(get()) }
     viewModelOf(::ProfileViewModel)
-    viewModel { SharedScreenModel(get(), get(), get(), get(), get()) }
+    viewModel { SharedViewModel(get(), get()) }
     viewModel { SettingViewModel(get(), get()) }
 }

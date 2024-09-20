@@ -214,22 +214,23 @@ fun BasicSignIn(
 
     }
 
-    if (sigInState.signIn != null) {
-        messageBarState.showSuccess(
-            message = "You logged in successfully"
-        )
-        LaunchedEffect(Unit) {
+    LaunchedEffect(sigInState.signIn) {
+        if (sigInState.signIn != null) {
+            messageBarState.showSuccess(
+                message = "You logged in successfully"
+            )
             delay(1000)
             popBackStack()
         }
     }
 
 
-    if (sigInState.error.isNotBlank()) {
-
-        val errorMsg = sigInState.error
-        messageBarState.showError(
-            message = errorMsg
-        )
+    LaunchedEffect(sigInState.error) {
+        if (sigInState.error.isNotBlank()) {
+            val errorMsg = sigInState.error
+            messageBarState.showError(
+                message = errorMsg
+            )
+        }
     }
 }

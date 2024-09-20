@@ -20,24 +20,20 @@ import com.mathroda.domain.FavoriteCoin
 import com.mathroda.domain.events.FavoriteCoinEvents
 import com.mathroda.domain.toFavoriteCoin
 import com.mathroda.internetconnectivity.InternetConnectivityManger
-import com.mathroda.internetconnectivity.InternetState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CoinDetailViewModel(
     private val dashCoinRepository: DashCoinRepository,
     private val dashCoinUseCases: DashCoinUseCases,
-    private val connectivityManger: InternetConnectivityManger
+    val connectivityManger: InternetConnectivityManger
 ) : ViewModel() {
 
     private val _coinState = MutableStateFlow(CoinState())
@@ -62,14 +58,6 @@ class CoinDetailViewModel(
     val notPremiumDialog: MutableState<DialogState> = _notPremiumDialog
 
     private val _authState = mutableStateOf<UserState>(UserState.UnauthedUser)
-
-    val connectivityMangerState: StateFlow<InternetState>
-        get() = connectivityManger.getState()
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000L),
-                initialValue = InternetState.IDLE
-            )
 
     private var job: Job? = null
 

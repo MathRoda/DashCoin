@@ -2,7 +2,7 @@
 
 package com.mathroda.common.components
 
-import KottieAnimation
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,12 +21,8 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -41,28 +37,25 @@ import com.mathroda.common.theme.LightGray
 import com.mathroda.common.theme.TextWhite
 import com.mathroda.core.state.DialogState
 import com.mathroda.core.util.Constants.UPGRADE_TO_PREMIUM
-import kottieComposition.KottieCompositionSpec
-import kottieComposition.animateKottieCompositionAsState
-import kottieComposition.rememberKottieComposition
+import io.github.alexzhirkevich.compottie.LottieCompositionSpec
+import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
+import io.github.alexzhirkevich.compottie.rememberLottieComposition
+import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import utils.KottieConstants
 
 @Composable
 fun NotPremiumUi(
     modifier: Modifier = Modifier,
     dialogState: MutableState<DialogState>
 ) {
-    var animation by remember { mutableStateOf("") }
-    LaunchedEffect(Unit) {
-        animation = Res.readBytes("files/premium.json").decodeToString()
-    }
 
-    val lottieComp =  rememberKottieComposition(
-        spec = KottieCompositionSpec.File(animation)
-    )
-    val lottieProgress by animateKottieCompositionAsState(
-        composition = lottieComp,
-        iterations = KottieConstants.IterateForever,
+    val composition by rememberLottieComposition {
+        LottieCompositionSpec.JsonString(
+            Res.readBytes("files/premium.json").decodeToString()
+        )
+    }
+    val lottieProgress by animateLottieCompositionAsState(
+       composition
     )
 
     Card(
@@ -100,10 +93,13 @@ fun NotPremiumUi(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    KottieAnimation(
+                    Image(
                         modifier = Modifier.fillMaxWidth(),
-                        composition = lottieComp,
-                        progress = { lottieProgress.progress },
+                        painter = rememberLottiePainter(
+                            composition = composition,
+                            progress = { lottieProgress }
+                        ),
+                        contentDescription = null
                     )
                 }
 

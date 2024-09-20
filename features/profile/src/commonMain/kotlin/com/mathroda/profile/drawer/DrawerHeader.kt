@@ -1,6 +1,7 @@
 package com.mathroda.profile.drawer
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,27 +24,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mathroda.common.components.CommonAsyncImage
+import com.mathroda.common.resources.Res
+import com.mathroda.common.resources.profile_placeholder
 import com.mathroda.common.theme.BackgroundBlue
 import com.mathroda.common.theme.Gold
 import com.mathroda.common.toastmessage.components.LocalMessageBar
 import com.mathroda.profile.drawer.components.PickImageButton
 import com.mathroda.profile.drawer.state.UpdatePictureState
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun DrawerHeader(
-    welcomeUser: String?,
+    welcomeUser: String,
     userEmail: String?,
     userImage: String?,
     iconVisibility: Boolean,
     isUserAuthed: Boolean,
     updateProfilePictureState: UpdatePictureState,
     clearUpdateProfilePictureState: () -> Unit,
-    updateProfilePicture: (bitmap: ImageBitmap) -> Unit,
+    updateProfilePicture: (bitmap: ByteArray) -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -75,7 +78,7 @@ fun DrawerHeader(
                     tint = Gold
                 )
             }
-            Text(text = "Hi! $welcomeUser", fontSize = 19.sp)
+            Text(text = welcomeUser, fontSize = 19.sp)
         }
 
         userEmail?.let { userEmail ->
@@ -94,7 +97,7 @@ fun ProfilePictureBox(
     isUserAuthed: Boolean,
     updateProfilePictureState: UpdatePictureState,
     clearUpdateProfilePictureState: () -> Unit,
-    updateProfilePicture: (bitmap: ImageBitmap) -> Unit,
+    updateProfilePicture: (bitmap: ByteArray) -> Unit,
 ) {
     val messageBarState = LocalMessageBar.current
     /**
@@ -122,16 +125,24 @@ fun ProfilePictureBox(
             .fillMaxWidth(fraction = 0.4f)
             .aspectRatio(1f)
     ) {
-        if (userImage != null) {
-            CommonAsyncImage(
-                model = userImage,
-                contentDescription = "Profile picture",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(CircleShape)
-            )
-        }
+        CommonAsyncImage(
+            model = userImage,
+            contentDescription = "Profile picture",
+            contentScale = ContentScale.Crop,
+            placeHolder = {
+                Image(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(CircleShape),
+                    painter = painterResource(Res.drawable.profile_placeholder),
+                    contentDescription = "Place Holder",
+                    contentScale = ContentScale.Crop
+                )
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+        )
 
         // Show progress indicator if -> picture is uploading || async image is loading
         if (updateProfilePictureState.isLoading) {

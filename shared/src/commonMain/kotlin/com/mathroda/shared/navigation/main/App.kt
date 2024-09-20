@@ -6,9 +6,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ExperimentalMaterialApi
@@ -55,13 +53,12 @@ fun App(
     /**
      * bottom bar variables for nested scroll
      */
-    val bottomBarHeight = 72.dp
     val bottomBarOffsetHeightPx = remember { mutableStateOf(0f) }
 
 
     Scaffold(
-        modifier = Modifier.bottomBarAnimatedScroll(
-            height = bottomBarHeight,
+        modifier = Modifier
+            .bottomBarAnimatedScroll(
             offsetHeightPx = bottomBarOffsetHeightPx
         ),
         bottomBar = {
@@ -69,7 +66,6 @@ fun App(
                 navController = navController,
                 state = bottomBarVisibility(navController),
                 modifier = Modifier
-                    .height(bottomBarHeight)
                     .offset {
                         IntOffset(x = 0, y = -bottomBarOffsetHeightPx.value.roundToInt())
                     }

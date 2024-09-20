@@ -17,8 +17,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.SocialDistance
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,11 +29,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mathroda.common.components.CustomDialogSignOut
 import com.mathroda.common.components.CustomLoginButton
+import com.mathroda.common.resources.Res
+import com.mathroda.common.resources.ic_github
+import com.mathroda.common.resources.ic_linkedin
+import com.mathroda.common.resources.ic_twitter
 import com.mathroda.common.theme.CustomRed
 import com.mathroda.common.theme.DarkGray
 import com.mathroda.common.theme.Gold
 import com.mathroda.core.state.UserState
 import com.mathroda.core.util.Constants
+import org.jetbrains.compose.resources.painterResource
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
@@ -77,7 +80,7 @@ fun DrawerFooter(
             item {
                 IconButton(onClick = { uriHandler.openUri(Constants.LINKEDIN) }) {
                     Icon(
-                        imageVector = Icons.Rounded.SocialDistance,
+                        painter = painterResource(Res.drawable.ic_linkedin),
                         modifier = Modifier.size(18.dp),
                         contentDescription = "Linkedin"
                     )
@@ -86,7 +89,7 @@ fun DrawerFooter(
 
                 IconButton(onClick = { uriHandler.openUri(Constants.GITHUB) }) {
                     Icon(
-                        imageVector = Icons.Rounded.SocialDistance,
+                        painter = painterResource(Res.drawable.ic_github),
                         modifier = Modifier.size(18.dp),
                         contentDescription = "Github"
                     )
@@ -96,7 +99,7 @@ fun DrawerFooter(
 
                 IconButton(onClick = { uriHandler.openUri(Constants.TWITTER) }) {
                     Icon(
-                        imageVector = Icons.Rounded.SocialDistance,
+                        painter = painterResource(Res.drawable.ic_twitter),
                         modifier = Modifier.size(18.dp),
                         contentDescription = "Twitter"
                     )

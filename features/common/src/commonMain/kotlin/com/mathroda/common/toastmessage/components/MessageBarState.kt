@@ -22,7 +22,7 @@ class MessageBarState {
 
     fun showSuccess(
         message: String,
-        duration: Long = 3000L
+        duration: Long = 1000L
     ) {
         error = null
         success = message
@@ -32,7 +32,7 @@ class MessageBarState {
 
     fun showError(
         message: String,
-        duration: Long = 3000L
+        duration: Long = 1000L
     ) {
         success = null
         error = Exception(message)

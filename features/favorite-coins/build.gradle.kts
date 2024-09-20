@@ -49,8 +49,6 @@ kotlin {
             //Koin
             implementation(Deps.Koin.core)
 
-            //Kottie
-            implementation(Deps.Airbnb.Android.kottie)
 
             //KotlinDateTime
             implementation(Deps.Org.Jetbrains.Kotlinx.dateTime)

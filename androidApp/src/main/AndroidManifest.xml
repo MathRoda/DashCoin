@@ -8,6 +8,7 @@
     <application
         android:name=".DashCoinApplication"
         android:allowBackup="true"
+        android:enableOnBackInvokedCallback="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_dashcoin"
@@ -15,7 +16,7 @@
         android:roundIcon="@mipmap/ic_dashcoin_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Starting"
-        tools:targetApi="31">
+        tools:targetApi="tiramisu">
         <activity
             android:name=".MainActivity"
             android:exported="true"

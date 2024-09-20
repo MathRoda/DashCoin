@@ -22,7 +22,7 @@ fun BoxScope.NewsScreenState(
     viewModel: NewsViewModel
 ) {
     val state = viewModel.newsState.value
-    val connectivityState by viewModel.connectivityManger.getState().collectAsState(initial = InternetState.IDLE)
+    val connectivityState by viewModel.connectivityManger.getState().collectAsState(InternetState.IDLE)
 
     when {
         state.isLoading -> {

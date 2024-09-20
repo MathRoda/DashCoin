@@ -42,7 +42,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
-            implementation(Deps.Airbnb.Android.kottie)
+            implementation(Deps.Airbnb.Android.cottie)
             implementation("io.coil-kt.coil3:coil-compose:3.0.0-alpha10")
             implementation("io.coil-kt.coil3:coil-network-ktor2:3.0.0-alpha10")
 
